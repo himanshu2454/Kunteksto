@@ -9,7 +9,7 @@ __pycache__/
 # Distribution / packaging
 .Python
 env/
-build/
+# build/
 develop-eggs/
 dist/
 downloads/
@@ -60,8 +60,6 @@ instance/
 # Scrapy stuff:
 .scrapy
 
-# Sphinx documentation
-docs/_build/
 
 # PyBuilder
 target/
@@ -87,3 +85,11 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+# Bio-Tradukisto 
+*.db
+
+# Sphinx
+docs_source/build/*
+docs/_sources/*
+docs/_static/*

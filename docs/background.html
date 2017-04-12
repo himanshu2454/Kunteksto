@@ -1,0 +1,311 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Background on Interoperability &mdash; Kunteksto 1.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="Kunteksto 1.1.0 documentation" href="index.html"/>
+        <link rel="next" title="Process" href="process.html"/>
+        <link rel="prev" title="Getting Started" href="start.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Kunteksto
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction and Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="start.html">Getting Started</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Background on Interoperability</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#purpose">Purpose</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#hl7v2">HL7v2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#hl7v3">HL7v3</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fast-healthcare-interoperability-resources-fhir">Fast Healthcare Interoperability Resources (FHIR)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#openehr-cimi-13606">openEHR/CIMI/13606</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#s-i-framework">S&amp;I Framework</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#national-information-exchange-model-niem">National Information Exchange Model (NIEM)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#other">Other</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#conclusion">Conclusion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#don-t-be-like-these-guys">Don&#8217;t be like these guys:</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="process.html">Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="future.html">The Future</a></li>
+<li class="toctree-l1"><a class="reference internal" href="future.html#the-challenge">The Challenge</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Kunteksto</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Background on Interoperability</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/background.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="background-on-interoperability">
+<h1>Background on Interoperability<a class="headerlink" href="#background-on-interoperability" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="purpose">
+<h2>Purpose<a class="headerlink" href="#purpose" title="Permalink to this headline">¶</a></h2>
+<p>As I was preparing this section. This came to my attention as part of the call for papers for a special edition of <em>Applied Clinical Informatics</em>. Since I frakly have almost grown weary of trying to express this in new ways. I&#8217;ll let Kerstin Denecke (Bern University of Applied Sciences, Switzerland), <a class="reference external" href="mailto:kerstin&#46;denecke&#37;&#52;&#48;bfh&#46;ch">kerstin<span>&#46;</span>denecke<span>&#64;</span>bfh<span>&#46;</span>ch</a> and Koray Atalag (The University of Auckland, New Zealand), <a class="reference external" href="mailto:k&#46;atalag&#37;&#52;&#48;auckland&#46;ac&#46;nz">k<span>&#46;</span>atalag<span>&#64;</span>auckland<span>&#46;</span>ac<span>&#46;</span>nz</a>; say it for me.</p>
+<p>&#8220;The recent focus on HL7’s emerging Fast Healthcare Interoperability Resources (FHIR) has directed
+attention on the fact that attempts to achieve interoperability have been only partly successful in the
+past despite a host of existing terminologies (for example SNOMED CT, ICD and LOINC) and standards
+for health information exchange and EHR (HL7 v2,v3/CDA, openEHR/13606, IHE, DICOM etc.).&#8221;</p>
+<p>See: <a class="reference external" href="https://aci.schattauer.de/fileadmin/assets/zeitschriften/ACI/CFP_ACI_Interoperability.pdf">https://aci.schattauer.de/fileadmin/assets/zeitschriften/ACI/CFP_ACI_Interoperability.pdf</a></p>
+<div class="section" id="hl7v2">
+<h3>HL7v2<a class="headerlink" href="#hl7v2" title="Permalink to this headline">¶</a></h3>
+<p>A great idea based on solid approaches for data exchange in the 1970s and 1980s. Not extensible beyond basic message handling.
+The migration to XML has provided this approach with continued life because everything that has been produced (below) hasn&#8217;t improved on semantic interoperability.</p>
+</div>
+<div class="section" id="hl7v3">
+<h3>HL7v3<a class="headerlink" href="#hl7v3" title="Permalink to this headline">¶</a></h3>
+<p>The idea of a reference information model as the interoperability core and domain/concept models built off of it was certainly a step in the right direction. However the design by committee approach soon led to an incoherent and bloated RIM.  Multiple attempts at extracting some kind of useful summary model have met with limited successes in CDA, C-CDA, etc. Allowing for extensions in the domain/concept models breaks the interoperability basis of the core RIM.</p>
+</div>
+<div class="section" id="fast-healthcare-interoperability-resources-fhir">
+<h3>Fast Healthcare Interoperability Resources (FHIR)<a class="headerlink" href="#fast-healthcare-interoperability-resources-fhir" title="Permalink to this headline">¶</a></h3>
+<p>Based on the frustrations from HL7v3 experiences FHIR attempt to move the interoperability to an interface level based on a standardized set of resources. There are so many things wrong with this appraoch we cannot cover all of them here. Suffice it to say that there is no firm data validation, there is no gloabla consensus on the Resoruce Definitions and one country&#8217;s rules are impacting the definition of these global resources. All resource information is geared towards English speaking usage only. This is the problem with strong ties between semantics and structure. Again, extensions are allowed and may not be knowable by information exchange partners.</p>
+</div>
+<div class="section" id="openehr-cimi-13606">
+<h3>openEHR/CIMI/13606<a class="headerlink" href="#openehr-cimi-13606" title="Permalink to this headline">¶</a></h3>
+<dl class="docutils">
+<dt>A solid approach based around a Reference Model and archetypes (domain/concept models) allowing only constraints.  However, because the IDs of the archetypes contain domain semantics and anyone is allowed to create any archetype. There is a serious risk</dt>
+<dd>that two archetypes could have the same ID and contain different constraints and semantics. This issue was addressed in 2008 and as of 2015 only a temporary patch has been created to &#8216;allow&#8217; a unique ID in the metadata. The depth of this problem with the tools and existing systems is obviously <em>too big to fix</em>. The fact that a domain specific language (ADL) and therefore custom tools are required for data testing and validation slows adoption and introduces questionable quality control. DISCLAIMER: I worked with openEHR from 1999-2009 and was a member of the intial Architecture Review Board (ARB) for 5 years.</dd>
+</dl>
+</div>
+<div class="section" id="s-i-framework">
+<h3>S&amp;I Framework<a class="headerlink" href="#s-i-framework" title="Permalink to this headline">¶</a></h3>
+<p>Another unique idea around interoperability based on workflow.  Apperntly a lot of investment but not a lot of practical application.</p>
+</div>
+<div class="section" id="national-information-exchange-model-niem">
+<h3>National Information Exchange Model (NIEM)<a class="headerlink" href="#national-information-exchange-model-niem" title="Permalink to this headline">¶</a></h3>
+<p>Another approach based on a Reference Information Model and domain/concept models.  In some domains (man made concepts) this approach is working.  However, the Life Sciences / Healthcare working group is stagnant and the leadership there is blocking any advances. Which is fair enough since for biological domains the approach to building concept models is broken. First it allows extension in domain models. Secondly it mixes semantics and srtucture in models and lastly and most importanly for any kind of global use; all terms used in the model process must come from the Oxford English Dictionary.</p>
+</div>
+<div class="section" id="other">
+<h3>Other<a class="headerlink" href="#other" title="Permalink to this headline">¶</a></h3>
+<p>There are other attempts around the world such as the OpenMRS Concept platform and various HIE and IHE appraoches. They suffer most of these same issues.</p>
+</div>
+</div>
+<div class="section" id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this headline">¶</a></h2>
+<p>There are commonalities in these failures. The Shareable, Structured, Semantic Model (S3Model) approach solves all of these issues.
+Kunteksto uses the S3Model approach to provide a common interoperability layer. The S3Model approach uses some bits of almost
+all of these as well other mature, established technologies that are proven and adoptable by any domain.</p>
+<p>Some of those failures are:</p>
+<ul class="simple">
+<li>Confusing semantics with structure</li>
+<li>Injecting domain semantics as structural components where consensus cannot be reached on a global basis.</li>
+<li>Allowing extensions in the domain/concept models.</li>
+</ul>
+</div>
+<div class="section" id="don-t-be-like-these-guys">
+<h2>Don&#8217;t be like these guys:<a class="headerlink" href="#don-t-be-like-these-guys" title="Permalink to this headline">¶</a></h2>
+<a class="reference internal image-reference" href="_images/S3M_and_HIT.png"><img alt="Square wheel cart" class="align-center" src="_images/S3M_and_HIT.png" style="width: 200px; height: 100px;" /></a>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="process.html" class="btn btn-neutral float-right" title="Process" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="start.html" class="btn btn-neutral" title="Getting Started" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Timothy W. Cook.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
