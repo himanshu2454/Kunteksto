@@ -1,5 +1,5 @@
 """
-Main entry point for the Bio-Traduskisto application.
+Main entry point for the Kunteksto application.
 """
 import sys
 import os
@@ -17,48 +17,55 @@ class Translate(tk.Frame):
     def __init__(self, parent, *args, **kwargs):
         ttk.Frame.__init__(self, parent, *args, **kwargs)
         self.seps = [',',';',':','|','$']
-        self.outdir = '(none selected)'
+        self.fmts = ['XML', 'JSON']
         self.sep_type = tk.StringVar()
         self.datafmt = tk.StringVar()
         self.infile = '(none selected)'
         self.outDB = ''
         self.model = tk.StringVar()
         self.parent = parent
+        self.analyzeLevel = tk.StringVar()  
 
-        # Get config info
+        # Setup config info
         config = configparser.ConfigParser()
-        config.read('tradukisto.conf')
+        config.read('kunteksto.conf')
         self.sqlbrow = config['SQLITEBROWSER']['path']
+        
         self.neo4j_activate = config['NEO4J']['activate']
         self.neo4j_user = config['NEO4J']['user']
         self.neo4j_pw = config['NEO4J']['pw']
-        self.neo4j_url = config['NEO4J']['url']
+        self.neo4j_host = config['NEO4J']['host']
+        self.neo4j_port = config['NEO4J']['port']
+        self.neo4j_dbpath = config['NEO4J']['dbpath']
+        
+        self.analyzeLevel.set(config['KUNTEKSTO']['analyzeLevel'])
+        self.outdir = config['KUNTEKSTO']['outDir']
+        self.sep_type.set(config['KUNTEKSTO']['sepType'])
+        self.datafmt.set(config['KUNTEKSTO']['datafmt'])
 
         self.init_gui()
 
     def init_gui(self):
         self.grid(row=0, column=0, sticky=(tk.N, tk.W, tk.E, tk.S))
-        self.parent.title("Bio-Traduskisto")
+        self.parent.title("Kunteksto")
 
-        ttk.Label(self, text="Bio-Traduskisto by Data Insights, Inc.").grid(row=0, column=0, padx=5, pady=5)
+        ttk.Label(self, text="Kunteksto by Data Insights, Inc.").grid(row=0, column=0, padx=5, pady=5)
 
         ttk.Label(self, text="CSV separator: ").grid(row=1, column=0, padx=5, pady=5, sticky=tk.W)
-        self.sep_type.set(';')
         ttk.Combobox(self, values=self.seps, textvariable=self.sep_type, justify="center", width=1, state='readonly').grid(row=1, column=10, padx=5, pady=5, sticky=tk.W)
 
         ttk.Button(self, text="Select Input CSV", command=self.opencsv).grid(row=2, column=0, padx=5, pady=5, sticky=tk.W)
         ttk.Label(self, text=self.infile).grid(row=2, column=10, padx=5, pady=5, sticky=tk.W)
 
         ttk.Label(self, text="Output format: ").grid(row=3, column=0, padx=5, pady=5, sticky=tk.W)
-        self.datafmt.set('XML')
         ttk.Combobox(self, values=('XML', 'JSON'), textvariable=self.datafmt, justify="center", width=4, state='readonly').grid(row=3, column=10, padx=5, pady=5, sticky=tk.W)
 
         ttk.Button(self, text="Select Output Directory", command=self.outputsel).grid(row=4, column=0, padx=5, pady=5, sticky=tk.W)
 
         ttk.Label(self, text=self.outdir).grid(row=5, column=0, padx=5, pady=5, sticky=tk.W)
-        self.analyzeLevel = tk.StringVar()
-        self.analyzeLevel.set('Simple')
+ 
         ttk.Button(self, text="Analyze CSV", command=self.doanalyze).grid(row=6, column=0, padx=5, pady=5, sticky=tk.W)
+
         ttk.Checkbutton(self, text='Full Analysis', variable=self.analyzeLevel, onvalue='Full', offvalue='Simple').grid(row=6, column=10, padx=5, pady=5, sticky=tk.W)
         self.msgAnalyze = tk.StringVar()
         self.msgAnalyze.set('')
@@ -85,20 +92,24 @@ class Translate(tk.Frame):
     def doanalyze(self):
         if self.infile:
             pbar = ttk.Progressbar(self, orient=tk.HORIZONTAL, length=200, mode='determinate')
-            self.outDB = analyze(self.infile, self.sep_type.get(), self.analyzeLevel.get(), pbar)
+            self.outDB = analyze(self.infile, self.sep_type.get(), self.analyzeLevel.get(), pbar, self.outdir)
             self.msgAnalyze.set('Created: ' + self.outDB)
             run([self.sqlbrow,  self.outDB])
         return
 
     def outputsel(self):
-        dir_opt = {}
-        dir_opt['initialdir'] = './data_out'
-        dir_opt['mustexist'] = True
-        dir_opt['parent'] = self
-        dir_opt['title'] = 'Select a data output directory'
-        self.outdir = filedialog.askdirectory(**dir_opt)        
-        #  self.outdir = filedialog.askdirectory(title="Select Output Directory")
-        ttk.Label(self, text=self.outdir).grid(row=5, column=0, padx=5, pady=5, sticky=tk.W)
+        if self.infile:
+            dir_opt = {}
+            dir_opt['initialdir'] = './output'
+            dir_opt['mustexist'] = True
+            dir_opt['parent'] = self
+            dir_opt['title'] = 'Select a data output directory'
+            self.outdir = filedialog.askdirectory(**dir_opt)        
+            #  self.outdir = filedialog.askdirectory(title="Select Output Directory")
+            ttk.Label(self, text=self.outdir).grid(row=5, column=0, padx=5, pady=5, sticky=tk.W)
+        else:
+            print('You must first select an input file.')
+
         return
 
     def modelgen(self):

@@ -239,10 +239,13 @@ def xdString(data):
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="vte" type="xs:dateTime"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="tr" type="xs:dateTimeStamp"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="modified" type="xs:dateTimeStamp"/>\n'
+    
     if not data[3] and not data[4] and not data[5] and not data[6] and not data[11]:
         xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdstring-value" type="xs:string"/>\n'
-    if data[11]:
+        
+    elif data[11] and not data[3] and not data[4] and not data[5] and not data[6]:
         xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdstring-value" type="xs:string" default="' + data[11].strip() + '"/>\n'
+    
     else:
         xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdstring-value">\n'
         xdstr += padding.rjust(indent + 10) + '<xs:simpleType>\n'
@@ -261,6 +264,7 @@ def xdString(data):
         xdstr += padding.rjust(indent + 10) + '</xs:restriction>\n'
         xdstr += padding.rjust(indent + 10) + '</xs:simpleType>\n'
         xdstr += padding.rjust(indent + 8) + '</xs:element>\n'
+
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="xdstring-language" type="xs:language" default="en-US"/>\n'
     xdstr += padding.rjust(indent + 6) + '</xs:sequence>\n'
     xdstr += padding.rjust(indent + 4) + '</xs:restriction>\n'
@@ -526,7 +530,7 @@ def xsdRDF(xsdfile, outdir, dm_id, db_file):
     md = etree.XPath("//rdf:RDF/rdf:Description", namespaces=nsDict)
     rdf_file = os.open(outdir + '/dm-' + str(dm_id) + '.rdf', os.O_RDWR | os.O_CREAT)
 
-    rdfstr = """<?xml version="1.0" encoding="UTF-8"?>\n<rdf:RDF xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#'>\n"""
+    rdfstr = """<?xml version="1.0" encoding="UTF-8"?>\n<rdf:RDF xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#' \nxmlns:s3m='http://www.s3model.com/ns/s3m/'>\n"""
 
     tree = etree.parse(xsdfile, parser)
     root = tree.getroot()
@@ -551,6 +555,8 @@ def xsdRDF(xsdfile, outdir, dm_id, db_file):
         rdfstr += '</rdf:Description>\n'
 
     rdfstr += '</rdf:RDF>\n'
+        
+    
     os.write(rdf_file, rdfstr.encode("utf-8"))
     os.close(rdf_file)
 
@@ -589,6 +595,7 @@ def makeModel(db_file, outdir):
     xsd.close()
 
     xsdRDF(model, outdir, dmID, db_file)
+    
     return model
 
 def xmlHdr(model, schema):
@@ -732,7 +739,7 @@ def makeData(schema, dformat, db_file, theFile, delim, outdir):
             file_id = filePrefix + '-' + shortuuid.uuid()
             xmlFile = open(xmldir + file_id + '.xml', 'w')
             rdfFile = open(rdfdir + file_id + '.rdf', 'w')
-            xmlStr = '<?xml version="1.0" encoding="UTF-8"?>'
+            xmlStr = '<?xml version="1.0" encoding="UTF-8"?>\n'
             rdfStr = '<?xml version="1.0" encoding="UTF-8"?>\n<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"\nxmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"\nxmlns:s3m="http://www.s3model.com/ns/s3m/"\nxmlns:xs="http://www.w3.org/2001/XMLSchema">\n'
             rdfStr += '<rdf:Description rdf:about="' + file_id + '">\n'
             rdfStr += '  <s3m:isInstanceOf rdf:resource="dm-' + model[5].strip() + '"/>\n'

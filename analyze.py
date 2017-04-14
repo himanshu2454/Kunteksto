@@ -12,7 +12,7 @@ from uuid import uuid4
 from collections import OrderedDict
 import iso8601
 
-def analyze(theFile, delim, level, pbar):
+def analyze(csvInput, delim, level, pbar, out_dir):
     """
     Load and analyze the CSV file.
     Create a database used to describe the data.
@@ -20,7 +20,11 @@ def analyze(theFile, delim, level, pbar):
     pbar.start()
 
     print('Level: ', level)
-    db_file = theFile[:theFile.index('.')] + '.db'
+    dname, fname = os.path.split(csvInput) 
+    dbName = fname[:fname.index('.')] + '.db'
+    db_file = out_dir + os.path.sep + dbName
+    
+    print(db_file)
     try:
         os.remove(db_file)
     except OSError:
@@ -33,7 +37,7 @@ def analyze(theFile, delim, level, pbar):
     c.execute("""CREATE TABLE "record"  (header  char(100), label char(250), datatype char(10), min_len int, max_len int, "choices" TEXT, "regex" CHAR(250), "min_val" FLOAT, "max_val" FLOAT, "vals_Inclusive" BOOL, "definition_url" CHAR(500), "def_txt_value" TEXT, "def_num_value" FLOAT, "units" CHAR(50), "mcid" CHAR(40), "adid" CHAR(40))""")
 
     data = []
-    with open(theFile) as csvfile:
+    with open(csvInput) as csvfile:
         reader = csv.DictReader(csvfile, delimiter=delim)
         for h in reader.fieldnames:
             mcID = str(uuid4())  # model component
@@ -47,7 +51,7 @@ def analyze(theFile, delim, level, pbar):
     entryID = str(uuid4())   # entry
     dataID = str(uuid4())   # data cluster
 
-    data =[ ('S3M Data Model','S3M Data Model for ' + theFile,'Copyright 2017, Data Insights, Inc.','Data Insights, Inc.', 'http://www.someurl.com', dmID, entryID, dataID)]
+    data =[ ('S3M Data Model','S3M Data Model for ' + csvInput,'Copyright 2017, Data Insights, Inc.','Data Insights, Inc.', 'http://www.some_url.com', dmID, entryID, dataID)]
     c.executemany("insert into model values (?,?,?,?,?,?,?,?)", data)
     conn.commit()
     conn.close()
@@ -55,7 +59,7 @@ def analyze(theFile, delim, level, pbar):
     if level == 'Full':
         conn = sqlite3.connect(db_file)
         # indepth analysis of columns for datatypes and ranges.
-        with open(theFile) as csvfile:
+        with open(csvInput) as csvfile:
             reader = csv.DictReader(csvfile, delimiter=delim)
             hdrs = reader.fieldnames
             dataDict = OrderedDict()
