@@ -1,0 +1,315 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Process &mdash; Kunteksto - Context for Your Data</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="Kunteksto - Context for Your Data" href="index.html"/>
+        <link rel="next" title="The Future" href="future.html"/>
+        <link rel="prev" title="Background on Interoperability" href="background.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Kunteksto
+          
+
+          
+            
+            <img src="_static/Kunteksto_logo.svg" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction and Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="start.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="background.html">Background on Interoperability</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Process</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#analysis">Analysis</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#basic-analysis">Basic Analysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#full-analysis">Full Analysis</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#using-sqlitebrowser">Using SQLiteBrowser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#models-data">Models &amp; Data</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="future.html">The Future</a></li>
+<li class="toctree-l1"><a class="reference internal" href="future.html#the-challenge">The Challenge</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Kunteksto</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Process</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/process.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="process">
+<h1>Process<a class="headerlink" href="#process" title="Permalink to this headline">¶</a></h1>
+<p>The data manipulation process to transform standard CSV data into a semantically enhanced S3M data model and data instances is detailed here. Prior to intitaing the analysis and model generation process you must know which data field (column) delimiter is used in the CSV. The delimiter / separator options are; comma, semi-colon, colon, pipe or dollar sign characters. If your file uses something else then you must re-save/create a new file using one of these. Also, if you are using Linux, the output directory must already exist. There is no Create a Folder option in the selection window on Linux. You must also edit the traduskisto.conf file to enter the location of the SQLiteBrowser tool.</p>
+<div class="section" id="analysis">
+<h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>The CSV file is selected along with the correct record delimiter for the file.</li>
+<li>Kunteksto will always generte the XML and RDF files. If the JSON selection is made it will also generate roundtripable JSON from the XML.</li>
+<li>An output directory must be chosen. During generation the XML Schema model and the model RDF definitions will be placed in this directory. The XML, RDF and optional JSON data will files will all be placed in subdirectories of this directory,</li>
+<li>There are two modes for CSV analysis; Full and Basic (described in detail below). The analysis process creates an SQLite database that contains information describing structural aspects of your CSV file. This database will be created in the same directory with your CSV file and will have the same basename as the CSV file with a &#8216;.db&#8217; extension.</li>
+<li>The database has two tables; model and record. The model table has one data record for the model metadata information. The record table has a data record for each column found in the CSV file. The information contained in the database after analysis is determined by the analysis mode. Ultimately the user is responsible for the accuracy and completeness of the model and data record semantics and ultimately the quality of the data. Remember that the software doesn&#8217;t read minds, it can only make guesses about the data it sees.</li>
+<li>Both analysis modes will create a model table that contains user editable fields for <em>title</em>, <em>description</em>, <em>copyright</em>, <em>author</em>, and <em>definition_url</em>. The fields <em>dmid</em>, <em>entryid</em> and <em>dataid</em> must not be edited. The record table contains user editable fields; <em>label</em>, <em>datatype</em>, <em>min_len</em>, <em>max_len</em>, <em>choices</em>, <em>regex</em>, <em>min_val</em>, <em>max_val</em>, <em>vals_inclusive</em>, <em>definition_url</em>, <em>def_txt_val</em>, <em>def_num_val</em>, <em>units</em>. The fields <em>header</em>, <em>mcid</em>, and <em>adid</em> must not be edited by users.</li>
+</ul>
+<div class="section" id="basic-analysis">
+<h3>Basic Analysis<a class="headerlink" href="#basic-analysis" title="Permalink to this headline">¶</a></h3>
+<p>The single record in the <em>model table</em> is filled in with generic information and should be edited by the data originator. The fields are self explanatory but we do want to empasize that the definition_url field is very important and should point to some URL that explains the overall data use and structure. In other words; why does this data exist and why was it collected?</p>
+<p>The <em>record table</em> contains a data record for each column of your CSV file. You must not edit the <em>header</em> column. If you do edit the <em>header</em> column then Kunteksto will probably break but if not it will certainly genearte a bad model and data data.</p>
+<p>The <em>label</em> column will intitally match the <em>header</em> column. You are encouraged to edit this <em>label</em> column to be a short description or semantic label for the data. Think about; what would my colleagues use as a search term in a large database when looking for this data?</p>
+<p>In the basic analysis mode the <em>datatype</em> field is filled with &#8216;String&#8217; for all data columns. This column <strong>must</strong> contain one of these words; String, Integer, Float, Date, Time, Datetime. These are not case sensitive. It is crucial that the correct datatype is used for each column.</p>
+<ul class="simple">
+<li>Integer: usually things that we count and do not have a decimal component. For example; pregnancies, cars, cigarettes, gunshots, etc.</li>
+<li>Float: things that are quantities and usually have one or more decimal places. For example; weight of 1.6 kg, concentration of 1.01 mg/L, etc.</li>
+<li>Date: an unambiguous date in the format YYYY-MM-DD</li>
+<li>Time: an unambiguous 24 hour time in the format HH:MM:SS</li>
+<li>Datetime: an unambiguous date time combination, including timezone offset in the format YYYY-MM-DDTHH:MM:SSZ-00</li>
+<li>String: anything that is not one of the above.</li>
+</ul>
+<p>The <em>min_len</em> column is used only for strings to state the minimum length of valid data.</p>
+<p>The <em>max_len</em> column is used only for strings to state the maximum length of valid data.</p>
+<p>The <em>choices</em> column is used only for strings to state the list of valid choices for this data column. The choices are entered on one line and each choice is separated with the pipe &#8216;|&#8217; character. Spaces are kept as entered including leading and trailing spaces. For example; choices of: High|Medium|Low would mean that only those three strings would be valid in this data column.</p>
+<p>The <em>regex</em> column is used only for strings to allow you to enter a regular expression constraint to define the valid values for the column. A description and tutorial on regular expressions is beyound the scope of this guide. We recommend <a class="reference external" href="http://www.xmlschemareference.com/regularExpression.html">http://www.xmlschemareference.com/regularExpression.html</a></p>
+<p>The <em>min_val</em> column is used only for integers and floats to state the minimum value of valid data.</p>
+<p>The <em>max_val</em> column is used only for integers and floats to state the maximum value of valid data.</p>
+<p>The <em>vals_inclusive</em> column is a a boolean flag used only for integers and floats to indicate if the minimum and maximum values entered are inclusive.  In version 1.x this flag is ignored and all min and max values are considered inclusive.</p>
+<p>The <em>definition_url</em> is required for all datatypes and outside of the datatype itself it is the most important column to complete correctly. This must be a URL (or at least a URI) that points to a specific definition of this data column. Often this will be a controlled vocabulary such as one linked to on <a class="reference external" href="http://bioportal.bioontology.org/">http://bioportal.bioontology.org/</a> or possibly <a class="reference external" href="https://cdebrowser.nci.nih.gov/CDEBrowser/">https://cdebrowser.nci.nih.gov/CDEBrowser/</a> If none of these are appropriate then a link to the project website and some definine page or PDF is useful.</p>
+<p>The <em>def_txt_value</em> column is used only for strings to state a default value for the model.</p>
+<p>The <em>def_num_value</em> column is used only for integers and floats to state a default value for the model.</p>
+<p>The <em>units</em> column is required for integers and floats. For integers it should be the name of the things being counted and for floats it should be a stand unit of measure abbreviation understood within the domain.</p>
+</div>
+<div class="section" id="full-analysis">
+<h3>Full Analysis<a class="headerlink" href="#full-analysis" title="Permalink to this headline">¶</a></h3>
+<p>The differences in Full and Basic analysis are that in Full the tool attempts to guess some of the values.  For example it will attempt to guess datatypes, min_val and max_val.  This can be a bit time consuming and may not be a good choice for very large datasets.</p>
+<p>It is important that the modeler review these guesses carefully.  For example just because somethings passes the tests for integers does not mean it is an integer datatype.  For example categorical variables 1 and 0 should be a String with those as choices. The tool will guess these as Integer with those as min and max values.</p>
+</div>
+</div>
+<div class="section" id="using-sqlitebrowser">
+<h2>Using SQLiteBrowser<a class="headerlink" href="#using-sqlitebrowser" title="Permalink to this headline">¶</a></h2>
+<p>This is a powerful open source tool for which you may find many uses. Our needs use a very small part of the capabilities and are described here.</p>
+<p>When the Analyze CSV button is clicked in Kunteksto the tool goes through the analysis process, Basic or Full, and creates a database using the SQLite engine. It will then launch the SQLiteBrowser tool with the database open. Below the primary menu options you will see a set of tabs. Click on the Browse Data tab. This will initally show the <em>model table</em> and its one record.</p>
+<p>By default the title column will contain &#8216;S3M Data Model&#8217;.  Double click on this text and it opens an editor where you can enter your desired title. Clcik the Ok button to complete the task.</p>
+<p>Edit the description, copyright, author and definition_url columns in the same manner as the title column.</p>
+<p>Notice above the tabs there are four options; New Database, Open Database, Write Changes, Revert Changes. After making your desired changes to the model table you must click on the Write Changes button to actually save your changes to the database.</p>
+<p>Under the tabs there is a pulldown labeled &#8216;Table:&#8217;. Use this to select the <em>record table</em>. You should see a data record line for each column in your CSV file.  If you only see one line then you probably did not choose the correct delimiter. Close SQLiteBrowser, select the correct CSV separator (delimiter) in Kunteksto and re-analyze the CSV.</p>
+<p>Once you have completed editing the database and providing all of the constraints and semantics be certain that you click the <em>Write Changes</em> button.  Exit the the SQLiteBrowser.</p>
+</div>
+<div class="section" id="models-data">
+<h2>Models &amp; Data<a class="headerlink" href="#models-data" title="Permalink to this headline">¶</a></h2>
+<p>Now we get to the reason we all came here.  To create a semantically enhanced model, validatable data and an RDF graph that can be used for machine processing guidelines and data discovery operations.</p>
+<p>Click on the Generate Model button. You will see a display for the path and filename of the generated XML Schema. This schema is a S3Model data model (DM) that details the constraints and semantics for this data based on the analysis and the information you entered. Additionally a file with the same name and an &#8216;.rdf&#8217; extension is created in the same folder. This file contains the RDF triples extracted from the semantics embeded in the DM. This means that you can send your data and this DM to anyone anywhre and they have access to the semantic inforamtion and syntactic constraints in order to make processing decisions about this data. All of this is in a machine processable format so no human ever has to read a PDF to see if this is useful data for their needs.</p>
+<p>The Generate Data button with; generate data.  It will always generate validatable XML instances and RDF triples for each data file.  If the Format selected is JSON it will also automatically create round-tripable JSON data files as well.</p>
+<p>The filenaming process here is not mandatory. If some type of sequential naming approach is useful in your context then this can be edited.</p>
+<p>You can now import your RDF into a graph DB or other triple store.  You can import you XML into an XML DB or process it into an SQL DB or any document DB.  Those decisions are yours. We have some approaches and best practices that we have discovered and will share with customers.</p>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="future.html" class="btn btn-neutral float-right" title="The Future" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="background.html" class="btn btn-neutral" title="Background on Interoperability" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Data Insights, Inc..
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
