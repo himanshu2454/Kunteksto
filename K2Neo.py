@@ -1,7 +1,6 @@
 """
 An example of connecting to a Neo4j server directly.
-Another option to explore is to use the  TinkerPop project to connect to multiple DBs (graph and/or RDF).
-Also, Stardog is a combination Graph and RDF store option. 
+
 """
 import configparser
 
@@ -10,7 +9,7 @@ from pprint import pprint
 from py2neo import Graph, Node, Relationship, authenticate
 
 
-# Setup config info
+# Get config info
 config = configparser.ConfigParser()
 config.read('kunteksto.conf')
 

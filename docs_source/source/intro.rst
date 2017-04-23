@@ -5,9 +5,9 @@ Introduction and Installation
 Purpose
 =======
 
-Kunteksto is a tool for helping researchers in the biomedical field translate their CSV formatted data files into the common format of a S3M Data Model so that this data can be used in conjuntion with S3Model clinical and other data in analysis and decision support systems. It also enables expanded semantics for other secondary use of the data based upon the needs of those users.
+Kunteksto is a tool for helping data creators and data users to translate their CSV formatted data files into the common format of a S3M Data Model so that this data can be used in conjuntion with other S3Model data in analysis and decision support systems. It also enables expanded semantics for other secondary use of the data based upon the needs of those users.
 
-The importance of this capability is discussed in other S3Model documentation and references. 
+The importance of this capability is discussed in other `S3Model <https://datainsights.tech/S3Model>`_ documentation and references. 
 
 
 Requirements

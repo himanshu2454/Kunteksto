@@ -61,7 +61,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'Kunteksto'
-copyright = '2016, Timothy W. Cook'
+copyright = '2017, Data Insights, Inc.'
 author = 'Timothy W. Cook'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -147,22 +147,22 @@ html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 # The name for this set of Sphinx documents.
 # "<project> v<release> documentation" by default.
 #
-# html_title = 'Kunteksto v1.0'
+html_title = 'Kunteksto - Context for Your Data'
 
 # A shorter title for the navigation bar.  Default is the same as html_title.
 #
-# html_short_title = None
+html_short_title = 'Kunteksto'
 
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.
 #
-# html_logo = None
+html_logo = '_static/Kunteksto_logo.svg'
 
 # The name of an image file (relative to this directory) to use as a favicon of
 # the docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32
 # pixels large.
 #
-# html_favicon = None
+html_favicon = '_static/favicon.ico'
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
