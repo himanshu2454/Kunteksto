@@ -9,7 +9,6 @@ Contents:
 
    intro
    start
-   background
    process
    future
    

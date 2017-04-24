@@ -15,11 +15,3 @@ This is not only a huge waste of time, talent and money. This process introduces
 
 If there existed a standard, core data model for all domains, for all time; then it would be possible to build reusable rules based on reusable data. Now this model exists.  It does however require a new paradigm in how data modeling is performed. The details of this new paradigm are published elsewhere and have been proven in software. 
 
-=============
-The Challenge
-=============
-
-In this section as well as in the section titled *Background on Interoperability* I have made some very provocative statements. Both of these sections are short on details and this subject is both deep and broad. I do however offer a challenge to anyone that can prove I am wrong on my evaluations of the previous approaches, specifically the conclusions. Or if anyone can prove to me that the Shareable, Structured, Semantic Model (S3Model) is not sufficient to provide computable semantic interoperability where no other approach does. I will publically apologize to those I have offended.  
-
-I also offer to accept any funded invitation to attend a debate panel on this issue with any other health informatics experts, anywhere in the world. 
-
