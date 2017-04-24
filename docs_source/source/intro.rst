@@ -5,7 +5,7 @@ Introduction and Installation
 Purpose
 =======
 
-Kunteksto is a tool for helping data creators and data users to translate their CSV formatted data files into the common format of a S3M Data Model so that this data can be used in conjuntion with other S3Model data in analysis and decision support systems. It also enables expanded semantics for other secondary use of the data based upon the needs of those users.
+**Kunteksto** [#f1]_ is a tool for helping data creators and data users to translate their simple CSV formatted data files into the semantically enhanced format of a S3M Data Model. This provides a path for data to be used in conjuntion with other S3Model data in analysis and decision support systems. It also enables expanded semantics so that secondary users can better determine if the data is appropriate for their needs. The S3Model approach opens the door for the change to a data-centric world as opposed to the current application-centric one we have now. This new world will allow automatic interoperability without data cleaning and massaging. 
 
 The importance of this capability is discussed in other `S3Model <https://datainsights.tech/S3Model>`_ documentation and references. 
 
@@ -18,32 +18,43 @@ Requirements
 - The requirements.txt file contains all of the Python requirements and can be installed using the *pip* command. 
 
 
+.. _install:
 
 Installation
 ============
 
-Install Python 3.5 and SQLiteBrowser. Then ...
+Install Python 3.x and SQLiteBrowser. Then setup a virtual environment. 
+
+If you are using Anaconda you can create a new environment using:
+
+*conda create --name Kunteksto python=3* 
+
+Activate it using *source activate Kunteksto* then skip to number 4. 
+
+Otherwise use pyenv as shown below.   
 
 Linux
 -----
 
-	$ pyvenv --python=python3 ~/Kunteksto
+	#. $ pyvenv --python=python3 ~/Kunteksto
 	
-	$ cd ~/Kunteksto
+	#. $ cd ~/Kunteksto
 	
-	$ source bin/activate
+	#. $ source bin/activate
 	
-	$ wget https://github.com/DataInsightsInc/Kunteksto/archive/1.0.0.tar.gz
+	#. $ wget https://github.com/DataInsightsInc/Kunteksto/archive/1.1.0.tar.gz
 	
-	$ tar -xzf Kunteksto-1.0.0.tar.gz 
+	#. $ tar -xzf Kunteksto-1.1.0.tar.gz 
 	
-	$ cd Kunteksto-1.0.0
+	#. $ cd Kunteksto-1.1.0
 	
-	$ pip install -r requirements.txt 
+	#. $ pip install -r requirements.txt 
 
-	$ gedit tradukisto.conf (enter the executable path for SQLiteBrowser, save, exit)
+	#. Using your favorite text editor, open tradukisto.conf (Edit the path for the SQLiteBrowser executable if it is different on your system. For now you can leave the other options as defaults. Save & exit.)
 	
-	$ python Kunteksto.py
+	#. $ python Kunteksto.py
+
+	Go to the :ref:`tutor` 
 
 
 Windows
@@ -56,3 +67,9 @@ Mac OSX
 -------
 
 (coming soon)
+
+
+.. rubric:: Footnotes
+
+.. [#f1] S3Model is called the Esperanto of information management. Kunteksto is the Esperanto translation for *Context*. See: https://simple.wikipedia.org/wiki/Esperanto 
+

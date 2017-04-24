@@ -2,6 +2,8 @@
 Kunteksto Documentation
 ============================
 
+*Copyright 2017 Data Insights, Inc. - All Rights Reserved.*
+
 Contents:
 
 .. toctree::

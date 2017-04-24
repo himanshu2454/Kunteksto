@@ -108,10 +108,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="start.html">Getting Started</a></li>
-<li class="toctree-l1"><a class="reference internal" href="background.html">Background on Interoperability</a></li>
 <li class="toctree-l1"><a class="reference internal" href="process.html">Process</a></li>
 <li class="toctree-l1"><a class="reference internal" href="future.html">The Future</a></li>
-<li class="toctree-l1"><a class="reference internal" href="future.html#the-challenge">The Challenge</a></li>
 </ul>
 
             
@@ -179,7 +177,7 @@
 <h1>Introduction and Installation<a class="headerlink" href="#introduction-and-installation" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="purpose">
 <h2>Purpose<a class="headerlink" href="#purpose" title="Permalink to this headline">¶</a></h2>
-<p>Kunteksto is a tool for helping data creators and data users to translate their CSV formatted data files into the common format of a S3M Data Model so that this data can be used in conjuntion with other S3Model data in analysis and decision support systems. It also enables expanded semantics for other secondary use of the data based upon the needs of those users.</p>
+<p><strong>Kunteksto</strong> <a class="footnote-reference" href="#f1" id="id1">[1]</a> is a tool for helping data creators and data users to translate their simple CSV formatted data files into the semantically enhanced format of a S3M Data Model. This provides a path for data to be used in conjuntion with other S3Model data in analysis and decision support systems. It also enables expanded semantics so that secondary users can better determine if the data is appropriate for their needs. The S3Model approach opens the door for the change to a data-centric world as opposed to the current application-centric one we have now. This new world will allow automatic interoperability without data cleaning and massaging.</p>
 <p>The importance of this capability is discussed in other <a class="reference external" href="https://datainsights.tech/S3Model">S3Model</a> documentation and references.</p>
 </div>
 <div class="section" id="requirements">
@@ -191,20 +189,27 @@
 </ul>
 </div>
 <div class="section" id="installation">
-<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
-<p>Install Python 3.5 and SQLiteBrowser. Then ...</p>
+<span id="install"></span><h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>Install Python 3.x and SQLiteBrowser. Then setup a virtual environment.</p>
+<p>If you are using Anaconda you can create a new environment using:</p>
+<p><em>conda create &#8211;name Kunteksto python=3</em></p>
+<p>Activate it using <em>source activate Kunteksto</em> then skip to number 4.</p>
+<p>Otherwise use pyenv as shown below.</p>
 <div class="section" id="linux">
 <h3>Linux<a class="headerlink" href="#linux" title="Permalink to this headline">¶</a></h3>
 <blockquote>
-<div><p>$ pyvenv &#8211;python=python3 ~/Kunteksto</p>
-<p>$ cd ~/Kunteksto</p>
-<p>$ source bin/activate</p>
-<p>$ wget <a class="reference external" href="https://github.com/DataInsightsInc/Kunteksto/archive/1.0.0.tar.gz">https://github.com/DataInsightsInc/Kunteksto/archive/1.0.0.tar.gz</a></p>
-<p>$ tar -xzf Kunteksto-1.0.0.tar.gz</p>
-<p>$ cd Kunteksto-1.0.0</p>
-<p>$ pip install -r requirements.txt</p>
-<p>$ gedit tradukisto.conf (enter the executable path for SQLiteBrowser, save, exit)</p>
-<p>$ python Kunteksto.py</p>
+<div><ol class="arabic simple">
+<li>$ pyvenv &#8211;python=python3 ~/Kunteksto</li>
+<li>$ cd ~/Kunteksto</li>
+<li>$ source bin/activate</li>
+<li>$ wget <a class="reference external" href="https://github.com/DataInsightsInc/Kunteksto/archive/1.1.0.tar.gz">https://github.com/DataInsightsInc/Kunteksto/archive/1.1.0.tar.gz</a></li>
+<li>$ tar -xzf Kunteksto-1.1.0.tar.gz</li>
+<li>$ cd Kunteksto-1.1.0</li>
+<li>$ pip install -r requirements.txt</li>
+<li>Using your favorite text editor, open tradukisto.conf (Edit the path for the SQLiteBrowser executable if it is different on your system. For now you can leave the other options as defaults. Save &amp; exit.)</li>
+<li>$ python Kunteksto.py</li>
+</ol>
+<p>Go to the <a class="reference internal" href="start.html#tutor"><span class="std std-ref">Tutorial</span></a></p>
 </div></blockquote>
 </div>
 <div class="section" id="windows">
@@ -214,6 +219,13 @@
 <div class="section" id="mac-osx">
 <h3>Mac OSX<a class="headerlink" href="#mac-osx" title="Permalink to this headline">¶</a></h3>
 <p>(coming soon)</p>
+<p class="rubric">Footnotes</p>
+<table class="docutils footnote" frame="void" id="f1" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>S3Model is called the Esperanto of information management. Kunteksto is the Esperanto translation for <em>Context</em>. See: <a class="reference external" href="https://simple.wikipedia.org/wiki/Esperanto">https://simple.wikipedia.org/wiki/Esperanto</a></td></tr>
+</tbody>
+</table>
 </div>
 </div>
 </div>
