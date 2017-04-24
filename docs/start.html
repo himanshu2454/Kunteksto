@@ -179,9 +179,13 @@
 </div>
 <div class="section" id="tutorial">
 <span id="tutor"></span><h2>Tutorial<a class="headerlink" href="#tutorial" title="Permalink to this headline">¶</a></h2>
-<p>Kunteksto includes a demo data file that you can use to create your first model and data translation.</p>
-<p>This tutorial does not demonstrate all of the functionality of the data translator but it does demonstrate the process. Likewise, Kunteksto itself only provides around 40% of the full capability of S3Models. There is another, unreleased tool called a Data Model Generator (DMGen) that provides almost all of the S3Model capability. This tool will be made available in the future.</p>
-<p>The first step is to analyze the data file. Data files must be plain text (often called CSV) files that have each record on a row, seperated by a CR/LF (or CR depending on the operating system) and each field in the record delimited by a separator.</p>
+<p>Kunteksto includes a demo data file that you can use to create your first model and data translation. This is a screenshot of the entire file.</p>
+<a class="reference internal image-reference" href="_images/csv_data.png"><img alt="Demo.csv" class="align-center" src="_images/csv_data.png" style="width: 800px; height: 600px;" /></a>
+<p>Notice that there are a few columns to demonstrate various datatypes as well as one column with mixed types that might look like an interger column at first glance.</p>
+<p>This tutorial does not demonstrate all of the functionality of the data translator but it does demonstrate the process. Likewise, Kunteksto itself only provides around 40% of the full capability of S3Models. Other tools provide all of the S3Model capability but are not designed to translate existing data.</p>
+<p>The Kunteksto application window looks like this when first opened.</p>
+<a class="reference internal image-reference" href="_images/initial.png"><img alt="Initial Window" class="align-center" src="_images/initial.png" style="width: 800px; height: 600px;" /></a>
+<p>The first step is to select your data file and then analyze that data file. Data files must be plain text (often called CSV) files that have each record on a row, seperated by a CR/LF (or CR depending on the operating system) and each field in the record delimited by a separator.</p>
 <p>The supported field separators are:</p>
 <ul class="simple">
 <li>comma : &#8221;,&#8221;</li>
@@ -190,24 +194,70 @@
 <li>pipe : &#8220;|&#8221;</li>
 <li>dollar sign : &#8220;$&#8221;</li>
 </ul>
-<p>The first row of the data file MUST contain column names. See the documentation on semantics and best practices for naming.</p>
+<p>The first row of the data file <strong>MUST</strong> contain column names. These are also sometimes referred to as column headers.</p>
 <div class="section" id="tutorial-steps">
 <h3>Tutorial Steps<a class="headerlink" href="#tutorial-steps" title="Permalink to this headline">¶</a></h3>
 <ol class="arabic simple">
 <li>Start Kunteksto: python3 kunteksto.py</li>
 <li>Select the semi-colon separator using the select box (Demo.csv uses a semicolon &#8216;;&#8217; for the field separator).</li>
-<li>Select the demo file, Demo.csv using the open file dialog.</li>
+<li>Select the demo file, <strong>Demo.csv</strong> using the open file dialog.</li>
 <li>Kunteksto will create a results database of this CSV file named Demo.db when the Analyze CSV button is clicked.</li>
+</ol>
+<a class="reference internal image-reference" href="_images/analyze.png"><img alt="Click Analyze CSV" class="align-center" src="_images/analyze.png" style="width: 800px; height: 600px;" /></a>
+<ol class="arabic simple" start="5">
 <li>Open the Demo.db file using the DB Browser for SQLite if it does not automatically open.</li>
-<li>Select the model table and edit the title, description, copyright, author and contributor fields as desired. These fields describe the overall metadata for your data model.</li>
+<li>Select the <em>Browse Data</em> tab and the <em>model</em> table. Edit the title, description, copyright, author and contributor fields as desired. These fields describe the overall metadata for your data model. Basically it describes the where, when and why the data is being modeled. When you click on a field it place the contents in the larger box on the right side for easier editing.</li>
+</ol>
+<a class="reference internal image-reference" href="_images/edit_model.png"><img alt="Edit Model" class="align-center" src="_images/edit_model.png" style="width: 800px; height: 600px;" /></a>
+<p>Field descriptions:</p>
+<blockquote>
+<div><ul class="simple">
+<li><em>title</em> is a free text title for your data concept contained in the CSV file.</li>
+<li><em>description</em> is a free text, elborated description of the data contained in the CSV file.</li>
+<li><em>copyright</em> enter the name of the copyright holder of the model</li>
+<li><em>author</em> enter the name of the author of the model</li>
+<li><em>definition_url</em> enter a URL (or at least a URI) to a vocabulary or ontology or a webpage that describes or defines the overall concept of the data.</li>
+<li><em>dmid</em> System Generated, <strong>Do Not Edit</strong></li>
+<li><em>entryid</em> System Generated, <strong>Do Not Edit</strong></li>
+<li><em>dataid</em> System Generated, <strong>Do Not Edit</strong></li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple" start="7">
 <li>Select the record table. Note that there is a record for each column of data in Demo.csv. If there is only one record then the likely problem is that an incorrect separator was chosen.<ul>
 <li>each record has a number of fields that allow you to describe more about your data.</li>
 <li>though each field is pre-filled it is only a guess and may not be accurate.</li>
 <li>it is up to you to be as accurate as possible in describing your data to improve reusability</li>
 </ul>
 </li>
-<li>Once you have completed the data description step, select the data format you want using the combobox and select an output directory.</li>
-<li>Click the Create Output button. You will find an XML Schema model file in the directory as well as two subdirectories. These two subdirectories contain your converted data (data) in XML or JSON and the semantics graph (rdf).</li>
+</ol>
+<a class="reference internal image-reference" href="_images/record_table.png"><img alt="Edit Model" class="align-center" src="_images/record_table.png" style="width: 800px; height: 600px;" /></a>
+<p>Field descriptions:</p>
+<blockquote>
+<div><ul class="simple">
+<li><em>header</em> is the column names from the data file. <strong>Do Not Edit</strong>.</li>
+<li><em>label</em> is a copy of the header text and should be edited as needed to provide a meaningful name for the column.</li>
+<li><em>datatype</em> the analyzer attempts to guess the correct datatype for the column. You must enter the correct type; string, integer, float or date.</li>
+<li><em>min_len</em> enter the minimum length restriction if there is one.</li>
+<li><em>max_len</em> enter the maximum length restriction if there is one.</li>
+<li><em>choices</em> for string datatypes you may enter a set of choices to restrict the valid values. Separate each choice with a pipe &#8216;|&#8217; character.</li>
+<li><em>regex</em> for string datatypes you may enter a regular expression (XML Schema syntax) to constrain the valid string values.</li>
+<li><em>min_val</em> enter the minimum value restriction for integer or float columns.</li>
+<li><em>max_val</em> enter the maximum value restriction for integer or float columns.</li>
+<li><em>vals_inclusive</em> are the minimum and maximum values inclusive in the valid values range. Enter a &#8216;1&#8217; for yes or a &#8216;0&#8217; for no.</li>
+<li><em>definition_url</em> enter a URL (or at least a URI) to a vocabulary or ontology or a webpage that describes or defines the meaning of the data in this column.</li>
+<li><em>def_txt_value</em> enter the default value for a string datatype column, if there is one.</li>
+<li><em>def_num_value</em> enter the default value for a float or integer datatype column, if there is one.</li>
+<li><em>units</em> enter the units value for a float or integer datatype column. This can be an abbreviation but should come from a standard units vocabulary such as <a class="reference external" href="https://github.com/HajoRijgersberg/OM">https://github.com/HajoRijgersberg/OM</a> or <a class="reference external" href="http://unitsofmeasure.org/trac">http://unitsofmeasure.org/trac</a> For integer columns where the values are <em>counts</em> you should enter the name of the item(s) being counted. This could be the same as the lable or column header if desired.</li>
+<li><em>mcid</em> System Generated, <strong>Do Not Edit</strong></li>
+<li><em>adid</em> System Generated, <strong>Do Not Edit</strong></li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple" start="8">
+<li>Once you have completed the data description step and closed the DB Browser, click the Generate Model button. You will find an XML Schema model file and an RDF file in the output directory. These are the structural and semantic models that can be used in your analysis as well as shared with others to better describe the data.</li>
+</ol>
+<a class="reference internal image-reference" href="_images/output_dir.png"><img alt="Output Directory" class="align-center" src="_images/output_dir.png" style="width: 800px; height: 600px;" /></a>
+<ol class="arabic simple" start="9">
+<li>Now click the Generate Data button and Kunteksto will create data instances for each record in the CSV file that are semantically compliant with the RDF and will be valid according to the XML Schema. Demonstrating that the models describe the data.</li>
 </ol>
 </div>
 </div>

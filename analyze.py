@@ -8,6 +8,8 @@ import time
 import csv
 import sqlite3
 import tkinter as tk
+from tkinter import messagebox
+
 from uuid import uuid4
 from collections import OrderedDict
 import iso8601
@@ -17,14 +19,16 @@ def analyze(csvInput, delim, level, pbar, out_dir):
     Load and analyze the CSV file.
     Create a database used to describe the data.
     """
+    if csvInput == '(none selected)':
+        messagebox.showerror('Procedure Error', 'CSV Selected: ' + csvInput)
+        return None
+    
     pbar.start()
 
-    print('Level: ', level)
     dname, fname = os.path.split(csvInput) 
     dbName = fname[:fname.index('.')] + '.db'
     db_file = out_dir + os.path.sep + dbName
     
-    print(db_file)
     try:
         os.remove(db_file)
     except OSError:
@@ -42,7 +46,8 @@ def analyze(csvInput, delim, level, pbar, out_dir):
         for h in reader.fieldnames:
             mcID = str(uuid4())  # model component
             adID = str(uuid4())   # adapter
-            data.append((h,h,'String',None,None,'','',None,None,True,'','',None,'', mcID, adID))
+            label = 'The ' + h.replace('_', ' ')
+            data.append((h,label,'String',None,None,'','',None,None,True,'','',None,'', mcID, adID))
 
     c = conn.cursor()
     c.executemany("INSERT INTO record VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", data)

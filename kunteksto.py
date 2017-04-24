@@ -7,6 +7,7 @@ from subprocess import run
 import tkinter as tk
 import tkinter.ttk as ttk
 from tkinter import filedialog
+from tkinter import messagebox
 import configparser
 
 from analyze import analyze
@@ -81,7 +82,6 @@ class Translate(tk.Frame):
 
 
     def on_quit(self):
-        print('\nStopped Kunteksto ...\n\n')
         quit()
 
     def opencsv(self):
@@ -93,8 +93,9 @@ class Translate(tk.Frame):
         if self.infile:
             pbar = ttk.Progressbar(self, orient=tk.HORIZONTAL, length=200, mode='determinate')
             self.outDB = analyze(self.infile, self.sep_type.get(), self.analyzeLevel.get(), pbar, self.outdir)
-            self.msgAnalyze.set('Created: ' + self.outDB)
-            run([self.sqlbrow,  self.outDB])
+            if self.outDB:
+                self.msgAnalyze.set('Created: ' + self.outDB)
+                run([self.sqlbrow,  self.outDB])
         return
 
     def outputsel(self):
@@ -105,10 +106,9 @@ class Translate(tk.Frame):
             dir_opt['parent'] = self
             dir_opt['title'] = 'Select a data output directory'
             self.outdir = filedialog.askdirectory(**dir_opt)        
-            #  self.outdir = filedialog.askdirectory(title="Select Output Directory")
             ttk.Label(self, text=self.outdir).grid(row=5, column=0, padx=5, pady=5, sticky=tk.W)
         else:
-            print('You must first select an input file.')
+            messagebox.showerror('Procedure Error','You must first select an input file.')
 
         return
 
@@ -118,7 +118,7 @@ class Translate(tk.Frame):
             modelName = makeModel(self.outDB, self.outdir)
             self.model.set(modelName)
         else:
-            print('No DB file or no selected output directory.')
+            messagebox.showerror('Procedure Error','Missing DB file or no selected output directory.')
 
         return
 
@@ -132,7 +132,7 @@ class Translate(tk.Frame):
         if self.model.get() and not self.outdir == '(none selected)':
             makeData(self.model.get(), self.datafmt.get(), self.outDB, self.infile, self.sep_type.get(), self.outdir)
         else:
-            print('No model or no selected output directory.')
+            messagebox.showerror('Procedure Error','Missing model or no selected output directory.')
 
         return
 
