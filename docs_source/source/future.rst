@@ -2,16 +2,18 @@
 The Future
 ==========
 
-The reality is that Kunteksto is only a bridge between our current data modeling and production and *real* computable semantic interoperability. 
+The reality is that Kunteksto is only a bridge between our current application-centric information management world and a data-centric world where data can be understood and used anywhere without ingestion costs. This is the foundation of *computable, semantic interoperability*.
 
 What is computable semantic interoperability
 ============================================
 
-The Big Data age is well underway and will not be slowing down in the future. Currently, data scientists spend some `%80 of their time preparing data for analysis <http://bit.ly/2c3eQDX>`_. 
-
-This is not only a huge waste of time, talent and money. This process introduces semantic errors in data. This is due to the fact that data scientists are not the domain experts that define what data to capture, how to capture it and in what contexts. When performing this cleaning activity they often have to make decisions about the applicability of certain data for analysis; and they can be wrong either in including or excluding data.
+The Big Data age is well underway and will not be slowing down in the future. Currently, data scientists spend some `%80 of their time preparing data for analysis <http://bit.ly/2c3eQDX>`_. There are direct costs involved in this ingestion process as well as unknown costs due to changes in data that may or may not be valid according to when, where and in what context the data was originally captured. Efforts to *clean and massage data* leads to unknowable **data quality issues**. Kind of like making square data fit in a round system. When performing this cleaning activity they often have to make decisions about the applicability of certain data for analysis; and they can be wrong either in including or excluding data.
 
 **Computable Semantic Interoperability** is the ability for a machine to decide if data is appropriate for use in a specific context. The rules can be established using any of the many existing rule based approaches from SPARQL queries to complex Rules Engines. These approaches are limited to a context because of the way we currrently model data.  In other words, the rules are specific to the data model being evaluated becaue the semantics are well known inside this closed system. This ability of the machine to decide can only happen when it has access to the full semantics of the original data capture. These semantics are usually locked up in the source code and the database structure of the originating application.  
 
 If there existed a standard, core data model for all domains, for all time; then it would be possible to build reusable rules based on reusable data. Now this model exists.  It does however require a new paradigm in how data modeling is performed. The details of this new paradigm are published elsewhere and have been proven in software. 
 
+
+.. raw:: html
+
+  <p><a href="mailto:tim@datainsights.tech">Contact Us</a>  for information.</p>
