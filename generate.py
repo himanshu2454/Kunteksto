@@ -716,7 +716,6 @@ def makeData(schema, dformat, db_file, theFile, delim, outdir):
     """
     base = os.path.basename(theFile)
     filePrefix = os.path.splitext(base)[0]
-    # print('\n\nGenerate data for: ', schema, ' in ', dformat, ' using ', base)
     messagebox.showinfo('Generation', "Generate data for: " + schema + ' in ' + dformat + ' using ' + base)
     namespaces = { "http://www.s3model.com/ns/s3m/":"s3m", "http://www.w3.org/2001/XMLSchema-instance":"xsi"}
     xmldir = outdir+'/xml/'
