@@ -2,40 +2,62 @@
 Process
 =======
 
-The data manipulation process to transform standard CSV data into a semantically enhanced S3M data model and data instances is detailed here. Prior to intitaing the analysis and model generation process you must know which data field (column) delimiter is used in the CSV. The delimiter / separator options are; comma, semi-colon, colon, pipe or dollar sign characters. If your file uses something else then you must re-save/create a new file using one of these. Also, if you are using Linux, the output directory must already exist. There is no Create a Folder option in the selection window on Linux. You must also edit the traduskisto.conf file to enter the location of the SQLiteBrowser tool. 
+The data manipulation process to transform standard CSV data into a semantically enhanced S3M data model and data instances is detailed here. Prior to initiating the analysis and model generation process you must know which data field (column) delimiter is used in the CSV. The delimiter / separator options are; comma, semi-colon, colon, pipe or dollar sign characters. If your file uses something else then you must re-save/create a new file using one of these. Also, if you are using Linux, the output directory must already exist. There is no Create a Folder option in the selection window on Linux. You should also check the kunteksto.conf file to enter the location of the SQLiteBrowser tool. By default it is  /usr/bin/sqlitebrowser
+
 
 Analysis
 ========
 
-- The CSV file is selected along with the correct record delimiter for the file.
-- Kunteksto will always generte the XML and RDF files. If the JSON selection is made it will also generate roundtripable JSON from the XML.
-- An output directory must be chosen. During generation the XML Schema model and the model RDF definitions will be placed in this directory. The XML, RDF and optional JSON data will files will all be placed in subdirectories of this directory,
-- There are two modes for CSV analysis; Full and Basic (described in detail below). The analysis process creates an SQLite database that contains information describing structural aspects of your CSV file. This database will be created in the same directory with your CSV file and will have the same basename as the CSV file with a '.db' extension.
-- The database has two tables; model and record. The model table has one data record for the model metadata information. The record table has a data record for each column found in the CSV file. The information contained in the database after analysis is determined by the analysis mode. Ultimately the user is responsible for the accuracy and completeness of the model and data record semantics and ultimately the quality of the data. Remember that the software doesn't read minds, it can only make guesses about the data it sees.
-- Both analysis modes will create a model table that contains user editable fields for *title*, *description*, *copyright*, *author*, and *definition_url*. The fields *dmid*, *entryid* and *dataid* must not be edited. The record table contains user editable fields; *label*, *datatype*, *min_len*, *max_len*, *choices*, *regex*, *min_val*, *max_val*, *vals_inclusive*, *definition_url*, *def_txt_val*, *def_num_val*, *units*. The fields *header*, *mcid*, and *adid* must not be edited by users. 
+- Kunteksto will always generate the XML and RDF files. If the JSON selection is made it will also generate JSON from the XML.
+
+- An output directory must be chosen. During generation the XML Schema model and the model RDF definitions will be placed in this directory. The XML, RDF and optional JSON data will files will all be placed in subdirectories of this output directory.
+
+- There are two modes for CSV analysis; Full and Basic (described in detail below). The analysis process creates an SQLite database that contains information describing structural aspects of your CSV file. This database will be created in the same directory with your CSV file and will have the same basename as the CSV file with a '.db' extension replacing the '.csv'.
+
+- The database has two tables; *model* and *record*. The model table has one data record for the model metadata information. This is the metadata in the XML Schema as shown here:
+
+.. image:: _images/metadata.png
+    :width: 800px
+    :align: center
+    :height: 600px
+    :alt: Metadata
+
+
+
+The record table has a data record for each column found in the CSV file. The information contained in the database after analysis is determined by the analysis mode. Ultimately the user is responsible for the accuracy and completeness of the model and data record semantics and ultimately the quality of the data. Remember that the software doesn't read minds, it can only make guesses about the data it sees.
+
+- Both analysis modes will create a model table that contains user editable fields for *title*, *description*, *copyright*, *author*, and *definition_url*. The fields *dmid*, *entryid* and *dataid* must not be edited. (See :ref:`model`)
+
+
+The record table contains user editable fields; *label*, *datatype*, *min_len*, *max_len*, *choices*, *regex*, *min_val*, *max_val*, *vals_inclusive*, *definition_url*, *def_txt_val*, *def_num_val*, *units*. The fields *header*, *mcid*, and *adid* must not be edited by users. (See :ref:`record`)
 
 Basic Analysis
 --------------
 The single record in the *model table* is filled in with generic information and should be edited by the data originator. The fields are self explanatory but we do want to empasize that the definition_url field is very important and should point to some URL that explains the overall data use and structure. In other words; why does this data exist and why was it collected?
 
-The *record table* contains a data record for each column of your CSV file. You must not edit the *header* column. If you do edit the *header* column then Kunteksto will probably break but if not it will certainly genearte a bad model and data data. 
+The *record table* contains a data record for each column of your CSV file. You must not edit the *header* column. If you do edit the *header* column then Kunteksto will probably break but if not it will certainly generate a bad model and data. 
 
-The *label* column will intitally match the *header* column. You are encouraged to edit this *label* column to be a short description or semantic label for the data. Think about; what would my colleagues use as a search term in a large database when looking for this data? 
+The *label* column will intitally taken from the *header* column. You are encouraged to edit this *label* column to be a short description or semantic label for the data. Think about; what would my colleagues use as a search term in a large database when looking for this data? 
 
-In the basic analysis mode the *datatype* field is filled with 'String' for all data columns. This column **must** contain one of these words; String, Integer, Float, Date, Time, Datetime. These are not case sensitive. It is crucial that the correct datatype is used for each column. 
+In the basic analysis mode the *datatype* field is filled with 'String' for all data columns. This column **must** contain one of these words; String, Integer, Float or Date. These are not case sensitive. It is crucial that the correct datatype is used for each column. 
 
 - Integer: usually things that we count and do not have a decimal component. For example; pregnancies, cars, cigarettes, gunshots, etc.
 - Float: things that are quantities and usually have one or more decimal places. For example; weight of 1.6 kg, concentration of 1.01 mg/L, etc. 
 - Date: an unambiguous date in the format YYYY-MM-DD 
-- Time: an unambiguous 24 hour time in the format HH:MM:SS
-- Datetime: an unambiguous date time combination, including timezone offset in the format YYYY-MM-DDTHH:MM:SSZ-00
 - String: anything that is not one of the above. 
 
 The *min_len* column is used only for strings to state the minimum length of valid data. 
 
 The *max_len* column is used only for strings to state the maximum length of valid data. 
 
-The *choices* column is used only for strings to state the list of valid choices for this data column. The choices are entered on one line and each choice is separated with the pipe '|' character. Spaces are kept as entered including leading and trailing spaces. For example; choices of: High|Medium|Low would mean that only those three strings would be valid in this data column. 
+The *choices* column is used only for strings to state the list of valid choices for this data column. The choices are entered on one line and each choice is separated with the pipe '|' character. Spaces are kept as entered including leading and trailing spaces. For example; choices of: High|Medium|Low would mean that only those three strings would be valid in this data column. You need to be certain that all possible choices are entered and be aware that these are case sensitive. Kunteksto generates strict enumeration values from these choices.
+
+
+.. image:: _images/enumerations.png
+    :width: 800px
+    :align: center
+    :height: 600px
+    :alt: Choices
 
 The *regex* column is used only for strings to allow you to enter a regular expression constraint to define the valid values for the column. A description and tutorial on regular expressions is beyound the scope of this guide. We recommend http://www.xmlschemareference.com/regularExpression.html 
 
@@ -45,7 +67,7 @@ The *max_val* column is used only for integers and floats to state the maximum v
 
 The *vals_inclusive* column is a a boolean flag used only for integers and floats to indicate if the minimum and maximum values entered are inclusive.  In version 1.x this flag is ignored and all min and max values are considered inclusive.
 
-The *definition_url* is required for all datatypes and outside of the datatype itself it is the most important column to complete correctly. This must be a URL (or at least a URI) that points to a specific definition of this data column. Often this will be a controlled vocabulary such as one linked to on http://bioportal.bioontology.org/ or possibly https://cdebrowser.nci.nih.gov/CDEBrowser/ If none of these are appropriate then a link to the project website and some definine page or PDF is useful. 
+The *definition_url* is required for all datatypes and outside of the datatype itself it is the most important column to complete correctly. This must be a URL (or at least a URI) that points to a specific definition of this data column. Often this will be a controlled vocabulary such as one linked to on http://bioportal.bioontology.org/ or possibly https://cdebrowser.nci.nih.gov/CDEBrowser/ for healthcare. Other large vocabularies that may be used include standards from OMG http://www.omg.org/ or https://www.edmcouncil.org/financialbusiness. If none of these are appropriate then a link to an internal ontology or project website and some definition page or PDF is useful. 
 
 The *def_txt_value* column is used only for strings to state a default value for the model. 
 
@@ -53,13 +75,23 @@ The *def_num_value* column is used only for integers and floats to state a defau
 
 The *units* column is required for integers and floats. For integers it should be the name of the things being counted and for floats it should be a stand unit of measure abbreviation understood within the domain.
 
+This image shows how the min, max values are represented in the XML Schema as well as a link to a complexType to represent the Units.
+
+
+.. image:: _images/min_max_units.png
+    :width: 800px
+    :align: center
+    :height: 600px
+    :alt: Min Max Values
+
+
 
 Full Analysis
 -------------
 
-The differences in Full and Basic analysis are that in Full the tool attempts to guess some of the values.  For example it will attempt to guess datatypes, min_val and max_val.  This can be a bit time consuming and may not be a good choice for very large datasets. 
+The differences in Full and Basic analysis are that in Full the tool attempts to guess some of the values.  For example it will attempt to guess datatypes, min_val and max_val. This can be a bit time consuming and may not be a good choice for very large datasets. 
 
-It is important that the modeler review these guesses carefully.  For example just because somethings passes the tests for integers does not mean it is an integer datatype.  For example categorical variables 1 and 0 should be a String with those as choices. The tool will guess these as Integer with those as min and max values.
+It is important that the modeler review these guesses carefully.  For example just because somethings pass the tests for integers does not mean it is an integer datatype. For example categorical variables 1 and 0 should be a String with those as choices. The tool will guess these as Integer with those as min and max values. This is ofcourse incorrect and needs to be edited.
 
 
 Using SQLiteBrowser

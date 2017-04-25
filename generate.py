@@ -257,9 +257,9 @@ def xdString(data):
                 xdstr += padding.rjust(indent + 12) + '<xs:enumeration value="' + e.strip() + '"/>\n'
         else:
             if data[3]:
-                xdstr += padding.rjust(indent + 12) + '<xs:minLength value="' + data[3].strip() + '"/>\n'
+                xdstr += padding.rjust(indent + 12) + '<xs:minLength value="' + str(data[3]).strip() + '"/>\n'
             if data[4]:
-                xdstr += padding.rjust(indent + 12) + '<xs:maxLength value="' + data[4].strip() + '"/>\n'
+                xdstr += padding.rjust(indent + 12) + '<xs:maxLength value="' + str(data[4]).strip() + '"/>\n'
             if data[6]:
                 xdstr += padding.rjust(indent + 12) + '<xs:pattern value="' + data[6].strip() + '"/>\n'
         xdstr += padding.rjust(indent + 10) + '</xs:restriction>\n'

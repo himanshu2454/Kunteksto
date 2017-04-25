@@ -68,6 +68,8 @@ Tutorial Steps
 
 5. Open the Demo.db file using the DB Browser for SQLite if it does not automatically open. 
 
+.. _model:
+
 6. Select the *Browse Data* tab and the *model* table. Edit the title, description, copyright, author and contributor fields as desired. These fields describe the overall metadata for your data model. Basically it describes the where, when and why the data is being modeled. When you click on a field it place the contents in the larger box on the right side for easier editing.
 
 .. image:: _images/edit_model.png
@@ -86,6 +88,8 @@ Field descriptions:
 	- *dmid* System Generated, **Do Not Edit**
 	- *entryid* System Generated, **Do Not Edit**
 	- *dataid* System Generated, **Do Not Edit**  
+
+.. _record:
 
 7. Select the record table. Note that there is a record for each column of data in Demo.csv. If there is only one record then the likely problem is that an incorrect separator was chosen.  
 
