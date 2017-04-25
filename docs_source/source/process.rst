@@ -26,10 +26,10 @@ Analysis
 
 The record table has a data record for each column found in the CSV file. The information contained in the database after analysis is determined by the analysis mode. Ultimately the user is responsible for the accuracy and completeness of the model and data record semantics and ultimately the quality of the data. Remember that the software doesn't read minds, it can only make guesses about the data it sees.
 
-- Both analysis modes will create a model table that contains user editable fields for *title*, *description*, *copyright*, *author*, and *definition_url*. The fields *dmid*, *entryid* and *dataid* must not be edited. (See :ref:`model`)
+- Both analysis modes will create a model table that contains user editable fields for *title*, *description*, *copyright*, *author*, and *definition_url*. The fields *dmid*, *entryid* and *dataid* must not be edited. (See #6 in the :ref:`tutorsteps`)
 
 
-The record table contains user editable fields; *label*, *datatype*, *min_len*, *max_len*, *choices*, *regex*, *min_val*, *max_val*, *vals_inclusive*, *definition_url*, *def_txt_val*, *def_num_val*, *units*. The fields *header*, *mcid*, and *adid* must not be edited by users. (See :ref:`record`)
+The record table contains user editable fields; *label*, *datatype*, *min_len*, *max_len*, *choices*, *regex*, *min_val*, *max_val*, *vals_inclusive*, *definition_url*, *def_txt_val*, *def_num_val*, *units*. The fields *header*, *mcid*, and *adid* must not be edited by users. (See #7 in the :ref:`tutorsteps`)
 
 Basic Analysis
 --------------

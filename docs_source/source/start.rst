@@ -48,6 +48,9 @@ The supported field separators are:
 
 The first row of the data file **MUST** contain column names. These are also sometimes referred to as column headers.   
 
+.. _tutorsteps:
+
+
 Tutorial Steps
 --------------
 
@@ -68,7 +71,6 @@ Tutorial Steps
 
 5. Open the Demo.db file using the DB Browser for SQLite if it does not automatically open. 
 
-.. _model:
 
 6. Select the *Browse Data* tab and the *model* table. Edit the title, description, copyright, author and contributor fields as desired. These fields describe the overall metadata for your data model. Basically it describes the where, when and why the data is being modeled. When you click on a field it place the contents in the larger box on the right side for easier editing.
 
@@ -77,6 +79,7 @@ Tutorial Steps
     :align: center
     :height: 600px
     :alt: Edit Model
+
 
 Field descriptions:
 
@@ -89,7 +92,6 @@ Field descriptions:
 	- *entryid* System Generated, **Do Not Edit**
 	- *dataid* System Generated, **Do Not Edit**  
 
-.. _record:
 
 7. Select the record table. Note that there is a record for each column of data in Demo.csv. If there is only one record then the likely problem is that an incorrect separator was chosen.  
 
@@ -101,7 +103,8 @@ Field descriptions:
     :width: 800px
     :align: center
     :height: 600px
-    :alt: Edit Model
+    :alt: Edit Record
+
 
 Field descriptions:
 
