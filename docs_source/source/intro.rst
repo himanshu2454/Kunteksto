@@ -15,7 +15,8 @@ Requirements
 
 - Python 3.5 or later.
 - Installation of SQLiteBrowser. See: http://sqlitebrowser.org/ 
-- The requirements.txt file contains all of the Python requirements and can be installed using the *pip* command. 
+- The requirements.txt file contains the Python requirements and can be installed (see below) using the *pip* command.
+- A copy of the S3Model RM schema s3model_3_0_0.xsd 
 
 
 .. _install:
@@ -23,7 +24,7 @@ Requirements
 Installation
 ============
 
-Install Python 3.x and SQLiteBrowser. Then setup a virtual environment. 
+Install Python 3.5 or later and SQLiteBrowser. Then setup a virtual environment. 
 
 If you are using Anaconda you can create a new environment using:
 
@@ -32,6 +33,8 @@ If you are using Anaconda you can create a new environment using:
 Activate it using *source activate Kunteksto* then skip to number 4. 
 
 Otherwise use pyenv as shown below.   
+
+See `this StackOverflow post <https://stackoverflow.com/questions/41573587/what-is-the-difference-between-venv-pyvenv-pyenv-virtualenv-virtualenvwrappe>`_ about the various environment options for Python 3.x 
 
 Linux
 -----
@@ -42,11 +45,11 @@ Linux
 	
 	#. $ source bin/activate
 	
-	#. $ wget https://github.com/DataInsightsInc/Kunteksto/archive/1.1.0.tar.gz
+	#. $ wget https://github.com/DataInsightsInc/Kunteksto/archive/1.2.0.tar.gz
 	
-	#. $ tar -xzf Kunteksto-1.1.0.tar.gz 
+	#. $ tar -xzf Kunteksto-1.2.0.tar.gz 
 	
-	#. $ cd Kunteksto-1.1.0
+	#. $ cd Kunteksto-1.2.0
 	
 	#. $ pip install -r requirements.txt 
 

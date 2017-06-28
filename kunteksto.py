@@ -32,13 +32,6 @@ class Translate(tk.Frame):
         config.read('kunteksto.conf')
         self.sqlbrow = config['SQLITEBROWSER']['path']
         
-        self.neo4j_activate = config['NEO4J']['activate']
-        self.neo4j_user = config['NEO4J']['user']
-        self.neo4j_pw = config['NEO4J']['pw']
-        self.neo4j_host = config['NEO4J']['host']
-        self.neo4j_port = config['NEO4J']['port']
-        self.neo4j_dbpath = config['NEO4J']['dbpath']
-        
         self.analyzeLevel.set(config['KUNTEKSTO']['analyzeLevel'])
         self.outdir = config['KUNTEKSTO']['outDir']
         self.sep_type.set(config['KUNTEKSTO']['sepType'])

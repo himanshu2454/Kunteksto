@@ -1,3 +1,10 @@
+Configuration
+=============
+
+The initial kunteksto.conf file should be okay for most uses and certainly for the demo/tutorials. 
+
+Here we cover the details of the configuration options for those that want to make changes. 
+
 [SQLITEBROWSER]
 path: /usr/bin/sqlitebrowser
 
@@ -16,8 +23,12 @@ sepType: ;
 datafmt: XML
 
 ; NOT YET IMPLEMENTED: A default repository where we can write the output in addition to the filesystem.
-; Currently supported configs for Neo4j, ...
 
+[TINKERGRAPH]
 repository: None
 
-; an example setup for a repository. In this case a graphDB called Neo4j.
+[STARDOG]
+repository: None
+
+[BLAZEGRAPH]
+repository: None
