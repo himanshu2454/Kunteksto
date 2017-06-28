@@ -36,7 +36,7 @@ def xsdHeader():
     hstr += '  xmlns:skos="http://www.w3.org/2004/02/skos/core#"\n'
     hstr += '  xmlns:s3m="http://www.s3model.com/ns/s3m/"\n'
     hstr += '  targetNamespace="http://www.s3model.com/ns/s3m/"\n'
-    hstr += '  vc:minVersion="1.1" xml:lang="en-US">\n\n'
+    hstr += '  xml:lang="en-US">\n\n'
     hstr += '  <xs:include schemaLocation="http://www.s3model.com/ns/s3m/s3model_3_0_0.xsd"/>\n\n'
     return(hstr)
 
@@ -313,8 +313,8 @@ def xdTemporal(data):
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" ref="s3m:ExceptionalValue"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="vtb" type="xs:dateTime"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="vte" type="xs:dateTime"/>\n'
-    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="tr" type="xs:dateTimeStamp"/>\n'
-    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="modified" type="xs:dateTimeStamp"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="tr" type="xs:dateTime"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="modified" type="xs:dateTime"/>\n'
     if data[2].lower() == 'date':
         xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="xdtemporal-date" type="xs:date"/>\n'
     else:
@@ -330,15 +330,12 @@ def xdTemporal(data):
     else:
         xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="0" minOccurs="0" name="xdtemporal-datetime" type="xs:dateTime"/>\n'
 
-    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="0" minOccurs="0" name="xdtemporal-datetime-stamp" type="xs:dateTimeStamp"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="0" minOccurs="0" name="xdtemporal-day" type="xs:gDay"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="0" minOccurs="0" name="xdtemporal-month" type="xs:gMonth"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="0" minOccurs="0" name="xdtemporal-year" type="xs:gYear"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="0" minOccurs="0" name="xdtemporal-year-month" type="xs:gYearMonth"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="0" minOccurs="0" name="xdtemporal-month-day" type="xs:gMonthDay"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="0" minOccurs="0" name="xdtemporal-duration" type="xs:duration"/>\n'
-    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="0" minOccurs="0" name="xdtemporal-ymduration" type="xs:yearMonthDuration"/>\n'
-    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="0" minOccurs="0" name="xdtemporal-dtduration" type="xs:dayTimeDuration"/>\n'
     xdstr += padding.rjust(indent + 6) + '</xs:sequence>\n'
     xdstr += padding.rjust(indent + 4) + '</xs:restriction>\n'
     xdstr += padding.rjust(indent + 2) + '</xs:complexContent>\n'
