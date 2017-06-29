@@ -34,10 +34,10 @@ def xsdHeader():
     hstr += '  xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning"\n'
     hstr += '  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"\n'
     hstr += '  xmlns:skos="http://www.w3.org/2004/02/skos/core#"\n'
-    hstr += '  xmlns:s3m="http://www.s3model.com/ns/s3m/"\n'
-    hstr += '  targetNamespace="http://www.s3model.com/ns/s3m/"\n'
+    hstr += '  xmlns:s3m="https://www.s3model.com/ns/s3m/"\n'
+    hstr += '  targetNamespace="https://www.s3model.com/ns/s3m/"\n'
     hstr += '  xml:lang="en-US">\n\n'
-    hstr += '  <xs:include schemaLocation="http://www.s3model.com/ns/s3m/s3model_3_0_0.xsd"/>\n\n'
+    hstr += '  <xs:include schemaLocation="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd"/>\n\n'
     return(hstr)
 
 def xsdMetadata(md):
@@ -87,8 +87,8 @@ def xdCount(data):
     xdstr += padding.rjust(indent + 4) + '</xs:documentation>\n'
     xdstr += padding.rjust(indent + 4) + '<xs:appinfo>\n'
     xdstr += padding.rjust(indent + 6) + '<rdf:Description rdf:about="mc-' + mcID + '">\n'
-    xdstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="http://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#XdCountType"/>\n'
-    xdstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="http://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#XdCountType"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
     xdstr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + data[10].strip() + '"/>\n'
     xdstr += padding.rjust(indent + 6) + '</rdf:Description>\n'
     xdstr += padding.rjust(indent + 4) + '</xs:appinfo>\n'
@@ -100,8 +100,8 @@ def xdCount(data):
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" ref="s3m:ExceptionalValue"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="vtb" type="xs:dateTime"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="vte" type="xs:dateTime"/>\n'
-    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="tr" type="xs:dateTimeStamp"/>\n'
-    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="modified" type="xs:dateTimeStamp"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="tr" type="xs:dateTime"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="modified" type="xs:dateTime"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="magnitude-status" type="s3m:MagnitudeStatus"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="error"  type="xs:int" default="0"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="accuracy" type="xs:int" default="0"/>\n'
@@ -156,8 +156,8 @@ def xdQuantity(data):
     xdstr += padding.rjust(indent + 4) + '</xs:documentation>\n'
     xdstr += padding.rjust(indent + 4) + '<xs:appinfo>\n'
     xdstr += padding.rjust(indent + 6) + '<rdf:Description rdf:about="mc-' + mcID + '">\n'
-    xdstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="http://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#XdQuantityType"/>\n'
-    xdstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="http://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#XdQuantityType"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
     xdstr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + data[10].strip() + '"/>\n'
     xdstr += padding.rjust(indent + 6) + '</rdf:Description>\n'
     xdstr += padding.rjust(indent + 4) + '</xs:appinfo>\n'
@@ -169,8 +169,8 @@ def xdQuantity(data):
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" ref="s3m:ExceptionalValue"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="vtb" type="xs:dateTime"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="vte" type="xs:dateTime"/>\n'
-    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="tr" type="xs:dateTimeStamp"/>\n'
-    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="modified" type="xs:dateTimeStamp"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="tr" type="xs:dateTime"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="modified" type="xs:dateTime"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="magnitude-status" type="s3m:MagnitudeStatus"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="error"  type="xs:int" default="0"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="accuracy" type="xs:int" default="0"/>\n'
@@ -225,8 +225,8 @@ def xdString(data):
     xdstr += padding.rjust(indent + 4) + '</xs:documentation>\n'
     xdstr += padding.rjust(indent + 4) + '<xs:appinfo>\n'
     xdstr += padding.rjust(indent + 6) + '<rdf:Description rdf:about="mc-' + mcID + '">\n'
-    xdstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="http://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#XdStringType"/>\n'
-    xdstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="http://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#XdStringType"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
     xdstr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + data[10].strip() + '"/>\n'
     xdstr += padding.rjust(indent + 6) + '</rdf:Description>\n'
     xdstr += padding.rjust(indent + 4) + '</xs:appinfo>\n'
@@ -238,8 +238,8 @@ def xdString(data):
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" ref="s3m:ExceptionalValue"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="vtb" type="xs:dateTime"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="vte" type="xs:dateTime"/>\n'
-    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="tr" type="xs:dateTimeStamp"/>\n'
-    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="modified" type="xs:dateTimeStamp"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="tr" type="xs:dateTime"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="modified" type="xs:dateTime"/>\n'
     
     if not data[3] and not data[4] and not data[5] and not data[6] and not data[11]:
         xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdstring-value" type="xs:string"/>\n'
@@ -300,8 +300,8 @@ def xdTemporal(data):
     xdstr += padding.rjust(indent + 4) + '</xs:documentation>\n'
     xdstr += padding.rjust(indent + 4) + '<xs:appinfo>\n'
     xdstr += padding.rjust(indent + 6) + '<rdf:Description rdf:about="mc-' + mcID + '">\n'
-    xdstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="http://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#XdTemporalType"/>\n'
-    xdstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="http://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#XdTemporalType"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
     xdstr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + data[10].strip() + '"/>\n'
     xdstr += padding.rjust(indent + 6) + '</rdf:Description>\n'
     xdstr += padding.rjust(indent + 4) + '</xs:appinfo>\n'
@@ -354,8 +354,8 @@ def Units(mcID, data):
     xdstr += padding.rjust(indent + 4) + '</xs:documentation>\n'
     xdstr += padding.rjust(indent + 4) + '<xs:appinfo>\n'
     xdstr += padding.rjust(indent + 6) + '<rdf:Description rdf:about="mc-' + mcID + '">\n'
-    xdstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="http://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#XdStringType"/>\n'
-    xdstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="http://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#XdStringType"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
     xdstr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + data[10].strip() + '"/>\n'
     xdstr += padding.rjust(indent + 6) + '</rdf:Description>\n'
     xdstr += padding.rjust(indent + 4) + '</xs:appinfo>\n'
@@ -367,8 +367,8 @@ def Units(mcID, data):
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" ref="s3m:ExceptionalValue"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="vtb" type="xs:dateTime"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="vte" type="xs:dateTime"/>\n'
-    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="tr" type="xs:dateTimeStamp"/>\n'
-    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="modified" type="xs:dateTimeStamp"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="tr" type="xs:dateTime"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="modified" type="xs:dateTime"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdstring-value" type="xs:string" fixed="' + data[13].strip() + '"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="xdstring-language" type="xs:language" default="en-US"/>\n'
     xdstr += padding.rjust(indent + 6) + '</xs:sequence>\n'
@@ -391,8 +391,8 @@ def xsdData(dataID, indent, def_url, db_file):
     dstr += padding.rjust(indent + 4) + '</xs:documentation>\n'
     dstr += padding.rjust(indent + 4) + '<xs:appinfo>\n'
     dstr += padding.rjust(indent + 6) + '<rdf:Description rdf:about="mc-' + dataID + '">\n'
-    dstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="http://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#ClusterType"/>\n'
-    dstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="http://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
+    dstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#ClusterType"/>\n'
+    dstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
     dstr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + def_url + '"/>\n'
     dstr += padding.rjust(indent + 6) + '</rdf:Description>\n'
     dstr += padding.rjust(indent + 4) + '</xs:appinfo>\n'
@@ -451,8 +451,8 @@ def xsdEntry(data, db_file):
     estr += padding.rjust(indent + 4) + '</xs:documentation>\n'
     estr += padding.rjust(indent + 4) + '<xs:appinfo>\n'
     estr += padding.rjust(indent + 6) + '<rdf:Description rdf:about="mc-' + data[6].strip()  + '">\n'
-    estr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="http://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#EntryType"/>\n'
-    estr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="http://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
+    estr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#EntryType"/>\n'
+    estr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
     estr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + data[4].strip() + '"/>\n'
     estr += padding.rjust(indent + 6) + '</rdf:Description>\n'
     estr += padding.rjust(indent + 4) + '</xs:appinfo>\n'
@@ -492,8 +492,8 @@ def xsdDM(data):
     dmstr += padding.rjust(indent + 4) + '</xs:documentation>\n'
     dmstr += padding.rjust(indent + 4) + '<xs:appinfo>\n'
     dmstr += padding.rjust(indent + 6) + '<rdf:Description rdf:about="mc-' + data[5].strip() + '">\n'
-    dmstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="http://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#DMType"/>\n'
-    dmstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="http://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
+    dmstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#DMType"/>\n'
+    dmstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
     dmstr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + data[4].strip() + '"/>\n'
     dmstr += padding.rjust(indent + 6) + '</rdf:Description>\n'
     dmstr += padding.rjust(indent + 4) + '</xs:appinfo>\n'
@@ -521,14 +521,14 @@ def xsdRDF(xsdfile, outdir, dm_id, db_file):
             'dct':'http://purl.org/dc/terms/',
             'owl':'http://www.w3.org/2002/07/owl#',
             'vc':'http://www.w3.org/2007/XMLSchema-versioning',
-            's3m':'http://www.s3model.com/ns/s3m/'}
+            's3m':'https://www.s3model.com/ns/s3m/'}
 
     parser = etree.XMLParser(ns_clean=True, recover=True)
     about = etree.XPath("//xs:annotation/xs:appinfo/rdf:Description", namespaces=nsDict)
     md = etree.XPath("//rdf:RDF/rdf:Description", namespaces=nsDict)
     rdf_file = os.open(outdir + '/dm-' + str(dm_id) + '.rdf', os.O_RDWR | os.O_CREAT)
 
-    rdfstr = """<?xml version="1.0" encoding="UTF-8"?>\n<rdf:RDF xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#' \nxmlns:s3m='http://www.s3model.com/ns/s3m/'>\n"""
+    rdfstr = """<?xml version="1.0" encoding="UTF-8"?>\n<rdf:RDF xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#' \nxmlns:s3m='https://www.s3model.com/ns/s3m/'>\n"""
 
     tree = etree.parse(xsdfile, parser)
     root = tree.getroot()
@@ -598,9 +598,9 @@ def makeModel(db_file, outdir):
 
 def xmlHdr(model, schema):
     xstr = '<s3m:dm-' + model[5].strip() + '\n'
-    xstr += 'xmlns:s3m="http://www.s3model.com/ns/s3m/"\n'
+    xstr += 'xmlns:s3m="https://www.s3model.com/ns/s3m/"\n'
     xstr += 'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"\n'
-    xstr += 'xsi:schemaLocation="http://www.s3model.com/ns/s3m/ file:' + schema + '">\n'
+    xstr += 'xsi:schemaLocation="https://www.s3model.com/ns/s3m/ file:' + schema + '">\n'
     xstr += '  <s3m:ms-' + model[6].strip() + '>\n'
     xstr += '    <label>' + model[0].strip() + '</label>\n'
     xstr += '    <entry-language>en-US</entry-language>\n'
@@ -714,7 +714,7 @@ def makeData(schema, dformat, db_file, theFile, delim, outdir):
     base = os.path.basename(theFile)
     filePrefix = os.path.splitext(base)[0]
     messagebox.showinfo('Generation', "Generate data for: " + schema + ' in ' + dformat + ' using ' + base)
-    namespaces = { "http://www.s3model.com/ns/s3m/":"s3m", "http://www.w3.org/2001/XMLSchema-instance":"xsi"}
+    namespaces = { "https://www.s3model.com/ns/s3m/":"s3m", "http://www.w3.org/2001/XMLSchema-instance":"xsi"}
     xmldir = outdir+'/xml/'
     os.makedirs(xmldir, exist_ok=True)
     rdfdir = outdir+'/rdf/'
@@ -738,7 +738,7 @@ def makeData(schema, dformat, db_file, theFile, delim, outdir):
             xmlFile = open(xmldir + file_id + '.xml', 'w')
             rdfFile = open(rdfdir + file_id + '.rdf', 'w')
             xmlStr = '<?xml version="1.0" encoding="UTF-8"?>\n'
-            rdfStr = '<?xml version="1.0" encoding="UTF-8"?>\n<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"\nxmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"\nxmlns:s3m="http://www.s3model.com/ns/s3m/"\nxmlns:xs="http://www.w3.org/2001/XMLSchema">\n'
+            rdfStr = '<?xml version="1.0" encoding="UTF-8"?>\n<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"\nxmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"\nxmlns:s3m="https://www.s3model.com/ns/s3m/"\nxmlns:xs="http://www.w3.org/2001/XMLSchema">\n'
             rdfStr += '<rdf:Description rdf:about="' + file_id + '">\n'
             rdfStr += '  <s3m:isInstanceOf rdf:resource="dm-' + model[5].strip() + '"/>\n'
             rdfStr += '</rdf:Description>\n'

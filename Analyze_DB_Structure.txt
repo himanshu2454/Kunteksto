@@ -1,4 +1,4 @@
-Analyze DB Structure and index numbers for the lists in the code.
+analyze.py -- DB Structure and index numbers for the lists in the code.
 
 model: 
 0 - title = CHAR(250)

@@ -5,30 +5,34 @@ The initial kunteksto.conf file should be okay for most uses and certainly for t
 
 Here we cover the details of the configuration options for those that want to make changes. 
 
-[SQLITEBROWSER]
-path: /usr/bin/sqlitebrowser
+.. sourcecode:: text
 
-[KUNTEKSTO]
+	[SQLITEBROWSER]
+	path: /usr/bin/sqlitebrowser
 
-; analyzeLevel can be either Simple or Full.
-analyzeLevel: Full
+	[KUNTEKSTO]
 
-; set a relative directory for the output selection to open
-outDir: output
+	; analyzeLevel can be either Simple or Full.
+	analyzeLevel: Full
 
-; allowed separator types are one of these:  , ; : | $ 
-sepType: ;
+	; set a relative directory for the output selection to open
+	outDir: output
 
-; allowed values for data format are: XML or JSON
-datafmt: XML
+	; allowed separator types are one of these:  , ; : | $ 
+	sepType: ;
 
-; NOT YET IMPLEMENTED: A default repository where we can write the output in addition to the filesystem.
+	; allowed values for data format are: XML or JSON
+	datafmt: XML
 
-[TINKERGRAPH]
-repository: None
+	; NOT YET IMPLEMENTED: A default repository where we can write the output in addition to the filesystem.
+	; Kunteksto implements a TinkerPop3 approach to communicating with a GraphDB that is *TinkerPop3-enabled*. 
+	; Any RDF store or GraphDB could equally be used. However, we do not supply instructions for other APIs.
 
-[STARDOG]
-repository: None
+	[TINKERGRAPH]
+	repository: None
 
-[BLAZEGRAPH]
-repository: None
+	[STARDOG]
+	repository: None
+
+	[BLAZEGRAPH]
+	repository: None

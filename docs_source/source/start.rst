@@ -24,8 +24,7 @@ Kunteksto includes a demo data file that you can use to create your first model 
 
 Notice that there are a few columns to demonstrate various datatypes as well as one column with mixed types that might look like an interger column at first glance. 
 
-
-This tutorial does not demonstrate all of the functionality of the data translator but it does demonstrate the process. Likewise, Kunteksto itself only provides around 40% of the full capability of S3Models. Other tools provide all of the S3Model capability but are not designed to translate existing data. 
+This tutorial does not demonstrate all of the functionality of the data translator but it does demonstrate the process. Likewise, Kunteksto itself only provides around 60% of the full capability of S3Models. The S3Model tools suite provide all of the S3Model capability but are more complex to use and require formal training from Data Insights, Inc. 
 
 The Kunteksto application window looks like this when first opened.
 
@@ -34,7 +33,6 @@ The Kunteksto application window looks like this when first opened.
     :align: center
     :height: 600px
     :alt: Initial Window
-
 
 The first step is to select your data file and then analyze that data file. Data files must be plain text (often called CSV) files that have each record on a row, seperated by a CR/LF (or CR depending on the operating system) and each field in the record delimited by a separator. 
 
@@ -58,9 +56,9 @@ Tutorial Steps
 
 2. Select the semi-colon separator using the select box (Demo.csv uses a semicolon ';' for the field separator).
 
-3. Select the demo file, **Demo.csv** using the open file dialog.
+3. Select the demo file, **example_data/Demo.csv** using the open file dialog.
 
-4. Kunteksto will create a results database of this CSV file named Demo.db when the Analyze CSV button is clicked. 
+4. Kunteksto will create a results database of this CSV file named example_data/Demo.db when the Analyze CSV button is clicked. 
 
 .. image:: _images/analyze.png
     :width: 800px
@@ -69,7 +67,7 @@ Tutorial Steps
     :alt: Click Analyze CSV
 
 
-5. Open the Demo.db file using the DB Browser for SQLite if it does not automatically open. 
+5. Open the example_data/Demo.db file using the DB Browser for SQLite if it does not automatically open. 
 
 
 6. Select the *Browse Data* tab and the *model* table. Edit the title, description, copyright, author and contributor fields as desired. These fields describe the overall metadata for your data model. Basically it describes the where, when and why the data is being modeled. When you click on a field it place the contents in the larger box on the right side for easier editing.
