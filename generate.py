@@ -710,21 +710,21 @@ def rdfString(row, data):
     return(rstr)
 
 
-def makeData(schema, dformat, db_file, theFile, delim, outdir, connRDF, connXML):
+def makeData(schema, db_file, theFile, delim, outdir, connRDF, connXML, connJSON):
     """
     Create data (XML or JSON) and an RDF graph based on the model.
     """
     base = os.path.basename(theFile)
     filePrefix = os.path.splitext(base)[0]
-    messagebox.showinfo('Generation', "Generate data for: " + schema + ' in ' + dformat + ' using ' + base)
+    
+    messagebox.showinfo('Generation', "Generate data for: " + schema + ' using ' + base)
     namespaces = { "https://www.s3model.com/ns/s3m/":"s3m", "http://www.w3.org/2001/XMLSchema-instance":"xsi"}
     xmldir = outdir+'/xml/'
     os.makedirs(xmldir, exist_ok=True)
     rdfdir = outdir+'/rdf/'
     os.makedirs(rdfdir, exist_ok=True)
-    if dformat == 'JSON':
-        jsondir = outdir+'/json/'
-        os.makedirs(jsondir, exist_ok=True)
+    jsondir = outdir+'/json/'
+    os.makedirs(jsondir, exist_ok=True)
 
     # get info from the sqlite DB
     conn = sqlite3.connect(db_file)
@@ -747,7 +747,7 @@ def makeData(schema, dformat, db_file, theFile, delim, outdir, connRDF, connXML)
             rdfStr += '  <s3m:isInstanceOf rdf:resource="dm-' + model[5].strip() + '"/>\n'
             rdfStr += '</rdf:Description>\n'
 
-            xmlStr += xmlHdr(model, schema)
+            xmlStr += xmlHdr(model, schema)  # create the DM and Entry components. 
 
             for row in rows:
                 if row[2].lower() == 'integer':
@@ -783,12 +783,14 @@ def makeData(schema, dformat, db_file, theFile, delim, outdir, connRDF, connXML)
                 rdfFile = open(rdfdir + file_id + '.rdf', 'w')
                 rdfFile.write(rdfStr)
                 rdfFile.close()
-
-            if dformat == 'JSON':
+                
+            d = xmltodict.parse(xmlStr, xml_attribs = True, process_namespaces = True, namespaces = namespaces)
+            jsonStr = json.dumps(d, indent=4)
+            if connJSON:
+                from bson.json_util import loads                
+                connJSON[filePrefix].insert_one(loads(jsonStr))
+            else:
                 jsonFile = open(jsondir + file_id + '.json', 'w')
-                with open(xmldir + file_id + '.xml', "rb") as f:    # notice the "rb" mode
-                    d = xmltodict.parse(f, xml_attribs = True, process_namespaces = True, namespaces = namespaces)
-                jsonStr = json.dumps(d, indent=4)
                 jsonFile.write(jsonStr)
                 jsonFile.close()
 

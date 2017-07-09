@@ -18,9 +18,7 @@ class Translate(tk.Frame):
     def __init__(self, parent, *args, **kwargs):
         ttk.Frame.__init__(self, parent, *args, **kwargs)
         self.seps = [',',';',':','|','$']
-        self.fmts = ['NONE', 'XML', 'JSON']
         self.sep_type = tk.StringVar()
-        self.datafmt = tk.StringVar()
         self.infile = '(none selected)'
         self.outDB = ''
         self.model = tk.StringVar()
@@ -55,12 +53,19 @@ class Translate(tk.Frame):
 
         self.exisdbStatus = config['EXISTDB']['status']
 
+        # get the JSON DB parameters.
+        self.mongoStatus = config['MONGODB']['status']
+        self.mongoHost = config['MONGODB']['host']
+        self.mongoPort = config['MONGODB']['port']
+        self.mongoDBName = config['MONGODB']['dbname']
+        self.mongoUser = config['MONGODB']['user']
+        self.mongoPW = config['MONGODB']['pw']
 
+        self.couchStatus = config['COUCHDB']['status']
 
         self.analyzeLevel.set(config['KUNTEKSTO']['analyzeLevel'])
         self.outdir = config['KUNTEKSTO']['outDir']
         self.sep_type.set(config['KUNTEKSTO']['sepType'])
-        self.datafmt.set(config['KUNTEKSTO']['datafmt'])
         self.init_gui()
 
     def init_gui(self):
@@ -74,9 +79,6 @@ class Translate(tk.Frame):
 
         ttk.Button(self, text="Select Input CSV", command=self.opencsv).grid(row=2, column=0, padx=5, pady=5, sticky=tk.W)
         ttk.Label(self, text=self.infile).grid(row=2, column=10, padx=5, pady=5, sticky=tk.W)
-
-        ttk.Label(self, text="Output format: ").grid(row=3, column=0, padx=5, pady=5, sticky=tk.W)
-        ttk.Combobox(self, values=('XML', 'JSON'), textvariable=self.datafmt, justify="center", width=4, state='readonly').grid(row=3, column=10, padx=5, pady=5, sticky=tk.W)
 
         ttk.Button(self, text="Select Output Directory", command=self.outputsel).grid(row=4, column=0, padx=5, pady=5, sticky=tk.W)
 
@@ -161,10 +163,18 @@ class Translate(tk.Frame):
         else:
             connXML = None
             
+        # open a connection to the JSON DB if one is defined. 
+        if self.mongoStatus == "ACTIVE":
+            from pymongo import MongoClient
+            client = MongoClient(self.mongoHost, int(self.mongoPort))  # default MongoDB has no authentication requirements.
+            connJSON = client[self.mongoDBName]
+        else:
+            connJSON = None
+            
             
         # generate the data
         if self.model.get() and not self.outdir == '(none selected)':
-            makeData(self.model.get(), self.datafmt.get(), self.outDB, self.infile, self.sep_type.get(), self.outdir, connRDF, connXML)
+            makeData(self.model.get(), self.outDB, self.infile, self.sep_type.get(), self.outdir, connRDF, connXML, connJSON)
             
             if connRDF:
                 connRDF.close()
