@@ -17,6 +17,9 @@ import shortuuid
 import iso8601
 from tkinter import messagebox
 
+#RDF storage imports 
+from franz.openrdf.rio.rdfformat import RDFFormat
+
 def xsdHeader():
     """
     Build the header string for the XSD
@@ -707,7 +710,7 @@ def rdfString(row, data):
     return(rstr)
 
 
-def makeData(schema, dformat, db_file, theFile, delim, outdir):
+def makeData(schema, dformat, db_file, theFile, delim, outdir, connRDF, connXML):
     """
     Create data (XML or JSON) and an RDF graph based on the model.
     """
@@ -723,6 +726,7 @@ def makeData(schema, dformat, db_file, theFile, delim, outdir):
         jsondir = outdir+'/json/'
         os.makedirs(jsondir, exist_ok=True)
 
+    # get info from the sqlite DB
     conn = sqlite3.connect(db_file)
     c = conn.cursor()
     c.execute("SELECT * FROM model")
@@ -731,12 +735,12 @@ def makeData(schema, dformat, db_file, theFile, delim, outdir):
     rows = c.fetchall()
     conn.close()
 
+    # open a connection to the RDF Store if defined.
+    
     with open(theFile) as csvfile:
         reader = csv.DictReader(csvfile, delimiter=delim)
         for data in reader:
             file_id = filePrefix + '-' + shortuuid.uuid()
-            xmlFile = open(xmldir + file_id + '.xml', 'w')
-            rdfFile = open(rdfdir + file_id + '.rdf', 'w')
             xmlStr = '<?xml version="1.0" encoding="UTF-8"?>\n'
             rdfStr = '<?xml version="1.0" encoding="UTF-8"?>\n<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"\nxmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"\nxmlns:s3m="https://www.s3model.com/ns/s3m/"\nxmlns:xs="http://www.w3.org/2001/XMLSchema">\n'
             rdfStr += '<rdf:Description rdf:about="' + file_id + '">\n'
@@ -765,10 +769,20 @@ def makeData(schema, dformat, db_file, theFile, delim, outdir):
             xmlStr += '  </s3m:ms-' + model[6].strip() + '>\n'
             xmlStr += '</s3m:dm-' + model[5].strip() + '>\n'
             rdfStr += '</rdf:RDF>\n'
-            xmlFile.write(xmlStr)
-            xmlFile.close()
-            rdfFile.write(rdfStr)
-            rdfFile.close()
+            
+            if connXML:
+                connXML.add(file_id + '.xml', xmlStr)
+            else:
+                xmlFile = open(xmldir + file_id + '.xml', 'w')
+                xmlFile.write(xmlStr)
+                xmlFile.close()
+            
+            if connRDF:
+                connRDF.addData(rdfStr, rdf_format=RDFFormat.RDFXML, base_uri=None, context=None)
+            else:
+                rdfFile = open(rdfdir + file_id + '.rdf', 'w')
+                rdfFile.write(rdfStr)
+                rdfFile.close()
 
             if dformat == 'JSON':
                 jsonFile = open(jsondir + file_id + '.json', 'w')

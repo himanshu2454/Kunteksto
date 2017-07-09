@@ -5,9 +5,9 @@ Introduction and Installation
 Purpose
 =======
 
-**Kunteksto** [#f1]_ is a tool for helping data creators and data users to translate their simple CSV formatted data files into the semantically enhanced format of a S3M Data Model. This provides a path for data to be used in conjuntion with other S3Model data in analysis and decision support systems. It also enables expanded semantics so that secondary users can better determine if the data is appropriate for their needs. The S3Model approach opens the door for the change to a data-centric world as opposed to the current application-centric one we have now. This new world will allow automatic interoperability without data cleaning and massaging. 
+**Kunteksto** [#f1]_ is a tool for helping data creators and data users to translate their simple CSV formatted data files into the semantically enhanced format of a S3M Data Model. This provides a path for data to be used in conjuntion with other S3Model data in analysis and decision support systems. It also enables expanded semantics so that secondary users can better determine if the data is appropriate for their needs. The S3Model approach opens the door for the change to a data-centric world as opposed to the current application-centric one we have now. This new world will allow automatic interoperability without the need for data cleaning and massaging. 
 
-The importance of this capability is discussed in other `S3Model <https://datainsights.tech/S3Model>`_ documentation and references. 
+The importance of this capability and improved data quality is discussed in other `S3Model <https://datainsights.tech/S3Model>`_ documentation and references. 
 
 
 Requirements
@@ -16,7 +16,7 @@ Requirements
 - Python 3.5 or later.
 - Installation of SQLiteBrowser. See: http://sqlitebrowser.org/ 
 - The requirements.txt file contains the Python requirements and can be installed (see below) using the *pip* command.
-- A copy of the S3Model RM schema s3model_3_0_0.xsd 
+- A copy of the S3Model Reference Model schema s3model_3_0_0.xsd 
 
 
 .. _install:
@@ -55,7 +55,7 @@ Linux
 
 	#. Using your favorite text editor, open tradukisto.conf (Edit the path for the SQLiteBrowser executable if it is different on your system. For now you can leave the other options as defaults. Save & exit.)
 	
-	#. $ python Kunteksto.py
+	#. $ python kunteksto.py
 
 	Go to the :ref:`tutor` 
 
@@ -74,5 +74,5 @@ Mac OSX
 
 .. rubric:: Footnotes
 
-.. [#f1] S3Model is called the Esperanto of information management. Kunteksto is the Esperanto translation for *Context*. See: https://simple.wikipedia.org/wiki/Esperanto 
+.. [#f1] S3Model is called the Esperanto of information management. Kunteksto is the Esperanto translation for *Context*. See: https://simple.wikipedia.org/wiki/Esperanto for more information about the Esperanto language.
 

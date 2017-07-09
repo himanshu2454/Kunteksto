@@ -18,7 +18,7 @@ class Translate(tk.Frame):
     def __init__(self, parent, *args, **kwargs):
         ttk.Frame.__init__(self, parent, *args, **kwargs)
         self.seps = [',',';',':','|','$']
-        self.fmts = ['XML', 'JSON']
+        self.fmts = ['NONE', 'XML', 'JSON']
         self.sep_type = tk.StringVar()
         self.datafmt = tk.StringVar()
         self.infile = '(none selected)'
@@ -31,12 +31,36 @@ class Translate(tk.Frame):
         config = configparser.ConfigParser()
         config.read('kunteksto.conf')
         self.sqlbrow = config['SQLITEBROWSER']['path']
+        # get the RDF Store parameters.
+        self.agraphStatus = config['ALLEGROGRAPH']['status']
+        self.agraphHost = config['ALLEGROGRAPH']['host']
+        self.agraphPort = config['ALLEGROGRAPH']['port']
+        self.agraphRepo = config['ALLEGROGRAPH']['repo']
+        self.agraphUser = config['ALLEGROGRAPH']['user']
+        self.agraphPW = config['ALLEGROGRAPH']['pw']
         
+        self.stardogStatus = config['STARDOG']['status']
+
+        self.blazegraphStatus = config['BLAZEGRAPH']['status']
+
+        self.graphdbStatus = config['GRAPHDB']['status']
+
+        # get the XML DB parameters.
+        self.basexStatus = config['BASEX']['status']
+        self.basexHost = config['BASEX']['host']
+        self.basexPort = config['BASEX']['port']
+        self.basexDBName = config['BASEX']['dbname']
+        self.basexUser = config['BASEX']['user']
+        self.basexPW = config['BASEX']['pw']
+
+        self.exisdbStatus = config['EXISTDB']['status']
+
+
+
         self.analyzeLevel.set(config['KUNTEKSTO']['analyzeLevel'])
         self.outdir = config['KUNTEKSTO']['outDir']
         self.sep_type.set(config['KUNTEKSTO']['sepType'])
         self.datafmt.set(config['KUNTEKSTO']['datafmt'])
-
         self.init_gui()
 
     def init_gui(self):
@@ -121,16 +145,40 @@ class Translate(tk.Frame):
         return
 
     def datagen(self):
+        # open a connection to the RDF store if one is defined. 
+        if self.agraphStatus == "ACTIVE":
+            from franz.openrdf.connect import ag_connect
+            connRDF = ag_connect(self.agraphRepo, host=self.agraphHost, port=self.agraphPort,  user=self.agraphUser, password=self.agraphPW)
+            print(connRDF.size())
+        else:
+            connRDF = None
+
+        # open a connection to the XML DB if one is defined. 
+        if self.basexStatus == "ACTIVE":
+            import BaseXClient
+            connXML = BaseXClient.Session(self.basexHost, int(self.basexPort), self.basexUser, self.basexPW)
+            connXML.execute("create db " + self.basexDBName)
+        else:
+            connXML = None
+            
+            
         # generate the data
         if self.model.get() and not self.outdir == '(none selected)':
-            makeData(self.model.get(), self.datafmt.get(), self.outDB, self.infile, self.sep_type.get(), self.outdir)
+            makeData(self.model.get(), self.datafmt.get(), self.outDB, self.infile, self.sep_type.get(), self.outdir, connRDF, connXML)
+            
+            if connRDF:
+                connRDF.close()
+            if connXML:
+                connXML.close()
+                
+                
         else:
             messagebox.showerror('Procedure Error','Missing model or no selected output directory.')
 
         return
 
 if __name__ == '__main__':
-    print('\nRunning Kunteksto ...\n\n')
+    print('\n Kunteksto is running ...\n\n')
     root = tk.Tk()
     root.geometry("600x400")
     Translate(parent=root)

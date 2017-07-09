@@ -67,7 +67,7 @@ Tutorial Steps
     :alt: Click Analyze CSV
 
 
-5. Open the example_data/Demo.db file using the DB Browser for SQLite if it does not automatically open. 
+5. Open the output/Demo.db file using the DB Browser for SQLite if it does not automatically open. 
 
 
 6. Select the *Browse Data* tab and the *model* table. Edit the title, description, copyright, author and contributor fields as desired. These fields describe the overall metadata for your data model. Basically it describes the where, when and why the data is being modeled. When you click on a field it place the contents in the larger box on the right side for easier editing.

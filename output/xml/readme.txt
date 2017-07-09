@@ -1,1 +1,0 @@
-By default, this is where the output XML files will be stored after generation.  

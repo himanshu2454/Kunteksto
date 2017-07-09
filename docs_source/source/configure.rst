@@ -3,7 +3,7 @@ Configuration
 
 The initial kunteksto.conf file should be okay for most uses and certainly for the demo/tutorials. 
 
-Here we cover the details of the configuration options for those that want to make changes. 
+Here we cover the details of the configuration options for those that want to make changes that are more advanced than what is in the simple GUI. 
 
 .. sourcecode:: text
 
@@ -24,15 +24,29 @@ Here we cover the details of the configuration options for those that want to ma
 	; allowed values for data format are: XML or JSON
 	datafmt: XML
 
-	; NOT YET IMPLEMENTED: A default repository where we can write the output in addition to the filesystem.
-	; Kunteksto implements a TinkerPop3 approach to communicating with a GraphDB that is *TinkerPop3-enabled*. 
-	; Any RDF store or GraphDB could equally be used. However, we do not supply instructions for other APIs.
+	; NOT YET IMPLEMENTED: A default repository where we can write the output in place of writing to the filesystem.
+	; The configuration will check each of these repositories and select the first one that is active. 
+	; They will be checked in this order: STARDOG, BLAZEGRAPH, GRAPHDB and ALLEGROGRAPH. 
+	; Do not delete the section headers of unused DBs. 
+	; To use a DB, set the status: to 'ACTIVE'. Then complete the required information for the ACTIVE DB. 
 
-	[TINKERGRAPH]
-	repository: None
 
 	[STARDOG]
-	repository: None
+	status: INACTIVE
+
+
 
 	[BLAZEGRAPH]
-	repository: None
+	status: INACTIVE
+
+
+
+	[GRAPHDB]
+	status: INACTIVE
+
+
+
+	[ALLEGROGRAPH]
+	status: INACTIVE
+
+
