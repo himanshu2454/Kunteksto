@@ -24,6 +24,10 @@ class Translate(tk.Frame):
         self.model = tk.StringVar()
         self.parent = parent
         self.analyzeLevel = tk.StringVar()  
+        self.genXML = tk.StringVar()  
+        self.genRDF = tk.StringVar()  
+        self.genJSON = tk.StringVar()  
+
 
         # Setup config info
         config = configparser.ConfigParser()
@@ -63,9 +67,15 @@ class Translate(tk.Frame):
 
         self.couchStatus = config['COUCHDB']['status']
 
+        self.genXML.set(config['KUNTEKSTO']['xml'])
+        self.genRDF.set(config['KUNTEKSTO']['rdf'])
+        self.genJSON.set(config['KUNTEKSTO']['json'])
+        
         self.analyzeLevel.set(config['KUNTEKSTO']['analyzeLevel'])
         self.outdir = config['KUNTEKSTO']['outDir']
         self.sep_type.set(config['KUNTEKSTO']['sepType'])
+        
+        # load the UI
         self.init_gui()
 
     def init_gui(self):
@@ -74,11 +84,11 @@ class Translate(tk.Frame):
 
         ttk.Label(self, text="Kunteksto by Data Insights, Inc.").grid(row=0, column=0, padx=5, pady=5)
 
-        ttk.Label(self, text="CSV separator: ").grid(row=1, column=0, padx=5, pady=5, sticky=tk.W)
-        ttk.Combobox(self, values=self.seps, textvariable=self.sep_type, justify="center", width=1, state='readonly').grid(row=1, column=10, padx=5, pady=5, sticky=tk.W)
+        ttk.Button(self, text="Select Input CSV", command=self.opencsv).grid(row=1, column=0, padx=5, pady=5, sticky=tk.W)
+        ttk.Label(self, text=self.infile).grid(row=1, column=10, padx=5, pady=5, sticky=tk.W)
 
-        ttk.Button(self, text="Select Input CSV", command=self.opencsv).grid(row=2, column=0, padx=5, pady=5, sticky=tk.W)
-        ttk.Label(self, text=self.infile).grid(row=2, column=10, padx=5, pady=5, sticky=tk.W)
+        ttk.Label(self, text="CSV separator: ").grid(row=3, column=0, padx=5, pady=5, sticky=tk.W)
+        ttk.Combobox(self, values=self.seps, textvariable=self.sep_type, justify="center", width=1, state='readonly').grid(row=3, column=10, padx=5, pady=5, sticky=tk.W)
 
         ttk.Button(self, text="Select Output Directory", command=self.outputsel).grid(row=4, column=0, padx=5, pady=5, sticky=tk.W)
 
@@ -94,10 +104,15 @@ class Translate(tk.Frame):
         ttk.Button(self, text="Generate Model", command=self.modelgen).grid(row=9, column=0, padx=5, pady=5, sticky=tk.W)
         ttk.Button(self, text="Re-Edit Database", command=self.editdb).grid(row=9, column=10, padx=5, pady=5, sticky=tk.W)
         ttk.Label(self, textvariable=self.model).grid(row=10, column=0, padx=5, pady=5, sticky=tk.W)
+        
+        ttk.Label(self, text="Select data format(s) to generate:").grid(row=12, column=0, padx=5, pady=5)
+        ttk.Checkbutton(self, text='XML', variable=self.genXML, onvalue='True', offvalue='False').grid(row=13, column=0, padx=5, pady=5, sticky=tk.W)
+        ttk.Checkbutton(self, text='RDF', variable=self.genRDF, onvalue='True', offvalue='False').grid(row=13, column=10, padx=5, pady=5, sticky=tk.W)
+        ttk.Checkbutton(self, text='JSON', variable=self.genJSON, onvalue='True', offvalue='False').grid(row=13, column=20, padx=5, pady=5, sticky=tk.W)
 
-        ttk.Button(self, text="Generate Data", command=self.datagen).grid(row=11, column=0, padx=5, pady=5, sticky=tk.W)
+        ttk.Button(self, text="Generate Data", command=self.datagen).grid(row=14, column=0, padx=5, pady=5, sticky=tk.W)
 
-        ttk.Button(self, text="Quit", command=self.on_quit).grid(row=12, column=0, padx=5, pady=5, sticky=tk.W)
+        ttk.Button(self, text="Quit", command=self.on_quit).grid(row=15, column=0, padx=5, pady=5, sticky=tk.W)
 
 
     def on_quit(self):
@@ -148,26 +163,43 @@ class Translate(tk.Frame):
 
     def datagen(self):
         # open a connection to the RDF store if one is defined. 
-        if self.agraphStatus == "ACTIVE":
-            from franz.openrdf.connect import ag_connect
-            connRDF = ag_connect(self.agraphRepo, host=self.agraphHost, port=self.agraphPort,  user=self.agraphUser, password=self.agraphPW)
-            print(connRDF.size())
+        if self.genRDF:
+            if self.agraphStatus == "ACTIVE":
+                try:
+                    from franz.openrdf.connect import ag_connect
+                    connRDF = ag_connect(self.agraphRepo, host=self.agraphHost, port=self.agraphPort,  user=self.agraphUser, password=self.agraphPW)
+                except:
+                    connRDF = None
+                    messagebox.showerror('RDF Connection Error','Could not create connection to Allegrograph.')
+                    
         else:
             connRDF = None
 
         # open a connection to the XML DB if one is defined. 
-        if self.basexStatus == "ACTIVE":
-            import BaseXClient
-            connXML = BaseXClient.Session(self.basexHost, int(self.basexPort), self.basexUser, self.basexPW)
-            connXML.execute("create db " + self.basexDBName)
+        if self.genXML:
+            if self.basexStatus == "ACTIVE":
+                try:
+                    import BaseXClient
+                    connXML = BaseXClient.Session(self.basexHost, int(self.basexPort), self.basexUser, self.basexPW)
+                    connXML.execute("create db " + self.basexDBName)
+                except:
+                    connXML = None
+                    messagebox.showerror('XML Connection Error','Could not create connection to BaseX.')
+                    
         else:
             connXML = None
             
         # open a connection to the JSON DB if one is defined. 
-        if self.mongoStatus == "ACTIVE":
-            from pymongo import MongoClient
-            client = MongoClient(self.mongoHost, int(self.mongoPort))  # default MongoDB has no authentication requirements.
-            connJSON = client[self.mongoDBName]
+        if self.genJSON:
+            if self.mongoStatus == "ACTIVE":
+                try:
+                    from pymongo import MongoClient
+                    client = MongoClient(self.mongoHost, int(self.mongoPort))  # default MongoDB has no authentication requirements.
+                    connJSON = client[self.mongoDBName]
+                except:
+                    connJSON = None
+                    messagebox.showerror('JSON Connection Error','Could not create connection to MongoDB.')
+                    
         else:
             connJSON = None
             
@@ -179,17 +211,18 @@ class Translate(tk.Frame):
             if connRDF:
                 connRDF.close()
             if connXML:
-                connXML.close()
-                
+                connXML.close()                
+            messagebox.showinfo('Data Generation','Completed.')
                 
         else:
-            messagebox.showerror('Procedure Error','Missing model or no selected output directory.')
+            messagebox.showerror('Procedure Error','Missing model DB or no selected output directory.')
 
         return
 
 if __name__ == '__main__':
     print('\n Kunteksto is running ...\n\n')
     root = tk.Tk()
-    root.geometry("600x400")
+    root.geometry("600x480")
+    root.configure()
     Translate(parent=root)
     root.mainloop()
