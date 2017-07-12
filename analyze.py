@@ -1,6 +1,8 @@
 """
 analyze.py
 
+This is the database layout. See the documentation for details on each field.
+
 model table: 
 0 - title = CHAR(250)
 1 - description = TEXT
@@ -23,11 +25,12 @@ record table:
  8 - max_val = FLOAT
  9 - vals_Inclusive = BOOL
 10 - definition_url = CHAR(500)
-11 - def_txt_value = TEXT
-12 - def_num_value = FLOAT
-13 - units = CHAR(50)
-14 - mcid = CHAR(40)
-15 - adid = CHAR(40)
+11 - pred_obj_list = TEXT
+12 - def_txt_value = TEXT
+13 - def_num_value = FLOAT
+14 - units = CHAR(50)
+15 - mcid = CHAR(40)
+16 - adid = CHAR(40)
 
 """
 import sys
@@ -57,17 +60,19 @@ def analyze(csvInput, delim, level, pbar, out_dir):
     dbName = fname[:fname.index('.')] + '.db'
     db_file = out_dir + os.path.sep + dbName
     
+    # if this database already exists then delete it
     try:
         os.remove(db_file)
     except OSError:
         pass
 
-    # create the base database
+    # create the database with the two tables.
     conn = sqlite3.connect(db_file)
     c = conn.cursor()
     c.execute("""CREATE TABLE "model" ("title" CHAR(250), "description" TEXT, "copyright" CHAR(250), "author" CHAR(250), "definition_url" CHAR(500), "dmid" CHAR(40), "entryid" CHAR(40), "dataid" CHAR(40))""")
-    c.execute("""CREATE TABLE "record"  (header  char(100), label char(250), datatype char(10), min_len int, max_len int, "choices" TEXT, "regex" CHAR(250), "min_val" FLOAT, "max_val" FLOAT, "vals_Inclusive" BOOL, "definition_url" CHAR(500), "def_txt_value" TEXT, "def_num_value" FLOAT, "units" CHAR(50), "mcid" CHAR(40), "adid" CHAR(40))""")
+    c.execute("""CREATE TABLE "record"  (header  char(100), label char(250), datatype char(10), min_len int, max_len int, "choices" TEXT, "regex" CHAR(250), "min_val" FLOAT, "max_val" FLOAT, "vals_Inclusive" BOOL, "definition_url" CHAR(500), "pred_obj_list" TEXT, "def_txt_value" TEXT, "def_num_value" FLOAT, "units" CHAR(50), "mcid" CHAR(40), "adid" CHAR(40))""")
 
+    # create the initial data for the record table.
     data = []
     with open(csvInput) as csvfile:
         reader = csv.DictReader(csvfile, delimiter=delim)
@@ -75,16 +80,18 @@ def analyze(csvInput, delim, level, pbar, out_dir):
             mcID = str(uuid4())  # model component
             adID = str(uuid4())   # adapter
             label = 'The ' + h.replace('_', ' ')
-            data.append((h,label,'String',None,None,'','',None,None,True,'','',None,'', mcID, adID))
+            data.append((h, label, 'String', None, None, '', '', None, None, True, '', '', '', None, '', mcID, adID))
 
     c = conn.cursor()
-    c.executemany("INSERT INTO record VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", data)
+    c.executemany("INSERT INTO record VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", data)
     conn.commit()
+    
+    # create the initail data for the model table
     dmID = str(uuid4())   # data model
     entryID = str(uuid4())   # entry
     dataID = str(uuid4())   # data cluster
 
-    data =[ ('S3M Data Model','S3M Data Model for ' + csvInput,'Copyright 2017, Data Insights, Inc.','Data Insights, Inc.', 'http://www.some_url.com', dmID, entryID, dataID)]
+    data =[ ('S3M Data Model','S3M Data Model for ' + csvInput, 'Copyright 2017, Data Insights, Inc.', 'Data Insights, Inc.', 'http://www.some_url.com', dmID, entryID, dataID)]
     c.executemany("insert into model values (?,?,?,?,?,?,?,?)", data)
     conn.commit()
     conn.close()

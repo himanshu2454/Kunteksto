@@ -106,22 +106,23 @@ Field descriptions:
 
 Field descriptions:
 
-	- *header* is the column names from the data file. **Do Not Edit**.
-	- *label* is a copy of the header text and should be edited as needed to provide a meaningful name for the column.
-	- *datatype* the analyzer attempts to guess the correct datatype for the column. You must enter the correct type; string, integer, float or date. 
-	- *min_len* enter the minimum length restriction if there is one.
-	- *max_len* enter the maximum length restriction if there is one.
-	- *choices* for string datatypes you may enter a set of choices to restrict the valid values. Separate each choice with a pipe '|' character. 
-	- *regex* for string datatypes you may enter a regular expression (XML Schema syntax) to constrain the valid string values.
-	- *min_val* enter the minimum value restriction for integer or float columns.
-	- *max_val* enter the maximum value restriction for integer or float columns.
-	- *vals_inclusive* are the minimum and maximum values inclusive in the valid values range. Enter a '1' for yes or a '0' for no.
-	- *definition_url* enter a URL (or at least a URI) to a vocabulary or ontology or a webpage that describes or defines the meaning of the data in this column. 
-	- *def_txt_value* enter the default value for a string datatype column, if there is one.
-	- *def_num_value* enter the default value for a float or integer datatype column, if there is one.
-	- *units* enter the units value for a float or integer datatype column. This can be an abbreviation but should come from a standard units vocabulary such as https://github.com/HajoRijgersberg/OM or http://unitsofmeasure.org/trac For integer columns where the values are *counts* you should enter the name of the item(s) being counted. This could be the same as the lable or column header if desired.
-	- *mcid* System Generated, **Do Not Edit**
-	- *adid* System Generated, **Do Not Edit**  
+    - *header* is the column names from the data file. **Do Not Edit**.
+    - *label* is a copy of the header text and should be edited as needed to provide a meaningful name for the column.
+    - *datatype* the analyzer attempts to guess the correct datatype for the column. You must enter the correct type; string, integer, float or date. 
+    - *min_len* enter the minimum length restriction if there is one.
+    - *max_len* enter the maximum length restriction if there is one.
+    - *choices* for string datatypes you may enter a set of choices to restrict the valid values. Separate each choice with a pipe '|' character.
+    - *regex* for string datatypes you may enter a regular expression (XML Schema syntax) to constrain the valid string values.
+    - *min_val* enter the minimum value restriction for integer or float columns.
+    - *max_val* enter the maximum value restriction for integer or float columns.	
+    - *vals_inclusive* are the minimum and maximum values inclusive in the valid values range. Enter a '1' for yes or a '0' for no.
+    - *definition_url* enter a URL (or at least a URI) to a vocabulary or ontology or a webpage that describes or defines the meaning of the data in this column.
+    - *pred_obj_list* enter any additional predicate object pairs to be used to define this resource. Enter them one per line with the predicate and object separated by a space character. You may use namespace abbreviations if they are in the list below. Otherwise you must include the full URI in order to create valid models.
+    - *def_txt_value* enter the default value for a string datatype column, if there is one.
+    - *def_num_value* enter the default value for a float or integer datatype column, if there is one.
+    - *units* enter the units value for a float or integer datatype column. This can be an abbreviation but should come from a standard units vocabulary such as https://github.com/HajoRijgersberg/OM or http://unitsofmeasure.org/trac For integer columns where the values are *counts* you should enter the name of the item(s) being counted. This could be the same as the lable or column header if desired.
+    - *mcid* System Generated, **Do Not Edit**
+    - *adid* System Generated, **Do Not Edit**  
 
 8. Once you have completed the data description step and closed the DB Browser, click the Generate Model button. You will find an XML Schema model file and an RDF file in the output directory. These are the structural and semantic models that can be used in your analysis as well as shared with others to better describe the data.
 
@@ -132,6 +133,27 @@ Field descriptions:
     :alt: Output Directory
 
 9. Now click the Generate Data button and Kunteksto will create data instances for each record in the CSV file that are semantically compliant with the RDF and will be valid according to the XML Schema. Demonstrating that the models describe the data. 
+
+
+
+.. rubric:: Footnotes
+
+.. [#f1] Namespace abbreviaions list:
+
+    - 'xs':'http://www.w3.org/2001/XMLSchema',
+    - 'xsi':'http://www.w3.org/2001/XMLSchema-instance',
+    - 'xsd':'http://www.w3.org/2001/XMLSchema#',
+    - 'dc':'http://purl.org/dc/elements/1.1/',
+    - 'skos':'http://www.w3.org/2004/02/skos/core#',
+    - 'foaf':'http://xmlns.com/foaf/0.1/',
+    - 'sioc':'http://rdfs.org/sioc/ns#',
+    - 'rdf':'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
+    - 'rdfs':'http://www.w3.org/2000/01/rdf-schema#',
+    - 'dct':'http://purl.org/dc/terms/',
+    - 'owl':'http://www.w3.org/2002/07/owl#',
+    - 'vc':'http://www.w3.org/2007/XMLSchema-versioning',
+    - 's3m':'https://www.s3model.com/ns/s3m/'
+
 
 
 

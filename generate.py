@@ -1,5 +1,7 @@
 """
 generate.py
+
+For the data index numbers see the list of fields in analyze.py 
 """
 import sys
 import os
@@ -27,16 +29,18 @@ def xsdHeader():
     hstr = '<?xml version="1.0" encoding="UTF-8"?>\n'
     hstr += '<?xml-stylesheet type="text/xsl" href="dm-description.xsl"?>\n'
     hstr += '<xs:schema\n'
+    hstr += '  xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning"\n'
+    hstr += '  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"\n'
     hstr += '  xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"\n'
     hstr += '  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"\n'
     hstr += '  xmlns:owl="http://www.w3.org/2002/07/owl#"\n'
     hstr += '  xmlns:xs="http://www.w3.org/2001/XMLSchema"\n'
+    hstr += '  xmlns:xsd="http://www.w3.org/2001/XMLSchema#"\n'
     hstr += '  xmlns:dc="http://purl.org/dc/elements/1.1/"\n'
-    hstr += '  xmlns:sawsdlrdf="http://www.w3.org/ns/sawsdl#"\n'
-    hstr += '  xmlns:sch="http://purl.oclc.org/dsdl/schematron"\n'
-    hstr += '  xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning"\n'
-    hstr += '  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"\n'
+    hstr += '  xmlns:dct="http://purl.org/dc/terms/"\n'    
     hstr += '  xmlns:skos="http://www.w3.org/2004/02/skos/core#"\n'
+    hstr += '  xmlns:foaf="http://xmlns.com/foaf/0.1/"\n'
+    hstr += '  xmlns:sioc="http://rdfs.org/sioc/ns#"\n'
     hstr += '  xmlns:s3m="https://www.s3model.com/ns/s3m/"\n'
     hstr += '  targetNamespace="https://www.s3model.com/ns/s3m/"\n'
     hstr += '  xml:lang="en-US">\n\n'
@@ -65,8 +69,8 @@ def xsdMetadata(md):
 
 
 def xdCount(data):
-    adapterID = data[15].strip()
-    mcID = data[14].strip()
+    adapterID = data[16].strip()
+    mcID = data[15].strip()
     unitsID = str(uuid4())
     indent = 2
     padding = ('').rjust(indent)
@@ -93,6 +97,9 @@ def xdCount(data):
     xdstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#XdCountType"/>\n'
     xdstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
     xdstr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + data[10].strip() + '"/>\n'
+    if data[11]:  # are there additional predicate-object definitions?
+        for po in data[11]:
+            xdstr += padding.rjust(indent + 8) + '<' + data[11].strip() + '"/>\n'
     xdstr += padding.rjust(indent + 6) + '</rdf:Description>\n'
     xdstr += padding.rjust(indent + 4) + '</xs:appinfo>\n'
     xdstr += padding.rjust(indent + 2) + '</xs:annotation>\n'
@@ -108,10 +115,10 @@ def xdCount(data):
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="magnitude-status" type="s3m:MagnitudeStatus"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="error"  type="xs:int" default="0"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="accuracy" type="xs:int" default="0"/>\n'
-    if not data[7] and not data[8] and not data[12]:
+    if not data[7] and not data[8] and not data[13]:
         xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdcount-value" type="xs:int"/>\n'
-    if data[12]:
-        xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdcount-value" type="xs:int" default="' + str(int(data[12])) + '"/>\n'
+    if data[13]:
+        xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdcount-value" type="xs:int" default="' + str(int(data[14])) + '"/>\n'
     else:
         xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdcount-value">\n'
         xdstr += padding.rjust(indent + 10) + '<xs:simpleType>\n'
@@ -134,8 +141,8 @@ def xdCount(data):
     return(xdstr)
 
 def xdQuantity(data):
-    adapterID = data[15].strip()
-    mcID = data[14].strip()
+    adapterID = data[16].strip()
+    mcID = data[15].strip()
     unitsID = str(uuid4())
     indent = 2
     padding = ('').rjust(indent)
@@ -162,6 +169,9 @@ def xdQuantity(data):
     xdstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#XdQuantityType"/>\n'
     xdstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
     xdstr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + data[10].strip() + '"/>\n'
+    if data[11]:  # are there additional predicate-object definitions?
+        for po in data[11]:
+            xdstr += padding.rjust(indent + 8) + '<' + data[11].strip() + '"/>\n'
     xdstr += padding.rjust(indent + 6) + '</rdf:Description>\n'
     xdstr += padding.rjust(indent + 4) + '</xs:appinfo>\n'
     xdstr += padding.rjust(indent + 2) + '</xs:annotation>\n'
@@ -177,10 +187,10 @@ def xdQuantity(data):
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="magnitude-status" type="s3m:MagnitudeStatus"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="error"  type="xs:int" default="0"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="accuracy" type="xs:int" default="0"/>\n'
-    if not data[7] and not data[8] and not data[12]:
+    if not data[7] and not data[8] and not data[13]:
         xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdquantity-value" type="xs:decimal"/>\n'
-    if data[12]:
-        xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdquantity-value" type="xs:decimal" default="' + str(data[12]) + '"/>\n'
+    if data[13]:
+        xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdquantity-value" type="xs:decimal" default="' + str(data[14]) + '"/>\n'
     else:
         xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdquantity-value">\n'
         xdstr += padding.rjust(indent + 10) + '<xs:simpleType>\n'
@@ -204,8 +214,8 @@ def xdQuantity(data):
 
 
 def xdString(data):
-    adapterID = data[15].strip()
-    mcID = data[14].strip()
+    adapterID = data[16].strip()
+    mcID = data[15].strip()
     indent = 2
     padding = ('').rjust(indent)
     # Adapter
@@ -231,6 +241,9 @@ def xdString(data):
     xdstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#XdStringType"/>\n'
     xdstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
     xdstr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + data[10].strip() + '"/>\n'
+    if data[11]:  # are there additional predicate-object definitions?
+        for po in data[11]:
+            xdstr += padding.rjust(indent + 8) + '<' + data[11].strip() + '"/>\n'
     xdstr += padding.rjust(indent + 6) + '</rdf:Description>\n'
     xdstr += padding.rjust(indent + 4) + '</xs:appinfo>\n'
     xdstr += padding.rjust(indent + 2) + '</xs:annotation>\n'
@@ -244,11 +257,11 @@ def xdString(data):
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="tr" type="xs:dateTime"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="modified" type="xs:dateTime"/>\n'
     
-    if not data[3] and not data[4] and not data[5] and not data[6] and not data[11]:
+    if not data[3] and not data[4] and not data[5] and not data[6] and not data[12]:
         xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdstring-value" type="xs:string"/>\n'
         
-    elif data[11] and not data[3] and not data[4] and not data[5] and not data[6]:
-        xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdstring-value" type="xs:string" default="' + data[11].strip() + '"/>\n'
+    elif data[12] and not data[3] and not data[4] and not data[5] and not data[6]:
+        xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdstring-value" type="xs:string" default="' + data[12].strip() + '"/>\n'
     
     else:
         xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdstring-value">\n'
@@ -279,8 +292,8 @@ def xdString(data):
 
 
 def xdTemporal(data):
-    adapterID = data[15].strip()
-    mcID = data[14].strip()
+    adapterID = data[16].strip()
+    mcID = data[15].strip()
     indent = 2
     padding = ('').rjust(indent)
     # Adapter
@@ -306,6 +319,9 @@ def xdTemporal(data):
     xdstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#XdTemporalType"/>\n'
     xdstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
     xdstr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + data[10].strip() + '"/>\n'
+    if data[11]:  # are there additional predicate-object definitions?
+        for po in data[11]:
+            xdstr += padding.rjust(indent + 8) + '<' + data[11].strip() + '"/>\n'
     xdstr += padding.rjust(indent + 6) + '</rdf:Description>\n'
     xdstr += padding.rjust(indent + 4) + '</xs:appinfo>\n'
     xdstr += padding.rjust(indent + 2) + '</xs:annotation>\n'
@@ -360,6 +376,9 @@ def Units(mcID, data):
     xdstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#XdStringType"/>\n'
     xdstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
     xdstr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + data[10].strip() + '"/>\n'
+    if data[11]:  # are there additional predicate-object definitions?
+        for po in data[11]:
+            xdstr += padding.rjust(indent + 8) + '<' + data[11].strip() + '"/>\n'
     xdstr += padding.rjust(indent + 6) + '</rdf:Description>\n'
     xdstr += padding.rjust(indent + 4) + '</xs:appinfo>\n'
     xdstr += padding.rjust(indent + 2) + '</xs:annotation>\n'
@@ -372,7 +391,7 @@ def Units(mcID, data):
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="vte" type="xs:dateTime"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="tr" type="xs:dateTime"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="modified" type="xs:dateTime"/>\n'
-    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdstring-value" type="xs:string" fixed="' + data[13].strip() + '"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdstring-value" type="xs:string" fixed="' + data[12].strip() + '"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="xdstring-language" type="xs:language" default="en-US"/>\n'
     xdstr += padding.rjust(indent + 6) + '</xs:sequence>\n'
     xdstr += padding.rjust(indent + 4) + '</xs:restriction>\n'
@@ -416,13 +435,13 @@ def xsdData(dataID, indent, def_url, db_file):
 
     for row in rows:
         if row[2].lower() == 'integer':
-            mcDict[row[15].strip()] = xdCount(row)
+            mcDict[row[16].strip()] = xdCount(row)
         elif row[2].lower() == 'float':
-            mcDict[row[15].strip()] = xdQuantity(row)
+            mcDict[row[16].strip()] = xdQuantity(row)
         elif row[2].lower() in ('date', 'datetime', 'time'):
-            mcDict[row[15].strip()] = xdTemporal(row)
+            mcDict[row[16].strip()] = xdTemporal(row)
         elif row[2].lower() == 'string':
-            mcDict[row[15].strip()] = xdString(row)
+            mcDict[row[16].strip()] = xdString(row)
         else:
             raise ValueError("Invalid datatype")
 
@@ -514,11 +533,17 @@ def xsdDM(data):
 
 def xsdRDF(xsdfile, outdir, dm_id, db_file):
     """
-        Generate the RDF from the semantics embeded in the XSD.
+        Generate the RDF from the semantics embedded in the XSD.
         """
 
     rootdir = '.'
     nsDict={'xs':'http://www.w3.org/2001/XMLSchema',
+            'xsi':'http://www.w3.org/2001/XMLSchema-instance',
+            'xsd':'http://www.w3.org/2001/XMLSchema#',
+            'dc':'http://purl.org/dc/elements/1.1/',
+            'skos':'http://www.w3.org/2004/02/skos/core#',
+            'foaf':'http://xmlns.com/foaf/0.1/',
+            'sioc':'http://rdfs.org/sioc/ns#',
             'rdf':'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
             'rdfs':'http://www.w3.org/2000/01/rdf-schema#',
             'dct':'http://purl.org/dc/terms/',
@@ -613,8 +638,8 @@ def xmlHdr(model, schema):
     return(xstr)
 
 def xmlCount(row, data):
-    xstr = '      <s3m:ms-' + row[15].strip() + '>\n'
-    xstr += '      <s3m:ms-' + row[14].strip() + '>\n'
+    xstr = '      <s3m:ms-' + row[16].strip() + '>\n'
+    xstr += '      <s3m:ms-' + row[15].strip() + '>\n'
     xstr += '        <label>' + row[1].strip() + '</label>\n'
     xstr += '        <magnitude-status>equal</magnitude-status>\n'
     xstr += '        <error>0</error>\n'
@@ -622,16 +647,16 @@ def xmlCount(row, data):
     xstr += '        <xdcount-value>' + data[row[0].strip()] + '</xdcount-value>\n'
     xstr += '        <xdcount-units>\n'
     xstr += '          <label>' + row[1].strip() + ' Units</label>\n'
-    xstr += '          <xdstring-value>' + row[13].strip() + '</xdstring-value>\n'
+    xstr += '          <xdstring-value>' + row[14].strip() + '</xdstring-value>\n'
     xstr += '          <xdstring-language>en-US</xdstring-language>\n'
     xstr += '        </xdcount-units>\n'
-    xstr += '      </s3m:ms-' + row[14].strip() + '>\n'
     xstr += '      </s3m:ms-' + row[15].strip() + '>\n'
+    xstr += '      </s3m:ms-' + row[16].strip() + '>\n'
     return(xstr)
 
 
 def rdfCount(row, data):
-    rstr = '      <rdf:Description rdf:about="s3m:ms-' + row[14].strip() + '">\n'
+    rstr = '      <rdf:Description rdf:about="s3m:ms-' + row[15].strip() + '">\n'
     rstr += '        <rdfs:label>' + row[1].strip() + '</rdfs:label>\n'
     rstr += '        <rdfs:value rdf:datatype="xs:int">' + data[row[0].strip()] + '</rdfs:value>\n'
     rstr += '      </rdf:Description>\n'
@@ -639,8 +664,8 @@ def rdfCount(row, data):
 
 
 def xmlQuantity(row, data):
-    xstr = '      <s3m:ms-' + row[15].strip() + '>\n'
-    xstr += '      <s3m:ms-' + row[14].strip() + '>\n'
+    xstr = '      <s3m:ms-' + row[16].strip() + '>\n'
+    xstr += '      <s3m:ms-' + row[15].strip() + '>\n'
     xstr += '        <label>' + row[1].strip() + '</label>\n'
     xstr += '        <magnitude-status>equal</magnitude-status>\n'
     xstr += '        <error>0</error>\n'
@@ -648,16 +673,16 @@ def xmlQuantity(row, data):
     xstr += '        <xdquantity-value>' + data[row[0].strip()] + '</xdquantity-value>\n'
     xstr += '        <xdquantity-units>\n'
     xstr += '          <label>' + row[1].strip() + ' Units</label>\n'
-    xstr += '          <xdstring-value>' + row[13].strip() + '</xdstring-value>\n'
+    xstr += '          <xdstring-value>' + row[14].strip() + '</xdstring-value>\n'
     xstr += '          <xdstring-language>en-US</xdstring-language>\n'
     xstr += '        </xdquantity-units>\n'
-    xstr += '      </s3m:ms-' + row[14].strip() + '>\n'
     xstr += '      </s3m:ms-' + row[15].strip() + '>\n'
+    xstr += '      </s3m:ms-' + row[16].strip() + '>\n'
     return(xstr)
 
 
 def rdfQuantity(row, data):
-    rstr = '      <rdf:Description rdf:about="s3m:ms-' + row[14].strip() + '">\n'
+    rstr = '      <rdf:Description rdf:about="s3m:ms-' + row[15].strip() + '">\n'
     rstr += '        <rdfs:label>' + row[1].strip() + '</rdfs:label>\n'
     rstr += '        <rdfs:value rdf:datatype="xs:decimal">' + data[row[0].strip()] + '</rdfs:value>\n'
     rstr += '      </rdf:Description>\n'
@@ -665,8 +690,8 @@ def rdfQuantity(row, data):
 
 
 def xmlTemporal(row, data):
-    xstr = '      <s3m:ms-' + row[15].strip() + '>\n'
-    xstr += '      <s3m:ms-' + row[14].strip() + '>\n'
+    xstr = '      <s3m:ms-' + row[16].strip() + '>\n'
+    xstr += '      <s3m:ms-' + row[15].strip() + '>\n'
     xstr += '        <label>' + row[1].strip() + '</label>\n'
     if row[2].lower() == 'date':
         xstr += '        <xdtemporal-date>' + data[row[0].strip()] + '</xdtemporal-date>\n'
@@ -674,13 +699,13 @@ def xmlTemporal(row, data):
         xstr += '        <xdtemporal-time>' + data[row[0].strip()] + '</xdtemporal-time>\n'
     if row[2].lower() == 'datetime':
         xstr += '        <xdtemporal-datetime>' + data[row[0].strip()] + '</xdtemporal-datetime>\n'
-    xstr += '      </s3m:ms-' + row[14].strip() + '>\n'
     xstr += '      </s3m:ms-' + row[15].strip() + '>\n'
+    xstr += '      </s3m:ms-' + row[16].strip() + '>\n'
     return(xstr)
 
 
 def rdfTemporal(row, data):
-    rstr = '      <rdf:Description rdf:about="s3m:ms-' + row[14].strip() + '">\n'
+    rstr = '      <rdf:Description rdf:about="s3m:ms-' + row[15].strip() + '">\n'
     rstr += '        <rdfs:label>' + row[1].strip() + '</rdfs:label>\n'
     if row[2].lower() == 'date':
         rstr += '        <rdfs:value rdf:datatype="xs:date">' + data[row[0].strip()] + '</rdfs:value>\n'
@@ -693,17 +718,17 @@ def rdfTemporal(row, data):
 
 
 def xmlString(row, data):
-    xstr = '      <s3m:ms-' + row[15].strip() + '>\n'
-    xstr += '      <s3m:ms-' + row[14].strip() + '>\n'
+    xstr = '      <s3m:ms-' + row[16].strip() + '>\n'
+    xstr += '      <s3m:ms-' + row[15].strip() + '>\n'
     xstr += '        <label>' + row[1].strip() + '</label>\n'
     xstr += '        <xdstring-value>' + data[row[0].strip()] + '</xdstring-value>\n'
     xstr += '        <xdstring-language>en-US</xdstring-language>\n'
-    xstr += '      </s3m:ms-' + row[14].strip() + '>\n'
     xstr += '      </s3m:ms-' + row[15].strip() + '>\n'
+    xstr += '      </s3m:ms-' + row[16].strip() + '>\n'
     return(xstr)
 
 def rdfString(row, data):
-    rstr = '      <rdf:Description rdf:about="s3m:ms-' + row[14].strip() + '">\n'
+    rstr = '      <rdf:Description rdf:about="s3m:ms-' + row[15].strip() + '">\n'
     rstr += '        <rdfs:label>' + row[1].strip() + '</rdfs:label>\n'
     rstr += '        <rdfs:value rdf:datatype="xs:string">' + data[row[0].strip()] + '</rdfs:value>\n'
     rstr += '      </rdf:Description>\n'

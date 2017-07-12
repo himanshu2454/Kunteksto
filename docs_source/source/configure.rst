@@ -3,50 +3,90 @@ Configuration
 
 The initial kunteksto.conf file should be okay for most uses and certainly for the demo/tutorials. 
 
-Here we cover the details of the configuration options for those that want to make changes that are more advanced than what is in the simple GUI. 
+Here we cover the details of the configuration options for those that want to make changes that are more advanced than what is in the GUI. 
 
 .. sourcecode:: text
+
+	; kunteksto.conf is the configuration file required by Kunteksto. 
 
 	[SQLITEBROWSER]
 	path: /usr/bin/sqlitebrowser
 
 	[KUNTEKSTO]
-
 	; analyzeLevel can be either Simple or Full.
 	analyzeLevel: Full
 
-	; set a relative directory for the output selection to open
+	; set a relative directory for the generated DB, models and data.
 	outDir: output
 
-	; allowed separator types are one of these:  , ; : | $ 
+	; allowed separator types are one of these:  , ; : | $ The default one is defined here.
 	sepType: ;
 
-	; allowed values for data format are: XML or JSON
-	datafmt: XML
+	; Default data formats to create. Values are True or False.
+	; These can be changed in the UI before generating data. 
+	xml: True
+	rdf: True
+	json: True
 
-	; NOT YET IMPLEMENTED: A default repository where we can write the output in place of writing to the filesystem.
-	; The configuration will check each of these repositories and select the first one that is active. 
-	; They will be checked in this order: STARDOG, BLAZEGRAPH, GRAPHDB and ALLEGROGRAPH. 
-	; Do not delete the section headers of unused DBs. 
-	; To use a DB, set the status: to 'ACTIVE'. Then complete the required information for the ACTIVE DB. 
+	; Below are where repository setups are defined for each of the three types of data generation.
+	; If a type is to be generated but no repository is defined for the type. Then the data will be generated 
+	; and written to the filesystem in a subdirectory of the output directory.  
 
 
-	[STARDOG]
+	; A default repository where we can write the output XML instead of to the filesystem.
+	; The config will only process the first one with an ACTIVE status. 
+
+	[BASEX]
+	status: INACTIVE
+	host: localhost
+	port: 1984
+	dbname: S3M_test
+	user: admin
+	pw: admin
+
+	[EXISTDB]
+	; Not Yet Implemented
 	status: INACTIVE
 
 
-
-	[BLAZEGRAPH]
-	status: INACTIVE
-
-
-
-	[GRAPHDB]
-	status: INACTIVE
-
-
+	; A default repository where we can write the output RDF instead of to the filesystem.
+	; The config will only process the first one with an ACTIVE status. 
+	 
 
 	[ALLEGROGRAPH]
 	status: INACTIVE
+	host: localhost
+	port: 10035
+	repo: S3M_test
+	user: admin
+	pw: admin
 
+	[STARDOG]
+	; Not Yet Implemented
+	status: INACTIVE
+
+	[BLAZEGRAPH]
+	; Not Yet Implemented
+	status: INACTIVE
+
+	[GRAPHDB]
+	; Not Yet Implemented
+	status: INACTIVE
+
+
+	; A default repository where we can write the output JSON instead of to the filesystem.
+	; The config will only process the first one with an ACTIVE status. 
+
+	[MONGODB]
+	status: INACTIVE
+	host: localhost
+	port: 27017
+	dbname: S3M_test
+	; default MongoDB has no authentication requirements.
+	user: admin
+	pw: admin
+
+	[COUCHDB]
+	; Not Yet Implemented
+	status: INACTIVE
 

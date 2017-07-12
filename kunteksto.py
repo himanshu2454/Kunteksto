@@ -172,8 +172,8 @@ class Translate(tk.Frame):
                     connRDF = None
                     messagebox.showerror('RDF Connection Error','Could not create connection to Allegrograph.')
                     
-        else:
-            connRDF = None
+            else:
+                connRDF = None
 
         # open a connection to the XML DB if one is defined. 
         if self.genXML:
@@ -186,8 +186,8 @@ class Translate(tk.Frame):
                     connXML = None
                     messagebox.showerror('XML Connection Error','Could not create connection to BaseX.')
                     
-        else:
-            connXML = None
+            else:
+                connXML = None
             
         # open a connection to the JSON DB if one is defined. 
         if self.genJSON:
@@ -200,8 +200,8 @@ class Translate(tk.Frame):
                     connJSON = None
                     messagebox.showerror('JSON Connection Error','Could not create connection to MongoDB.')
                     
-        else:
-            connJSON = None
+            else:
+                connJSON = None
             
             
         # generate the data
