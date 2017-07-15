@@ -150,7 +150,8 @@ class Translate(tk.Frame):
         # generate the model
         if self.outDB and not self.outdir == '(none selected)':
             modelName = makeModel(self.outDB, self.outdir)
-            self.model.set(modelName)
+            if modelName:
+                self.model.set(modelName)
         else:
             messagebox.showerror('Procedure Error','Missing DB file or no selected output directory.')
 
@@ -220,6 +221,7 @@ class Translate(tk.Frame):
         return
 
 if __name__ == '__main__':
+    os.environ['XML_CATALOG_FILES'] = 'Kunteksto_catalog.xml'
     print('\n Kunteksto is running ...\n\n')
     root = tk.Tk()
     root.geometry("600x480")

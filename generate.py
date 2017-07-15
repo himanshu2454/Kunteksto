@@ -22,10 +22,12 @@ from tkinter import messagebox
 #RDF storage imports 
 from franz.openrdf.rio.rdfformat import RDFFormat
 
+
 def xsdHeader():
     """
     Build the header string for the XSD
     """
+    hstr = ''
     hstr = '<?xml version="1.0" encoding="UTF-8"?>\n'
     hstr += '<?xml-stylesheet type="text/xsl" href="dm-description.xsl"?>\n'
     hstr += '<xs:schema\n'
@@ -98,8 +100,8 @@ def xdCount(data):
     xdstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
     xdstr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + data[10].strip() + '"/>\n'
     if data[11]:  # are there additional predicate-object definitions?
-        for po in data[11]:
-            xdstr += padding.rjust(indent + 8) + '<' + data[11].strip() + '"/>\n'
+        for po in data[11].splitlines():
+            xdstr += padding.rjust(indent + 8) + '<' + po.strip() + '/>\n'
     xdstr += padding.rjust(indent + 6) + '</rdf:Description>\n'
     xdstr += padding.rjust(indent + 4) + '</xs:appinfo>\n'
     xdstr += padding.rjust(indent + 2) + '</xs:annotation>\n'
@@ -170,8 +172,8 @@ def xdQuantity(data):
     xdstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
     xdstr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + data[10].strip() + '"/>\n'
     if data[11]:  # are there additional predicate-object definitions?
-        for po in data[11]:
-            xdstr += padding.rjust(indent + 8) + '<' + data[11].strip() + '"/>\n'
+        for po in data[11].splitlines():
+            xdstr += padding.rjust(indent + 8) + '<' + po.strip() + '/>\n'
     xdstr += padding.rjust(indent + 6) + '</rdf:Description>\n'
     xdstr += padding.rjust(indent + 4) + '</xs:appinfo>\n'
     xdstr += padding.rjust(indent + 2) + '</xs:annotation>\n'
@@ -242,8 +244,8 @@ def xdString(data):
     xdstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
     xdstr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + data[10].strip() + '"/>\n'
     if data[11]:  # are there additional predicate-object definitions?
-        for po in data[11]:
-            xdstr += padding.rjust(indent + 8) + '<' + data[11].strip() + '"/>\n'
+        for po in data[11].splitlines():
+            xdstr += padding.rjust(indent + 8) + '<' + po.strip() + '/>\n'
     xdstr += padding.rjust(indent + 6) + '</rdf:Description>\n'
     xdstr += padding.rjust(indent + 4) + '</xs:appinfo>\n'
     xdstr += padding.rjust(indent + 2) + '</xs:annotation>\n'
@@ -320,8 +322,8 @@ def xdTemporal(data):
     xdstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
     xdstr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + data[10].strip() + '"/>\n'
     if data[11]:  # are there additional predicate-object definitions?
-        for po in data[11]:
-            xdstr += padding.rjust(indent + 8) + '<' + data[11].strip() + '"/>\n'
+        for po in data[11].splitlines():
+            xdstr += padding.rjust(indent + 8) + '<' + po.strip() + '/>\n'
     xdstr += padding.rjust(indent + 6) + '</rdf:Description>\n'
     xdstr += padding.rjust(indent + 4) + '</xs:appinfo>\n'
     xdstr += padding.rjust(indent + 2) + '</xs:annotation>\n'
@@ -377,8 +379,8 @@ def Units(mcID, data):
     xdstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
     xdstr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + data[10].strip() + '"/>\n'
     if data[11]:  # are there additional predicate-object definitions?
-        for po in data[11]:
-            xdstr += padding.rjust(indent + 8) + '<' + data[11].strip() + '"/>\n'
+        for po in data[11].splitlines():
+            xdstr += padding.rjust(indent + 8) + '<' + po.strip() + '/>\n'
     xdstr += padding.rjust(indent + 6) + '</rdf:Description>\n'
     xdstr += padding.rjust(indent + 4) + '</xs:appinfo>\n'
     xdstr += padding.rjust(indent + 2) + '</xs:annotation>\n'
@@ -589,7 +591,7 @@ def xsdRDF(xsdfile, outdir, dm_id, db_file):
 
 def makeModel(db_file, outdir):
     """
-    Create an S3M data model schema based on the database.
+    Create an S3M data model schema based on the database information.
     """
 
     conn = sqlite3.connect(db_file)
@@ -616,19 +618,25 @@ def makeModel(db_file, outdir):
 
 
     xsd_str += '\n</xs:schema>\n'
+         
     # write the xsd file
     xsd.write(xsd_str)
     xsd.close()
+    try:
+        xmlschema_doc = etree.parse(model)
+    except: 
+        messagebox.showerror('Model Error', "There was an error in generating the schema. Please re-edit the database and look for errors. Probably undefined namespaces or improperly formatted predicate-object pair.")
+        return None
 
     xsdRDF(model, outdir, dmID, db_file)
     
     return model
 
-def xmlHdr(model, schema):
+def xmlHdr(model, schema, schemaFile):
     xstr = '<s3m:dm-' + model[5].strip() + '\n'
     xstr += 'xmlns:s3m="https://www.s3model.com/ns/s3m/"\n'
     xstr += 'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"\n'
-    xstr += 'xsi:schemaLocation="https://www.s3model.com/ns/s3m/ file:' + schema + '">\n'
+    xstr += 'xsi:schemaLocation="https://www.s3model.com/ns/s3m/ https://dmgen.s3model.com/dmlib/' + schemaFile + '">\n'
     xstr += '  <s3m:ms-' + model[6].strip() + '>\n'
     xstr += '    <label>' + model[0].strip() + '</label>\n'
     xstr += '    <entry-language>en-US</entry-language>\n'
@@ -737,12 +745,20 @@ def rdfString(row, data):
 
 def makeData(schema, db_file, theFile, delim, outdir, connRDF, connXML, connJSON):
     """
-    Create data (XML or JSON) and an RDF graph based on the model.
+    Create XML and JSON data files and an RDF graph based on the model.
     """
+
+    #  print(os.environ.get('XML_CATALOG_FILES'))
+    
+    schema_doc = etree.parse(schema)
+    
+    modelSchema = etree.XMLSchema(schema_doc)
+    
     base = os.path.basename(theFile)
     filePrefix = os.path.splitext(base)[0]
+    schemaFile = os.path.basename(schema)
     
-    messagebox.showinfo('Generation', "Generate data for: " + schema + ' using ' + base)
+    messagebox.showinfo('Generation', "Generate data for: " + schemaFile + ' using ' + base)
     namespaces = { "https://www.s3model.com/ns/s3m/":"s3m", "http://www.w3.org/2001/XMLSchema-instance":"xsi"}
     xmldir = outdir+'/xml/'
     os.makedirs(xmldir, exist_ok=True)
@@ -772,7 +788,7 @@ def makeData(schema, db_file, theFile, delim, outdir, connRDF, connXML, connJSON
             rdfStr += '  <s3m:isInstanceOf rdf:resource="dm-' + model[5].strip() + '"/>\n'
             rdfStr += '</rdf:Description>\n'
 
-            xmlStr += xmlHdr(model, schema)  # create the DM and Entry components. 
+            xmlStr += xmlHdr(model, schema, schemaFile)  # create the DM and Entry components. 
 
             for row in rows:
                 if row[2].lower() == 'integer':
@@ -794,6 +810,14 @@ def makeData(schema, db_file, theFile, delim, outdir, connRDF, connXML, connJSON
             xmlStr += '  </s3m:ms-' + model[6].strip() + '>\n'
             xmlStr += '</s3m:dm-' + model[5].strip() + '>\n'
             rdfStr += '</rdf:RDF>\n'
+            
+            # validate the XML data file
+            try:                                              
+                doc = etree.parse(xmlStr)
+                modelSchema.assertValid(doc)                                                 
+            except:                                     
+                file_id += "_INVALID_"
+                print("VALIDATION FAILED: " + xmldir + file_id + '.xml')
             
             if connXML:
                 connXML.add(file_id + '.xml', xmlStr)
