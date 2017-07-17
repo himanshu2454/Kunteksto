@@ -5,6 +5,7 @@ __pycache__/
 
 # C extensions
 *.so
+
 # Kunteksto 
 *.db
 output/*.xml
@@ -13,6 +14,9 @@ output/*.xsd
 output/xml
 output/rdf
 
+misc/
+
+.cache/
 
 # Sphinx
 docs_source/build/*

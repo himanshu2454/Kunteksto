@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#' 
+xmlns:s3m='https://www.s3model.com/ns/s3m/'>
+    <rdf:Description xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dct="http://purl.org/dc/terms/" xmlns:skos="http://www.w3.org/2004/02/skos/core#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:sioc="http://rdfs.org/sioc/ns#" xmlns:s3m="https://www.s3model.com/ns/s3m/" rdf:about="62342745-710d-4db3-b6cb-63b57eb2326b">
+    <dc:title>S3M Data Model</dc:title>
+    <dc:creator>Data Insights, Inc.</dc:creator>
+    <dc:contributor/>
+    <dc:subject>S3M</dc:subject>
+    <dc:rights>Copyright 2017, Data Insights, Inc.</dc:rights>
+    <dc:relation>None</dc:relation>
+    <dc:coverage>Global</dc:coverage>
+    <dc:type>S3M Data Model</dc:type>
+    <dc:identifier>62342745-710d-4db3-b6cb-63b57eb2326b</dc:identifier>
+    <dc:description>S3M Data Model for /home/tim/DII/Kunteksto/example_data/Demo.csv</dc:description>
+    <dc:publisher>Data Insights, Inc. via Kunteksto</dc:publisher>
+    <dc:date>2017-07-14T05:40:19</dc:date>
+    <dc:format>text/xml</dc:format>
+    <dc:language>en-US</dc:language>
+  </rdf:Description>
+    <rdf:Description xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dct="http://purl.org/dc/terms/" xmlns:skos="http://www.w3.org/2004/02/skos/core#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:sioc="http://rdfs.org/sioc/ns#" xmlns:s3m="https://www.s3model.com/ns/s3m/" rdf:about="mc-62342745-710d-4db3-b6cb-63b57eb2326b">
+          <rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#DMType"/>
+          <rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>
+          <rdfs:isDefinedBy rdf:resource="http://www.some_url.com"/>
+        </rdf:Description>
+      
+    <rdf:Description xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dct="http://purl.org/dc/terms/" xmlns:skos="http://www.w3.org/2004/02/skos/core#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:sioc="http://rdfs.org/sioc/ns#" xmlns:s3m="https://www.s3model.com/ns/s3m/" rdf:about="mc-eec0c2ea-32f4-4a9a-9390-86453da82cc9">
+          <rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#EntryType"/>
+          <rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>
+          <rdfs:isDefinedBy rdf:resource="http://www.some_url.com"/>
+        </rdf:Description>
+      
+    <rdf:Description xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dct="http://purl.org/dc/terms/" xmlns:skos="http://www.w3.org/2004/02/skos/core#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:sioc="http://rdfs.org/sioc/ns#" xmlns:s3m="https://www.s3model.com/ns/s3m/" rdf:about="mc-16ab36a3-fb3a-43fb-80c1-39f55f1c041e">
+            <rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#ClusterType"/>
+            <rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>
+            <rdfs:isDefinedBy rdf:resource="http://www.some_url.com"/>
+          </rdf:Description>
+        
+    <rdf:Description xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dct="http://purl.org/dc/terms/" xmlns:skos="http://www.w3.org/2004/02/skos/core#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:sioc="http://rdfs.org/sioc/ns#" xmlns:s3m="https://www.s3model.com/ns/s3m/" rdf:about="mc-cf0e6a34-cbf2-4377-b8d9-db9b434cc781">
+          <rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#XdCountType"/>
+          <rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>
+          <rdfs:isDefinedBy rdf:resource=""/>
+        </rdf:Description>
+      
+    <rdf:Description xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dct="http://purl.org/dc/terms/" xmlns:skos="http://www.w3.org/2004/02/skos/core#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:sioc="http://rdfs.org/sioc/ns#" xmlns:s3m="https://www.s3model.com/ns/s3m/" rdf:about="mc-0ad57901-7a8c-4e96-93ba-9f2ee49bd6f7">
+          <rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#XdStringType"/>
+          <rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>
+          <rdfs:isDefinedBy rdf:resource=""/>
+        </rdf:Description>
+      
+    <rdf:Description xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dct="http://purl.org/dc/terms/" xmlns:skos="http://www.w3.org/2004/02/skos/core#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:sioc="http://rdfs.org/sioc/ns#" xmlns:s3m="https://www.s3model.com/ns/s3m/" rdf:about="mc-ac770a63-d019-4cb7-a2c4-88ba8504462f">
+          <rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#XdStringType"/>
+          <rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>
+          <rdfs:isDefinedBy rdf:resource=""/>
+        </rdf:Description>
+      
+    <rdf:Description xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dct="http://purl.org/dc/terms/" xmlns:skos="http://www.w3.org/2004/02/skos/core#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:sioc="http://rdfs.org/sioc/ns#" xmlns:s3m="https://www.s3model.com/ns/s3m/" rdf:about="mc-cb0c9fca-4f91-4929-a7e2-1903908e7fb1">
+          <rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#XdCountType"/>
+          <rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>
+          <rdfs:isDefinedBy rdf:resource=""/>
+        </rdf:Description>
+      
+    <rdf:Description xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dct="http://purl.org/dc/terms/" xmlns:skos="http://www.w3.org/2004/02/skos/core#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:sioc="http://rdfs.org/sioc/ns#" xmlns:s3m="https://www.s3model.com/ns/s3m/" rdf:about="mc-0a0dc8c7-9568-44f2-bb4b-3e8b5aebaf88">
+          <rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#XdStringType"/>
+          <rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>
+          <rdfs:isDefinedBy rdf:resource=""/>
+        </rdf:Description>
+      
+    <rdf:Description xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dct="http://purl.org/dc/terms/" xmlns:skos="http://www.w3.org/2004/02/skos/core#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:sioc="http://rdfs.org/sioc/ns#" xmlns:s3m="https://www.s3model.com/ns/s3m/" rdf:about="mc-815c275c-bfc1-43bb-817b-35c9705ee971">
+          <rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#XdStringType"/>
+          <rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>
+          <rdfs:isDefinedBy rdf:resource=""/>
+        </rdf:Description>
+      
+    <rdf:Description xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dct="http://purl.org/dc/terms/" xmlns:skos="http://www.w3.org/2004/02/skos/core#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:sioc="http://rdfs.org/sioc/ns#" xmlns:s3m="https://www.s3model.com/ns/s3m/" rdf:about="mc-21406c04-7fcb-464e-97fa-ae97e4413516">
+          <rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#XdQuantityType"/>
+          <rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>
+          <rdfs:isDefinedBy rdf:resource=""/>
+        </rdf:Description>
+      
+    <rdf:Description xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dct="http://purl.org/dc/terms/" xmlns:skos="http://www.w3.org/2004/02/skos/core#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:sioc="http://rdfs.org/sioc/ns#" xmlns:s3m="https://www.s3model.com/ns/s3m/" rdf:about="mc-5e220fdb-4604-4620-8611-a9451ca09429">
+          <rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#XdStringType"/>
+          <rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>
+          <rdfs:isDefinedBy rdf:resource=""/>
+        </rdf:Description>
+      
+    <rdf:Description xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dct="http://purl.org/dc/terms/" xmlns:skos="http://www.w3.org/2004/02/skos/core#" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:sioc="http://rdfs.org/sioc/ns#" xmlns:s3m="https://www.s3model.com/ns/s3m/" rdf:about="mc-96b136a5-92e3-411f-91e4-c0f387c8d625">
+          <rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#XdTemporalType"/>
+          <rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>
+          <rdfs:isDefinedBy rdf:resource=""/>
+        </rdf:Description>
+      
+<rdf:Description rdf:about="s3m:ms-">
+  <s3m:isRMSOf rdf:resource="s3m:mc-"/>
+</rdf:Description>
+<rdf:Description rdf:about="s3m:ms-">
+  <s3m:isRMSOf rdf:resource="s3m:mc-"/>
+</rdf:Description>
+<rdf:Description rdf:about="s3m:ms-">
+  <s3m:isRMSOf rdf:resource="s3m:mc-"/>
+</rdf:Description>
+<rdf:Description rdf:about="s3m:ms-">
+  <s3m:isRMSOf rdf:resource="s3m:mc-"/>
+</rdf:Description>
+<rdf:Description rdf:about="s3m:ms-">
+  <s3m:isRMSOf rdf:resource="s3m:mc-"/>
+</rdf:Description>
+<rdf:Description rdf:about="s3m:ms-">
+  <s3m:isRMSOf rdf:resource="s3m:mc-"/>
+</rdf:Description>
+</rdf:RDF>

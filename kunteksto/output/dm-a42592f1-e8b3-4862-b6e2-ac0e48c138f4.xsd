@@ -1,0 +1,489 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="dm-description.xsl"?>
+<xs:schema
+  xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  xmlns:owl="http://www.w3.org/2002/07/owl#"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+  xmlns:dc="http://purl.org/dc/elements/1.1/"
+  xmlns:dct="http://purl.org/dc/terms/"
+  xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+  xmlns:foaf="http://xmlns.com/foaf/0.1/"
+  xmlns:sioc="http://rdfs.org/sioc/ns#"
+  xmlns:s3m="https://www.s3model.com/ns/s3m/"
+  targetNamespace="https://www.s3model.com/ns/s3m/"
+  xml:lang="en-US">
+
+  <xs:include schemaLocation="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd"/>
+
+<!-- Metadata -->
+  <xs:annotation><xs:appinfo><rdf:RDF><rdf:Description
+    rdf:about="a42592f1-e8b3-4862-b6e2-ac0e48c138f4">
+    <dc:title>S3M Data Model</dc:title>
+    <dc:creator>Data Insights, Inc.</dc:creator>
+    <dc:contributor></dc:contributor>
+    <dc:subject>S3M</dc:subject>
+    <dc:rights>Copyright 2017, Data Insights, Inc.</dc:rights>
+    <dc:relation>None</dc:relation>
+    <dc:coverage>Global</dc:coverage>
+    <dc:type>S3M Data Model</dc:type>
+    <dc:identifier>a42592f1-e8b3-4862-b6e2-ac0e48c138f4</dc:identifier>
+    <dc:description>S3M Data Model for /home/tim/DII/Kunteksto/example_data/Demo.csv</dc:description>
+    <dc:publisher>Data Insights, Inc. via Kunteksto</dc:publisher>
+    <dc:date>2017-07-13T11:20:52</dc:date>
+    <dc:format>text/xml</dc:format>
+    <dc:language>en-US</dc:language>
+  </rdf:Description></rdf:RDF></xs:appinfo></xs:annotation>
+
+  <xs:element name="dm-a42592f1-e8b3-4862-b6e2-ac0e48c138f4" type="s3m:mc-a42592f1-e8b3-4862-b6e2-ac0e48c138f4"/>
+  <xs:complexType name="mc-a42592f1-e8b3-4862-b6e2-ac0e48c138f4">
+    <xs:annotation>
+      <xs:documentation>
+        S3M Data Model for /home/tim/DII/Kunteksto/example_data/Demo.csv
+      </xs:documentation>
+      <xs:appinfo>
+        <rdf:Description rdf:about="mc-a42592f1-e8b3-4862-b6e2-ac0e48c138f4">
+          <rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#DMType"/>
+          <rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>
+          <rdfs:isDefinedBy rdf:resource="http://www.some_url.com"/>
+        </rdf:Description>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:restriction base="s3m:DMType">
+        <xs:sequence>
+          <xs:element maxOccurs="1" minOccurs="1" ref="s3m:ms-eca6a669-deb4-4e8b-aa94-66b605606286"/>
+        </xs:sequence>
+      </xs:restriction>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ms-eca6a669-deb4-4e8b-aa94-66b605606286" substitutionGroup="s3m:Definition" type="s3m:mc-eca6a669-deb4-4e8b-aa94-66b605606286"/>
+  <xs:complexType name="mc-eca6a669-deb4-4e8b-aa94-66b605606286">
+    <xs:annotation>
+      <xs:documentation>
+        This is the Entry container that provides all the required contextual information to manage a dataset. It is analogous to a dataset catalog entry.
+      </xs:documentation>
+      <xs:appinfo>
+        <rdf:Description rdf:about="mc-eca6a669-deb4-4e8b-aa94-66b605606286">
+          <rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#EntryType"/>
+          <rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>
+          <rdfs:isDefinedBy rdf:resource="http://www.some_url.com"/>
+        </rdf:Description>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:restriction base="s3m:EntryType">
+        <xs:sequence>
+          <xs:element maxOccurs="1" minOccurs="1" name="label" type="xs:string" fixed="S3M Data Model"/>
+          <xs:element maxOccurs="1" minOccurs="1" name="entry-language" type="xs:language" fixed="en-US"/>
+          <xs:element maxOccurs="1" minOccurs="1" name="entry-encoding" type="xs:string" fixed="utf-8"/>
+          <!-- current-state -->
+          <xs:element maxOccurs="1" minOccurs="1" ref="s3m:ms-a1983a62-97f8-4b9d-a73e-203cc9e6b325"/>
+          <!-- subject -->
+          <!-- provider -->
+          <!-- participations -->
+          <!-- protocol -->
+          <!-- workflow -->
+          <!-- audit -->
+          <!-- attestation -->
+          <!-- entry links -->
+        </xs:sequence>
+      </xs:restriction>
+    </xs:complexContent>
+  </xs:complexType>
+
+    <xs:element name="ms-a1983a62-97f8-4b9d-a73e-203cc9e6b325" substitutionGroup="s3m:Item" type="s3m:mc-a1983a62-97f8-4b9d-a73e-203cc9e6b325"/>
+    <xs:complexType name="mc-a1983a62-97f8-4b9d-a73e-203cc9e6b325">
+      <xs:annotation>
+        <xs:documentation>
+          This is the Cluster that groups all of the data items (columns) definitions into one unit.
+        </xs:documentation>
+        <xs:appinfo>
+          <rdf:Description rdf:about="mc-a1983a62-97f8-4b9d-a73e-203cc9e6b325">
+            <rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#ClusterType"/>
+            <rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>
+            <rdfs:isDefinedBy rdf:resource="http://www.some_url.com"/>
+          </rdf:Description>
+        </xs:appinfo>
+      </xs:annotation>
+      <xs:complexContent>
+        <xs:restriction base="s3m:ClusterType">
+          <xs:sequence>
+            <xs:element maxOccurs="1" minOccurs="1" name="label" type="xs:string" fixed="Data Items"/>
+            <xs:element maxOccurs="1" minOccurs="0" ref="s3m:ms-1a94248e-d2d2-4f1d-9b49-443fff7bb938"/>
+            <xs:element maxOccurs="1" minOccurs="0" ref="s3m:ms-c989dcbc-4135-445e-ad3a-2d08e08709d5"/>
+            <xs:element maxOccurs="1" minOccurs="0" ref="s3m:ms-1217fae1-b93c-4428-9163-4282fbf68828"/>
+            <xs:element maxOccurs="1" minOccurs="0" ref="s3m:ms-4379a6fb-1605-4fde-bc35-b80a4fcf53ae"/>
+            <xs:element maxOccurs="1" minOccurs="0" ref="s3m:ms-c144c3d0-9560-40a0-914c-f7733f2fc311"/>
+            <xs:element maxOccurs="1" minOccurs="0" ref="s3m:ms-de43b1a2-d8fd-4fa2-bbd2-76fd53e0fb8c"/>
+          </xs:sequence>
+        </xs:restriction>
+      </xs:complexContent>
+    </xs:complexType>
+
+  
+<xs:element name="ms-1a94248e-d2d2-4f1d-9b49-443fff7bb938" substitutionGroup="s3m:Items" type="s3m:mc-1a94248e-d2d2-4f1d-9b49-443fff7bb938"/>
+  <xs:complexType name="mc-1a94248e-d2d2-4f1d-9b49-443fff7bb938">
+    <xs:complexContent>
+      <xs:restriction base="s3m:XdAdapterType">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" ref="s3m:ms-c875174f-2f27-4b3e-b077-152af5a91004"/>
+        </xs:sequence>
+      </xs:restriction>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ms-c875174f-2f27-4b3e-b077-152af5a91004" substitutionGroup="s3m:XdAdapter-value" type="s3m:mc-c875174f-2f27-4b3e-b077-152af5a91004"/>
+  <xs:complexType name="mc-c875174f-2f27-4b3e-b077-152af5a91004">
+    <xs:annotation>
+      <xs:documentation>
+        This is the Count model component used to model integers.
+      </xs:documentation>
+      <xs:appinfo>
+        <rdf:Description rdf:about="mc-c875174f-2f27-4b3e-b077-152af5a91004">
+          <rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#XdCountType"/>
+          <rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>
+          <rdfs:isDefinedBy rdf:resource=""/>
+        </rdf:Description>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:restriction base="s3m:XdCountType">
+        <xs:sequence>
+          <xs:element maxOccurs="1" minOccurs="1" name="label" type="xs:string" fixed="The Record ID"/>
+          <xs:element maxOccurs="1" minOccurs="0" ref="s3m:ExceptionalValue"/>
+          <xs:element maxOccurs="1" minOccurs="0" name="vtb" type="xs:dateTime"/>
+          <xs:element maxOccurs="1" minOccurs="0" name="vte" type="xs:dateTime"/>
+          <xs:element maxOccurs="1" minOccurs="0" name="tr" type="xs:dateTime"/>
+          <xs:element maxOccurs="1" minOccurs="0" name="modified" type="xs:dateTime"/>
+          <xs:element maxOccurs="1" minOccurs="0" name="magnitude-status" type="s3m:MagnitudeStatus"/>
+          <xs:element maxOccurs="1" minOccurs="1" name="error"  type="xs:int" default="0"/>
+          <xs:element maxOccurs="1" minOccurs="1" name="accuracy" type="xs:int" default="0"/>
+          <xs:element maxOccurs="1" minOccurs="1"  name="xdcount-value">
+            <xs:simpleType>
+            <xs:restriction base="xs:int">
+              <xs:minInclusive value="1"/>
+              <xs:maxInclusive value="5"/>
+            </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+          <xs:element maxOccurs="1" minOccurs="1" name="xdcount-units" type="s3m:mc-1ea8bbae-713f-4fe5-9d77-5215b97cc866"/>
+        </xs:sequence>
+      </xs:restriction>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="mc-1ea8bbae-713f-4fe5-9d77-5215b97cc866">
+    <xs:annotation>
+      <xs:documentation>
+        This is the String model component used to define Units values for Counts and Quantities.
+      </xs:documentation>
+      <xs:appinfo>
+        <rdf:Description rdf:about="mc-1ea8bbae-713f-4fe5-9d77-5215b97cc866">
+          <rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#XdStringType"/>
+          <rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>
+          <rdfs:isDefinedBy rdf:resource=""/>
+        </rdf:Description>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:restriction base="s3m:XdStringType">
+        <xs:sequence>
+          <xs:element maxOccurs="1" minOccurs="1" name="label" type="xs:string" fixed="The Record ID Units"/>
+          <xs:element maxOccurs="1" minOccurs="0" ref="s3m:ExceptionalValue"/>
+          <xs:element maxOccurs="1" minOccurs="0" name="vtb" type="xs:dateTime"/>
+          <xs:element maxOccurs="1" minOccurs="0" name="vte" type="xs:dateTime"/>
+          <xs:element maxOccurs="1" minOccurs="0" name="tr" type="xs:dateTime"/>
+          <xs:element maxOccurs="1" minOccurs="0" name="modified" type="xs:dateTime"/>
+          <xs:element maxOccurs="1" minOccurs="1"  name="xdstring-value" type="xs:string" fixed=""/>
+          <xs:element maxOccurs="1" minOccurs="1" name="xdstring-language" type="xs:language" default="en-US"/>
+        </xs:sequence>
+      </xs:restriction>
+    </xs:complexContent>
+  </xs:complexType>
+  
+<xs:element name="ms-c989dcbc-4135-445e-ad3a-2d08e08709d5" substitutionGroup="s3m:Items" type="s3m:mc-c989dcbc-4135-445e-ad3a-2d08e08709d5"/>
+  <xs:complexType name="mc-c989dcbc-4135-445e-ad3a-2d08e08709d5">
+    <xs:complexContent>
+      <xs:restriction base="s3m:XdAdapterType">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" ref="s3m:ms-a7789978-30f5-4aa7-a198-4ddedde94f88"/>
+        </xs:sequence>
+      </xs:restriction>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ms-a7789978-30f5-4aa7-a198-4ddedde94f88" substitutionGroup="s3m:XdAdapter-value" type="s3m:mc-a7789978-30f5-4aa7-a198-4ddedde94f88"/>
+  <xs:complexType name="mc-a7789978-30f5-4aa7-a198-4ddedde94f88">
+    <xs:annotation>
+      <xs:documentation>
+        This is the String model component used to model text.
+      </xs:documentation>
+      <xs:appinfo>
+        <rdf:Description rdf:about="mc-a7789978-30f5-4aa7-a198-4ddedde94f88">
+          <rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#XdStringType"/>
+          <rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>
+          <rdfs:isDefinedBy rdf:resource=""/>
+        </rdf:Description>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:restriction base="s3m:XdStringType">
+        <xs:sequence>
+          <xs:element maxOccurs="1" minOccurs="1" name="label" type="xs:string" fixed="The Text Column"/>
+          <xs:element maxOccurs="1" minOccurs="0" ref="s3m:ExceptionalValue"/>
+          <xs:element maxOccurs="1" minOccurs="0" name="vtb" type="xs:dateTime"/>
+          <xs:element maxOccurs="1" minOccurs="0" name="vte" type="xs:dateTime"/>
+          <xs:element maxOccurs="1" minOccurs="0" name="tr" type="xs:dateTime"/>
+          <xs:element maxOccurs="1" minOccurs="0" name="modified" type="xs:dateTime"/>
+          <xs:element maxOccurs="1" minOccurs="1"  name="xdstring-value" type="xs:string"/>
+          <xs:element maxOccurs="1" minOccurs="1" name="xdstring-language" type="xs:language" default="en-US"/>
+        </xs:sequence>
+      </xs:restriction>
+    </xs:complexContent>
+  </xs:complexType>
+  
+<xs:element name="ms-1217fae1-b93c-4428-9163-4282fbf68828" substitutionGroup="s3m:Items" type="s3m:mc-1217fae1-b93c-4428-9163-4282fbf68828"/>
+  <xs:complexType name="mc-1217fae1-b93c-4428-9163-4282fbf68828">
+    <xs:complexContent>
+      <xs:restriction base="s3m:XdAdapterType">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" ref="s3m:ms-f43705c7-61cc-483f-b866-7e510385c478"/>
+        </xs:sequence>
+      </xs:restriction>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ms-f43705c7-61cc-483f-b866-7e510385c478" substitutionGroup="s3m:XdAdapter-value" type="s3m:mc-f43705c7-61cc-483f-b866-7e510385c478"/>
+  <xs:complexType name="mc-f43705c7-61cc-483f-b866-7e510385c478">
+    <xs:annotation>
+      <xs:documentation>
+        This is the Count model component used to model integers.
+      </xs:documentation>
+      <xs:appinfo>
+        <rdf:Description rdf:about="mc-f43705c7-61cc-483f-b866-7e510385c478">
+          <rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#XdCountType"/>
+          <rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>
+          <rdfs:isDefinedBy rdf:resource=""/>
+        </rdf:Description>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:restriction base="s3m:XdCountType">
+        <xs:sequence>
+          <xs:element maxOccurs="1" minOccurs="1" name="label" type="xs:string" fixed="The Integer Column"/>
+          <xs:element maxOccurs="1" minOccurs="0" ref="s3m:ExceptionalValue"/>
+          <xs:element maxOccurs="1" minOccurs="0" name="vtb" type="xs:dateTime"/>
+          <xs:element maxOccurs="1" minOccurs="0" name="vte" type="xs:dateTime"/>
+          <xs:element maxOccurs="1" minOccurs="0" name="tr" type="xs:dateTime"/>
+          <xs:element maxOccurs="1" minOccurs="0" name="modified" type="xs:dateTime"/>
+          <xs:element maxOccurs="1" minOccurs="0" name="magnitude-status" type="s3m:MagnitudeStatus"/>
+          <xs:element maxOccurs="1" minOccurs="1" name="error"  type="xs:int" default="0"/>
+          <xs:element maxOccurs="1" minOccurs="1" name="accuracy" type="xs:int" default="0"/>
+          <xs:element maxOccurs="1" minOccurs="1"  name="xdcount-value">
+            <xs:simpleType>
+            <xs:restriction base="xs:int">
+              <xs:minInclusive value="100"/>
+              <xs:maxInclusive value="5000000"/>
+            </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+          <xs:element maxOccurs="1" minOccurs="1" name="xdcount-units" type="s3m:mc-22c3d7e7-67d3-47d8-8a6e-f37fd96e75bd"/>
+        </xs:sequence>
+      </xs:restriction>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="mc-22c3d7e7-67d3-47d8-8a6e-f37fd96e75bd">
+    <xs:annotation>
+      <xs:documentation>
+        This is the String model component used to define Units values for Counts and Quantities.
+      </xs:documentation>
+      <xs:appinfo>
+        <rdf:Description rdf:about="mc-22c3d7e7-67d3-47d8-8a6e-f37fd96e75bd">
+          <rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#XdStringType"/>
+          <rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>
+          <rdfs:isDefinedBy rdf:resource=""/>
+        </rdf:Description>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:restriction base="s3m:XdStringType">
+        <xs:sequence>
+          <xs:element maxOccurs="1" minOccurs="1" name="label" type="xs:string" fixed="The Integer Column Units"/>
+          <xs:element maxOccurs="1" minOccurs="0" ref="s3m:ExceptionalValue"/>
+          <xs:element maxOccurs="1" minOccurs="0" name="vtb" type="xs:dateTime"/>
+          <xs:element maxOccurs="1" minOccurs="0" name="vte" type="xs:dateTime"/>
+          <xs:element maxOccurs="1" minOccurs="0" name="tr" type="xs:dateTime"/>
+          <xs:element maxOccurs="1" minOccurs="0" name="modified" type="xs:dateTime"/>
+          <xs:element maxOccurs="1" minOccurs="1"  name="xdstring-value" type="xs:string" fixed=""/>
+          <xs:element maxOccurs="1" minOccurs="1" name="xdstring-language" type="xs:language" default="en-US"/>
+        </xs:sequence>
+      </xs:restriction>
+    </xs:complexContent>
+  </xs:complexType>
+  
+<xs:element name="ms-4379a6fb-1605-4fde-bc35-b80a4fcf53ae" substitutionGroup="s3m:Items" type="s3m:mc-4379a6fb-1605-4fde-bc35-b80a4fcf53ae"/>
+  <xs:complexType name="mc-4379a6fb-1605-4fde-bc35-b80a4fcf53ae">
+    <xs:complexContent>
+      <xs:restriction base="s3m:XdAdapterType">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" ref="s3m:ms-c617d312-1da2-4cee-9e2e-72c82b636352"/>
+        </xs:sequence>
+      </xs:restriction>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ms-c617d312-1da2-4cee-9e2e-72c82b636352" substitutionGroup="s3m:XdAdapter-value" type="s3m:mc-c617d312-1da2-4cee-9e2e-72c82b636352"/>
+  <xs:complexType name="mc-c617d312-1da2-4cee-9e2e-72c82b636352">
+    <xs:annotation>
+      <xs:documentation>
+        This is the String model component used to model text.
+      </xs:documentation>
+      <xs:appinfo>
+        <rdf:Description rdf:about="mc-c617d312-1da2-4cee-9e2e-72c82b636352">
+          <rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#XdStringType"/>
+          <rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>
+          <rdfs:isDefinedBy rdf:resource=""/>
+        </rdf:Description>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:restriction base="s3m:XdStringType">
+        <xs:sequence>
+          <xs:element maxOccurs="1" minOccurs="1" name="label" type="xs:string" fixed="The Integer Column Bad"/>
+          <xs:element maxOccurs="1" minOccurs="0" ref="s3m:ExceptionalValue"/>
+          <xs:element maxOccurs="1" minOccurs="0" name="vtb" type="xs:dateTime"/>
+          <xs:element maxOccurs="1" minOccurs="0" name="vte" type="xs:dateTime"/>
+          <xs:element maxOccurs="1" minOccurs="0" name="tr" type="xs:dateTime"/>
+          <xs:element maxOccurs="1" minOccurs="0" name="modified" type="xs:dateTime"/>
+          <xs:element maxOccurs="1" minOccurs="1"  name="xdstring-value" type="xs:string"/>
+          <xs:element maxOccurs="1" minOccurs="1" name="xdstring-language" type="xs:language" default="en-US"/>
+        </xs:sequence>
+      </xs:restriction>
+    </xs:complexContent>
+  </xs:complexType>
+  
+<xs:element name="ms-c144c3d0-9560-40a0-914c-f7733f2fc311" substitutionGroup="s3m:Items" type="s3m:mc-c144c3d0-9560-40a0-914c-f7733f2fc311"/>
+  <xs:complexType name="mc-c144c3d0-9560-40a0-914c-f7733f2fc311">
+    <xs:complexContent>
+      <xs:restriction base="s3m:XdAdapterType">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" ref="s3m:ms-e5411801-5070-49ab-9acf-8cc9f5621cfd"/>
+        </xs:sequence>
+      </xs:restriction>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ms-e5411801-5070-49ab-9acf-8cc9f5621cfd" substitutionGroup="s3m:XdAdapter-value" type="s3m:mc-e5411801-5070-49ab-9acf-8cc9f5621cfd"/>
+  <xs:complexType name="mc-e5411801-5070-49ab-9acf-8cc9f5621cfd">
+    <xs:annotation>
+      <xs:documentation>
+        This is the Quantity model component used to model floats.
+      </xs:documentation>
+      <xs:appinfo>
+        <rdf:Description rdf:about="mc-e5411801-5070-49ab-9acf-8cc9f5621cfd">
+          <rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#XdQuantityType"/>
+          <rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>
+          <rdfs:isDefinedBy rdf:resource=""/>
+        </rdf:Description>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:restriction base="s3m:XdQuantityType">
+        <xs:sequence>
+          <xs:element maxOccurs="1" minOccurs="1" name="label" type="xs:string" fixed="The Float Column"/>
+          <xs:element maxOccurs="1" minOccurs="0" ref="s3m:ExceptionalValue"/>
+          <xs:element maxOccurs="1" minOccurs="0" name="vtb" type="xs:dateTime"/>
+          <xs:element maxOccurs="1" minOccurs="0" name="vte" type="xs:dateTime"/>
+          <xs:element maxOccurs="1" minOccurs="0" name="tr" type="xs:dateTime"/>
+          <xs:element maxOccurs="1" minOccurs="0" name="modified" type="xs:dateTime"/>
+          <xs:element maxOccurs="1" minOccurs="0" name="magnitude-status" type="s3m:MagnitudeStatus"/>
+          <xs:element maxOccurs="1" minOccurs="1" name="error"  type="xs:int" default="0"/>
+          <xs:element maxOccurs="1" minOccurs="1" name="accuracy" type="xs:int" default="0"/>
+          <xs:element maxOccurs="1" minOccurs="1"  name="xdquantity-value">
+            <xs:simpleType>
+            <xs:restriction base="xs:decimal">
+              <xs:minInclusive value="100.01"/>
+              <xs:maxInclusive value="5000000.09"/>
+            </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+          <xs:element maxOccurs="1" minOccurs="1" name="xdquantity-units" type="s3m:mc-b89185e4-11c1-4c7b-ae8e-7869af3b4974"/>
+        </xs:sequence>
+      </xs:restriction>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="mc-b89185e4-11c1-4c7b-ae8e-7869af3b4974">
+    <xs:annotation>
+      <xs:documentation>
+        This is the String model component used to define Units values for Counts and Quantities.
+      </xs:documentation>
+      <xs:appinfo>
+        <rdf:Description rdf:about="mc-b89185e4-11c1-4c7b-ae8e-7869af3b4974">
+          <rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#XdStringType"/>
+          <rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>
+          <rdfs:isDefinedBy rdf:resource=""/>
+        </rdf:Description>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:restriction base="s3m:XdStringType">
+        <xs:sequence>
+          <xs:element maxOccurs="1" minOccurs="1" name="label" type="xs:string" fixed="The Float Column Units"/>
+          <xs:element maxOccurs="1" minOccurs="0" ref="s3m:ExceptionalValue"/>
+          <xs:element maxOccurs="1" minOccurs="0" name="vtb" type="xs:dateTime"/>
+          <xs:element maxOccurs="1" minOccurs="0" name="vte" type="xs:dateTime"/>
+          <xs:element maxOccurs="1" minOccurs="0" name="tr" type="xs:dateTime"/>
+          <xs:element maxOccurs="1" minOccurs="0" name="modified" type="xs:dateTime"/>
+          <xs:element maxOccurs="1" minOccurs="1"  name="xdstring-value" type="xs:string" fixed=""/>
+          <xs:element maxOccurs="1" minOccurs="1" name="xdstring-language" type="xs:language" default="en-US"/>
+        </xs:sequence>
+      </xs:restriction>
+    </xs:complexContent>
+  </xs:complexType>
+  
+<xs:element name="ms-de43b1a2-d8fd-4fa2-bbd2-76fd53e0fb8c" substitutionGroup="s3m:Items" type="s3m:mc-de43b1a2-d8fd-4fa2-bbd2-76fd53e0fb8c"/>
+  <xs:complexType name="mc-de43b1a2-d8fd-4fa2-bbd2-76fd53e0fb8c">
+    <xs:complexContent>
+      <xs:restriction base="s3m:XdAdapterType">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" ref="s3m:ms-c2459dd7-04c4-48c5-9987-fcc23c856d12"/>
+        </xs:sequence>
+      </xs:restriction>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ms-c2459dd7-04c4-48c5-9987-fcc23c856d12" substitutionGroup="s3m:XdAdapter-value" type="s3m:mc-c2459dd7-04c4-48c5-9987-fcc23c856d12"/>
+  <xs:complexType name="mc-c2459dd7-04c4-48c5-9987-fcc23c856d12">
+    <xs:annotation>
+      <xs:documentation>
+        This is the Temporal model component used to model dates, times or datetimes.
+      </xs:documentation>
+      <xs:appinfo>
+        <rdf:Description rdf:about="mc-c2459dd7-04c4-48c5-9987-fcc23c856d12">
+          <rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#XdTemporalType"/>
+          <rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>
+          <rdfs:isDefinedBy rdf:resource=""/>
+        </rdf:Description>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:restriction base="s3m:XdTemporalType">
+        <xs:sequence>
+          <xs:element maxOccurs="1" minOccurs="1" name="label" type="xs:string" fixed="The Date Column"/>
+          <xs:element maxOccurs="1" minOccurs="0" ref="s3m:ExceptionalValue"/>
+          <xs:element maxOccurs="1" minOccurs="0" name="vtb" type="xs:dateTime"/>
+          <xs:element maxOccurs="1" minOccurs="0" name="vte" type="xs:dateTime"/>
+          <xs:element maxOccurs="1" minOccurs="0" name="tr" type="xs:dateTime"/>
+          <xs:element maxOccurs="1" minOccurs="0" name="modified" type="xs:dateTime"/>
+          <xs:element maxOccurs="1" minOccurs="0" name="xdtemporal-date" type="xs:date"/>
+          <xs:element maxOccurs="0" minOccurs="0" name="xdtemporal-time" type="xs:time"/>
+          <xs:element maxOccurs="0" minOccurs="0" name="xdtemporal-datetime" type="xs:dateTime"/>
+          <xs:element maxOccurs="0" minOccurs="0" name="xdtemporal-day" type="xs:gDay"/>
+          <xs:element maxOccurs="0" minOccurs="0" name="xdtemporal-month" type="xs:gMonth"/>
+          <xs:element maxOccurs="0" minOccurs="0" name="xdtemporal-year" type="xs:gYear"/>
+          <xs:element maxOccurs="0" minOccurs="0" name="xdtemporal-year-month" type="xs:gYearMonth"/>
+          <xs:element maxOccurs="0" minOccurs="0" name="xdtemporal-month-day" type="xs:gMonthDay"/>
+          <xs:element maxOccurs="0" minOccurs="0" name="xdtemporal-duration" type="xs:duration"/>
+        </xs:sequence>
+      </xs:restriction>
+    </xs:complexContent>
+  </xs:complexType>
+
+</xs:schema>
