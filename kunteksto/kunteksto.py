@@ -72,7 +72,7 @@ class Translate(tk.Frame):
         self.genJSON.set(config['KUNTEKSTO']['json'])
         
         self.analyzeLevel.set(config['KUNTEKSTO']['analyzeLevel'])
-        self.outdir = config['KUNTEKSTO']['outDir']
+        self.outdir = os.getcwd() + '/output/'
         self.sep_type.set(config['KUNTEKSTO']['sepType'])
         
         # load the UI
@@ -90,9 +90,9 @@ class Translate(tk.Frame):
         ttk.Label(self, text="CSV separator: ").grid(row=3, column=0, padx=5, pady=5, sticky=tk.W)
         ttk.Combobox(self, values=self.seps, textvariable=self.sep_type, justify="center", width=1, state='readonly').grid(row=3, column=10, padx=5, pady=5, sticky=tk.W)
 
-        ttk.Button(self, text="Select Output Directory", command=self.outputsel).grid(row=4, column=0, padx=5, pady=5, sticky=tk.W)
+        #ttk.Button(self, text="Select Output Directory", command=self.outputsel).grid(row=4, column=0, padx=5, pady=5, sticky=tk.W)
 
-        ttk.Label(self, text=self.outdir).grid(row=5, column=0, padx=5, pady=5, sticky=tk.W)
+        #ttk.Label(self, text=self.outdir).grid(row=5, column=0, padx=5, pady=5, sticky=tk.W)
  
         ttk.Button(self, text="Analyze CSV", command=self.doanalyze).grid(row=6, column=0, padx=5, pady=5, sticky=tk.W)
 
