@@ -1,1 +1,0 @@
-By default, this is where the output DB and model files will be stored after generation.  

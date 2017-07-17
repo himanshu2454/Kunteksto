@@ -224,7 +224,7 @@ if __name__ == '__main__':
     os.environ['XML_CATALOG_FILES'] = 'Kunteksto_catalog.xml'
     print('\n Kunteksto is running ...\n\n')
     root = tk.Tk()
-    root.geometry("600x480")
+    root.geometry("800x800")
     root.configure()
     Translate(parent=root)
     root.mainloop()

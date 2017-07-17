@@ -813,12 +813,11 @@ def makeData(schema, db_file, theFile, delim, outdir, connRDF, connXML, connJSON
             try:
                 tree = etree.parse(StringIO(xmlStr))
                 modelSchema.assertValid(tree)
-                rdfStr += '  <rdf:Description rdf:about="' + file_id + '.xml">\n'
+                rdfStr += '  <rdf:Description rdf:about="' + file_id + '">\n'
                 rdfStr += '    <rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/DataInstanceValid"/>\n'
                 rdfStr += '  </rdf:Description>\n'
             except etree.DocumentInvalid:
-                file_id = "Invalid_" + file_id
-                rdfStr += '  <rdf:Description rdf:about="' + file_id + '.xml">\n'
+                rdfStr += '  <rdf:Description rdf:about="' + file_id + '">\n'
                 rdfStr += '    <rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/DataInstanceError"/>\n'
                 rdfStr += '  </rdf:Description>\n'
             
