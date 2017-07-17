@@ -128,7 +128,8 @@ class Session(object):
             code = password
             nonce = response[0]
 
-        hfun.update(hashlib.md5(code.encode('us-ascii')).hexdigest().encode('us-ascii'))
+        hfun.update(hashlib.md5(code.encode('us-ascii')
+                                ).hexdigest().encode('us-ascii'))
         hfun.update(nonce.encode('us-ascii'))
         self.send(user + chr(0) + hfun.hexdigest())
 
@@ -266,7 +267,8 @@ class Query():
     def bind(self, name, value, datatype=''):
         """Binds a value to a variable.
 An empty string can be specified as data type."""
-        self.__exc(chr(3), self.__id + chr(0) + name + chr(0) + value + chr(0) + datatype)
+        self.__exc(chr(3), self.__id + chr(0) + name +
+                   chr(0) + value + chr(0) + datatype)
 
     def context(self, value, datatype=''):
         """Bind the context item"""

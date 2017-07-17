@@ -13,21 +13,21 @@ import configparser
 from analyze import analyze
 from generate import makeModel, makeData
 
+
 class Translate(tk.Frame):
 
     def __init__(self, parent, *args, **kwargs):
         ttk.Frame.__init__(self, parent, *args, **kwargs)
-        self.seps = [',',';',':','|','$']
+        self.seps = [',', ';', ':', '|', '$']
         self.sep_type = tk.StringVar()
         self.infile = '(none selected)'
         self.outDB = ''
         self.model = tk.StringVar()
         self.parent = parent
-        self.analyzeLevel = tk.StringVar()  
-        self.genXML = tk.StringVar()  
-        self.genRDF = tk.StringVar()  
-        self.genJSON = tk.StringVar()  
-
+        self.analyzeLevel = tk.StringVar()
+        self.genXML = tk.StringVar()
+        self.genRDF = tk.StringVar()
+        self.genJSON = tk.StringVar()
 
         # Setup config info
         config = configparser.ConfigParser()
@@ -40,7 +40,7 @@ class Translate(tk.Frame):
         self.agraphRepo = config['ALLEGROGRAPH']['repo']
         self.agraphUser = config['ALLEGROGRAPH']['user']
         self.agraphPW = config['ALLEGROGRAPH']['pw']
-        
+
         self.stardogStatus = config['STARDOG']['status']
 
         self.blazegraphStatus = config['BLAZEGRAPH']['status']
@@ -70,11 +70,11 @@ class Translate(tk.Frame):
         self.genXML.set(config['KUNTEKSTO']['xml'])
         self.genRDF.set(config['KUNTEKSTO']['rdf'])
         self.genJSON.set(config['KUNTEKSTO']['json'])
-        
+
         self.analyzeLevel.set(config['KUNTEKSTO']['analyzeLevel'])
         self.outdir = os.getcwd() + '/output/'
         self.sep_type.set(config['KUNTEKSTO']['sepType'])
-        
+
         # load the UI
         self.init_gui()
 
@@ -82,51 +82,70 @@ class Translate(tk.Frame):
         self.grid(row=0, column=0, sticky=(tk.N, tk.W, tk.E, tk.S))
         self.parent.title("Kunteksto")
 
-        ttk.Label(self, text="Kunteksto by Data Insights, Inc.").grid(row=0, column=0, padx=5, pady=5)
+        ttk.Label(self, text="Kunteksto by Data Insights, Inc.").grid(
+            row=0, column=0, padx=5, pady=5)
 
-        ttk.Button(self, text="Select Input CSV", command=self.opencsv).grid(row=1, column=0, padx=5, pady=5, sticky=tk.W)
-        ttk.Label(self, text=self.infile).grid(row=1, column=10, padx=5, pady=5, sticky=tk.W)
+        ttk.Button(self, text="Select Input CSV", command=self.opencsv).grid(
+            row=1, column=0, padx=5, pady=5, sticky=tk.W)
+        ttk.Label(self, text=self.infile).grid(
+            row=1, column=10, padx=5, pady=5, sticky=tk.W)
 
-        ttk.Label(self, text="CSV separator: ").grid(row=3, column=0, padx=5, pady=5, sticky=tk.W)
-        ttk.Combobox(self, values=self.seps, textvariable=self.sep_type, justify="center", width=1, state='readonly').grid(row=3, column=10, padx=5, pady=5, sticky=tk.W)
+        ttk.Label(self, text="CSV separator: ").grid(
+            row=3, column=0, padx=5, pady=5, sticky=tk.W)
+        ttk.Combobox(self, values=self.seps, textvariable=self.sep_type, justify="center",
+                     width=1, state='readonly').grid(row=3, column=10, padx=5, pady=5, sticky=tk.W)
 
         #ttk.Button(self, text="Select Output Directory", command=self.outputsel).grid(row=4, column=0, padx=5, pady=5, sticky=tk.W)
 
         #ttk.Label(self, text=self.outdir).grid(row=5, column=0, padx=5, pady=5, sticky=tk.W)
- 
-        ttk.Button(self, text="Analyze CSV", command=self.doanalyze).grid(row=6, column=0, padx=5, pady=5, sticky=tk.W)
 
-        ttk.Checkbutton(self, text='Full Analysis', variable=self.analyzeLevel, onvalue='Full', offvalue='Simple').grid(row=6, column=10, padx=5, pady=5, sticky=tk.W)
+        ttk.Button(self, text="Analyze CSV", command=self.doanalyze).grid(
+            row=6, column=0, padx=5, pady=5, sticky=tk.W)
+
+        ttk.Checkbutton(self, text='Full Analysis', variable=self.analyzeLevel, onvalue='Full',
+                        offvalue='Simple').grid(row=6, column=10, padx=5, pady=5, sticky=tk.W)
         self.msgAnalyze = tk.StringVar()
         self.msgAnalyze.set('')
-        ttk.Label(self, textvariable=self.msgAnalyze).grid(row=7, column=10, padx=5, pady=5, sticky=tk.W)
+        ttk.Label(self, textvariable=self.msgAnalyze).grid(
+            row=7, column=10, padx=5, pady=5, sticky=tk.W)
 
-        ttk.Button(self, text="Generate Model", command=self.modelgen).grid(row=9, column=0, padx=5, pady=5, sticky=tk.W)
-        ttk.Button(self, text="Re-Edit Database", command=self.editdb).grid(row=9, column=10, padx=5, pady=5, sticky=tk.W)
-        ttk.Label(self, textvariable=self.model).grid(row=10, column=0, padx=5, pady=5, sticky=tk.W)
-        
-        ttk.Label(self, text="Select data format(s) to generate:").grid(row=12, column=0, padx=5, pady=5)
-        ttk.Checkbutton(self, text='XML', variable=self.genXML, onvalue='True', offvalue='False').grid(row=13, column=0, padx=5, pady=5, sticky=tk.W)
-        ttk.Checkbutton(self, text='RDF', variable=self.genRDF, onvalue='True', offvalue='False').grid(row=13, column=10, padx=5, pady=5, sticky=tk.W)
-        ttk.Checkbutton(self, text='JSON', variable=self.genJSON, onvalue='True', offvalue='False').grid(row=13, column=20, padx=5, pady=5, sticky=tk.W)
+        ttk.Button(self, text="Generate Model", command=self.modelgen).grid(
+            row=9, column=0, padx=5, pady=5, sticky=tk.W)
+        ttk.Button(self, text="Re-Edit Database", command=self.editdb).grid(row=9,
+                                                                            column=10, padx=5, pady=5, sticky=tk.W)
+        ttk.Label(self, textvariable=self.model).grid(
+            row=10, column=0, padx=5, pady=5, sticky=tk.W)
 
-        ttk.Button(self, text="Generate Data", command=self.datagen).grid(row=14, column=0, padx=5, pady=5, sticky=tk.W)
+        ttk.Label(self, text="Select data format(s) to generate:").grid(
+            row=12, column=0, padx=5, pady=5)
+        ttk.Checkbutton(self, text='XML', variable=self.genXML, onvalue='True',
+                        offvalue='False').grid(row=13, column=0, padx=5, pady=5, sticky=tk.W)
+        ttk.Checkbutton(self, text='RDF', variable=self.genRDF, onvalue='True',
+                        offvalue='False').grid(row=13, column=10, padx=5, pady=5, sticky=tk.W)
+        ttk.Checkbutton(self, text='JSON', variable=self.genJSON, onvalue='True',
+                        offvalue='False').grid(row=13, column=20, padx=5, pady=5, sticky=tk.W)
 
-        ttk.Button(self, text="Quit", command=self.on_quit).grid(row=15, column=0, padx=5, pady=5, sticky=tk.W)
+        ttk.Button(self, text="Generate Data", command=self.datagen).grid(
+            row=14, column=0, padx=5, pady=5, sticky=tk.W)
 
+        ttk.Button(self, text="Quit", command=self.on_quit).grid(
+            row=15, column=0, padx=5, pady=5, sticky=tk.W)
 
     def on_quit(self):
         quit()
 
     def opencsv(self):
         self.infile = filedialog.askopenfilename()
-        ttk.Label(self, text=self.infile).grid(row=2, column=10, padx=5, pady=5, sticky=tk.W)
+        ttk.Label(self, text=self.infile).grid(
+            row=2, column=10, padx=5, pady=5, sticky=tk.W)
         return
 
     def doanalyze(self):
         if self.infile:
-            pbar = ttk.Progressbar(self, orient=tk.HORIZONTAL, length=200, mode='determinate')
-            self.outDB = analyze(self.infile, self.sep_type.get(), self.analyzeLevel.get(), pbar, self.outdir)
+            pbar = ttk.Progressbar(
+                self, orient=tk.HORIZONTAL, length=200, mode='determinate')
+            self.outDB = analyze(self.infile, self.sep_type.get(
+            ), self.analyzeLevel.get(), pbar, self.outdir)
             if self.outDB:
                 self.msgAnalyze.set('Created: ' + self.outDB)
                 run([self.sqlbrow,  self.outDB])
@@ -139,10 +158,12 @@ class Translate(tk.Frame):
             dir_opt['mustexist'] = True
             dir_opt['parent'] = self
             dir_opt['title'] = 'Select a data output directory'
-            self.outdir = filedialog.askdirectory(**dir_opt)        
-            ttk.Label(self, text=self.outdir).grid(row=5, column=0, padx=5, pady=5, sticky=tk.W)
+            self.outdir = filedialog.askdirectory(**dir_opt)
+            ttk.Label(self, text=self.outdir).grid(
+                row=5, column=0, padx=5, pady=5, sticky=tk.W)
         else:
-            messagebox.showerror('Procedure Error','You must first select an input file.')
+            messagebox.showerror(
+                'Procedure Error', 'You must first select an input file.')
 
         return
 
@@ -153,7 +174,8 @@ class Translate(tk.Frame):
             if modelName:
                 self.model.set(modelName)
         else:
-            messagebox.showerror('Procedure Error','Missing DB file or no selected output directory.')
+            messagebox.showerror(
+                'Procedure Error', 'Missing DB file or no selected output directory.')
 
         return
 
@@ -163,62 +185,70 @@ class Translate(tk.Frame):
         return
 
     def datagen(self):
-        # open a connection to the RDF store if one is defined. 
+        # open a connection to the RDF store if one is defined.
         if self.genRDF:
             if self.agraphStatus == "ACTIVE":
                 try:
                     from franz.openrdf.connect import ag_connect
-                    connRDF = ag_connect(self.agraphRepo, host=self.agraphHost, port=self.agraphPort,  user=self.agraphUser, password=self.agraphPW)
+                    connRDF = ag_connect(self.agraphRepo, host=self.agraphHost,
+                                         port=self.agraphPort,  user=self.agraphUser, password=self.agraphPW)
                 except:
                     connRDF = None
-                    messagebox.showerror('RDF Connection Error','Could not create connection to Allegrograph.')
-                    
+                    messagebox.showerror(
+                        'RDF Connection Error', 'Could not create connection to Allegrograph.')
+
             else:
                 connRDF = None
 
-        # open a connection to the XML DB if one is defined. 
+        # open a connection to the XML DB if one is defined.
         if self.genXML:
             if self.basexStatus == "ACTIVE":
                 try:
                     import BaseXClient
-                    connXML = BaseXClient.Session(self.basexHost, int(self.basexPort), self.basexUser, self.basexPW)
+                    connXML = BaseXClient.Session(self.basexHost, int(
+                        self.basexPort), self.basexUser, self.basexPW)
                     connXML.execute("create db " + self.basexDBName)
                 except:
                     connXML = None
-                    messagebox.showerror('XML Connection Error','Could not create connection to BaseX.')
-                    
+                    messagebox.showerror(
+                        'XML Connection Error', 'Could not create connection to BaseX.')
+
             else:
                 connXML = None
-            
-        # open a connection to the JSON DB if one is defined. 
+
+        # open a connection to the JSON DB if one is defined.
         if self.genJSON:
             if self.mongoStatus == "ACTIVE":
                 try:
                     from pymongo import MongoClient
-                    client = MongoClient(self.mongoHost, int(self.mongoPort))  # default MongoDB has no authentication requirements.
+                    # default MongoDB has no authentication requirements.
+                    client = MongoClient(self.mongoHost, int(self.mongoPort))
                     connJSON = client[self.mongoDBName]
                 except:
                     connJSON = None
-                    messagebox.showerror('JSON Connection Error','Could not create connection to MongoDB.')
-                    
+                    messagebox.showerror(
+                        'JSON Connection Error', 'Could not create connection to MongoDB.')
+
             else:
                 connJSON = None
-            
-            
+
         # generate the data
         if self.model.get() and not self.outdir == '(none selected)':
-            makeData(self.model.get(), self.outDB, self.infile, self.sep_type.get(), self.outdir, connRDF, connXML, connJSON)
-            
+            makeData(self.model.get(), self.outDB, self.infile,
+                     self.sep_type.get(), self.outdir, connRDF, connXML, connJSON)
+
             if connRDF:
                 connRDF.close()
             if connXML:
-                connXML.close()                
-            messagebox.showinfo('Data Generation','Completed.')
-                
+                connXML.close()
+            messagebox.showinfo('Data Generation', 'Completed.')
+
         else:
-            messagebox.showerror('Procedure Error','Missing model DB or no selected output directory.')
+            messagebox.showerror(
+                'Procedure Error', 'Missing model DB or no selected output directory.')
 
         return
+
 
 if __name__ == '__main__':
     os.environ['XML_CATALOG_FILES'] = 'Kunteksto_catalog.xml'

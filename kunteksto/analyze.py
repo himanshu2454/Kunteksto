@@ -45,6 +45,7 @@ from uuid import uuid4
 from collections import OrderedDict
 import iso8601
 
+
 def analyze(csvInput, delim, level, pbar, out_dir):
     """
     Load and analyze the CSV file.
@@ -53,13 +54,13 @@ def analyze(csvInput, delim, level, pbar, out_dir):
     if csvInput == '(none selected)':
         messagebox.showerror('Procedure Error', 'CSV Selected: ' + csvInput)
         return None
-    
+
     pbar.start()
 
-    dname, fname = os.path.split(csvInput) 
+    dname, fname = os.path.split(csvInput)
     dbName = fname[:fname.index('.')] + '.db'
     db_file = out_dir + os.path.sep + dbName
-    
+
     # if this database already exists then delete it
     try:
         os.remove(db_file)
@@ -80,18 +81,21 @@ def analyze(csvInput, delim, level, pbar, out_dir):
             mcID = str(uuid4())  # model component
             adID = str(uuid4())   # adapter
             label = 'The ' + h.replace('_', ' ')
-            data.append((h, label, 'String', None, None, '', '', None, None, True, '', '', '', None, '', mcID, adID))
+            data.append((h, label, 'String', None, None, '', '',
+                         None, None, True, '', '', '', None, '', mcID, adID))
 
     c = conn.cursor()
-    c.executemany("INSERT INTO record VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", data)
+    c.executemany(
+        "INSERT INTO record VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", data)
     conn.commit()
-    
+
     # create the initail data for the model table
     dmID = str(uuid4())   # data model
     entryID = str(uuid4())   # entry
     dataID = str(uuid4())   # data cluster
 
-    data =[ ('S3M Data Model','S3M Data Model for ' + csvInput, 'Copyright 2017, Data Insights, Inc.', 'Data Insights, Inc.', 'http://www.some_url.com', dmID, entryID, dataID)]
+    data = [('S3M Data Model', 'S3M Data Model for ' + csvInput, 'Copyright 2017, Data Insights, Inc.',
+             'Data Insights, Inc.', 'http://www.some_url.com', dmID, entryID, dataID)]
     c.executemany("insert into model values (?,?,?,?,?,?,?,?)", data)
     conn.commit()
     conn.close()
@@ -110,7 +114,6 @@ def analyze(csvInput, delim, level, pbar, out_dir):
                 for h in reader.fieldnames:
                     dataDict[h].append(row[h])
 
-
         # pbar.grid(row=8, column=10, padx=5, pady=5, sticky=tk.W)
         hdrs = dataDict.keys()
         pbar['value'] = 0
@@ -119,7 +122,8 @@ def analyze(csvInput, delim, level, pbar, out_dir):
         typedict = {}
         for h in hdrs:
             pbar['value'] += 1
-            dlist = dataDict[h]  # test each data item from a column. if one is not a type, turn off that type.
+            # test each data item from a column. if one is not a type, turn off that type.
+            dlist = dataDict[h]
             is_int = False
             is_float = False
             is_date = False
@@ -171,7 +175,6 @@ def analyze(csvInput, delim, level, pbar, out_dir):
                 maxval = max(flist)
                 minval = min(flist)
 
-
             if is_int:
                 dt = "Integer"
             elif is_float:
@@ -181,13 +184,12 @@ def analyze(csvInput, delim, level, pbar, out_dir):
             else:
                 dt = "String"
 
-
             # edit the database record for the correct type
             c = conn.cursor()
-            c.execute("""UPDATE record SET datatype = ?, max_val = ?, min_val = ? WHERE header = ? """, (dt, maxval, minval, h))
+            c.execute(
+                """UPDATE record SET datatype = ?, max_val = ?, min_val = ? WHERE header = ? """, (dt, maxval, minval, h))
             conn.commit()
 
         conn.close()
-
 
     return(db_file)
