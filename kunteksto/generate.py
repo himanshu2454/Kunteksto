@@ -5,6 +5,7 @@ For the data index numbers see the list of fields in analyze.py
 """
 import sys
 import os
+from io import StringIO, BytesIO
 import time
 import datetime
 import csv
@@ -747,16 +748,14 @@ def makeData(schema, db_file, theFile, delim, outdir, connRDF, connXML, connJSON
     """
     Create XML and JSON data files and an RDF graph based on the model.
     """
-
-    #  print(os.environ.get('XML_CATALOG_FILES'))
-    
-    schema_doc = etree.parse(schema)
-    
-    modelSchema = etree.XMLSchema(schema_doc)
     
     base = os.path.basename(theFile)
     filePrefix = os.path.splitext(base)[0]
     schemaFile = os.path.basename(schema)
+
+    #  print(os.environ.get('XML_CATALOG_FILES'))
+    schema_doc = etree.parse(schema)
+    modelSchema = etree.XMLSchema(schema_doc)
     
     messagebox.showinfo('Generation', "Generate data for: " + schemaFile + ' using ' + base)
     namespaces = { "https://www.s3model.com/ns/s3m/":"s3m", "http://www.w3.org/2001/XMLSchema-instance":"xsi"}
@@ -782,7 +781,8 @@ def makeData(schema, db_file, theFile, delim, outdir, connRDF, connXML, connJSON
         reader = csv.DictReader(csvfile, delimiter=delim)
         for data in reader:
             file_id = filePrefix + '-' + shortuuid.uuid()
-            xmlStr = '<?xml version="1.0" encoding="UTF-8"?>\n'
+            xmlStr = ''
+            # xmlStr = '<?xml version="1.0" encoding="UTF-8"?>\n'
             rdfStr = '<?xml version="1.0" encoding="UTF-8"?>\n<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"\nxmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"\nxmlns:s3m="https://www.s3model.com/ns/s3m/"\nxmlns:xs="http://www.w3.org/2001/XMLSchema">\n'
             rdfStr += '<rdf:Description rdf:about="' + file_id + '">\n'
             rdfStr += '  <s3m:isInstanceOf rdf:resource="dm-' + model[5].strip() + '"/>\n'
@@ -812,12 +812,11 @@ def makeData(schema, db_file, theFile, delim, outdir, connRDF, connXML, connJSON
             rdfStr += '</rdf:RDF>\n'
             
             # validate the XML data file
-            try:                                              
-                doc = etree.parse(xmlStr)
-                modelSchema.assertValid(doc)                                                 
-            except:                                     
-                file_id += "_INVALID_"
-                print("VALIDATION FAILED: " + xmldir + file_id + '.xml')
+            try:
+                tree = etree.parse(StringIO(xmlStr))
+                modelSchema.assertValid(tree)
+            except etree.DocumentInvalid:
+                file_id = "Invalid_" + file_id
             
             if connXML:
                 connXML.add(file_id + '.xml', xmlStr)

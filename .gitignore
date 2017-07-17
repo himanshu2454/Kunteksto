@@ -8,11 +8,11 @@ __pycache__/
 
 # Kunteksto 
 *.db
-output/*.xml
-output/*.rdf
-output/*.xsd
-output/xml
-output/rdf
+kunteksto/output/rdf/*
+kunteksto/output/json/*
+kunteksto/output/xml/*
+kunteksto/output/*.rdf
+kunteksto/output/*.xsd
 
 misc/
 
