@@ -753,7 +753,6 @@ def makeData(schema, db_file, theFile, delim, outdir, connRDF, connXML, connJSON
     filePrefix = os.path.splitext(base)[0]
     schemaFile = os.path.basename(schema)
 
-    #  print(os.environ.get('XML_CATALOG_FILES'))
     schema_doc = etree.parse(schema)
     modelSchema = etree.XMLSchema(schema_doc)
     
@@ -809,15 +808,23 @@ def makeData(schema, db_file, theFile, delim, outdir, connRDF, connXML, connJSON
             xmlStr += '    </s3m:ms-' + model[7].strip() + '>\n'
             xmlStr += '  </s3m:ms-' + model[6].strip() + '>\n'
             xmlStr += '</s3m:dm-' + model[5].strip() + '>\n'
-            rdfStr += '</rdf:RDF>\n'
             
             # validate the XML data file
             try:
                 tree = etree.parse(StringIO(xmlStr))
                 modelSchema.assertValid(tree)
+                rdfStr += '  <rdf:Description rdf:about="' + file_id + '.xml">\n'
+                rdfStr += '    <rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/DataInstanceValid"/>\n'
+                rdfStr += '  </rdf:Description>\n'
             except etree.DocumentInvalid:
                 file_id = "Invalid_" + file_id
+                rdfStr += '  <rdf:Description rdf:about="' + file_id + '.xml">\n'
+                rdfStr += '    <rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/DataInstanceError"/>\n'
+                rdfStr += '  </rdf:Description>\n'
             
+            rdfStr += '</rdf:RDF>\n'
+
+
             if connXML:
                 connXML.add(file_id + '.xml', xmlStr)
             else:
