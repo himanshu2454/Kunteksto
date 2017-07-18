@@ -13,7 +13,6 @@ import configparser
 from analyze import analyze
 from generate import makeModel, makeData
 
-
 class Translate(tk.Frame):
 
     def __init__(self, parent, *args, **kwargs):
@@ -74,13 +73,14 @@ class Translate(tk.Frame):
         self.analyzeLevel.set(config['KUNTEKSTO']['analyzeLevel'])
         self.outdir = os.getcwd() + '/output/'
         self.sep_type.set(config['KUNTEKSTO']['sepType'])
+        self.version = VERSION
 
         # load the UI
         self.init_gui()
 
     def init_gui(self):
         self.grid(row=0, column=0, sticky=(tk.N, tk.W, tk.E, tk.S))
-        self.parent.title("Kunteksto")
+        self.parent.title("Kunteksto " +self.version)
 
         ttk.Label(self, text="Kunteksto by Data Insights, Inc.").grid(
             row=0, column=0, padx=5, pady=5)
