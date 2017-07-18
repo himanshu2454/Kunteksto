@@ -69,8 +69,6 @@ setup(
                    'Intended Audience :: Science/Research',
                    'Intended Audience :: System Administrators',
                    'Intended Audience :: Telecommunications Industry',
-                   'Intended Audience :: Data Science',
-                   'Intended Audience :: General AI',
                    'License :: OSI Approved :: Apache Software License',
                    'Programming Language :: Python :: 3 :: Only',
                    'Topic :: Scientific/Engineering :: Information Analysis',
