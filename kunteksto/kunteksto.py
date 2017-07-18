@@ -19,6 +19,7 @@ class Translate(tk.Frame):
         ttk.Frame.__init__(self, parent, *args, **kwargs)
         self.seps = [',', ';', ':', '|', '$']
         self.sep_type = tk.StringVar()
+        self.version = tk.StringVar()
         self.infile = '(none selected)'
         self.outDB = ''
         self.model = tk.StringVar()
@@ -73,14 +74,14 @@ class Translate(tk.Frame):
         self.analyzeLevel.set(config['KUNTEKSTO']['analyzeLevel'])
         self.outdir = os.getcwd() + '/output/'
         self.sep_type.set(config['KUNTEKSTO']['sepType'])
-        self.version = VERSION
+        self.version.set(config['KUNTEKSTO']['version'])
 
         # load the UI
         self.init_gui()
 
     def init_gui(self):
         self.grid(row=0, column=0, sticky=(tk.N, tk.W, tk.E, tk.S))
-        self.parent.title("Kunteksto " +self.version)
+        self.parent.title("Kunteksto " + self.version.get())
 
         ttk.Label(self, text="Kunteksto by Data Insights, Inc.").grid(
             row=0, column=0, padx=5, pady=5)

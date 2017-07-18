@@ -1,19 +1,24 @@
-from distutils.core import setup
+from setuptools import setup
 
-__version__ = '1.2.2'
+import configparser
+
+config = configparser.ConfigParser()
+config.read('kunteksto/kunteksto.conf')
+VERSION = config['KUNTEKSTO']['version']
 
 setup(
     name = 'kunteksto',
-  packages = ['kunteksto'],  
-  version = '1.2.2',
-  description = 'The Context tool for your data.',
-  author = 'Timothy W. Cook',
-  author_email = 'tim@datainsights.tech',
-  url = 'https://github.com/DataInsightsInc/Kunteksto',  
-  download_url = 'https://github.com/DataInsightsInc/Kunteksto/archive/1.2.2.tar.gz',  
-  keywords = ['context', 'rdf', 'xml', 'machine learning', 'data-centric', 'semantic interoperability', 'semantics'], 
-  classifiers = [],
-  install_requires=[
+    packages = ['kunteksto'],  
+    version = VERSION,
+    description = 'The Context tool for your data.',
+    author = 'Timothy W. Cook',
+    author_email = 'tim@datainsights.tech',
+    url = 'https://github.com/DataInsightsInc/Kunteksto',  
+    download_url = 'https://github.com/DataInsightsInc/Kunteksto/archive/' + VERSION + '.tar.gz',  
+    keywords = ['context', 'rdf', 'xml', 'machine learning', 'data-centric', 'semantic interoperability', 'semantics'], 
+    tests_require=['pytest',],  
+    setup_requires=['pytest-runner',],  
+    install_requires=[
       'agraph-python==6.1.5',
       'alabaster==0.7.10',
       'async-timeout==1.2.0',
@@ -48,6 +53,27 @@ setup(
       'readline',
       'sqlite',
       'tk',
-      'zlib',      
       ],
+    classifiers = ['Development Status :: 3 - Alpha',
+                   'Intended Audience :: Customer Service',
+                   'Intended Audience :: Developers',
+                   'Intended Audience :: Education',
+                   'Intended Audience :: End Users/Desktop',
+                   'Intended Audience :: Financial and Insurance Industry',
+                   'Intended Audience :: Healthcare Industry',
+                   'Intended Audience :: Information Technology',
+                   'Intended Audience :: Legal Industry',
+                   'Intended Audience :: Manufacturing',
+                   'Intended Audience :: Other Audience',
+                   'Intended Audience :: Religion',
+                   'Intended Audience :: Science/Research',
+                   'Intended Audience :: System Administrators',
+                   'Intended Audience :: Telecommunications Industry',
+                   'Intended Audience :: Data Science',
+                   'Intended Audience :: General AI',
+                   'License :: OSI Approved :: Apache Software License',
+                   'Programming Language :: Python :: 3 :: Only',
+                   'Topic :: Scientific/Engineering :: Information Analysis',
+                   ],
+
 )
