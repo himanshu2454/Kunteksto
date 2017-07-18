@@ -10,14 +10,23 @@ setup(
     name = 'kunteksto',
     packages = ['kunteksto'],  
     version = VERSION,
-    description = 'The Context tool for your data.',
+    description = 'The Context tool for your data. This is your tool to enter the emerging data-centric, model-first approach to information management. ',
+    long_description = """Kunteksto is the tool for helping data creators and data users to translate their simple CSV formatted data files into the semantically enhanced format of a S3Model data model. 
+    This provides a path for existing data to be used in conjuntion with the emerging *data-centric, model first* approach in analysis, general artificial intelligence and decision support systems. 
+    It also enables expanded semantics so that secondary users can better determine if the data is appropriate for their needs. 
+    
+    The S3Model approach opens the door for the change to a data-centric world as opposed to the current application-centric one we have now. 
+    This new world will allow automatic interoperability avoiding the data quality issues created through data cleaning and massaging. 
+    The importance of this capability and improved data quality is discussed in other `S3Model <https://datainsights.tech/S3Model>`_ documentation and references. 
+""",
     author = 'Timothy W. Cook',
     author_email = 'tim@datainsights.tech',
-    url = 'https://github.com/DataInsightsInc/Kunteksto',  
+    url = 'https://datainsights.tech/Kunteksto/',  
     download_url = 'https://github.com/DataInsightsInc/Kunteksto/archive/' + VERSION + '.tar.gz',  
-    keywords = ['context', 'rdf', 'xml', 'machine learning', 'data-centric', 'semantic interoperability', 'semantics'], 
+    keywords = ['context rdf xml machine learning data-centric semantic interoperability semantics'], 
     tests_require=['pytest',],  
     setup_requires=['pytest-runner',],  
+    python_requires='>=3.6',
     install_requires=[
       'agraph-python==6.1.5',
       'alabaster==0.7.10',
@@ -49,10 +58,6 @@ setup(
       'uvloop==0.8.0',
       'xmltodict==0.10.2',
       'yarl==0.9.8',
-      'openssl',
-      'readline',
-      'sqlite',
-      'tk',
       ],
     classifiers = ['Development Status :: 3 - Alpha',
                    'Intended Audience :: Customer Service',

@@ -5,7 +5,7 @@ Introduction and Installation
 Purpose
 =======
 
-**Kunteksto** [#f1]_ is a tool for helping data creators and data users to translate their simple CSV formatted data files into the semantically enhanced format of a S3M Data Model. This provides a path for data to be used in conjuntion with other S3Model data in analysis and decision support systems. It also enables expanded semantics so that secondary users can better determine if the data is appropriate for their needs. The S3Model approach opens the door for the change to a data-centric world as opposed to the current application-centric one we have now. This new world will allow automatic interoperability without the need for data cleaning and massaging. 
+**Kunteksto** [#f1]_ is a tool for helping data creators and data users to translate their simple CSV formatted data files into the semantically enhanced format of a S3Model data model. This provides a path for existing data to be used in conjuntion with the emerging *data-centric, model first* approach in analysis, general artificial intelligence and decision support systems. It also enables expanded semantics so that secondary users can better determine if the data is appropriate for their needs. The S3Model approach opens the door for the change to a data-centric world as opposed to the current application-centric one we have now. This new world will allow automatic interoperability avoiding the data quality issues created through data cleaning and massaging. 
 
 The importance of this capability and improved data quality is discussed in other `S3Model <https://datainsights.tech/S3Model>`_ documentation and references. 
 
@@ -13,49 +13,31 @@ The importance of this capability and improved data quality is discussed in othe
 Requirements
 ============
 
-- Python 3.5 or later.
+- Python 3.6 or later. See: https://www.python.org/downloads/ 
 - Installation of SQLiteBrowser. See: http://sqlitebrowser.org/ 
-- The requirements.txt file contains the Python requirements and can be installed (see below) using the *pip* command.
-- A copy of the S3Model Reference Model schema s3model_3_0_0.xsd 
-
 
 .. _install:
 
 Installation
 ============
 
-Install Python 3.5 or later and SQLiteBrowser. Then setup a virtual environment. 
-
-If you are using Anaconda you can create a new environment using:
-
-*conda create --name Kunteksto python=3* 
-
-Activate it using *source activate Kunteksto* then skip to number 4. 
-
-Otherwise use pyenv as shown below.   
-
-See `this StackOverflow post <https://stackoverflow.com/questions/41573587/what-is-the-difference-between-venv-pyvenv-pyenv-virtualenv-virtualenvwrappe>`_ about the various environment options for Python 3.x 
-
 Linux
 -----
 
-	#. $ pyvenv --python=python3 ~/Kunteksto
-	
-	#. $ cd ~/Kunteksto
-	
-	#. $ source bin/activate
-	
-	#. $ wget https://github.com/DataInsightsInc/Kunteksto/archive/1.2.0.tar.gz
-	
-	#. $ tar -xzf Kunteksto-1.2.0.tar.gz 
-	
-	#. $ cd Kunteksto-1.2.0
-	
-	#. $ pip install -r requirements.txt 
+Install Python and SQLiteBrowser as directed by the links above. 
 
-	#. Using your favorite text editor, open tradukisto.conf (Edit the path for the SQLiteBrowser executable if it is different on your system. For now you can leave the other options as defaults. Save & exit.)
-	
-	#. $ python kunteksto.py
+Follow the instructions for your platform for lxml installation. See: http://lxml.de/installation.html Because the process can even vary across versions of operating systems, you may need this resource as well: https://stackoverflow.com/search?q=install+lxml 
+
+Now that that is settled.  The rest is easy.  Just create a virtual environment for Python 3.6 or later, using your favorite tool; conda, virtualenv, etc. 
+
+Download and extract the latest release of Kunteksto from GitHub https://github.com/DataInsightsInc/Kunteksto/releases
+
+Activate your virtual environment and navigate to the versioned directory (where you see setup.py) you extracted. For example Kunteksto-1.2.3 and then run:
+
+python setup.py install 
+
+After several minutes of installing all the cool stuff, you'll be ready to navigate to the 'kunteksto' directory and begin the tutorial. 
+
 
 	Go to the :ref:`tutor` 
 
@@ -63,13 +45,14 @@ Linux
 Windows
 -------
 
-(coming soon)
-
+Details coming soon. However, if you are a power user you can probably work it out from the Linux instructions.
+Just install the pre-requisites and then run *python setup.py install* in a virtual environment.
 
 Mac OSX
 -------
 
-(coming soon)
+Details coming soon. However, if you are a power user you can probably work it out from the Linux instructions.
+Just install the pre-requisites and then run *python setup.py install* in a virtual environment.
 
 
 .. rubric:: Footnotes

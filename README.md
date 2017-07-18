@@ -1,6 +1,6 @@
 # Kunteksto
 
-The Context tool for your data.
+The Context tool for your data. This is your tool to enter the emerging data-centric, model-first approach to information management. 
 
 Based on S3M technology - "Esperanto for Data". 
 
@@ -11,5 +11,10 @@ The data science world will  be amazed at how awesome your data and the analysis
 What is 'Context' for your data?
 
 It is the combination of ontological, temporal and spatial semantics that describes the deeper meaning of your data allowing you to share 'information' instead of just 'data'.
+
+# Installation
+
+See the instructions in the documentation or online at https://datainsights.tech/Kunteksto/index.html
+
 
 

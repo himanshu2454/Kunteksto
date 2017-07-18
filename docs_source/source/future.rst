@@ -11,9 +11,9 @@ The Big Data age is well underway and will not be slowing down in the future. Cu
 
 **Computable Semantic Interoperability** is the ability for a machine to decide if data is appropriate for use in a specific context. The rules can be established using any of the many existing rule based approaches from SPARQL queries to complex Rules Engines. These approaches are limited to a context because of the way we currrently model data.  In other words, the rules are specific to the data model being evaluated becaue the semantics are well known inside this closed system. 
 
-This ability of the machine to decide can only happen when it has access to the full semantics of the original data capture. These semantics are usually locked up in the source code and the database structure of the originating application. If there existed a standard, core data model for all domains, for all time; then it would be possible to build reusable rules based on reusable data. Now this model exists. `S3Model <https://datainsights.tech/S3Model>`_is the foundation of the new data-centric world. This new world does require a new paradigm in how data modeling is performed. The change from application-centric to data-centric is the new approach to information management and analysis.
+This ability of the machine to decide can only happen when it has access to the full semantics of the original data capture. These semantics are usually locked up in the source code and the database structure of the originating application. If there existed a standard, core data model for all domains, for all time; then it would be possible to build reusable rules based on reusable data. Now this model exists. `S3Model <https://datainsights.tech/S3Model>`_ is the foundation of the new data-centric world. This new world does require a new paradigm in how data modeling is performed. The change from application-centric to data-centric is the new approach to information management and analysis.
 
 
 .. raw:: html
 
-  <p><a href="mailto:tim@datainsights.tech">Contact Us</a>  for information.</p>
+  <p><a href="mailto:tim@datainsights.tech">Contact Us</a> for information.</p>
