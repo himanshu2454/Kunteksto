@@ -1,5 +1,9 @@
 # Kunteksto
 
+The clio branch is a Command Line Only implementation to see if it will be more productive in a data science pipeline. 
+
+=======================================================
+
 The Context tool for your data. This is your tool to enter the emerging data-centric, model-first approach to information management. 
 
 Based on S3M technology - "Esperanto for Data". 
