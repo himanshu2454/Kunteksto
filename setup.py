@@ -15,8 +15,6 @@ setup(
   classifiers = [],
   install_requires=[
       'agraph-python==6.1.5',
-      'aiogremlin==3.2.4',
-      'aiohttp==1.3.3',
       'alabaster==0.7.10',
       'async-timeout==1.2.0',
       'Babel==2.4.0',
@@ -46,5 +44,10 @@ setup(
       'uvloop==0.8.0',
       'xmltodict==0.10.2',
       'yarl==0.9.8',
+      'openssl',
+      'readline',
+      'sqlite',
+      'tk',
+      'zlib',      
       ],
 )

@@ -21,3 +21,12 @@ misc/
 # Sphinx
 docs_source/build/*
 docs/_sources/*
+
+
+# Setuptools distribution folder.
+/dist/
+
+# Python egg metadata, regenerated from source files by setuptools.
+/*.egg-info
+
+MANIFEST
