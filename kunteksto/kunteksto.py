@@ -4,258 +4,172 @@ Main entry point for the Kunteksto application.
 import sys
 import os
 from subprocess import run
-import tkinter as tk
-import tkinter.ttk as ttk
-from tkinter import filedialog
-from tkinter import messagebox
+import click
 import configparser
 
 from analyze import analyze
 from generate import makeModel, makeData
 
-class Translate(tk.Frame):
+@click.command()
+@click.option('--mode', type=click.Choice(['analyze', 'genmodel', 'gendata', 'editdb', 'all']))
+@click.option('--infile', help='Full path and filename of the input CSV file.')
+@click.option('--outdir', help='Full path to the output directory for writing the database and other files.')
+def kunteksto(mode, infile, outdir):
+    
+    # Setup config info
+    config = configparser.ConfigParser()
+    config.read('kunteksto.conf')
+    sqlbrow = config['SQLITEBROWSER']['path']
+    # get the RDF Store parameters.
+    agraphStatus = config['ALLEGROGRAPH']['status']
+    agraphHost = config['ALLEGROGRAPH']['host']
+    agraphPort = config['ALLEGROGRAPH']['port']
+    agraphRepo = config['ALLEGROGRAPH']['repo']
+    agraphUser = config['ALLEGROGRAPH']['user']
+    agraphPW = config['ALLEGROGRAPH']['pw']
 
-    def __init__(self, parent, *args, **kwargs):
-        ttk.Frame.__init__(self, parent, *args, **kwargs)
-        self.seps = [',', ';', ':', '|', '$']
-        self.sep_type = tk.StringVar()
-        self.version = tk.StringVar()
-        self.infile = '(none selected)'
-        self.outDB = ''
-        self.model = tk.StringVar()
-        self.parent = parent
-        self.analyzeLevel = tk.StringVar()
-        self.genXML = tk.StringVar()
-        self.genRDF = tk.StringVar()
-        self.genJSON = tk.StringVar()
+    stardogStatus = config['STARDOG']['status']
 
-        # Setup config info
-        config = configparser.ConfigParser()
-        config.read('kunteksto.conf')
-        self.sqlbrow = config['SQLITEBROWSER']['path']
-        # get the RDF Store parameters.
-        self.agraphStatus = config['ALLEGROGRAPH']['status']
-        self.agraphHost = config['ALLEGROGRAPH']['host']
-        self.agraphPort = config['ALLEGROGRAPH']['port']
-        self.agraphRepo = config['ALLEGROGRAPH']['repo']
-        self.agraphUser = config['ALLEGROGRAPH']['user']
-        self.agraphPW = config['ALLEGROGRAPH']['pw']
+    blazegraphStatus = config['BLAZEGRAPH']['status']
 
-        self.stardogStatus = config['STARDOG']['status']
+    graphdbStatus = config['GRAPHDB']['status']
 
-        self.blazegraphStatus = config['BLAZEGRAPH']['status']
+    # get the XML DB parameters.
+    basexStatus = config['BASEX']['status']
+    basexHost = config['BASEX']['host']
+    basexPort = config['BASEX']['port']
+    basexDBName = config['BASEX']['dbname']
+    basexUser = config['BASEX']['user']
+    basexPW = config['BASEX']['pw']
 
-        self.graphdbStatus = config['GRAPHDB']['status']
+    exisdbStatus = config['EXISTDB']['status']
 
-        # get the XML DB parameters.
-        self.basexStatus = config['BASEX']['status']
-        self.basexHost = config['BASEX']['host']
-        self.basexPort = config['BASEX']['port']
-        self.basexDBName = config['BASEX']['dbname']
-        self.basexUser = config['BASEX']['user']
-        self.basexPW = config['BASEX']['pw']
+    # get the JSON DB parameters.
+    mongoStatus = config['MONGODB']['status']
+    mongoHost = config['MONGODB']['host']
+    mongoPort = config['MONGODB']['port']
+    mongoDBName = config['MONGODB']['dbname']
+    mongoUser = config['MONGODB']['user']
+    mongoPW = config['MONGODB']['pw']
 
-        self.exisdbStatus = config['EXISTDB']['status']
+    couchStatus = config['COUCHDB']['status']
 
-        # get the JSON DB parameters.
-        self.mongoStatus = config['MONGODB']['status']
-        self.mongoHost = config['MONGODB']['host']
-        self.mongoPort = config['MONGODB']['port']
-        self.mongoDBName = config['MONGODB']['dbname']
-        self.mongoUser = config['MONGODB']['user']
-        self.mongoPW = config['MONGODB']['pw']
+    genXML = config['KUNTEKSTO']['xml']
+    genRDF = config['KUNTEKSTO']['rdf']
+    genJSON = config['KUNTEKSTO']['json']
 
-        self.couchStatus = config['COUCHDB']['status']
+    analyzeLevel = config['KUNTEKSTO']['analyzeLevel']
+    outdir = os.getcwd() + '/output/'
+    sep_type = config['KUNTEKSTO']['sepType']
+    version = config['KUNTEKSTO']['version']
 
-        self.genXML.set(config['KUNTEKSTO']['xml'])
-        self.genRDF.set(config['KUNTEKSTO']['rdf'])
-        self.genJSON.set(config['KUNTEKSTO']['json'])
+    if not infile:
+        print("You must supply a readable CSV input file.")
+        exit(code=1)
 
-        self.analyzeLevel.set(config['KUNTEKSTO']['analyzeLevel'])
-        self.outdir = os.getcwd() + '/output/'
-        self.sep_type.set(config['KUNTEKSTO']['sepType'])
-        self.version.set(config['KUNTEKSTO']['version'])
+    if not outdir:
+        print("You must supply a writable output directory.")
+        exit(code=1)
 
-        # load the UI
-        self.init_gui()
+    if not mode:
+        print("You must supply a mode.")
+        exit(code=1)
+    elif mode == 'analyze':
+        doanalyze(infile, outdir, config)
+        
+    return
 
-    def init_gui(self):
-        self.grid(row=0, column=0, sticky=(tk.N, tk.W, tk.E, tk.S))
-        self.parent.title("Kunteksto " + self.version.get())
-
-        ttk.Label(self, text="Kunteksto by Data Insights, Inc.").grid(
-            row=0, column=0, padx=5, pady=5)
-
-        ttk.Button(self, text="Select Input CSV", command=self.opencsv).grid(
-            row=1, column=0, padx=5, pady=5, sticky=tk.W)
-        ttk.Label(self, text=self.infile).grid(
-            row=1, column=10, padx=5, pady=5, sticky=tk.W)
-
-        ttk.Label(self, text="CSV separator: ").grid(
-            row=3, column=0, padx=5, pady=5, sticky=tk.W)
-        ttk.Combobox(self, values=self.seps, textvariable=self.sep_type, justify="center",
-                     width=1, state='readonly').grid(row=3, column=10, padx=5, pady=5, sticky=tk.W)
-
-        #ttk.Button(self, text="Select Output Directory", command=self.outputsel).grid(row=4, column=0, padx=5, pady=5, sticky=tk.W)
-
-        #ttk.Label(self, text=self.outdir).grid(row=5, column=0, padx=5, pady=5, sticky=tk.W)
-
-        ttk.Button(self, text="Analyze CSV", command=self.doanalyze).grid(
-            row=6, column=0, padx=5, pady=5, sticky=tk.W)
-
-        ttk.Checkbutton(self, text='Full Analysis', variable=self.analyzeLevel, onvalue='Full',
-                        offvalue='Simple').grid(row=6, column=10, padx=5, pady=5, sticky=tk.W)
-        self.msgAnalyze = tk.StringVar()
-        self.msgAnalyze.set('')
-        ttk.Label(self, textvariable=self.msgAnalyze).grid(
-            row=7, column=10, padx=5, pady=5, sticky=tk.W)
-
-        ttk.Button(self, text="Generate Model", command=self.modelgen).grid(
-            row=9, column=0, padx=5, pady=5, sticky=tk.W)
-        ttk.Button(self, text="Re-Edit Database", command=self.editdb).grid(row=9,
-                                                                            column=10, padx=5, pady=5, sticky=tk.W)
-        ttk.Label(self, textvariable=self.model).grid(
-            row=10, column=0, padx=5, pady=5, sticky=tk.W)
-
-        ttk.Label(self, text="Select data format(s) to generate:").grid(
-            row=12, column=0, padx=5, pady=5)
-        ttk.Checkbutton(self, text='XML', variable=self.genXML, onvalue='True',
-                        offvalue='False').grid(row=13, column=0, padx=5, pady=5, sticky=tk.W)
-        ttk.Checkbutton(self, text='RDF', variable=self.genRDF, onvalue='True',
-                        offvalue='False').grid(row=13, column=10, padx=5, pady=5, sticky=tk.W)
-        ttk.Checkbutton(self, text='JSON', variable=self.genJSON, onvalue='True',
-                        offvalue='False').grid(row=13, column=20, padx=5, pady=5, sticky=tk.W)
-
-        ttk.Button(self, text="Generate Data", command=self.datagen).grid(
-            row=14, column=0, padx=5, pady=5, sticky=tk.W)
-
-        ttk.Button(self, text="Quit", command=self.on_quit).grid(
-            row=15, column=0, padx=5, pady=5, sticky=tk.W)
-
-    def on_quit(self):
-        quit()
-
-    def opencsv(self):
-        self.infile = filedialog.askopenfilename()
-        ttk.Label(self, text=self.infile).grid(
-            row=2, column=10, padx=5, pady=5, sticky=tk.W)
-        return
-
-    def doanalyze(self):
-        if self.infile:
-            pbar = ttk.Progressbar(
-                self, orient=tk.HORIZONTAL, length=200, mode='determinate')
-            self.outDB = analyze(self.infile, self.sep_type.get(
-            ), self.analyzeLevel.get(), pbar, self.outdir)
-            if self.outDB:
-                self.msgAnalyze.set('Created: ' + self.outDB)
-                run([self.sqlbrow,  self.outDB])
-        return
-
-    def outputsel(self):
-        if self.infile:
-            dir_opt = {}
-            dir_opt['initialdir'] = './output'
-            dir_opt['mustexist'] = True
-            dir_opt['parent'] = self
-            dir_opt['title'] = 'Select a data output directory'
-            self.outdir = filedialog.askdirectory(**dir_opt)
-            ttk.Label(self, text=self.outdir).grid(
-                row=5, column=0, padx=5, pady=5, sticky=tk.W)
+def doanalyze(infile, outdir, config):
+    if infile:
+        outDB = analyze(infile, config['KUNTEKSTO']['sepType'], config['KUNTEKSTO']['analyzeLevel'], outdir)
+        if outDB:
+            print('Created: ' + outDB)
+            run([config['SQLITEBROWSER']['path'],  outDB])
         else:
-            messagebox.showerror(
-                'Procedure Error', 'You must first select an input file.')
+            print("There was an error creating a database in " + outdir)
+    return
 
-        return
+def modelgen():
+    # generate the model
+    if outDB and not outdir == '(none selected)':
+        modelName = makeModel(outDB, outdir)
+        if modelName:
+            model = modelName
+    else:
+        print("Missing model or directory.")
+    
+    return
 
-    def modelgen(self):
-        # generate the model
-        if self.outDB and not self.outdir == '(none selected)':
-            modelName = makeModel(self.outDB, self.outdir)
-            if modelName:
-                self.model.set(modelName)
-        else:
-            messagebox.showerror(
-                'Procedure Error', 'Missing DB file or no selected output directory.')
-
-        return
-
-    def editdb(self):
-        if self.outDB:
-            run([self.sqlbrow,  self.outDB])
-        return
-
-    def datagen(self):
-        # open a connection to the RDF store if one is defined.
-        if self.genRDF:
-            if self.agraphStatus == "ACTIVE":
-                try:
-                    from franz.openrdf.connect import ag_connect
-                    connRDF = ag_connect(self.agraphRepo, host=self.agraphHost,
-                                         port=self.agraphPort,  user=self.agraphUser, password=self.agraphPW)
-                except:
-                    connRDF = None
-                    messagebox.showerror(
-                        'RDF Connection Error', 'Could not create connection to Allegrograph.')
-
-            else:
+def datagen():
+    # open a connection to the RDF store if one is defined.
+    if genRDF:
+        if agraphStatus == "ACTIVE":
+            try:
+                from franz.openrdf.connect import ag_connect
+                connRDF = ag_connect(agraphRepo, host=agraphHost,
+                                     port=agraphPort,  user=agraphUser, password=agraphPW)
+            except:
                 connRDF = None
-
-        # open a connection to the XML DB if one is defined.
-        if self.genXML:
-            if self.basexStatus == "ACTIVE":
-                try:
-                    import BaseXClient
-                    connXML = BaseXClient.Session(self.basexHost, int(
-                        self.basexPort), self.basexUser, self.basexPW)
-                    connXML.execute("create db " + self.basexDBName)
-                except:
-                    connXML = None
-                    messagebox.showerror(
-                        'XML Connection Error', 'Could not create connection to BaseX.')
-
-            else:
-                connXML = None
-
-        # open a connection to the JSON DB if one is defined.
-        if self.genJSON:
-            if self.mongoStatus == "ACTIVE":
-                try:
-                    from pymongo import MongoClient
-                    # default MongoDB has no authentication requirements.
-                    client = MongoClient(self.mongoHost, int(self.mongoPort))
-                    connJSON = client[self.mongoDBName]
-                except:
-                    connJSON = None
-                    messagebox.showerror(
-                        'JSON Connection Error', 'Could not create connection to MongoDB.')
-
-            else:
-                connJSON = None
-
-        # generate the data
-        if self.model.get() and not self.outdir == '(none selected)':
-            makeData(self.model.get(), self.outDB, self.infile,
-                     self.sep_type.get(), self.outdir, connRDF, connXML, connJSON)
-
-            if connRDF:
-                connRDF.close()
-            if connXML:
-                connXML.close()
-            messagebox.showinfo('Data Generation', 'Completed.')
+                print(
+                    'RDF Connection Error', 'Could not create connection to Allegrograph.')
 
         else:
-            messagebox.showerror(
-                'Procedure Error', 'Missing model DB or no selected output directory.')
+            connRDF = None
 
-        return
+    # open a connection to the XML DB if one is defined.
+    if genXML:
+        if basexStatus == "ACTIVE":
+            try:
+                import BaseXClient
+                connXML = BaseXClient.Session(basexHost, int(
+                    basexPort), basexUser, basexPW)
+                connXML.execute("create db " + basexDBName)
+            except:
+                connXML = None
+                print(
+                    'XML Connection Error', 'Could not create connection to BaseX.')
+
+        else:
+            connXML = None
+
+    # open a connection to the JSON DB if one is defined.
+    if genJSON:
+        if mongoStatus == "ACTIVE":
+            try:
+                from pymongo import MongoClient
+                # default MongoDB has no authentication requirements.
+                client = MongoClient(mongoHost, int(mongoPort))
+                connJSON = client[mongoDBName]
+            except:
+                connJSON = None
+                print(
+                    'JSON Connection Error', 'Could not create connection to MongoDB.')
+
+        else:
+            connJSON = None
+
+    # generate the data
+    if model and not outdir == '(none selected)':
+        makeData(model, outDB, infile,
+                 sep_type, outdir, connRDF, connXML, connJSON)
+
+        if connRDF:
+            connRDF.close()
+        if connXML:
+            connXML.close()
+        print('Data Generation', 'Completed.')
+
+    else:
+        print(
+            'Procedure Error', 'Missing model DB or no selected output directory.')
+
+    return
 
 
 if __name__ == '__main__':
     os.environ['XML_CATALOG_FILES'] = 'Kunteksto_catalog.xml'
     print('\n Kunteksto is running ...\n\n')
-    root = tk.Tk()
-    root.geometry("800x800")
-    root.configure()
-    Translate(parent=root)
-    root.mainloop()
+    kunteksto()
+    
+    print('\n Kunteksto exiting ...\n\n')
+    exit()
