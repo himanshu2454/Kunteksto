@@ -8,7 +8,6 @@ VERSION = config['KUNTEKSTO']['version']
 
 setup(
     name = 'kunteksto',
-    packages = ['kunteksto'],  
     version = VERSION,
     description = 'The Context tool for your data. This is your tool to enter the emerging data-centric, model-first approach to information management. ',
     long_description = """Kunteksto is the tool for helping data creators and data users to translate their simple CSV formatted data files into the semantically enhanced format of a S3Model data model. 
