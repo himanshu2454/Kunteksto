@@ -3,7 +3,7 @@ from setuptools import setup
 import configparser
 
 config = configparser.ConfigParser()
-config.read('kunteksto/kunteksto.conf')
+config.read('kunteksto.conf')
 VERSION = config['KUNTEKSTO']['version']
 
 setup(
@@ -59,6 +59,10 @@ setup(
       'xmltodict==0.10.2',
       'yarl==0.9.8',
       ],
+    entry_points='''
+            [console_scripts]
+            kunteksto=kunteksto:kunteksto
+        ''',    
     classifiers = ['Development Status :: 3 - Alpha',
                    'Intended Audience :: Customer Service',
                    'Intended Audience :: Developers',

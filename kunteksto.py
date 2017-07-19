@@ -47,7 +47,7 @@ def kunteksto(mode, infile, outdir, delim, analyzelevel):
         run([config['SQLITEBROWSER']['cmd'],  outDB])
         modelName = makeModel(outDB, outdir)
         datagen(modelName, outDB, infile, delim, outdir, config)
-        
+
     elif mode == 'generate':
         print("This will generate a new model and data from an existing DB. Not yet implemented.")
         
