@@ -10,7 +10,6 @@ import time
 import datetime
 import csv
 import sqlite3
-import tkinter as tk
 from uuid import uuid4
 from collections import OrderedDict
 from lxml import etree
@@ -18,7 +17,6 @@ import json
 import xmltodict
 import shortuuid
 import iso8601
-from tkinter import messagebox
 
 # RDF storage imports
 from franz.openrdf.rio.rdfformat import RDFFormat
@@ -800,7 +798,7 @@ def makeModel(db_file, outdir):
     try:
         xmlschema_doc = etree.parse(model)
     except:
-        messagebox.showerror(
+        print(
             'Model Error', "There was an error in generating the schema. Please re-edit the database and look for errors. Probably undefined namespaces or improperly formatted predicate-object pair.")
         return None
 
@@ -940,20 +938,19 @@ def rdfString(row, data):
     return(rstr)
 
 
-def makeData(schema, db_file, theFile, delim, outdir, connRDF, connXML, connJSON):
+def makeData(schema, db_file, infile, delim, outdir, connRDF, connXML, connJSON):
     """
     Create XML and JSON data files and an RDF graph based on the model.
     """
 
-    base = os.path.basename(theFile)
+    base = os.path.basename(infile)
     filePrefix = os.path.splitext(base)[0]
     schemaFile = os.path.basename(schema)
 
     schema_doc = etree.parse(schema)
     modelSchema = etree.XMLSchema(schema_doc)
 
-    messagebox.showinfo('Generation', "Generate data for: " +
-                        schemaFile + ' using ' + base)
+    print('Generation', "Generate data for: " + schemaFile + ' using ' + base)
     namespaces = {"https://www.s3model.com/ns/s3m/": "s3m",
                   "http://www.w3.org/2001/XMLSchema-instance": "xsi"}
     xmldir = outdir + '/xml/'
@@ -974,7 +971,7 @@ def makeData(schema, db_file, theFile, delim, outdir, connRDF, connXML, connJSON
 
     # open a connection to the RDF Store if defined.
 
-    with open(theFile) as csvfile:
+    with open(infile) as csvfile:
         reader = csv.DictReader(csvfile, delimiter=delim)
         for data in reader:
             file_id = filePrefix + '-' + shortuuid.uuid()

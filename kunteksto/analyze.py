@@ -55,7 +55,7 @@ def analyze(csvInput, delim, level, out_dir):
     dname, fname = os.path.split(csvInput)
     dbName = fname[:fname.index('.')] + '.db'
     db_file = out_dir + os.path.sep + dbName
-
+    
     # if this database already exists then delete it
     try:
         os.remove(db_file)
@@ -217,7 +217,7 @@ if __name__ == '__main__':
     
     print("Created: " + dbFile)
     
-    run([config['SQLITEBROWSER']['path'], dbFile])
+    run([config['SQLITEBROWSER']['cmd'], dbFile])
     
     print("\n Now generate your models and data with the Kunteksto generator.\n")
     exit(code=0)
