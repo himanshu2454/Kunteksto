@@ -32,6 +32,7 @@ setup(
       'async-timeout==1.2.0',
       'Babel==2.4.0',
       'chardet==3.0.2',
+      'click==6.7',
       'Cython==0.25.2',
       'docutils==0.13.1',
       'future==0.16.0',
