@@ -3,12 +3,11 @@ from setuptools import setup
 import configparser
 
 config = configparser.ConfigParser()
-config.read('kunteksto/kunteksto.conf')
+config.read('kunteksto.conf')
 VERSION = config['KUNTEKSTO']['version']
 
 setup(
     name = 'kunteksto',
-    packages = ['kunteksto'],  
     version = VERSION,
     description = 'The Context tool for your data. This is your tool to enter the emerging data-centric, model-first approach to information management. ',
     long_description = """Kunteksto is the tool for helping data creators and data users to translate their simple CSV formatted data files into the semantically enhanced format of a S3Model data model. 
@@ -33,6 +32,7 @@ setup(
       'async-timeout==1.2.0',
       'Babel==2.4.0',
       'chardet==3.0.2',
+      'click==6.7',
       'Cython==0.25.2',
       'docutils==0.13.1',
       'future==0.16.0',
@@ -59,6 +59,10 @@ setup(
       'xmltodict==0.10.2',
       'yarl==0.9.8',
       ],
+    entry_points='''
+            [console_scripts]
+            kunteksto=kunteksto:kunteksto
+        ''',    
     classifiers = ['Development Status :: 3 - Alpha',
                    'Intended Audience :: Customer Service',
                    'Intended Audience :: Developers',

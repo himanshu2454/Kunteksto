@@ -38,29 +38,24 @@ import os
 import time
 import csv
 import sqlite3
-import tkinter as tk
-from tkinter import messagebox
 
 from uuid import uuid4
 from collections import OrderedDict
 import iso8601
+import configparser
+import argparse
+from subprocess import run
 
-
-def analyze(csvInput, delim, level, pbar, out_dir):
+def analyze(csvInput, delim, level, out_dir):
     """
     Load and analyze the CSV file.
     Create a database used to describe the data.
     """
-    if csvInput == '(none selected)':
-        messagebox.showerror('Procedure Error', 'CSV Selected: ' + csvInput)
-        return None
-
-    pbar.start()
 
     dname, fname = os.path.split(csvInput)
     dbName = fname[:fname.index('.')] + '.db'
     db_file = out_dir + os.path.sep + dbName
-
+    
     # if this database already exists then delete it
     try:
         os.remove(db_file)
@@ -116,12 +111,9 @@ def analyze(csvInput, delim, level, pbar, out_dir):
 
         # pbar.grid(row=8, column=10, padx=5, pady=5, sticky=tk.W)
         hdrs = dataDict.keys()
-        pbar['value'] = 0
-        pbar['maximum'] = len(hdrs)
 
         typedict = {}
         for h in hdrs:
-            pbar['value'] += 1
             # test each data item from a column. if one is not a type, turn off that type.
             dlist = dataDict[h]
             is_int = False
@@ -193,3 +185,40 @@ def analyze(csvInput, delim, level, pbar, out_dir):
         conn.close()
 
     return(db_file)
+
+
+if __name__ == '__main__':
+    os.environ['XML_CATALOG_FILES'] = 'Kunteksto_catalog.xml'
+    print('\n Kunteksto analyze is running ...\n\n')
+    # Setup config info
+    config = configparser.ConfigParser()
+    config.read('kunteksto.conf')
+    delim = config['KUNTEKSTO']['sepType']
+    level = config['KUNTEKSTO']['analyzeLevel']
+    
+    parser = argparse.ArgumentParser()
+    parser.add_argument("csv", type=str, help="The input CSV file to analyze.")
+    parser.add_argument("out", type=str, help="The output directory to store the database, models and data. Do not include a trailing slash.")
+    parser.description = "The CSV must be readable and the ouput dir be writable by the user executing this program."
+    args = parser.parse_args()
+    if args.csv:
+        csvInput = args.csv
+    else:
+        print("\nCSV Input is required.\n")
+        exit()
+
+    if args.out:
+        out_dir = args.out
+    else:
+        print("\nOutput directory is required.\n")
+        exit()
+
+    dbFile = analyze(csvInput, delim, level, out_dir)
+    
+    print("Created: " + dbFile)
+    
+    run([config['SQLITEBROWSER']['cmd'], dbFile])
+    
+    print("\n Now generate your models and data with the Kunteksto generator.\n")
+    exit(code=0)
+    
