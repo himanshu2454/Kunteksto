@@ -11,11 +11,11 @@ from analyze import analyze
 from generate import makeModel, makeData
 
 @click.command()
-@click.option('--mode', type=click.Choice(['gendata', 'editdb', 'all']), prompt=True)
-@click.option('--infile', help='Full path and filename of the input CSV file.', prompt=True)
-@click.option('--outdir', help='Full path to the output directory for writing the database and other files. Overrides the config file value.')
-@click.option('--delim', type=click.Choice([',', ';', ':', '|', '$']), help=' Overrides the config file value.')
-@click.option('--analyzelevel', type=click.Choice(['simple', 'full']), help=' Overrides the config file value.')
+@click.option('--mode', '-m', type=click.Choice(['all', 'editdb', 'generate']),help="See the documentation. If you don't know then use: all", prompt=True)
+@click.option('--infile', '-i', help='Full path and filename of the input CSV file.', prompt=True)
+@click.option('--outdir', '-o', help='Full path to the output directory for writing the database and other files. Overrides the config file default value.')
+@click.option('--delim', '-d', type=click.Choice([',', ';', ':', '|', '$']), help=' Overrides the config file default value.')
+@click.option('--analyzelevel', '-a', type=click.Choice(['simple', 'full']), help=' Overrides the config file default value.')
 def kunteksto(mode, infile, outdir, delim, analyzelevel):
     
     # Setup config info
@@ -48,8 +48,8 @@ def kunteksto(mode, infile, outdir, delim, analyzelevel):
         modelName = makeModel(outDB, outdir)
         datagen(modelName, outDB, infile, delim, outdir, config)
         
-    elif mode == 'gendata':
-        print("Need enough information to get the CSV file and the DB. Not yet implemented.")
+    elif mode == 'generate':
+        print("This will generate a new model and data from an existing DB. Not yet implemented.")
         
     elif mode == 'editdb':
         dname, fname = os.path.split(infile)
