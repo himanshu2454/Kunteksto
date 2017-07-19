@@ -11,7 +11,7 @@ from analyze import analyze
 from generate import makeModel, makeData
 
 @click.command()
-@click.option('--mode', type=click.Choice(['analyze', 'genmodel', 'gendata', 'editdb', 'all']))
+@click.option('--mode', type=click.Choice(['gendata', 'editdb', 'all']))
 @click.option('--infile', help='Full path and filename of the input CSV file.')
 @click.option('--outdir', help='Full path to the output directory for writing the database and other files. Overrides the config file value.')
 @click.option('--delim', type=click.Choice([',', ';', ':', '|', '$']), help=' Overrides the config file value.')
@@ -48,8 +48,15 @@ def kunteksto(mode, infile, outdir, delim, analyzelevel):
         modelName = makeModel(outDB, outdir)
         datagen(modelName, outDB, infile, delim, outdir, config)
         
-    elif mode == 'analyze':
-        outDB = doanalyze(infile, outdir, config)
+    elif mode == 'gendata':
+        print("Need enough information to get the CSV file and the DB.")
+        
+    elif mode == 'editdb':
+        dname, fname = os.path.split(infile)
+        dbName = fname[:fname.index('.')] + '.db'
+        db_file = outdir + os.path.sep + dbName
+        run([config['SQLITEBROWSER']['cmd'],  db_file])
+        
         
     exit(code=0)
 
