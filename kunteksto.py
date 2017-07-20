@@ -44,10 +44,20 @@ def kunteksto(mode, infile, outdir, delim, analyzelevel):
         
     elif mode == 'all':
         outDB = analyze(infile, delim, analyzelevel, outdir)
-        run([config['SQLITEBROWSER']['cmd'],  outDB])
-        modelName = makeModel(outDB, outdir)
-        datagen(modelName, outDB, infile, delim, outdir, config)
+        try:
+            dbresult = run([config['SQLITEBROWSER']['cmd'],  outDB])
+            if dbresult.returncode == 0:
+                modelName = makeModel(outDB, outdir)
+                datagen(modelName, outDB, infile, delim, outdir, config)
+            else:
+                print("There was an error running SQLiteBrowser. Please check your configuration and retry.")
+                exit(code=1)
 
+        except FileNotFoundError:
+            print("There was an error running SQLiteBrowser; FileNotFoundError. Please check your configuration and retry.")
+            exit(code=1)
+            
+            
     elif mode == 'generate':
         print("This will generate a new model and data from an existing DB. Not yet implemented.")
         

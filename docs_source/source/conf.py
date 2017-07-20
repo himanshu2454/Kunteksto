@@ -24,7 +24,7 @@ import sphinx_rtd_theme
 import configparser
 
 config = configparser.ConfigParser()
-config.read('../../kunteksto/kunteksto.conf')
+config.read('../../kunteksto.conf')
 VERSION = config['KUNTEKSTO']['version']
 
 

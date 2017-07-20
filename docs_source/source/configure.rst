@@ -3,30 +3,58 @@ Configuration
 
 The initial kunteksto.conf file should be okay for most uses and certainly for the demo/tutorials. 
 
-Here we cover the details of the configuration options for those that want to make changes that are more advanced than what is in the GUI. 
+Here we cover the details of the configuration options. 
 
 .. sourcecode:: text
 
 	; kunteksto.conf is the configuration file required by Kunteksto. 
 
 	[SQLITEBROWSER]
-	path: /usr/bin/sqlitebrowser
+	; Enter the command or full path required to execute SQLite Browser on your system.
+	cmd: sqlitebrowser
+
+Depending upon your OS and installation you may need the full path to the SQLite Browser executable.
+
+.. sourcecode:: text
+
 
 	[KUNTEKSTO]
-	; analyzeLevel can be either Simple or Full.
-	analyzeLevel: Full
+	version: 1.2.5
 
-	; set a relative directory for the generated DB, models and data.
-	outDir: output
+This is the groundtruth for Kunteksto versioning. Any place that it is needed should use this enry.
 
-	; allowed separator types are one of these:  , ; : | $ The default one is defined here.
-	sepType: ;
+.. sourcecode:: text
+
+
+	; analyzelevel can be either Simple or Full.
+	analyzelevel: Full
+
+	; allowed delimiter (field separator) types are one of these:  , ; : | $ 
+	; The default delimiter is defined here.
+	delim: ;
+
+	; A default output directory may be defined here. It can be overridden on the commandline.
+	; The 'output' directory is relative to the installation directory of Kunteksto. 
+	; Typically it is only used for the Demo and Tutorials.
+	outdir: output
+
+These three items are also available on the commandline. A commandline entry will override these defaults.
+
+
+.. sourcecode:: text
+
 
 	; Default data formats to create. Values are True or False.
 	; These can be changed in the UI before generating data. 
 	xml: True
 	rdf: True
 	json: True
+
+These values determine what data file format(s) will be generated.  If a file format is set to *True* and no repository is configured for that format; then the files will be written to the filesystem under the defined *outdir*.  
+
+
+.. sourcecode:: text
+
 
 	; Below are where repository setups are defined for each of the three types of data generation.
 	; If a type is to be generated but no repository is defined for the type. Then the data will be generated 
@@ -44,8 +72,8 @@ Here we cover the details of the configuration options for those that want to ma
 	user: admin
 	pw: admin
 
-	[EXISTDB]
 	; Not Yet Implemented
+	[EXISTDB]
 	status: INACTIVE
 
 
@@ -61,16 +89,16 @@ Here we cover the details of the configuration options for those that want to ma
 	user: admin
 	pw: admin
 
+	; Not Yet Implemented
 	[STARDOG]
-	; Not Yet Implemented
 	status: INACTIVE
 
+	; Not Yet Implemented
 	[BLAZEGRAPH]
-	; Not Yet Implemented
 	status: INACTIVE
 
-	[GRAPHDB]
 	; Not Yet Implemented
+	[GRAPHDB]
 	status: INACTIVE
 
 
@@ -86,7 +114,9 @@ Here we cover the details of the configuration options for those that want to ma
 	user: admin
 	pw: admin
 
-	[COUCHDB]
 	; Not Yet Implemented
+	[COUCHDB]
 	status: INACTIVE
+
+There is currently one repository supported for each filetype. We plan to support the others in the future. 
 

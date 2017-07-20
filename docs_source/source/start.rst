@@ -14,7 +14,7 @@ Then proceed to the tutorial.
 Tutorial
 ========
 
-Kunteksto includes a demo data file that you can use to create your first model and data translation. This is a screenshot of the entire file. 
+Kunteksto includes a demo data file that you can use to create your first model and data translation. This is a screenshot of the entire file as dipicted in a spreadsheet. 
 
 .. image:: _images/csv_data.png
     :width: 800px
@@ -24,27 +24,10 @@ Kunteksto includes a demo data file that you can use to create your first model 
 
 Notice that there are a few columns to demonstrate various datatypes as well as one column with mixed types that might look like an interger column at first glance. 
 
-This tutorial does not demonstrate all of the functionality of the data translator but it does demonstrate the process. Likewise, Kunteksto itself only provides around 60% of the full capability of S3Models. The S3Model tools suite provide all of the S3Model capability but are more complex to use and require formal training from Data Insights, Inc. 
+This tutorial does not demonstrate all of the functionality of the Kunteksto but it does demonstrate the process of creating a model based on data and then enhancing that data with improved semantics.
 
-The Kunteksto application window looks like this when first opened.
-
-.. image:: _images/initial.png
-    :width: 800px
-    :align: center
-    :height: 600px
-    :alt: Initial Window
-
-The first step is to select your data file and then analyze that data file. Data files must be plain text (often called CSV) files that have each record on a row, seperated by a CR/LF (or CR depending on the operating system) and each field in the record delimited by a separator. 
-
-The supported field separators are:
-
-- comma : ","
-- semi-colon : ";"
-- colon : ":"
-- pipe : "|"
-- dollar sign : "$"
-
-The first row of the data file **MUST** contain column names. These are also sometimes referred to as column headers.   
+Kunteksto is a commandline tool that uses a combination of commandline options as well as a configuration file.
+The configuration file is covered in another section. The default configuration is fine for the tutorials.
 
 .. _tutorsteps:
 
@@ -52,25 +35,19 @@ The first row of the data file **MUST** contain column names. These are also som
 Tutorial Steps
 --------------
 
-1. Start Kunteksto: python3 kunteksto.py
+- Navigate to the directory where you installed Kunteksto.
 
-2. Select the semi-colon separator using the select box (Demo.csv uses a semicolon ';' for the field separator).
+- Start Kunteksto: python3 kunteksto.py
 
-3. Select the demo file, **example_data/Demo.csv** using the open file dialog.
+- At the **mode** prompt, type *all*
 
-4. Kunteksto will create a results database of this CSV file named example_data/Demo.db when the Analyze CSV button is clicked. 
+- At the **infile** propmt, type **example_data/Demo.csv** 
 
-.. image:: _images/analyze.png
-    :width: 800px
-    :align: center
-    :height: 600px
-    :alt: Click Analyze CSV
+- Kunteksto will analyze the input file and create a results database of this CSV file named example_data/Demo.db  
 
+- The output/Demo.db file should open in the SQLite Browser if it does not automatically open then you will need to manually open the file. In the configuration section of these docs you will learn how to fix this issue. 
 
-5. Open the output/Demo.db file using the DB Browser for SQLite if it does not automatically open. 
-
-
-6. Select the *Browse Data* tab and the *model* table. Edit the title, description, copyright, author and contributor fields as desired. These fields describe the overall metadata for your data model. Basically it describes the where, when and why the data is being modeled. When you click on a field it place the contents in the larger box on the right side for easier editing.
+- Select the *Browse Data* tab and the *model* table. Edit the title, description, copyright, author and contributor fields as desired. These fields describe the overall metadata for your data model. Basically it describes the where, when and why the data is being modeled. When you click on a field it places the contents in the larger box on the right side for easier editing.
 
 .. image:: _images/edit_model.png
     :width: 800px
@@ -91,11 +68,11 @@ Field descriptions:
 	- *dataid* System Generated, **Do Not Edit**  
 
 
-7. Select the record table. Note that there is a record for each column of data in Demo.csv. If there is only one record then the likely problem is that an incorrect separator was chosen.  
+- Select the record table. Note that there is a record for each column of data in Demo.csv. If there is only one record then the likely problem is that an incorrect field delimiter was chosen or the default was changed in the config file.  
 
    - each record has a number of fields that allow you to describe more about your data.
    - though each field is pre-filled it is only a guess and may not be accurate.
-   - it is up to you to be as accurate as possible in describing your data to improve reusability
+   - it is up to you to be as accurate as possible in describing your data to improve usability
 
 .. image:: _images/record_table.png
     :width: 800px
@@ -124,7 +101,7 @@ Field descriptions:
     - *mcid* System Generated, **Do Not Edit**
     - *adid* System Generated, **Do Not Edit**  
 
-8. Once you have completed the data description step and closed the DB Browser, click the Generate Model button. You will find an XML Schema model file and an RDF file in the output directory. These are the structural and semantic models that can be used in your analysis as well as shared with others to better describe the data.
+- Once you have completed the data description step, saved your changes and closed the DB Browser. You will find an XML Schema model file and an RDF file in the output directory. These are the structural and semantic models that can be used in your analysis as well as shared with others to better describe the data.
 
 .. image:: _images/output_dir.png
     :width: 800px
