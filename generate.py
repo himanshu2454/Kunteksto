@@ -968,22 +968,23 @@ def makeData(schema, db_file, infile, delim, outdir, connRDF, connXML, connJSON)
     c.execute("SELECT * FROM record")
     rows = c.fetchall()
     conn.close()
-
-    # open a connection to the RDF Store if defined.
-
+    
     with open(infile) as csvfile:
+        val_log = 'id,valid\n'
         reader = csv.DictReader(csvfile, delimiter=delim)
         for data in reader:
             file_id = filePrefix + '-' + shortuuid.uuid()
+
+            xmlProlog = '<?xml version="1.0" encoding="UTF-8"?>\n'  # lxml doesn't want this in the file during validation, it has to be reinserted afterwards. 
+
             xmlStr = ''
-            # xmlStr = '<?xml version="1.0" encoding="UTF-8"?>\n'
             rdfStr = '<?xml version="1.0" encoding="UTF-8"?>\n<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"\nxmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"\nxmlns:s3m="https://www.s3model.com/ns/s3m/"\nxmlns:xs="http://www.w3.org/2001/XMLSchema">\n'
             rdfStr += '<rdf:Description rdf:about="' + file_id + '">\n'
             rdfStr += '  <s3m:isInstanceOf rdf:resource="dm-' + \
                 model[5].strip() + '"/>\n'
             rdfStr += '</rdf:Description>\n'
 
-            # create the DM and Entry components.
+            # get the DM and Entry components.
             xmlStr += xmlHdr(model, schema, schemaFile)
 
             for row in rows:
@@ -1006,19 +1007,24 @@ def makeData(schema, db_file, infile, delim, outdir, connRDF, connXML, connJSON)
             xmlStr += '  </s3m:ms-' + model[6].strip() + '>\n'
             xmlStr += '</s3m:dm-' + model[5].strip() + '>\n'
 
-            # validate the XML data file
+            # validate the XML data file and enter the appropriate RDF statement as well as an enry in the validation log.
             try:
                 tree = etree.parse(StringIO(xmlStr))
                 modelSchema.assertValid(tree)
                 rdfStr += '  <rdf:Description rdf:about="' + file_id + '">\n'
                 rdfStr += '    <rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/DataInstanceValid"/>\n'
                 rdfStr += '  </rdf:Description>\n'
+                val_log += file_id + ',true\n'
             except etree.DocumentInvalid:
                 rdfStr += '  <rdf:Description rdf:about="' + file_id + '">\n'
                 rdfStr += '    <rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/DataInstanceError"/>\n'
                 rdfStr += '  </rdf:Description>\n'
+                val_log += file_id + ',false\n'
 
             rdfStr += '</rdf:RDF>\n'
+            
+            # add the prolog back to the top
+            xmlStr = xmlProlog + xmlStr
 
             if connXML:
                 connXML.add(file_id + '.xml', xmlStr)
@@ -1045,5 +1051,7 @@ def makeData(schema, db_file, infile, delim, outdir, connRDF, connXML, connJSON)
                 jsonFile = open(jsondir + file_id + '.json', 'w')
                 jsonFile.write(jsonStr)
                 jsonFile.close()
-
+    vlog = open(outdir + os.path.sep + filePrefix + '_validation_log.csv', 'w')
+    vlog.write(val_log)
+    vlog.close()
     return True

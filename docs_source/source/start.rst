@@ -22,9 +22,9 @@ Kunteksto includes a demo data file that you can use to create your first model 
     :height: 600px
     :alt: Demo.csv
 
-Notice that there are a few columns to demonstrate various datatypes as well as one column with mixed types that might look like an interger column at first glance. 
+Notice that there are a few columns to demonstrate various datatypes as well as one column with mixed types that might look like an integer column at first glance but has a missing value. 
 
-This tutorial does not demonstrate all of the functionality of the Kunteksto but it does demonstrate the process of creating a model based on data and then enhancing that data with improved semantics.
+This tutorial does not demonstrate all of the functionality of Kunteksto but it does demonstrate the process of creating a model based on data and then enhancing that data with improved semantics.
 
 Kunteksto is a commandline tool that uses a combination of commandline options as well as a configuration file.
 The configuration file is covered in another section. The default configuration is fine for the tutorials.
@@ -45,9 +45,13 @@ Tutorial Steps
 
 - Kunteksto will analyze the input file and create a results database of this CSV file named example_data/Demo.db  
 
-- The output/Demo.db file should open in the SQLite Browser if it does not automatically open then you will need to manually open the file. In the configuration section of these docs you will learn how to fix this issue. 
+- The output/Demo.db file should open in the SQLiteBrowser. If it does not automatically open then you will need to manually open the file with the tool. In the configuration section of these docs you will learn how to fix this issue. 
 
-- Select the *Browse Data* tab and the *model* table. Edit the title, description, copyright, author and contributor fields as desired. These fields describe the overall metadata for your data model. Basically it describes the where, when and why the data is being modeled. When you click on a field it places the contents in the larger box on the right side for easier editing.
+- Once the database is open use your filemanager to navigate to the *example_data* subdirectory and open the *Demo_info.pdf* file. This file simulates what often purports to be a data dictionary describing datasets. You will use this to improve the computable semantics of your data. 
+
+- In the SQLiteBrowser, select the *Browse Data* tab and the *model* table. Edit the title, description, copyright, author and contributor fields as desired. These fields describe the overall metadata for your data model. Basically it describes the where, when and why the data is being modeled. When you click on a field it places the contents in the larger box on the right side for easier editing. You will notice that some of this inforamtion can be obtained from the PDF. Other bits you have to just wing it based on your knowledge of the dataset. 
+
+- This image depicts the view of the model table and below that are descriptions of each of the fields to be edited; or not. 
 
 .. image:: _images/edit_model.png
     :width: 800px
