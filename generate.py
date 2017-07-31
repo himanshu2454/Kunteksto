@@ -42,6 +42,7 @@ def xsdHeader():
     hstr += '  xmlns:skos="http://www.w3.org/2004/02/skos/core#"\n'
     hstr += '  xmlns:foaf="http://xmlns.com/foaf/0.1/"\n'
     hstr += '  xmlns:sioc="http://rdfs.org/sioc/ns#"\n'
+    hstr += '  xmlns:sh="http://www.w3.org/ns/shacl#"\n'
     hstr += '  xmlns:s3m="https://www.s3model.com/ns/s3m/"\n'
     hstr += '  targetNamespace="https://www.s3model.com/ns/s3m/"\n'
     hstr += '  xml:lang="en-US">\n\n'
@@ -50,8 +51,12 @@ def xsdHeader():
 
 
 def xsdMetadata(md):
-    mds = '<!-- Metadata -->\n  <xs:annotation><xs:appinfo><rdf:RDF><rdf:Description\n'
-    mds += '    rdf:about="' + md[0] + '">\n'
+    """
+    Create the metadata for the S#Model data model.
+    """
+    
+    mds = '<!-- Metadata -->\n  <xs:annotation><xs:appinfo><rdf:RDF><rdfs:Class\n'
+    mds += '    rdf:about="dm-' + md[0] + '">\n'
     mds += '    <dc:title>' + md[1].strip() + '</dc:title>\n'
     mds += '    <dc:creator>' + md[2] + '</dc:creator>\n'
     mds += '    <dc:contributor></dc:contributor>\n'
@@ -68,16 +73,39 @@ def xsdMetadata(md):
         '</dc:date>\n'
     mds += '    <dc:format>text/xml</dc:format>\n'
     mds += '    <dc:language>en-US</dc:language>\n'
-    mds += '  </rdf:Description></rdf:RDF></xs:appinfo></xs:annotation>\n\n'
+    mds += '    <rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/DM"/>\n'
+    mds += '  </rdfs:Class></rdf:RDF></xs:appinfo></xs:annotation>\n\n'
     return(mds)
 
 
+def shCount(data):
+    """
+    Create SHACL constraints for xdCount model.
+    """
+    
+    indent = 2
+    padding = ('').rjust(indent)
+    shStr = padding.rjust(indent + 4) + '<xs:appinfo>\n'
+    shStr += padding.rjust(indent + 6) +'<sh:property>\n'
+    shStr += padding.rjust(indent + 8) +'<sh:path rdf:resource="mc-' + mcID + '/xdcount-value"/>\n'
+    shStr += padding.rjust(indent + 8) +'<sh:datatype rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>\n'
+    shStr += padding.rjust(indent + 6) +'</sh:property>\n'
+    shStr += padding.rjust(indent + 4) + '</xs:appinfo>\n'
+    
+    return(shStr)
+
+
 def xdCount(data):
+    """
+    Create xdCount model used for integers.
+    """
+    
     adapterID = data[16].strip()
     mcID = data[15].strip()
     unitsID = str(uuid4())
     indent = 2
     padding = ('').rjust(indent)
+   
     # Adapter
     xdstr = padding.rjust(indent) + '\n<xs:element name="ms-' + adapterID + \
         '" substitutionGroup="s3m:Items" type="s3m:mc-' + adapterID + '"/>\n'
@@ -105,7 +133,7 @@ def xdCount(data):
     xdstr += padding.rjust(indent + 4) + '</xs:documentation>\n'
     xdstr += padding.rjust(indent + 4) + '<xs:appinfo>\n'
     xdstr += padding.rjust(indent + 6) + \
-        '<rdf:Description rdf:about="mc-' + mcID + '">\n'
+        '<rdfs:Class rdf:about="mc-' + mcID + '">\n'
     xdstr += padding.rjust(indent + 8) + \
         '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#XdCountType"/>\n'
     xdstr += padding.rjust(indent + 8) + \
@@ -115,8 +143,13 @@ def xdCount(data):
     if data[11]:  # are there additional predicate-object definitions?
         for po in data[11].splitlines():
             xdstr += padding.rjust(indent + 8) + '<' + po.strip() + '/>\n'
-    xdstr += padding.rjust(indent + 6) + '</rdf:Description>\n'
+    
+    xdstr += padding.rjust(indent + 6) + '</rdfs:Class>\n'
     xdstr += padding.rjust(indent + 4) + '</xs:appinfo>\n'
+    
+    # add the SHACL constraints
+    xdstr += shCount(data)
+    
     xdstr += padding.rjust(indent + 2) + '</xs:annotation>\n'
     xdstr += padding.rjust(indent + 2) + '<xs:complexContent>\n'
     xdstr += padding.rjust(indent + 4) + \
@@ -176,12 +209,34 @@ def xdCount(data):
     return(xdstr)
 
 
+def shQuantity(data):
+    """
+    Create SHACL constraints for xdQuantity model.
+    """
+    
+    indent = 2
+    padding = ('').rjust(indent)
+    shStr = padding.rjust(indent + 4) + '<xs:appinfo>\n'
+    shStr += padding.rjust(indent + 6) +'<sh:property>\n'
+    shStr += padding.rjust(indent + 8) +'<sh:path rdf:resource="mc-' + mcID + '/xdquantity-value"/>\n'
+    shStr += padding.rjust(indent + 8) +'<sh:datatype rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>\n'
+    shStr += padding.rjust(indent + 6) +'</sh:property>\n'
+    shStr += padding.rjust(indent + 4) + '</xs:appinfo>\n'
+    
+    return(shStr)
+
+
 def xdQuantity(data):
+    """
+    Create xdQuantity model used for decimals.
+    """
+    
     adapterID = data[16].strip()
     mcID = data[15].strip()
     unitsID = str(uuid4())
     indent = 2
     padding = ('').rjust(indent)
+    
     # Adapter
     xdstr = padding.rjust(indent) + '\n<xs:element name="ms-' + adapterID + \
         '" substitutionGroup="s3m:Items" type="s3m:mc-' + adapterID + '"/>\n'
@@ -209,7 +264,7 @@ def xdQuantity(data):
     xdstr += padding.rjust(indent + 4) + '</xs:documentation>\n'
     xdstr += padding.rjust(indent + 4) + '<xs:appinfo>\n'
     xdstr += padding.rjust(indent + 6) + \
-        '<rdf:Description rdf:about="mc-' + mcID + '">\n'
+        '<rdfs:Class rdf:about="mc-' + mcID + '">\n'
     xdstr += padding.rjust(indent + 8) + \
         '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#XdQuantityType"/>\n'
     xdstr += padding.rjust(indent + 8) + \
@@ -219,8 +274,12 @@ def xdQuantity(data):
     if data[11]:  # are there additional predicate-object definitions?
         for po in data[11].splitlines():
             xdstr += padding.rjust(indent + 8) + '<' + po.strip() + '/>\n'
-    xdstr += padding.rjust(indent + 6) + '</rdf:Description>\n'
+    xdstr += padding.rjust(indent + 6) + '</rdfs:Class>\n'
     xdstr += padding.rjust(indent + 4) + '</xs:appinfo>\n'
+    
+    # add the SHACL constraints
+    xdstr += shQuantity(data)
+    
     xdstr += padding.rjust(indent + 2) + '</xs:annotation>\n'
     xdstr += padding.rjust(indent + 2) + '<xs:complexContent>\n'
     xdstr += padding.rjust(indent + 4) + \
@@ -279,12 +338,32 @@ def xdQuantity(data):
 
     return(xdstr)
 
+def shString(data):
+    """
+    Create SHACL constraints for xdString model.
+    """
+    indent = 2
+    padding = ('').rjust(indent)
+    shStr = padding.rjust(indent + 4) + '<xs:appinfo>\n'
+    shStr += padding.rjust(indent + 6) +'<sh:property>\n'
+    shStr += padding.rjust(indent + 8) +'<sh:path rdf:resource="mc-' + mcID + '/xdstring-value"/>\n'
+    shStr += padding.rjust(indent + 8) +'<sh:datatype rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>\n'
+    shStr += padding.rjust(indent + 6) +'</sh:property>\n'
+    shStr += padding.rjust(indent + 4) + '</xs:appinfo>\n'
+    
+    return(shStr)
+
 
 def xdString(data):
+    """
+    Create xdString model.
+    """
+
     adapterID = data[16].strip()
     mcID = data[15].strip()
     indent = 2
     padding = ('').rjust(indent)
+        
     # Adapter
     xdstr = padding.rjust(indent) + '\n<xs:element name="ms-' + adapterID + \
         '" substitutionGroup="s3m:Items" type="s3m:mc-' + adapterID + '"/>\n'
@@ -312,7 +391,7 @@ def xdString(data):
     xdstr += padding.rjust(indent + 4) + '</xs:documentation>\n'
     xdstr += padding.rjust(indent + 4) + '<xs:appinfo>\n'
     xdstr += padding.rjust(indent + 6) + \
-        '<rdf:Description rdf:about="mc-' + mcID + '">\n'
+        '<rdfs:Class rdf:about="mc-' + mcID + '">\n'
     xdstr += padding.rjust(indent + 8) + \
         '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#XdStringType"/>\n'
     xdstr += padding.rjust(indent + 8) + \
@@ -322,9 +401,13 @@ def xdString(data):
     if data[11]:  # are there additional predicate-object definitions?
         for po in data[11].splitlines():
             xdstr += padding.rjust(indent + 8) + '<' + po.strip() + '/>\n'
-    xdstr += padding.rjust(indent + 6) + '</rdf:Description>\n'
+    xdstr += padding.rjust(indent + 6) + '</rdfs:Class>\n'
     xdstr += padding.rjust(indent + 4) + '</xs:appinfo>\n'
-    xdstr += padding.rjust(indent + 2) + '</xs:annotation>\n'
+
+    # add the SHACL constraints
+    xdstr += shString(data)
+
+    xdstr += padding.rjust(indent + 2) + '</xs:annotation>\n'    
     xdstr += padding.rjust(indent + 2) + '<xs:complexContent>\n'
     xdstr += padding.rjust(indent + 4) + \
         '<xs:restriction base="s3m:XdStringType">\n'
@@ -387,11 +470,40 @@ def xdString(data):
     return(xdstr)
 
 
+def shTemporal(data):
+    """
+    Create SHACL constraints for xdTemporal model.
+    """
+    indent = 2
+    padding = ('').rjust(indent)
+    shStr = padding.rjust(indent + 4) + '<xs:appinfo>\n'
+    shStr += padding.rjust(indent + 6) +'<sh:property>\n'
+    if data[2].lower() == 'date':    
+        shStr += padding.rjust(indent + 8) +'<sh:path rdf:resource="mc-' + mcID + '/xdtemporal-date"/>\n'
+        shStr += padding.rjust(indent + 8) +'<sh:datatype rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>\n'
+    elif data[2].lower() == 'time':    
+        shStr += padding.rjust(indent + 8) +'<sh:path rdf:resource="mc-' + mcID + '/xdtemporal-time"/>\n'
+        shStr += padding.rjust(indent + 8) +'<sh:datatype rdf:resource="http://www.w3.org/2001/XMLSchema#time"/>\n'
+    elif data[2].lower() == 'datetime':    
+        shStr += padding.rjust(indent + 8) +'<sh:path rdf:resource="mc-' + mcID + '/xdtemporal-datetime"/>\n'
+        shStr += padding.rjust(indent + 8) +'<sh:datatype rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>\n'
+
+    shStr += padding.rjust(indent + 6) +'</sh:property>\n'
+    shStr += padding.rjust(indent + 4) + '</xs:appinfo>\n'
+    
+    return(shStr)
+
+
 def xdTemporal(data):
+    """
+    Create xdTemporal model used for dates & times.
+    """
+    
     adapterID = data[16].strip()
     mcID = data[15].strip()
     indent = 2
     padding = ('').rjust(indent)
+    
     # Adapter
     xdstr = padding.rjust(indent) + '\n<xs:element name="ms-' + adapterID + \
         '" substitutionGroup="s3m:Items" type="s3m:mc-' + adapterID + '"/>\n'
@@ -419,7 +531,7 @@ def xdTemporal(data):
     xdstr += padding.rjust(indent + 4) + '</xs:documentation>\n'
     xdstr += padding.rjust(indent + 4) + '<xs:appinfo>\n'
     xdstr += padding.rjust(indent + 6) + \
-        '<rdf:Description rdf:about="mc-' + mcID + '">\n'
+        '<rdfs:Class rdf:about="mc-' + mcID + '">\n'
     xdstr += padding.rjust(indent + 8) + \
         '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#XdTemporalType"/>\n'
     xdstr += padding.rjust(indent + 8) + \
@@ -429,7 +541,7 @@ def xdTemporal(data):
     if data[11]:  # are there additional predicate-object definitions?
         for po in data[11].splitlines():
             xdstr += padding.rjust(indent + 8) + '<' + po.strip() + '/>\n'
-    xdstr += padding.rjust(indent + 6) + '</rdf:Description>\n'
+    xdstr += padding.rjust(indent + 6) + '</rdfs:Class>\n'
     xdstr += padding.rjust(indent + 4) + '</xs:appinfo>\n'
     xdstr += padding.rjust(indent + 2) + '</xs:annotation>\n'
     xdstr += padding.rjust(indent + 2) + '<xs:complexContent>\n'
@@ -491,6 +603,10 @@ def xdTemporal(data):
 
 
 def Units(mcID, data):
+    """
+    Create xdString model as a Units component of a xdCount or xdQuantity.
+    """
+    
     indent = 2
     padding = ('').rjust(indent)
     xdstr = padding.rjust(indent) + '<xs:complexType name="mc-' + mcID + '">\n'
@@ -501,7 +617,7 @@ def Units(mcID, data):
     xdstr += padding.rjust(indent + 4) + '</xs:documentation>\n'
     xdstr += padding.rjust(indent + 4) + '<xs:appinfo>\n'
     xdstr += padding.rjust(indent + 6) + \
-        '<rdf:Description rdf:about="mc-' + mcID + '">\n'
+        '<rdfs:Class rdf:about="mc-' + mcID + '">\n'
     xdstr += padding.rjust(indent + 8) + \
         '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#XdStringType"/>\n'
     xdstr += padding.rjust(indent + 8) + \
@@ -511,7 +627,7 @@ def Units(mcID, data):
     if data[11]:  # are there additional predicate-object definitions?
         for po in data[11].splitlines():
             xdstr += padding.rjust(indent + 8) + '<' + po.strip() + '/>\n'
-    xdstr += padding.rjust(indent + 6) + '</rdf:Description>\n'
+    xdstr += padding.rjust(indent + 6) + '</rdfs:Class>\n'
     xdstr += padding.rjust(indent + 4) + '</xs:appinfo>\n'
     xdstr += padding.rjust(indent + 2) + '</xs:annotation>\n'
     xdstr += padding.rjust(indent + 2) + '<xs:complexContent>\n'
@@ -544,6 +660,10 @@ def Units(mcID, data):
 
 
 def xsdData(dataID, indent, def_url, db_file):
+    """
+    Create xdCluster model for the data portion of an Entry.
+    """
+    
     indent += 2
     padding = ('').rjust(indent)
     dstr = padding.rjust(indent) + '<xs:element name="ms-' + dataID + \
@@ -557,14 +677,14 @@ def xsdData(dataID, indent, def_url, db_file):
     dstr += padding.rjust(indent + 4) + '</xs:documentation>\n'
     dstr += padding.rjust(indent + 4) + '<xs:appinfo>\n'
     dstr += padding.rjust(indent + 6) + \
-        '<rdf:Description rdf:about="mc-' + dataID + '">\n'
+        '<rdfs:Class rdf:about="mc-' + dataID + '">\n'
     dstr += padding.rjust(indent + 8) + \
         '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#ClusterType"/>\n'
     dstr += padding.rjust(indent + 8) + \
         '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
     dstr += padding.rjust(indent + 8) + \
         '<rdfs:isDefinedBy rdf:resource="' + def_url + '"/>\n'
-    dstr += padding.rjust(indent + 6) + '</rdf:Description>\n'
+    dstr += padding.rjust(indent + 6) + '</rdfs:Class>\n'
     dstr += padding.rjust(indent + 4) + '</xs:appinfo>\n'
     dstr += padding.rjust(indent + 2) + '</xs:annotation>\n'
     dstr += padding.rjust(indent + 2) + '<xs:complexContent>\n'
@@ -611,6 +731,10 @@ def xsdData(dataID, indent, def_url, db_file):
 
 
 def xsdEntry(data, db_file):
+    """
+    Create the Entry model that si a wrapper for the data as well as various provenance components in S3Model.
+    """
+    
     indent = 2
     padding = ('').rjust(indent)
     dataID = str(uuid4())
@@ -626,14 +750,14 @@ def xsdEntry(data, db_file):
     estr += padding.rjust(indent + 4) + '</xs:documentation>\n'
     estr += padding.rjust(indent + 4) + '<xs:appinfo>\n'
     estr += padding.rjust(indent + 6) + \
-        '<rdf:Description rdf:about="mc-' + data[6].strip() + '">\n'
+        '<rdfs:Class rdf:about="mc-' + data[6].strip() + '">\n'
     estr += padding.rjust(indent + 8) + \
         '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#EntryType"/>\n'
     estr += padding.rjust(indent + 8) + \
         '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
     estr += padding.rjust(indent + 8) + \
         '<rdfs:isDefinedBy rdf:resource="' + data[4].strip() + '"/>\n'
-    estr += padding.rjust(indent + 6) + '</rdf:Description>\n'
+    estr += padding.rjust(indent + 6) + '</rdfs:Class>\n'
     estr += padding.rjust(indent + 4) + '</xs:appinfo>\n'
     estr += padding.rjust(indent + 2) + '</xs:annotation>\n'
     estr += padding.rjust(indent + 2) + '<xs:complexContent>\n'
@@ -668,6 +792,10 @@ def xsdEntry(data, db_file):
 
 
 def xsdDM(data):
+    """
+    Create the Data Model wrapper for the metadata and Entry.
+    """
+    
     indent = 2
     padding = ('').rjust(indent)
 
@@ -681,14 +809,14 @@ def xsdDM(data):
     dmstr += padding.rjust(indent + 4) + '</xs:documentation>\n'
     dmstr += padding.rjust(indent + 4) + '<xs:appinfo>\n'
     dmstr += padding.rjust(indent + 6) + \
-        '<rdf:Description rdf:about="mc-' + data[5].strip() + '">\n'
+        '<rdfs:Class rdf:about="mc-' + data[5].strip() + '">\n'
     dmstr += padding.rjust(indent + 8) + \
         '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#DMType"/>\n'
     dmstr += padding.rjust(indent + 8) + \
         '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
     dmstr += padding.rjust(indent + 8) + \
         '<rdfs:isDefinedBy rdf:resource="' + data[4].strip() + '"/>\n'
-    dmstr += padding.rjust(indent + 6) + '</rdf:Description>\n'
+    dmstr += padding.rjust(indent + 6) + '</rdfs:Class>\n'
     dmstr += padding.rjust(indent + 4) + '</xs:appinfo>\n'
     dmstr += padding.rjust(indent + 2) + '</xs:annotation>\n'
     dmstr += padding.rjust(indent + 2) + '<xs:complexContent>\n'
@@ -721,22 +849,29 @@ def xsdRDF(xsdfile, outdir, dm_id, db_file):
               'rdfs': 'http://www.w3.org/2000/01/rdf-schema#',
               'dct': 'http://purl.org/dc/terms/',
               'owl': 'http://www.w3.org/2002/07/owl#',
+              'sh': 'http://www.w3.org/ns/shacl#',
               'vc': 'http://www.w3.org/2007/XMLSchema-versioning',
               's3m': 'https://www.s3model.com/ns/s3m/'}
 
     parser = etree.XMLParser(ns_clean=True, recover=True)
-    about = etree.XPath(
-        "//xs:annotation/xs:appinfo/rdf:Description", namespaces=nsDict)
-    md = etree.XPath("//rdf:RDF/rdf:Description", namespaces=nsDict)
-    rdf_file = os.open(outdir + '/dm-' + str(dm_id) +
-                       '.rdf', os.O_RDWR | os.O_CREAT)
+    clsDef = etree.XPath("//xs:annotation/xs:appinfo/rdfs:Class", namespaces=nsDict)
+    shaclDef = etree.XPath("//xs:annotation/xs:appinfo/sh:property", namespaces=nsDict)
+
+    md = etree.XPath("//rdf:RDF/rdfs:Class", namespaces=nsDict)
+
+    rdf_file = os.open(outdir + '/dm-' + str(dm_id) + '.rdf', os.O_RDWR | os.O_CREAT)
 
     rdfstr = """<?xml version="1.0" encoding="UTF-8"?>\n<rdf:RDF xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#' \nxmlns:s3m='https://www.s3model.com/ns/s3m/'>\n"""
 
     tree = etree.parse(xsdfile, parser)
     root = tree.getroot()
 
-    rdf = about(root)
+    rdf = clsDef(root)
+    shacl = shaclDef(root)
+    
+    for s in shacl:
+        rdfstr += '    ' + etree.tostring(s).decode('utf-8') + '\n'
+        
     for m in md(root):
         rdfstr += '    ' + etree.tostring(m).decode('utf-8') + '\n'
 
@@ -751,11 +886,11 @@ def xsdRDF(xsdfile, outdir, dm_id, db_file):
     conn.close()
 
     for row in rows:
-        rdfstr += '<rdf:Description rdf:about="s3m:ms-' + \
-            row[14].strip() + '">\n'
+        rdfstr += '<rdfs:Class xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"  xmlns:s3m="https://www.s3model.com/ns/s3m/" rdf:about="s3m:ms-' + \
+            row[15].strip() + '">\n'
         rdfstr += '  <s3m:isRMSOf rdf:resource="s3m:mc-' + \
-            row[14].strip() + '"/>\n'
-        rdfstr += '</rdf:Description>\n'
+            row[15].strip() + '"/>\n'
+        rdfstr += '</rdfs:Class>\n'
 
     rdfstr += '</rdf:RDF>\n'
 
@@ -842,12 +977,12 @@ def xmlCount(row, data):
 
 
 def rdfCount(row, data):
-    rstr = '      <rdf:Description rdf:about="s3m:ms-' + \
+    rstr = '      <rdfs:Class rdf:about="s3m:ms-' + \
         row[15].strip() + '">\n'
     rstr += '        <rdfs:label>' + row[1].strip() + '</rdfs:label>\n'
     rstr += '        <rdfs:value rdf:datatype="xs:int">' + \
         data[row[0].strip()] + '</rdfs:value>\n'
-    rstr += '      </rdf:Description>\n'
+    rstr += '      </rdfs:Class>\n'
     return(rstr)
 
 
@@ -872,12 +1007,12 @@ def xmlQuantity(row, data):
 
 
 def rdfQuantity(row, data):
-    rstr = '      <rdf:Description rdf:about="s3m:ms-' + \
+    rstr = '      <rdfs:Class rdf:about="s3m:ms-' + \
         row[15].strip() + '">\n'
     rstr += '        <rdfs:label>' + row[1].strip() + '</rdfs:label>\n'
     rstr += '        <rdfs:value rdf:datatype="xs:decimal">' + \
         data[row[0].strip()] + '</rdfs:value>\n'
-    rstr += '      </rdf:Description>\n'
+    rstr += '      </rdfs:Class>\n'
     return(rstr)
 
 
@@ -900,7 +1035,7 @@ def xmlTemporal(row, data):
 
 
 def rdfTemporal(row, data):
-    rstr = '      <rdf:Description rdf:about="s3m:ms-' + \
+    rstr = '      <rdfs:Class rdf:about="s3m:ms-' + \
         row[15].strip() + '">\n'
     rstr += '        <rdfs:label>' + row[1].strip() + '</rdfs:label>\n'
     if row[2].lower() == 'date':
@@ -912,7 +1047,7 @@ def rdfTemporal(row, data):
     if row[2].lower() == 'datetime':
         rstr += '        <rdfs:value rdf:datatype="xs:dateTime">' + \
             data[row[0].strip()] + '</rdfs:value>\n'
-    rstr += '      </rdf:Description>\n'
+    rstr += '      </rdfs:Class>\n'
     return(rstr)
 
 
@@ -929,12 +1064,12 @@ def xmlString(row, data):
 
 
 def rdfString(row, data):
-    rstr = '      <rdf:Description rdf:about="s3m:ms-' + \
+    rstr = '      <rdfs:Class rdf:about="s3m:ms-' + \
         row[15].strip() + '">\n'
     rstr += '        <rdfs:label>' + row[1].strip() + '</rdfs:label>\n'
     rstr += '        <rdfs:value rdf:datatype="xs:string">' + \
         data[row[0].strip()] + '</rdfs:value>\n'
-    rstr += '      </rdf:Description>\n'
+    rstr += '      </rdfs:Class>\n'
     return(rstr)
 
 
@@ -950,7 +1085,7 @@ def makeData(schema, db_file, infile, delim, outdir, connRDF, connXML, connJSON)
     schema_doc = etree.parse(schema)
     modelSchema = etree.XMLSchema(schema_doc)
 
-    print('Generation', "Generate data for: " + schemaFile + ' using ' + base)
+    print('Generation', "Generate data for: " + schemaFile + ' using ' + base + '\n')
     namespaces = {"https://www.s3model.com/ns/s3m/": "s3m",
                   "http://www.w3.org/2001/XMLSchema-instance": "xsi"}
     xmldir = outdir + '/xml/'
@@ -979,10 +1114,10 @@ def makeData(schema, db_file, infile, delim, outdir, connRDF, connXML, connJSON)
 
             xmlStr = ''
             rdfStr = '<?xml version="1.0" encoding="UTF-8"?>\n<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"\nxmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"\nxmlns:s3m="https://www.s3model.com/ns/s3m/"\nxmlns:xs="http://www.w3.org/2001/XMLSchema">\n'
-            rdfStr += '<rdf:Description rdf:about="' + file_id + '">\n'
+            rdfStr += '<rdfs:Class rdf:about="' + file_id + '">\n'
             rdfStr += '  <s3m:isInstanceOf rdf:resource="dm-' + \
                 model[5].strip() + '"/>\n'
-            rdfStr += '</rdf:Description>\n'
+            rdfStr += '</rdfs:Class>\n'
 
             # get the DM and Entry components.
             xmlStr += xmlHdr(model, schema, schemaFile)
@@ -1011,14 +1146,14 @@ def makeData(schema, db_file, infile, delim, outdir, connRDF, connXML, connJSON)
             try:
                 tree = etree.parse(StringIO(xmlStr))
                 modelSchema.assertValid(tree)
-                rdfStr += '  <rdf:Description rdf:about="' + file_id + '">\n'
+                rdfStr += '  <rdfs:Class rdf:about="' + file_id + '">\n'
                 rdfStr += '    <rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/DataInstanceValid"/>\n'
-                rdfStr += '  </rdf:Description>\n'
+                rdfStr += '  </rdfs:Class>\n'
                 val_log += file_id + ',true\n'
             except etree.DocumentInvalid:
-                rdfStr += '  <rdf:Description rdf:about="' + file_id + '">\n'
+                rdfStr += '  <rdfs:Class rdf:about="' + file_id + '">\n'
                 rdfStr += '    <rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/DataInstanceError"/>\n'
-                rdfStr += '  </rdf:Description>\n'
+                rdfStr += '  </rdfs:Class>\n'
                 val_log += file_id + ',false\n'
 
             rdfStr += '</rdf:RDF>\n'
