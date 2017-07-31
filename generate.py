@@ -98,6 +98,20 @@ def xdCountRDF(data):
     rdfStr += padding.rjust(indent + 8) +'<rdf:Description>\n'
     rdfStr += padding.rjust(indent + 8) +'<sh:path rdf:resource="mc-' + mcID + '/xdcount-value"/>\n'
     rdfStr += padding.rjust(indent + 8) +'<sh:datatype rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>\n'
+    rdfStr += padding.rjust(indent + 10) +'<sh:maxCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:maxCount>\n'
+    rdfStr += padding.rjust(indent + 10) +'<sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>\n'
+    
+    if data[9]:
+        if data[7]:
+            rdfStr += padding.rjust(indent + 10) +'<sh:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">' + str(data[7]).strip() + '</sh:minInclusive>\n'
+        if data[8]:
+            rdfStr += padding.rjust(indent + 10) +'<sh:maxInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">' + str(data[8]).strip() + '</sh:maxInclusive>\n'    
+    else:
+        if data[7]:
+            rdfStr += padding.rjust(indent + 10) +'<sh:minExclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">' + str(data[7]).strip() + '</sh:minExclusive>\n'
+        if data[8]:
+            rdfStr += padding.rjust(indent + 10) +'<sh:maxExclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">' + str(data[8]).strip() + '</sh:maxExclusive>\n'
+    
     rdfStr += padding.rjust(indent + 8) +'</rdf:Description>\n'
     rdfStr += padding.rjust(indent + 6) +'</sh:property>\n'
     
@@ -224,6 +238,20 @@ def xdQuantityRDF(data):
     rdfStr += padding.rjust(indent + 8) +'<rdf:Description>\n'
     rdfStr += padding.rjust(indent + 8) +'<sh:path rdf:resource="mc-' + mcID + '/xdquantity-value"/>\n'
     rdfStr += padding.rjust(indent + 8) +'<sh:datatype rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>\n'
+    rdfStr += padding.rjust(indent + 10) +'<sh:maxCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:maxCount>\n'
+    rdfStr += padding.rjust(indent + 10) +'<sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>\n'
+    
+    if data[9]:
+        if data[7]:
+            rdfStr += padding.rjust(indent + 10) +'<sh:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">' + str(data[7]).strip() + '</sh:minInclusive>\n'
+        if data[8]:
+            rdfStr += padding.rjust(indent + 10) +'<sh:maxInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">' + str(data[8]).strip() + '</sh:maxInclusive>\n'    
+    else:
+        if data[7]:
+            rdfStr += padding.rjust(indent + 10) +'<sh:minExclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">' + str(data[7]).strip() + '</sh:minExclusive>\n'
+        if data[8]:
+            rdfStr += padding.rjust(indent + 10) +'<sh:maxExclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">' + str(data[8]).strip() + '</sh:maxExclusive>\n'
+    
     rdfStr += padding.rjust(indent + 8) +'</rdf:Description>\n'
     rdfStr += padding.rjust(indent + 6) +'</sh:property>\n'
     
@@ -348,7 +376,24 @@ def xdStringRDF(data):
     rdfStr += padding.rjust(indent + 6) +'<sh:property>\n'
     rdfStr += padding.rjust(indent + 8) +'<rdf:Description>\n'
     rdfStr += padding.rjust(indent + 10) +'<sh:path rdf:resource="mc-' + mcID + '/xdstring-value"/>\n'
-    rdfStr += padding.rjust(indent + 10) +'<sh:datatype rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>\n'    
+    rdfStr += padding.rjust(indent + 10) +'<sh:datatype rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>\n'
+    rdfStr += padding.rjust(indent + 10) +'<sh:maxCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:maxCount>\n'
+    rdfStr += padding.rjust(indent + 10) +'<sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>\n'
+    if data[12]:
+        rdfStr += padding.rjust(indent + 10) + '<sh:defaultValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string">' + data[12].strip() + '</sh:defaultValue>\n'
+    if data[3]:
+        rdfStr += padding.rjust(indent + 10) +'<sh:minLength rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">' + data[3].strip() + '</sh:minLength>\n'
+    if data[4]:
+        rdfStr += padding.rjust(indent + 10) +'<sh:maxLength rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">' + data[4].strip() + '</sh:maxLength>\n'
+    if data[6]:
+        rdfStr += padding.rjust(indent + 10) +'<sh:pattern rdf:datatype="http://www.w3.org/2001/XMLSchema#string">' + data[6].strip() + '</sh:pattern>\n'
+        
+    rdfStr += padding.rjust(indent + 10) +'\n'
+    rdfStr += padding.rjust(indent + 10) +'\n'
+    rdfStr += padding.rjust(indent + 10) +'\n'
+    rdfStr += padding.rjust(indent + 10) +'\n'
+    
+    
     rdfStr += padding.rjust(indent + 8) +'</rdf:Description>\n'
     rdfStr += padding.rjust(indent + 6) +'</sh:property>\n'
     
@@ -487,6 +532,10 @@ def xdTemporalRDF(data):
     elif data[2].lower() == 'datetime':    
         rdfStr += padding.rjust(indent + 8) +'<sh:path rdf:resource="mc-' + mcID + '/xdtemporal-datetime"/>\n'
         rdfStr += padding.rjust(indent + 8) +'<sh:datatype rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>\n'
+
+    rdfStr += padding.rjust(indent + 10) +'<sh:maxCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:maxCount>\n'
+    rdfStr += padding.rjust(indent + 10) +'<sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>\n'
+        
     rdfStr += padding.rjust(indent + 8) +'</rdf:Description>\n'
     rdfStr += padding.rjust(indent + 6) +'</sh:property>\n'
     
@@ -1070,7 +1119,6 @@ def makeData(schema, db_file, infile, delim, outdir, connRDF, connXML, connJSON)
     """
     Create XML and JSON data files and an RDF graph based on the model.
     """
-
     base = os.path.basename(infile)
     filePrefix = os.path.splitext(base)[0]
     schemaFile = os.path.basename(schema)
@@ -1100,6 +1148,15 @@ def makeData(schema, db_file, infile, delim, outdir, connRDF, connXML, connJSON)
     with open(infile) as csvfile:
         val_log = 'id,valid\n'
         reader = csv.DictReader(csvfile, delimiter=delim)
+        
+        # this test is really for the 'generate' mode. TODO: 
+        hdrs = reader.fieldnames
+        for i in range(0,len(hdrs)):
+            if hdrs[i] != rows[i][0]:
+                print("\n\nThere was an error matching the data input file to the selected model database.")
+                print('Datafile: ' + hdrs[i] + '  Model: ' + rows[i][0] + '\n\n')
+                exit(code=1)
+                        
         for data in reader:
             file_id = filePrefix + '-' + shortuuid.uuid()
 

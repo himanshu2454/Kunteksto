@@ -6,6 +6,7 @@ import os
 from subprocess import run
 import click
 import configparser
+import sqlite3
 
 from analyze import analyze
 from generate import makeModel, makeData
@@ -13,10 +14,11 @@ from generate import makeModel, makeData
 @click.command()
 @click.option('--mode', '-m', type=click.Choice(['all', 'editdb', 'generate']),help="See the documentation. If you don't know then use: all", prompt=True)
 @click.option('--infile', '-i', help='Full path and filename of the input CSV file.', prompt=True)
+@click.option('--dbfile', '-db', help='Full path and filename of the existing model database file.', prompt=False)
 @click.option('--outdir', '-o', help='Full path to the output directory for writing the database and other files. Overrides the config file default value.')
 @click.option('--delim', '-d', type=click.Choice([',', ';', ':', '|', '$']), help=' Overrides the config file default value.')
 @click.option('--analyzelevel', '-a', type=click.Choice(['simple', 'full']), help=' Overrides the config file default value.')
-def kunteksto(mode, infile, outdir, delim, analyzelevel):
+def kunteksto(mode, infile, outdir, delim, analyzelevel, dbfile):
     
     # Setup config info
     config = configparser.ConfigParser()
@@ -53,6 +55,7 @@ def kunteksto(mode, infile, outdir, delim, analyzelevel):
             if dbresult.returncode == 0:
                 modelName = makeModel(outDB, outdir)
                 datagen(modelName, outDB, infile, delim, outdir, config)
+                return(True)
             else:
                 print("There was an error running SQLiteBrowser. Please check your configuration and retry.")
                 exit(code=1)
@@ -63,7 +66,21 @@ def kunteksto(mode, infile, outdir, delim, analyzelevel):
             
             
     elif mode == 'generate':
-        print("This will generate a new model and data from an existing DB. Not yet implemented.")
+        if not dbfile:
+            click.echo("You must supply a full path and name of an existing model database.")
+            exit(code=1)
+            
+        dname, fname = os.path.split(dbfile)
+        prjname = fname[:fname.index('.')]
+        dbName =  prjname + '.db'
+        conn = sqlite3.connect(dbfile)
+        c = conn.cursor()
+        c.execute("SELECT * FROM model")
+        row = c.fetchone()
+        dmID = row[5].strip()
+        outdir = outdir + os.path.sep + prjname        
+        modelName = outdir + '/dm-' + dmID + '.xsd'
+        datagen(modelName, dbfile, infile, delim, outdir, config)
         
     elif mode == 'editdb':
         dname, fname = os.path.split(infile)
@@ -71,7 +88,7 @@ def kunteksto(mode, infile, outdir, delim, analyzelevel):
         db_file = outdir + os.path.sep + dbName
         run([config['SQLITEBROWSER']['cmd'],  db_file])
                 
-    exit(code=0)
+    return(True)
 
 def datagen(modelName, outDB, infile, delim, outdir, config):
     """
@@ -130,11 +147,17 @@ def datagen(modelName, outDB, infile, delim, outdir, config):
     else:
         print('Procedure Error', 'Missing model DB or no selected output directory.')
 
-    return
+    return(True)
 
 
 if __name__ == '__main__':
     os.environ['XML_CATALOG_FILES'] = 'Kunteksto_catalog.xml'
     print('\n Kunteksto is running ...\n\n')
-    kunteksto()
+    if kunteksto():
+        print('\n Kunteksto has exited ...\n\n')
+        exit(code=0)
+    else:
+        print('\n Kunteksto has exited possibly with errors ...\n\n')
+            
+    
     
