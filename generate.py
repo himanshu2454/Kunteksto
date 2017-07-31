@@ -78,21 +78,31 @@ def xsdMetadata(md):
     return(mds)
 
 
-def shCount(data):
+def xdCountRDF(data):
     """
-    Create SHACL constraints for xdCount model.
+    Create RDF including SHACL constraints for xdCount model.
     """
-    
+    mcID = data[15].strip()    
+    rdfStr = ''
     indent = 2
     padding = ('').rjust(indent)
-    shStr = padding.rjust(indent + 4) + '<xs:appinfo>\n'
-    shStr += padding.rjust(indent + 6) +'<sh:property>\n'
-    shStr += padding.rjust(indent + 8) +'<sh:path rdf:resource="mc-' + mcID + '/xdcount-value"/>\n'
-    shStr += padding.rjust(indent + 8) +'<sh:datatype rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>\n'
-    shStr += padding.rjust(indent + 6) +'</sh:property>\n'
-    shStr += padding.rjust(indent + 4) + '</xs:appinfo>\n'
+    rdfStr += padding.rjust(indent + 6) + '<rdfs:Class rdf:about="mc-' + mcID + '">\n'
+    rdfStr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#XdCountType"/>\n'
+    rdfStr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
+    rdfStr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + data[10].strip() + '"/>\n'
+    if data[11]:  # are there additional predicate-object definitions?
+        for po in data[11].splitlines():
+            rdfStr += padding.rjust(indent + 8) + '<' + po.strip() + '/>\n'
+            
+    rdfStr += padding.rjust(indent + 6) +'<sh:property>\n'
+    rdfStr += padding.rjust(indent + 8) +'<rdf:Description>\n'
+    rdfStr += padding.rjust(indent + 8) +'<sh:path rdf:resource="mc-' + mcID + '/xdcount-value"/>\n'
+    rdfStr += padding.rjust(indent + 8) +'<sh:datatype rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>\n'
+    rdfStr += padding.rjust(indent + 8) +'</rdf:Description>\n'
+    rdfStr += padding.rjust(indent + 6) +'</sh:property>\n'
     
-    return(shStr)
+    rdfStr += padding.rjust(indent + 6) + '</rdfs:Class>\n'
+    return(rdfStr)
 
 
 def xdCount(data):
@@ -131,25 +141,10 @@ def xdCount(data):
     xdstr += padding.rjust(indent + 6) + \
         'This is the Count model component used to model integers.\n'
     xdstr += padding.rjust(indent + 4) + '</xs:documentation>\n'
-    xdstr += padding.rjust(indent + 4) + '<xs:appinfo>\n'
-    xdstr += padding.rjust(indent + 6) + \
-        '<rdfs:Class rdf:about="mc-' + mcID + '">\n'
-    xdstr += padding.rjust(indent + 8) + \
-        '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#XdCountType"/>\n'
-    xdstr += padding.rjust(indent + 8) + \
-        '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
-    xdstr += padding.rjust(indent + 8) + \
-        '<rdfs:isDefinedBy rdf:resource="' + data[10].strip() + '"/>\n'
-    if data[11]:  # are there additional predicate-object definitions?
-        for po in data[11].splitlines():
-            xdstr += padding.rjust(indent + 8) + '<' + po.strip() + '/>\n'
-    
-    xdstr += padding.rjust(indent + 6) + '</rdfs:Class>\n'
+    xdstr += padding.rjust(indent + 4) + '<xs:appinfo>\n'   
+    # add the RDF
+    xdstr += xdCountRDF(data)
     xdstr += padding.rjust(indent + 4) + '</xs:appinfo>\n'
-    
-    # add the SHACL constraints
-    xdstr += shCount(data)
-    
     xdstr += padding.rjust(indent + 2) + '</xs:annotation>\n'
     xdstr += padding.rjust(indent + 2) + '<xs:complexContent>\n'
     xdstr += padding.rjust(indent + 4) + \
@@ -209,21 +204,31 @@ def xdCount(data):
     return(xdstr)
 
 
-def shQuantity(data):
+def xdQuantityRDF(data):
     """
-    Create SHACL constraints for xdQuantity model.
+    Create RDF including SHACL constraints for xdQuantity model.
     """
-    
+    mcID = data[15].strip()    
+    rdfStr = ''
     indent = 2
     padding = ('').rjust(indent)
-    shStr = padding.rjust(indent + 4) + '<xs:appinfo>\n'
-    shStr += padding.rjust(indent + 6) +'<sh:property>\n'
-    shStr += padding.rjust(indent + 8) +'<sh:path rdf:resource="mc-' + mcID + '/xdquantity-value"/>\n'
-    shStr += padding.rjust(indent + 8) +'<sh:datatype rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>\n'
-    shStr += padding.rjust(indent + 6) +'</sh:property>\n'
-    shStr += padding.rjust(indent + 4) + '</xs:appinfo>\n'
+    rdfStr += padding.rjust(indent + 6) + '<rdfs:Class rdf:about="mc-' + mcID + '">\n'
+    rdfStr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#XdQuantityType"/>\n'
+    rdfStr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
+    rdfStr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + data[10].strip() + '"/>\n'
+    if data[11]:  # are there additional predicate-object definitions?
+        for po in data[11].splitlines():
+            rdfStr += padding.rjust(indent + 8) + '<' + po.strip() + '/>\n'
+            
+    rdfStr += padding.rjust(indent + 6) +'<sh:property>\n'
+    rdfStr += padding.rjust(indent + 8) +'<rdf:Description>\n'
+    rdfStr += padding.rjust(indent + 8) +'<sh:path rdf:resource="mc-' + mcID + '/xdquantity-value"/>\n'
+    rdfStr += padding.rjust(indent + 8) +'<sh:datatype rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>\n'
+    rdfStr += padding.rjust(indent + 8) +'</rdf:Description>\n'
+    rdfStr += padding.rjust(indent + 6) +'</sh:property>\n'
     
-    return(shStr)
+    rdfStr += padding.rjust(indent + 6) + '</rdfs:Class>\n'
+    return(rdfStr)
 
 
 def xdQuantity(data):
@@ -263,23 +268,9 @@ def xdQuantity(data):
         'This is the Quantity model component used to model floats.\n'
     xdstr += padding.rjust(indent + 4) + '</xs:documentation>\n'
     xdstr += padding.rjust(indent + 4) + '<xs:appinfo>\n'
-    xdstr += padding.rjust(indent + 6) + \
-        '<rdfs:Class rdf:about="mc-' + mcID + '">\n'
-    xdstr += padding.rjust(indent + 8) + \
-        '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#XdQuantityType"/>\n'
-    xdstr += padding.rjust(indent + 8) + \
-        '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
-    xdstr += padding.rjust(indent + 8) + \
-        '<rdfs:isDefinedBy rdf:resource="' + data[10].strip() + '"/>\n'
-    if data[11]:  # are there additional predicate-object definitions?
-        for po in data[11].splitlines():
-            xdstr += padding.rjust(indent + 8) + '<' + po.strip() + '/>\n'
-    xdstr += padding.rjust(indent + 6) + '</rdfs:Class>\n'
+    # add the RDF
+    xdstr += xdQuantityRDF(data)
     xdstr += padding.rjust(indent + 4) + '</xs:appinfo>\n'
-    
-    # add the SHACL constraints
-    xdstr += shQuantity(data)
-    
     xdstr += padding.rjust(indent + 2) + '</xs:annotation>\n'
     xdstr += padding.rjust(indent + 2) + '<xs:complexContent>\n'
     xdstr += padding.rjust(indent + 4) + \
@@ -338,20 +329,31 @@ def xdQuantity(data):
 
     return(xdstr)
 
-def shString(data):
+def xdStringRDF(data):
     """
-    Create SHACL constraints for xdString model.
+    Create RDF including SHACL constraints for xdString model.
     """
+    mcID = data[15].strip()    
+    rdfStr = ''
     indent = 2
     padding = ('').rjust(indent)
-    shStr = padding.rjust(indent + 4) + '<xs:appinfo>\n'
-    shStr += padding.rjust(indent + 6) +'<sh:property>\n'
-    shStr += padding.rjust(indent + 8) +'<sh:path rdf:resource="mc-' + mcID + '/xdstring-value"/>\n'
-    shStr += padding.rjust(indent + 8) +'<sh:datatype rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>\n'
-    shStr += padding.rjust(indent + 6) +'</sh:property>\n'
-    shStr += padding.rjust(indent + 4) + '</xs:appinfo>\n'
+    rdfStr += padding.rjust(indent + 6) + '<rdfs:Class rdf:about="mc-' + mcID + '">\n'
+    rdfStr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#XdStringType"/>\n'
+    rdfStr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
+    rdfStr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + data[10].strip() + '"/>\n'
+    if data[11]:  # are there additional predicate-object definitions?
+        for po in data[11].splitlines():
+            rdfStr += padding.rjust(indent + 8) + '<' + po.strip() + '/>\n'
+            
+    rdfStr += padding.rjust(indent + 6) +'<sh:property>\n'
+    rdfStr += padding.rjust(indent + 8) +'<rdf:Description>\n'
+    rdfStr += padding.rjust(indent + 10) +'<sh:path rdf:resource="mc-' + mcID + '/xdstring-value"/>\n'
+    rdfStr += padding.rjust(indent + 10) +'<sh:datatype rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>\n'    
+    rdfStr += padding.rjust(indent + 8) +'</rdf:Description>\n'
+    rdfStr += padding.rjust(indent + 6) +'</sh:property>\n'
     
-    return(shStr)
+    rdfStr += padding.rjust(indent + 6) + '</rdfs:Class>\n'
+    return(rdfStr)
 
 
 def xdString(data):
@@ -390,23 +392,11 @@ def xdString(data):
         'This is the String model component used to model text.\n'
     xdstr += padding.rjust(indent + 4) + '</xs:documentation>\n'
     xdstr += padding.rjust(indent + 4) + '<xs:appinfo>\n'
-    xdstr += padding.rjust(indent + 6) + \
-        '<rdfs:Class rdf:about="mc-' + mcID + '">\n'
-    xdstr += padding.rjust(indent + 8) + \
-        '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#XdStringType"/>\n'
-    xdstr += padding.rjust(indent + 8) + \
-        '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
-    xdstr += padding.rjust(indent + 8) + \
-        '<rdfs:isDefinedBy rdf:resource="' + data[10].strip() + '"/>\n'
-    if data[11]:  # are there additional predicate-object definitions?
-        for po in data[11].splitlines():
-            xdstr += padding.rjust(indent + 8) + '<' + po.strip() + '/>\n'
-    xdstr += padding.rjust(indent + 6) + '</rdfs:Class>\n'
+
+    # add the RDF
+    xdstr += xdStringRDF(data)
+
     xdstr += padding.rjust(indent + 4) + '</xs:appinfo>\n'
-
-    # add the SHACL constraints
-    xdstr += shString(data)
-
     xdstr += padding.rjust(indent + 2) + '</xs:annotation>\n'    
     xdstr += padding.rjust(indent + 2) + '<xs:complexContent>\n'
     xdstr += padding.rjust(indent + 4) + \
@@ -470,28 +460,38 @@ def xdString(data):
     return(xdstr)
 
 
-def shTemporal(data):
+def xdTemporalRDF(data):
     """
-    Create SHACL constraints for xdTemporal model.
+    Create RDF including SHACL constraints for xdTemporal model.
     """
+    mcID = data[15].strip()    
+    rdfStr = ''
     indent = 2
     padding = ('').rjust(indent)
-    shStr = padding.rjust(indent + 4) + '<xs:appinfo>\n'
-    shStr += padding.rjust(indent + 6) +'<sh:property>\n'
+    rdfStr += padding.rjust(indent + 6) + '<rdfs:Class rdf:about="mc-' + mcID + '">\n'
+    rdfStr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#XdTemporalType"/>\n'
+    rdfStr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
+    rdfStr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + data[10].strip() + '"/>\n'
+    if data[11]:  # are there additional predicate-object definitions?
+        for po in data[11].splitlines():
+            rdfStr += padding.rjust(indent + 8) + '<' + po.strip() + '/>\n'
+            
+    rdfStr += padding.rjust(indent + 6) +'<sh:property>\n'
+    rdfStr += padding.rjust(indent + 8) +'<rdf:Description>\n'
     if data[2].lower() == 'date':    
-        shStr += padding.rjust(indent + 8) +'<sh:path rdf:resource="mc-' + mcID + '/xdtemporal-date"/>\n'
-        shStr += padding.rjust(indent + 8) +'<sh:datatype rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>\n'
+        rdfStr += padding.rjust(indent + 8) +'<sh:path rdf:resource="mc-' + mcID + '/xdtemporal-date"/>\n'
+        rdfStr += padding.rjust(indent + 8) +'<sh:datatype rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>\n'
     elif data[2].lower() == 'time':    
-        shStr += padding.rjust(indent + 8) +'<sh:path rdf:resource="mc-' + mcID + '/xdtemporal-time"/>\n'
-        shStr += padding.rjust(indent + 8) +'<sh:datatype rdf:resource="http://www.w3.org/2001/XMLSchema#time"/>\n'
+        rdfStr += padding.rjust(indent + 8) +'<sh:path rdf:resource="mc-' + mcID + '/xdtemporal-time"/>\n'
+        rdfStr += padding.rjust(indent + 8) +'<sh:datatype rdf:resource="http://www.w3.org/2001/XMLSchema#time"/>\n'
     elif data[2].lower() == 'datetime':    
-        shStr += padding.rjust(indent + 8) +'<sh:path rdf:resource="mc-' + mcID + '/xdtemporal-datetime"/>\n'
-        shStr += padding.rjust(indent + 8) +'<sh:datatype rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>\n'
-
-    shStr += padding.rjust(indent + 6) +'</sh:property>\n'
-    shStr += padding.rjust(indent + 4) + '</xs:appinfo>\n'
+        rdfStr += padding.rjust(indent + 8) +'<sh:path rdf:resource="mc-' + mcID + '/xdtemporal-datetime"/>\n'
+        rdfStr += padding.rjust(indent + 8) +'<sh:datatype rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>\n'
+    rdfStr += padding.rjust(indent + 8) +'</rdf:Description>\n'
+    rdfStr += padding.rjust(indent + 6) +'</sh:property>\n'
     
-    return(shStr)
+    rdfStr += padding.rjust(indent + 6) + '</rdfs:Class>\n'
+    return(rdfStr)
 
 
 def xdTemporal(data):
@@ -529,20 +529,13 @@ def xdTemporal(data):
     xdstr += padding.rjust(indent + 6) + \
         'This is the Temporal model component used to model dates, times or datetimes.\n'
     xdstr += padding.rjust(indent + 4) + '</xs:documentation>\n'
+    
     xdstr += padding.rjust(indent + 4) + '<xs:appinfo>\n'
-    xdstr += padding.rjust(indent + 6) + \
-        '<rdfs:Class rdf:about="mc-' + mcID + '">\n'
-    xdstr += padding.rjust(indent + 8) + \
-        '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#XdTemporalType"/>\n'
-    xdstr += padding.rjust(indent + 8) + \
-        '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
-    xdstr += padding.rjust(indent + 8) + \
-        '<rdfs:isDefinedBy rdf:resource="' + data[10].strip() + '"/>\n'
-    if data[11]:  # are there additional predicate-object definitions?
-        for po in data[11].splitlines():
-            xdstr += padding.rjust(indent + 8) + '<' + po.strip() + '/>\n'
-    xdstr += padding.rjust(indent + 6) + '</rdfs:Class>\n'
+    # add the RDF
+    xdstr += xdTemporalRDF(data)
     xdstr += padding.rjust(indent + 4) + '</xs:appinfo>\n'
+
+    
     xdstr += padding.rjust(indent + 2) + '</xs:annotation>\n'
     xdstr += padding.rjust(indent + 2) + '<xs:complexContent>\n'
     xdstr += padding.rjust(indent + 4) + \

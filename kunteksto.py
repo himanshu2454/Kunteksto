@@ -22,6 +22,7 @@ def kunteksto(mode, infile, outdir, delim, analyzelevel):
     config = configparser.ConfigParser()
     config.read('kunteksto.conf')
     
+    # override the delimiter and/or analyzelevel if provided
     if not delim:
         delim = config['KUNTEKSTO']['delim']
     if not analyzelevel:
@@ -29,6 +30,7 @@ def kunteksto(mode, infile, outdir, delim, analyzelevel):
     
     if outdir is None:
         if config['KUNTEKSTO']['outdir'].lower() in ['output', 'none']:
+            config['KUNTEKSTO']['outdir'] = 'output'
             outdir = os.getcwd() + os.path.sep + config['KUNTEKSTO']['outdir']
         else:
             print("You must supply a writable output directory.")
@@ -44,6 +46,8 @@ def kunteksto(mode, infile, outdir, delim, analyzelevel):
         
     elif mode == 'all':
         outDB = analyze(infile, delim, analyzelevel, outdir)
+        dname, fname = os.path.split(infile)
+        outdir += os.path.sep + fname[:fname.index('.')] 
         try:
             dbresult = run([config['SQLITEBROWSER']['cmd'],  outDB])
             if dbresult.returncode == 0:
@@ -70,6 +74,10 @@ def kunteksto(mode, infile, outdir, delim, analyzelevel):
     exit(code=0)
 
 def datagen(modelName, outDB, infile, delim, outdir, config):
+    """
+    Generate XML, JSON and RDF data from the CSV. 
+    """
+    
     # open a connection to the RDF store if one is defined and RDF is to be generated.  
     if config['KUNTEKSTO']['rdf']:
         if config['ALLEGROGRAPH']['status'].upper() == "ACTIVE":
