@@ -45,6 +45,7 @@ import iso8601
 import configparser
 import argparse
 from subprocess import run
+import click
 
 def analyze(csvInput, delim, level, out_dir):
     """
@@ -111,7 +112,6 @@ def analyze(csvInput, delim, level, out_dir):
                 for h in reader.fieldnames:
                     dataDict[h].append(row[h])
 
-        # pbar.grid(row=8, column=10, padx=5, pady=5, sticky=tk.W)
         hdrs = dataDict.keys()
 
         typedict = {}
@@ -180,8 +180,7 @@ def analyze(csvInput, delim, level, out_dir):
 
             # edit the database record for the correct type
             c = conn.cursor()
-            c.execute(
-                """UPDATE record SET datatype = ?, max_val = ?, min_val = ? WHERE header = ? """, (dt, maxval, minval, h))
+            c.execute("""UPDATE record SET datatype = ?, max_val = ?, min_val = ? WHERE header = ? """, (dt, maxval, minval, h))
             conn.commit()
 
         conn.close()

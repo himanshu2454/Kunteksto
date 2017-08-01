@@ -19,11 +19,12 @@ from generate import makeModel, makeData
 @click.option('--delim', '-d', type=click.Choice([',', ';', ':', '|', '$']), help=' Overrides the config file default value.')
 @click.option('--analyzelevel', '-a', type=click.Choice(['simple', 'full']), help=' Overrides the config file default value.')
 def kunteksto(mode, infile, outdir, delim, analyzelevel, dbfile):
+    """Kunteksto adds validation and semantics to your data."""
     
     # Setup config info
     config = configparser.ConfigParser()
     config.read('kunteksto.conf')
-    
+            
     # override the delimiter and/or analyzelevel if provided
     if not delim:
         delim = config['KUNTEKSTO']['delim']
@@ -55,9 +56,8 @@ def kunteksto(mode, infile, outdir, delim, analyzelevel, dbfile):
             if dbresult.returncode == 0:
                 modelName = makeModel(outDB, outdir)
                 datagen(modelName, outDB, infile, delim, outdir, config)
-                return(True)
             else:
-                print("There was an error running SQLiteBrowser. Please check your configuration and retry.")
+                print("\n\nThere was an error running SQLiteBrowser. Please check your configuration and retry.")
                 exit(code=1)
 
         except FileNotFoundError:
