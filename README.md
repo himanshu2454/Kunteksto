@@ -15,12 +15,12 @@ It is the combination of ontological, temporal and spatial semantics that descri
 See the instructions in the documentation or online at https://datainsights.tech/Kunteksto/index.html
 
 # References
-    -  The Estes Park Group http://estesparkgroup.org/
-    -  The Data-centric Manifesto http://datacentricmanifesto.org/
-    -  Data-centric companies will devour competitors https://goo.gl/xDcpZM
-    -  The Data-Centric Revolution: Gaining Traction https://goo.gl/zdRLm9
-    -  The limits of deep learning https://blog.keras.io/the-limitations-of-deep-learning.html 
-    -  The future of deep learning https://blog.keras.io/the-future-of-deep-learning.html
+The Estes Park Group http://estesparkgroup.org/
+The Data-centric Manifesto http://datacentricmanifesto.org/
+Data-centric companies will devour competitors https://goo.gl/xDcpZM
+The Data-Centric Revolution: Gaining Traction https://goo.gl/zdRLm9
+The limits of deep learning https://blog.keras.io/the-limitations-of-deep-learning.html 
+The future of deep learning https://blog.keras.io/the-future-of-deep-learning.html
 
 
 
