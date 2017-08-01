@@ -10,7 +10,7 @@ import sqlite3
 
 from analyze import analyze
 from generate import makeModel, makeData
-
+from catalogmgr import getCatalog
 @click.command()
 @click.option('--mode', '-m', type=click.Choice(['all', 'editdb', 'generate']),help="See the documentation. If you don't know then use: all", prompt=True)
 @click.option('--infile', '-i', help='Full path and filename of the input CSV file.', prompt=True)
@@ -51,6 +51,9 @@ def kunteksto(mode, infile, outdir, delim, analyzelevel, dbfile):
         outDB = analyze(infile, delim, analyzelevel, outdir)
         dname, fname = os.path.split(infile)
         outdir += os.path.sep + fname[:fname.index('.')] 
+        prjname = fname[:fname.index('.')]
+        getCatalog(outdir, prjname)
+        
         try:
             dbresult = run([config['SQLITEBROWSER']['cmd'],  outDB])
             if dbresult.returncode == 0:
@@ -151,6 +154,6 @@ def datagen(modelName, outDB, infile, delim, outdir, config):
 
 
 if __name__ == '__main__':
-    os.environ['XML_CATALOG_FILES'] = 'Kunteksto_catalog.xml'
+    os.environ['XML_CATALOG_FILES'] = 'catalogs/Kunteksto_catalog.xml'
     print('\n Kunteksto is running ...\n\n')
     kunteksto()

@@ -7,5 +7,5 @@
 
 
   <!-- S3Model DMs -->
-  <rewriteSystem systemIdStartString="https://dmgen.s3model.com/dmlib/" rewritePrefix="file:///home/tim/DII/Kunteksto/output/Demo/"/>
+  <rewriteSystem systemIdStartString="https://dmgen.s3model.com/dmlib/" rewritePrefix="file:///home/tim/DII/Kunteksto/output/"/>
 </catalog>
