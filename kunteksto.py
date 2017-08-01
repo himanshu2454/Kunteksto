@@ -19,7 +19,7 @@ from catalogmgr import getCatalog
 @click.option('--delim', '-d', type=click.Choice([',', ';', ':', '|', '$']), help=' Overrides the config file default value.')
 @click.option('--analyzelevel', '-a', type=click.Choice(['simple', 'full']), help=' Overrides the config file default value.')
 def kunteksto(mode, infile, outdir, delim, analyzelevel, dbfile):
-    """Kunteksto adds validation and semantics to your data."""
+    """Kunteksto (ˈkänˌteksto) adds validation and semantics to your data."""
     
     # Setup config info
     config = configparser.ConfigParser()
@@ -76,6 +76,7 @@ def kunteksto(mode, infile, outdir, delim, analyzelevel, dbfile):
         dname, fname = os.path.split(dbfile)
         prjname = fname[:fname.index('.')]
         dbName =  prjname + '.db'
+        getCatalog(outdir, prjname)        
         conn = sqlite3.connect(dbfile)
         c = conn.cursor()
         c.execute("SELECT * FROM model")
@@ -154,6 +155,5 @@ def datagen(modelName, outDB, infile, delim, outdir, config):
 
 
 if __name__ == '__main__':
-    os.environ['XML_CATALOG_FILES'] = 'catalogs/Kunteksto_catalog.xml'
-    print('\n Kunteksto is running ...\n\n')
+    print('\n Kunteksto started ...\n\n')
     kunteksto()
