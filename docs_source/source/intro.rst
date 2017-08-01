@@ -29,8 +29,13 @@ Cross-Platform on Anaconda
 
 This is the preferred environment for a tool like Kunteksto because it integrates easily with systems for domain experts, data engineers and data scientists.
 
+- Install Anaconda Python 3.5+ for your platform according to the instructions here https://docs.continuum.io/anaconda/install/ 
 - Install SQLiteBrowser as directed by the links above. 
 - Follow the instructions for your platform for lxml installation. See: http://lxml.de/installation.html Because the process can even vary across versions of operating systems, you may need this resource as well: https://stackoverflow.com/search?q=install+lxml 
+
+- Create a conda environment: conda create -n Kunteksto python=3
+- Activate the environment 
+- conda install kunteksto
 
 
 

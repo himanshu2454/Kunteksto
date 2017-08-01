@@ -109,8 +109,8 @@ def checkType(h, dataDict):
         dt = "Date"
     else:
         dt = "String"
-    
-    return((dt, maxval, minval, h))
+
+    return(dt, maxval, minval, h)
 
 def analyze(csvInput, delim, level, out_dir):
     """
@@ -184,12 +184,12 @@ def analyze(csvInput, delim, level, out_dir):
             for h in bar:
                 vals = checkType(h, dataDict)
                     
-            # edit the database record for the correct type
-            c = conn.cursor()
-            c.execute("""UPDATE record SET datatype = ?, max_val = ?, min_val = ? WHERE header = ? """, vals)
-            conn.commit()
-
-        conn.close()
+                # edit the database record for the correct type
+                c = conn.cursor()
+                c.execute("""UPDATE record SET datatype = ?, max_val = ?, min_val = ? WHERE header = ? """, vals)
+                conn.commit()
+    
+            conn.close()
 
     return(db_file)
 

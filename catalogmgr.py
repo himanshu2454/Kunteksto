@@ -4,7 +4,6 @@ Load or create and load XML catalog for specific project.
 import os
 
 def getCatalog(outdir, prjname):
-    os.environ['XML_CATALOG_FILES'] = 'catalogs/Kunteksto_catalog.xml'
 
     cat_txt = """<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE catalog PUBLIC "-//OASIS//DTD XML Catalogs V1.1//EN" "http://www.oasis-open.org/committees/entity/release/1.1/catalog.dtd">
@@ -16,7 +15,7 @@ def getCatalog(outdir, prjname):
 
 
   <!-- S3Model DMs -->
-  <rewriteSystem systemIdStartString="https://dmgen.s3model.com/dmlib/" rewritePrefix="file://""" + outdir + """/ "/>
+  <rewriteSystem systemIdStartString="https://dmgen.s3model.com/dmlib/" rewritePrefix="file://""" + outdir + """/"/>
 </catalog>
   
 """    

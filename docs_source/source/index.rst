@@ -17,8 +17,9 @@ Contents:
    intro
    start
    process
-   future
    configure
+   pima
+   future
    
 
 Indices and tables

@@ -71,7 +71,7 @@
             
             
               <div class="version">
-                1.1
+                1.2.5
               </div>
             
           
@@ -106,6 +106,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="process.html">Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configure.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pima.html">Pima Indian Diabetes Dataset Tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="future.html">The Future</a></li>
 </ul>
 
@@ -179,35 +181,30 @@
 </div>
 <div class="section" id="tutorial">
 <span id="tutor"></span><h2>Tutorial<a class="headerlink" href="#tutorial" title="Permalink to this headline">¶</a></h2>
-<p>Kunteksto includes a demo data file that you can use to create your first model and data translation. This is a screenshot of the entire file.</p>
+<p>Kunteksto includes a demo data file that you can use to create your first model and data translation. This is a screenshot of the entire file as dipicted in a spreadsheet.</p>
 <a class="reference internal image-reference" href="_images/csv_data.png"><img alt="Demo.csv" class="align-center" src="_images/csv_data.png" style="width: 800px; height: 600px;" /></a>
-<p>Notice that there are a few columns to demonstrate various datatypes as well as one column with mixed types that might look like an interger column at first glance.</p>
-<p>This tutorial does not demonstrate all of the functionality of the data translator but it does demonstrate the process. Likewise, Kunteksto itself only provides around 40% of the full capability of S3Models. Other tools provide all of the S3Model capability but are not designed to translate existing data.</p>
-<p>The Kunteksto application window looks like this when first opened.</p>
-<a class="reference internal image-reference" href="_images/initial.png"><img alt="Initial Window" class="align-center" src="_images/initial.png" style="width: 800px; height: 600px;" /></a>
-<p>The first step is to select your data file and then analyze that data file. Data files must be plain text (often called CSV) files that have each record on a row, seperated by a CR/LF (or CR depending on the operating system) and each field in the record delimited by a separator.</p>
-<p>The supported field separators are:</p>
-<ul class="simple">
-<li>comma : &#8221;,&#8221;</li>
-<li>semi-colon : &#8221;;&#8221;</li>
-<li>colon : &#8221;:&#8221;</li>
-<li>pipe : &#8220;|&#8221;</li>
-<li>dollar sign : &#8220;$&#8221;</li>
-</ul>
-<p>The first row of the data file <strong>MUST</strong> contain column names. These are also sometimes referred to as column headers.</p>
+<p>Notice that there are a few columns to demonstrate various datatypes as well as one column with mixed types that might look like an integer column at first glance but has a missing value.</p>
+<p>This tutorial does not demonstrate all of the functionality of Kunteksto but it does demonstrate the process of creating a model based on data and then enhancing that data with improved semantics.</p>
+<p>Kunteksto is a commandline tool that uses a combination of commandline options as well as a configuration file.
+The configuration file is covered in another section. The default configuration is fine for the tutorials.</p>
 <div class="section" id="tutorial-steps">
 <span id="tutorsteps"></span><h3>Tutorial Steps<a class="headerlink" href="#tutorial-steps" title="Permalink to this headline">¶</a></h3>
-<ol class="arabic simple">
-<li>Start Kunteksto: python3 kunteksto.py</li>
-<li>Select the semi-colon separator using the select box (Demo.csv uses a semicolon &#8216;;&#8217; for the field separator).</li>
-<li>Select the demo file, <strong>Demo.csv</strong> using the open file dialog.</li>
-<li>Kunteksto will create a results database of this CSV file named Demo.db when the Analyze CSV button is clicked.</li>
-</ol>
-<a class="reference internal image-reference" href="_images/analyze.png"><img alt="Click Analyze CSV" class="align-center" src="_images/analyze.png" style="width: 800px; height: 600px;" /></a>
-<ol class="arabic simple" start="5">
-<li>Open the Demo.db file using the DB Browser for SQLite if it does not automatically open.</li>
-<li>Select the <em>Browse Data</em> tab and the <em>model</em> table. Edit the title, description, copyright, author and contributor fields as desired. These fields describe the overall metadata for your data model. Basically it describes the where, when and why the data is being modeled. When you click on a field it place the contents in the larger box on the right side for easier editing.</li>
-</ol>
+<ul class="simple">
+<li>Navigate to the directory where you installed Kunteksto.</li>
+<li>Start Kunteksto:</li>
+</ul>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>python3 kunteksto.py
+</pre></div>
+</div>
+<ul class="simple">
+<li>At the <strong>mode</strong> prompt, type <em>all</em></li>
+<li>At the <strong>infile</strong> prompt, type <strong>example_data/Demo.csv</strong></li>
+<li>Kunteksto will analyze the input file and create a results database of this CSV file named output/Demo/Demo.db</li>
+<li>The output/Demo/Demo.db file should open in the SQLiteBrowser. If it does not automatically open then you will need to manually open the file with the tool you installed to open SQLite Databases. In the configuration section of these docs you will learn how to fix this issue.</li>
+<li>Once the database is open use your filemanager to navigate to the <em>example_data</em> subdirectory and open the <em>Demo_info.pdf</em> file. This file simulates what often purports to be a data dictionary that you might receive with a dataset. You will use this to improve the computable semantics of your data.</li>
+<li>In the SQLiteBrowser, select the <em>Browse Data</em> tab and the <em>model</em> table. Edit the title, description, copyright, author and contributor fields as desired. These fields describe the overall metadata for your data model. Basically it describes the where, when and why the data is being modeled. When you click on a field it places the contents in the larger box on the right side for easier editing. You will notice that some of this information can be obtained from the PDF. Other bits you have to just wing it based on your knowledge of the dataset. In this demo case we are going to say that we have a local ontology that describes the columns.</li>
+<li>This image depicts the view of the model table and below that are descriptions of each of the fields to be edited; or not.</li>
+</ul>
 <a class="reference internal image-reference" href="_images/edit_model.png"><img alt="Edit Model" class="align-center" src="_images/edit_model.png" style="width: 800px; height: 600px;" /></a>
 <p>Field descriptions:</p>
 <blockquote>
@@ -222,14 +219,17 @@
 <li><em>dataid</em> System Generated, <strong>Do Not Edit</strong></li>
 </ul>
 </div></blockquote>
-<ol class="arabic simple" start="7">
-<li>Select the record table. Note that there is a record for each column of data in Demo.csv. If there is only one record then the likely problem is that an incorrect separator was chosen.<ul>
+<ul>
+<li><p class="first">Select the record table. Note that there is a record for each column of data in Demo.csv. If there is only one record then the likely problem is that an incorrect field delimiter was chosen or the default was changed in the config file.</p>
+<blockquote>
+<div><ul class="simple">
 <li>each record has a number of fields that allow you to describe more about your data.</li>
-<li>though each field is pre-filled it is only a guess and may not be accurate.</li>
-<li>it is up to you to be as accurate as possible in describing your data to improve reusability</li>
+<li>though some fields are pre-filled, it is only a guess and may not be accurate.</li>
+<li>it is up to you to be as accurate as possible in describing your data to improve usability</li>
 </ul>
+</div></blockquote>
 </li>
-</ol>
+</ul>
 <a class="reference internal image-reference" href="_images/record_table.png"><img alt="Edit Record" class="align-center" src="_images/record_table.png" style="width: 800px; height: 600px;" /></a>
 <p>Field descriptions:</p>
 <blockquote>
@@ -245,6 +245,7 @@
 <li><em>max_val</em> enter the maximum value restriction for integer or float columns.</li>
 <li><em>vals_inclusive</em> are the minimum and maximum values inclusive in the valid values range. Enter a &#8216;1&#8217; for yes or a &#8216;0&#8217; for no.</li>
 <li><em>definition_url</em> enter a URL (or at least a URI) to a vocabulary or ontology or a webpage that describes or defines the meaning of the data in this column.</li>
+<li><em>pred_obj_list</em> enter any additional predicate object pairs to be used to define this resource. Enter them one per line with the predicate and object separated by a space character. You may use namespace abbreviations if they are in the list below. <a class="footnote-reference" href="#f1" id="id1">[1]</a> Otherwise you must include the full URI in order to create valid models.</li>
 <li><em>def_txt_value</em> enter the default value for a string datatype column, if there is one.</li>
 <li><em>def_num_value</em> enter the default value for a float or integer datatype column, if there is one.</li>
 <li><em>units</em> enter the units value for a float or integer datatype column. This can be an abbreviation but should come from a standard units vocabulary such as <a class="reference external" href="https://github.com/HajoRijgersberg/OM">https://github.com/HajoRijgersberg/OM</a> or <a class="reference external" href="http://unitsofmeasure.org/trac">http://unitsofmeasure.org/trac</a> For integer columns where the values are <em>counts</em> you should enter the name of the item(s) being counted. This could be the same as the lable or column header if desired.</li>
@@ -252,13 +253,55 @@
 <li><em>adid</em> System Generated, <strong>Do Not Edit</strong></li>
 </ul>
 </div></blockquote>
-<ol class="arabic simple" start="8">
-<li>Once you have completed the data description step and closed the DB Browser, click the Generate Model button. You will find an XML Schema model file and an RDF file in the output directory. These are the structural and semantic models that can be used in your analysis as well as shared with others to better describe the data.</li>
-</ol>
+<ul class="simple">
+<li>Once you have completed the data description step, <strong>saved your changes</strong> and closed the DB Browser. You will see that model generation happens followed by data generation. In the output/Demo directory along with the Demo.db you will see an XML Schema model file and a RDF file. These are the structural and semantic models that can be used in your analysis as well as shared with others to better describe the data. The RDF file is actually extracted from the XML Schema so only the schema needs to be shared. Data Insights, Inc. provides a utility with S3Model to extract the semantics from the schema data models.</li>
+</ul>
 <a class="reference internal image-reference" href="_images/output_dir.png"><img alt="Output Directory" class="align-center" src="_images/output_dir.png" style="width: 800px; height: 600px;" /></a>
-<ol class="arabic simple" start="9">
-<li>Now click the Generate Data button and Kunteksto will create data instances for each record in the CSV file that are semantically compliant with the RDF and will be valid according to the XML Schema. Demonstrating that the models describe the data.</li>
-</ol>
+<ul class="simple">
+<li>The <em>all</em> mode causes the creation of data instances (XML, JSON and RDF) for each record in the CSV file that are semantically compliant with the RDF and will be valid according to the XML Schema. Demonstrating that the models describe the data. The RDF file does include some constraint definitions based on SHACL <a class="reference external" href="https://www.w3.org/TR/shacl/">https://www.w3.org/TR/shacl/</a> However, there is no builtin processing for these constraints. Full validation is performed via XML for both the data model and data instances. In addition, an XML catalog is dynamically generated for each project and is written to the catalogs subdirectory.</li>
+<li>Notice that the validation file Demo_validation_log.csv shows four valid records and one invalid record. The invalid record is due to a &#8216;NaN&#8217; entry in a numeric column.</li>
+<li>In realworld situtaions we will often be generating data on a continuing basis for this same model. To demonstrate this functionality you will use the Demo2.csv file. From the commandline issue this command:</li>
+</ul>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>python3 kunteksto.py -i example_data/Demo2.csv -m generate -db output/Demo/Demo.db
+</pre></div>
+</div>
+<p>This says to use the Demo2.csv file with the mode for generate and the database to reuse is the Demo.db. The information for the XML Schema is gathered from the information in the database and the XSD file is assumed to be in the directory with the database. A new validation log is generated Demo2_validation_log.csv and it will have two files that are invalid.</p>
+<p>It is important to realize that the CSV files must represent <em>EXACTLY</em> the same type of data in order to reuse the database and schema. If you issue this commandline:</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>python3 kunteksto.py -i example_data/Demo3.csv -m generate -db output/Demo/Demo.db
+</pre></div>
+</div>
+<p>You will see this error message:</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>There was an error matching the data input file to the selected model database.
+Datafile: Bad_Column_name  Model: Column_1
+</pre></div>
+</div>
+<p>and no new data files were generated because the data format, in this case a column name, didn&#8217;t match.</p>
+<ul class="simple">
+<li>You may also want to perform the <a class="reference internal" href="pima.html#pimatutor"><span class="std std-ref">Pima Tutorial</span></a> This tutorial is based on the popular Pima Indian Diabetes study that is used in many other data science tutorials. The data is realistic as opposed to this simple demo. Also, you will be actually looking up semanntics in online repositories.</li>
+</ul>
+<p class="rubric">Footnotes</p>
+<table class="docutils footnote" frame="void" id="f1" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td><p class="first">Namespace abbreviaions list:</p>
+<ul class="last simple">
+<li>&#8216;xs&#8217;:&#8217;<a class="reference external" href="http://www.w3.org/2001/XMLSchema">http://www.w3.org/2001/XMLSchema</a>&#8216;,</li>
+<li>&#8216;xsi&#8217;:&#8217;<a class="reference external" href="http://www.w3.org/2001/XMLSchema-instance">http://www.w3.org/2001/XMLSchema-instance</a>&#8216;,</li>
+<li>&#8216;xsd&#8217;:&#8217;<a class="reference external" href="http://www.w3.org/2001">http://www.w3.org/2001</a>/XMLSchema#&#8217;,</li>
+<li>&#8216;dc&#8217;:&#8217;<a class="reference external" href="http://purl.org/dc/elements/1.1/">http://purl.org/dc/elements/1.1/</a>&#8216;,</li>
+<li>&#8216;skos&#8217;:&#8217;<a class="reference external" href="http://www.w3.org/2004/02/skos">http://www.w3.org/2004/02/skos</a>/core#&#8217;,</li>
+<li>&#8216;foaf&#8217;:&#8217;<a class="reference external" href="http://xmlns.com/foaf/0.1/">http://xmlns.com/foaf/0.1/</a>&#8216;,</li>
+<li>&#8216;sioc&#8217;:&#8217;<a class="reference external" href="http://rdfs.org/sioc">http://rdfs.org/sioc</a>/ns#&#8217;,</li>
+<li>&#8216;rdf&#8217;:&#8217;<a class="reference external" href="http://www.w3.org/1999/02/22-rdf-syntax">http://www.w3.org/1999/02/22-rdf-syntax</a>-ns#&#8217;,</li>
+<li>&#8216;rdfs&#8217;:&#8217;<a class="reference external" href="http://www.w3.org/2000/01/rdf">http://www.w3.org/2000/01/rdf</a>-schema#&#8217;,</li>
+<li>&#8216;dct&#8217;:&#8217;<a class="reference external" href="http://purl.org/dc/terms/">http://purl.org/dc/terms/</a>&#8216;,</li>
+<li>&#8216;owl&#8217;:&#8217;<a class="reference external" href="http://www.w3.org/2002/07">http://www.w3.org/2002/07</a>/owl#&#8217;,</li>
+<li>&#8216;vc&#8217;:&#8217;<a class="reference external" href="http://www.w3.org/2007/XMLSchema-versioning">http://www.w3.org/2007/XMLSchema-versioning</a>&#8216;,</li>
+<li>&#8216;s3m&#8217;:&#8217;<a class="reference external" href="https://www.s3model.com/ns/s3m/">https://www.s3model.com/ns/s3m/</a>&#8216;</li>
+</ul>
+</td></tr>
+</tbody>
+</table>
 </div>
 </div>
 </div>
@@ -307,7 +350,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.1.0',
+            VERSION:'1.2.5',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

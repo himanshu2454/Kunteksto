@@ -23,8 +23,7 @@ Data-centric companies will devour competitors https://goo.gl/xDcpZM
 
 The Data-Centric Revolution: Gaining Traction https://goo.gl/zdRLm9
 
-The limits of deep learning https://blog.keras.io/
-the-limitations-of-deep-learning.html 
+The limits of deep learning https://blog.keras.io/the-limitations-of-deep-learning.html 
 
 The future of deep learning https://blog.keras.io/the-future-of-deep-learning.html
 
