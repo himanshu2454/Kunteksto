@@ -17,6 +17,7 @@ import json
 import xmltodict
 import shortuuid
 import iso8601
+import click
 
 # RDF storage imports
 from franz.openrdf.rio.rdfformat import RDFFormat
@@ -1126,7 +1127,7 @@ def makeData(schema, db_file, infile, delim, outdir, connRDF, connXML, connJSON)
     schema_doc = etree.parse(schema)
     modelSchema = etree.XMLSchema(schema_doc)
 
-    print('Generation', "Generate data for: " + schemaFile + ' using ' + base + '\n')
+    print('\n\nGeneration: ', "Generate data for: " + schemaFile + ' using ' + base + '\n')
     namespaces = {"https://www.s3model.com/ns/s3m/": "s3m",
                   "http://www.w3.org/2001/XMLSchema-instance": "xsi"}
     xmldir = outdir + '/xml/'
@@ -1145,11 +1146,17 @@ def makeData(schema, db_file, infile, delim, outdir, connRDF, connXML, connJSON)
     rows = c.fetchall()
     conn.close()
     
+    # count the lines in the file
+    with open(infile) as f:
+        s = f.read()
+    csv_len =  s.count('\n') - 1
+    f.close()
+    
     with open(infile) as csvfile:
         val_log = 'id,valid\n'
         reader = csv.DictReader(csvfile, delimiter=delim)
         
-        # this test is really for the 'generate' mode. TODO: 
+        # this test is really for the 'generate' mode. 
         hdrs = reader.fieldnames
         for i in range(0,len(hdrs)):
             if hdrs[i] != rows[i][0]:
@@ -1157,85 +1164,88 @@ def makeData(schema, db_file, infile, delim, outdir, connRDF, connXML, connJSON)
                 print('Datafile: ' + hdrs[i] + '  Model: ' + rows[i][0] + '\n\n')
                 exit(code=1)
                         
-        for data in reader:
-            file_id = filePrefix + '-' + shortuuid.uuid()
-
-            xmlProlog = '<?xml version="1.0" encoding="UTF-8"?>\n'  # lxml doesn't want this in the file during validation, it has to be reinserted afterwards. 
-
-            xmlStr = ''
-            rdfStr = '<?xml version="1.0" encoding="UTF-8"?>\n<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"\nxmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"\nxmlns:s3m="https://www.s3model.com/ns/s3m/"\nxmlns:xs="http://www.w3.org/2001/XMLSchema">\n'
-            rdfStr += '<rdfs:Class rdf:about="' + file_id + '">\n'
-            rdfStr += '  <s3m:isInstanceOf rdf:resource="dm-' + \
-                model[5].strip() + '"/>\n'
-            rdfStr += '</rdfs:Class>\n'
-
-            # get the DM and Entry components.
-            xmlStr += xmlHdr(model, schema, schemaFile)
-
-            for row in rows:
-                if row[2].lower() == 'integer':
-                    xmlStr += xmlCount(row, data)
-                    rdfStr += rdfCount(row, data)
-                elif row[2].lower() == 'float':
-                    xmlStr += xmlQuantity(row, data)
-                    rdfStr += rdfQuantity(row, data)
-                elif row[2].lower() in ('date', 'datetime', 'time'):
-                    xmlStr += xmlTemporal(row, data)
-                    rdfStr += rdfTemporal(row, data)
-                elif row[2].lower() == 'string':
-                    xmlStr += xmlString(row, data)
-                    rdfStr += rdfString(row, data)
-                else:
-                    raise ValueError("Invalid datatype")
-
-            xmlStr += '    </s3m:ms-' + model[7].strip() + '>\n'
-            xmlStr += '  </s3m:ms-' + model[6].strip() + '>\n'
-            xmlStr += '</s3m:dm-' + model[5].strip() + '>\n'
-
-            # validate the XML data file and enter the appropriate RDF statement as well as an enry in the validation log.
-            try:
-                tree = etree.parse(StringIO(xmlStr))
-                modelSchema.assertValid(tree)
-                rdfStr += '  <rdfs:Class rdf:about="' + file_id + '">\n'
-                rdfStr += '    <rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/DataInstanceValid"/>\n'
-                rdfStr += '  </rdfs:Class>\n'
-                val_log += file_id + ',true\n'
-            except etree.DocumentInvalid:
-                rdfStr += '  <rdfs:Class rdf:about="' + file_id + '">\n'
-                rdfStr += '    <rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/DataInstanceError"/>\n'
-                rdfStr += '  </rdfs:Class>\n'
-                val_log += file_id + ',false\n'
-
-            rdfStr += '</rdf:RDF>\n'
+        # for data in reader:
+        with click.progressbar(reader, label="Writing " + str(csv_len) + " data files: ", length=csv_len) as bar:
+            for data in bar:
             
-            # add the prolog back to the top
-            xmlStr = xmlProlog + xmlStr
-
-            if connXML:
-                connXML.add(file_id + '.xml', xmlStr)
-            else:
-                xmlFile = open(xmldir + file_id + '.xml', 'w')
-                xmlFile.write(xmlStr)
-                xmlFile.close()
-
-            if connRDF:
-                connRDF.addData(rdfStr, rdf_format=RDFFormat.RDFXML,
-                                base_uri=None, context=None)
-            else:
-                rdfFile = open(rdfdir + file_id + '.rdf', 'w')
-                rdfFile.write(rdfStr)
-                rdfFile.close()
-
-            d = xmltodict.parse(xmlStr, xml_attribs=True,
-                                process_namespaces=True, namespaces=namespaces)
-            jsonStr = json.dumps(d, indent=4)
-            if connJSON:
-                from bson.json_util import loads
-                connJSON[filePrefix].insert_one(loads(jsonStr))
-            else:
-                jsonFile = open(jsondir + file_id + '.json', 'w')
-                jsonFile.write(jsonStr)
-                jsonFile.close()
+                file_id = filePrefix + '-' + shortuuid.uuid()
+    
+                xmlProlog = '<?xml version="1.0" encoding="UTF-8"?>\n'  # lxml doesn't want this in the file during validation, it has to be reinserted afterwards. 
+    
+                xmlStr = ''
+                rdfStr = '<?xml version="1.0" encoding="UTF-8"?>\n<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"\nxmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"\nxmlns:s3m="https://www.s3model.com/ns/s3m/"\nxmlns:xs="http://www.w3.org/2001/XMLSchema">\n'
+                rdfStr += '<rdfs:Class rdf:about="' + file_id + '">\n'
+                rdfStr += '  <s3m:isInstanceOf rdf:resource="dm-' + \
+                    model[5].strip() + '"/>\n'
+                rdfStr += '</rdfs:Class>\n'
+    
+                # get the DM and Entry components.
+                xmlStr += xmlHdr(model, schema, schemaFile)
+    
+                for row in rows:
+                    if row[2].lower() == 'integer':
+                        xmlStr += xmlCount(row, data)
+                        rdfStr += rdfCount(row, data)
+                    elif row[2].lower() == 'float':
+                        xmlStr += xmlQuantity(row, data)
+                        rdfStr += rdfQuantity(row, data)
+                    elif row[2].lower() in ('date', 'datetime', 'time'):
+                        xmlStr += xmlTemporal(row, data)
+                        rdfStr += rdfTemporal(row, data)
+                    elif row[2].lower() == 'string':
+                        xmlStr += xmlString(row, data)
+                        rdfStr += rdfString(row, data)
+                    else:
+                        raise ValueError("Invalid datatype")
+    
+                xmlStr += '    </s3m:ms-' + model[7].strip() + '>\n'
+                xmlStr += '  </s3m:ms-' + model[6].strip() + '>\n'
+                xmlStr += '</s3m:dm-' + model[5].strip() + '>\n'
+    
+                # validate the XML data file and enter the appropriate RDF statement as well as an enry in the validation log.
+                try:
+                    tree = etree.parse(StringIO(xmlStr))
+                    modelSchema.assertValid(tree)
+                    rdfStr += '  <rdfs:Class rdf:about="' + file_id + '">\n'
+                    rdfStr += '    <rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/DataInstanceValid"/>\n'
+                    rdfStr += '  </rdfs:Class>\n'
+                    val_log += file_id + ',true\n'
+                except etree.DocumentInvalid:
+                    rdfStr += '  <rdfs:Class rdf:about="' + file_id + '">\n'
+                    rdfStr += '    <rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/DataInstanceError"/>\n'
+                    rdfStr += '  </rdfs:Class>\n'
+                    val_log += file_id + ',false\n'
+    
+                rdfStr += '</rdf:RDF>\n'
+                
+                # add the prolog back to the top
+                xmlStr = xmlProlog + xmlStr
+    
+                if connXML:
+                    connXML.add(file_id + '.xml', xmlStr)
+                else:
+                    xmlFile = open(xmldir + file_id + '.xml', 'w')
+                    xmlFile.write(xmlStr)
+                    xmlFile.close()
+    
+                if connRDF:
+                    connRDF.addData(rdfStr, rdf_format=RDFFormat.RDFXML,
+                                    base_uri=None, context=None)
+                else:
+                    rdfFile = open(rdfdir + file_id + '.rdf', 'w')
+                    rdfFile.write(rdfStr)
+                    rdfFile.close()
+    
+                d = xmltodict.parse(xmlStr, xml_attribs=True,
+                                    process_namespaces=True, namespaces=namespaces)
+                jsonStr = json.dumps(d, indent=4)
+                if connJSON:
+                    from bson.json_util import loads
+                    connJSON[filePrefix].insert_one(loads(jsonStr))
+                else:
+                    jsonFile = open(jsondir + file_id + '.json', 'w')
+                    jsonFile.write(jsonStr)
+                    jsonFile.close()
     vlog = open(outdir + os.path.sep + filePrefix + '_validation_log.csv', 'w')
     vlog.write(val_log)
     vlog.close()

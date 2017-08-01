@@ -47,6 +47,71 @@ import argparse
 from subprocess import run
 import click
 
+def checkType(h, dataDict):
+    """ test each data item from a column. if one is not a type, turn off that type."""
+    dlist = dataDict[h]
+    is_int = False
+    is_float = False
+    is_date = False
+    is_str = False
+    maxval = None
+    minval = None
+    
+    for x in dlist:
+        try:
+            int(x)
+            is_int = True
+        except:
+            is_int = False
+            break
+    
+    for x in dlist:
+        try:
+            if not is_int:
+                float(x)
+                is_float = True
+        except:
+            is_float = False
+            break
+    
+    for x in dlist:
+        try:
+            if not is_int and not is_float:
+                iso8601.parse_date(x)
+                is_date = True
+        except:
+            is_date = False
+            break
+    
+    for x in dlist:
+        try:
+            if not is_int and not is_float and not is_date:
+                str(x)
+                is_str = True
+        except:
+            is_str = False
+            break
+    
+    if is_int:
+        intlist = [int(x) for x in dlist]
+        maxval = max(intlist)
+        minval = min(intlist)
+    if is_float:
+        flist = [float(x) for x in dlist]
+        maxval = max(flist)
+        minval = min(flist)
+    
+    if is_int:
+        dt = "Integer"
+    elif is_float:
+        dt = "Float"
+    elif is_date:
+        dt = "Date"
+    else:
+        dt = "String"
+    
+    return((dt, maxval, minval, h))
+
 def analyze(csvInput, delim, level, out_dir):
     """
     Load and analyze the CSV file.
@@ -114,73 +179,14 @@ def analyze(csvInput, delim, level, out_dir):
 
         hdrs = dataDict.keys()
 
-        typedict = {}
-        for h in hdrs:
-            # test each data item from a column. if one is not a type, turn off that type.
-            dlist = dataDict[h]
-            is_int = False
-            is_float = False
-            is_date = False
-            is_str = False
-            maxval = None
-            minval = None
-
-            for x in dlist:
-                try:
-                    int(x)
-                    is_int = True
-                except:
-                    is_int = False
-                    break
-
-            for x in dlist:
-                try:
-                    if not is_int:
-                        float(x)
-                        is_float = True
-                except:
-                    is_float = False
-                    break
-
-            for x in dlist:
-                try:
-                    if not is_int and not is_float:
-                        iso8601.parse_date(x)
-                        is_date = True
-                except:
-                    is_date = False
-                    break
-
-            for x in dlist:
-                try:
-                    if not is_int and not is_float and not is_date:
-                        str(x)
-                        is_str = True
-                except:
-                    is_str = False
-                    break
-
-            if is_int:
-                intlist = [int(x) for x in dlist]
-                maxval = max(intlist)
-                minval = min(intlist)
-            if is_float:
-                flist = [float(x) for x in dlist]
-                maxval = max(flist)
-                minval = min(flist)
-
-            if is_int:
-                dt = "Integer"
-            elif is_float:
-                dt = "Float"
-            elif is_date:
-                dt = "Date"
-            else:
-                dt = "String"
-
+         # check for the column types and min/max values, show progress bar
+        with click.progressbar(hdrs, label="Checking types and min/max values: ") as bar:
+            for h in bar:
+                vals = checkType(h, dataDict)
+                    
             # edit the database record for the correct type
             c = conn.cursor()
-            c.execute("""UPDATE record SET datatype = ?, max_val = ?, min_val = ? WHERE header = ? """, (dt, maxval, minval, h))
+            c.execute("""UPDATE record SET datatype = ?, max_val = ?, min_val = ? WHERE header = ? """, vals)
             conn.commit()
 
         conn.close()

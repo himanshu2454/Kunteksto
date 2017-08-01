@@ -57,11 +57,11 @@ def kunteksto(mode, infile, outdir, delim, analyzelevel, dbfile):
                 modelName = makeModel(outDB, outdir)
                 datagen(modelName, outDB, infile, delim, outdir, config)
             else:
-                print("\n\nThere was an error running SQLiteBrowser. Please check your configuration and retry.")
+                print("\n\nThere was an error running SQLiteBrowser. Please check your configuration and retry or use an alternate DB editor and then run using the generate mode.")
                 exit(code=1)
 
         except FileNotFoundError:
-            print("There was an error running SQLiteBrowser; FileNotFoundError. Please check your configuration and retry.")
+            print("There was an error running SQLiteBrowser; FileNotFoundError. Please check your configuration and retry or use an alternate DB editor and then run using the generate mode.")
             exit(code=1)
             
             
@@ -142,10 +142,10 @@ def datagen(modelName, outDB, infile, delim, outdir, config):
             connRDF.close()
         if connXML:
             connXML.close()
-        print('Data Generation', 'Completed.')
+        print('\n\nData Generation: ', 'Completed.')
 
     else:
-        print('Procedure Error', 'Missing model DB or no selected output directory.')
+        print('\n\nProcedure Error: ', 'Missing model DB or no selected output directory.')
 
     return(True)
 
@@ -153,11 +153,4 @@ def datagen(modelName, outDB, infile, delim, outdir, config):
 if __name__ == '__main__':
     os.environ['XML_CATALOG_FILES'] = 'Kunteksto_catalog.xml'
     print('\n Kunteksto is running ...\n\n')
-    if kunteksto():
-        print('\n Kunteksto has exited ...\n\n')
-        exit(code=0)
-    else:
-        print('\n Kunteksto has exited possibly with errors ...\n\n')
-            
-    
-    
+    kunteksto()
