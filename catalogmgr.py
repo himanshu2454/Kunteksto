@@ -3,7 +3,7 @@ Load or create and load XML catalog for specific project.
 """
 import os
 
-def getCatalog(outdir, prjname):
+def get_catalog(outdir, prjname):
 
     cat_txt = """<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE catalog PUBLIC "-//OASIS//DTD XML Catalogs V1.1//EN" "http://www.oasis-open.org/committees/entity/release/1.1/catalog.dtd">

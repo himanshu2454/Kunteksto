@@ -12,18 +12,26 @@ import csv
 import sqlite3
 from uuid import uuid4
 from collections import OrderedDict
-from lxml import etree
 import json
 import xmltodict
 import shortuuid
 import iso8601
 import click
 
+try:
+    from lxml import etree
+except:
+    from xml.etree import ElementTree as etree
+    
+
 # RDF storage imports
-from franz.openrdf.rio.rdfformat import RDFFormat
+try:
+    from franz.openrdf.rio.rdfformat import RDFFormat
+except:
+    pass
 
 
-def xsdHeader():
+def xsd_header():
     """
     Build the header string for the XSD
     """
@@ -51,7 +59,7 @@ def xsdHeader():
     return(hstr)
 
 
-def xsdMetadata(md):
+def xsd_metadata(md):
     """
     Create the metadata for the S#Model data model.
     """
@@ -79,7 +87,7 @@ def xsdMetadata(md):
     return(mds)
 
 
-def xdCountRDF(data):
+def xdcount_rdf(data):
     """
     Create RDF including SHACL constraints for xdCount model.
     """
@@ -120,7 +128,7 @@ def xdCountRDF(data):
     return(rdfStr)
 
 
-def xdCount(data):
+def xdcount(data):
     """
     Create xdCount model used for integers.
     """
@@ -158,7 +166,7 @@ def xdCount(data):
     xdstr += padding.rjust(indent + 4) + '</xs:documentation>\n'
     xdstr += padding.rjust(indent + 4) + '<xs:appinfo>\n'   
     # add the RDF
-    xdstr += xdCountRDF(data)
+    xdstr += xdcount_rdf(data)
     xdstr += padding.rjust(indent + 4) + '</xs:appinfo>\n'
     xdstr += padding.rjust(indent + 2) + '</xs:annotation>\n'
     xdstr += padding.rjust(indent + 2) + '<xs:complexContent>\n'
@@ -214,12 +222,12 @@ def xdCount(data):
     xdstr += padding.rjust(indent + 2) + '</xs:complexContent>\n'
     xdstr += padding.rjust(indent) + '</xs:complexType>\n'
 
-    xdstr += Units(unitsID, data)
+    xdstr += units(unitsID, data)
 
     return(xdstr)
 
 
-def xdQuantityRDF(data):
+def xdquantity_rdf(data):
     """
     Create RDF including SHACL constraints for xdQuantity model.
     """
@@ -260,7 +268,7 @@ def xdQuantityRDF(data):
     return(rdfStr)
 
 
-def xdQuantity(data):
+def xdquantity(data):
     """
     Create xdQuantity model used for decimals.
     """
@@ -298,7 +306,7 @@ def xdQuantity(data):
     xdstr += padding.rjust(indent + 4) + '</xs:documentation>\n'
     xdstr += padding.rjust(indent + 4) + '<xs:appinfo>\n'
     # add the RDF
-    xdstr += xdQuantityRDF(data)
+    xdstr += xdquantity_rdf(data)
     xdstr += padding.rjust(indent + 4) + '</xs:appinfo>\n'
     xdstr += padding.rjust(indent + 2) + '</xs:annotation>\n'
     xdstr += padding.rjust(indent + 2) + '<xs:complexContent>\n'
@@ -354,11 +362,11 @@ def xdQuantity(data):
     xdstr += padding.rjust(indent + 2) + '</xs:complexContent>\n'
     xdstr += padding.rjust(indent) + '</xs:complexType>\n'
 
-    xdstr += Units(unitsID, data)
+    xdstr += units(unitsID, data)
 
     return(xdstr)
 
-def xdStringRDF(data):
+def xdstring_rdf(data):
     """
     Create RDF including SHACL constraints for xdString model.
     """
@@ -402,7 +410,7 @@ def xdStringRDF(data):
     return(rdfStr)
 
 
-def xdString(data):
+def xdstring(data):
     """
     Create xdString model.
     """
@@ -440,7 +448,7 @@ def xdString(data):
     xdstr += padding.rjust(indent + 4) + '<xs:appinfo>\n'
 
     # add the RDF
-    xdstr += xdStringRDF(data)
+    xdstr += xdstring_rdf(data)
 
     xdstr += padding.rjust(indent + 4) + '</xs:appinfo>\n'
     xdstr += padding.rjust(indent + 2) + '</xs:annotation>\n'    
@@ -506,7 +514,7 @@ def xdString(data):
     return(xdstr)
 
 
-def xdTemporalRDF(data):
+def xdtemporal_rdf(data):
     """
     Create RDF including SHACL constraints for xdTemporal model.
     """
@@ -544,7 +552,7 @@ def xdTemporalRDF(data):
     return(rdfStr)
 
 
-def xdTemporal(data):
+def xdtemporal(data):
     """
     Create xdTemporal model used for dates & times.
     """
@@ -582,7 +590,7 @@ def xdTemporal(data):
     
     xdstr += padding.rjust(indent + 4) + '<xs:appinfo>\n'
     # add the RDF
-    xdstr += xdTemporalRDF(data)
+    xdstr += xdtemporal_rdf(data)
     xdstr += padding.rjust(indent + 4) + '</xs:appinfo>\n'
 
     
@@ -645,7 +653,7 @@ def xdTemporal(data):
     return(xdstr)
 
 
-def Units(mcID, data):
+def units(mcID, data):
     """
     Create xdString model as a Units component of a xdCount or xdQuantity.
     """
@@ -702,7 +710,7 @@ def Units(mcID, data):
     return(xdstr)
 
 
-def xsdData(dataID, indent, def_url, db_file):
+def xsd_data(dataID, indent, def_url, db_file):
     """
     Create xdCluster model for the data portion of an Entry.
     """
@@ -748,13 +756,13 @@ def xsdData(dataID, indent, def_url, db_file):
 
     for row in rows:
         if row[2].lower() == 'integer':
-            mcDict[row[16].strip()] = xdCount(row)
+            mcDict[row[16].strip()] = xdcount(row)
         elif row[2].lower() == 'float':
-            mcDict[row[16].strip()] = xdQuantity(row)
+            mcDict[row[16].strip()] = xdquantity(row)
         elif row[2].lower() in ('date', 'datetime', 'time'):
-            mcDict[row[16].strip()] = xdTemporal(row)
+            mcDict[row[16].strip()] = xdtemporal(row)
         elif row[2].lower() == 'string':
-            mcDict[row[16].strip()] = xdString(row)
+            mcDict[row[16].strip()] = xdstring(row)
         else:
             raise ValueError("Invalid datatype")
 
@@ -773,7 +781,7 @@ def xsdData(dataID, indent, def_url, db_file):
     return(dstr)
 
 
-def xsdEntry(data, db_file):
+def xsd_entry(data, db_file):
     """
     Create the Entry model that si a wrapper for the data as well as various provenance components in S3Model.
     """
@@ -830,11 +838,11 @@ def xsdEntry(data, db_file):
     estr += padding.rjust(indent + 4) + '</xs:restriction>\n'
     estr += padding.rjust(indent + 2) + '</xs:complexContent>\n'
     estr += padding.rjust(indent) + '</xs:complexType>\n\n'
-    estr += xsdData(data[7].strip(), indent, data[4].strip(), db_file)
+    estr += xsd_data(data[7].strip(), indent, data[4].strip(), db_file)
     return(estr)
 
 
-def xsdDM(data):
+def xsd_dm(data):
     """
     Create the Data Model wrapper for the metadata and Entry.
     """
@@ -875,7 +883,7 @@ def xsdDM(data):
     return(dmstr)
 
 
-def xsdRDF(xsdfile, outdir, dm_id, db_file):
+def xsd_rdf(xsdfile, outdir, dm_id, db_file):
     """
         Generate the RDF from the semantics embedded in the XSD.
         """
@@ -941,7 +949,7 @@ def xsdRDF(xsdfile, outdir, dm_id, db_file):
     os.close(rdf_file)
 
 
-def makeModel(db_file, outdir):
+def make_model(db_file, outdir):
     """
     Create an S3M data model schema based on the database information.
     """
@@ -963,10 +971,10 @@ def makeModel(db_file, outdir):
     def_url = row[4]
     conn.close()
 
-    xsd_str = xsdHeader()
-    xsd_str += xsdMetadata(md)
-    xsd_str += xsdDM(row)
-    xsd_str += xsdEntry(row, db_file)
+    xsd_str = xsd_header()
+    xsd_str += xsd_metadata(md)
+    xsd_str += xsd_dm(row)
+    xsd_str += xsd_entry(row, db_file)
 
     xsd_str += '\n</xs:schema>\n'
 
@@ -980,12 +988,12 @@ def makeModel(db_file, outdir):
             'Model Error', "There was an error in generating the schema. Please re-edit the database and look for errors. Probably undefined namespaces or improperly formatted predicate-object pair.")
         return None
 
-    xsdRDF(model, outdir, dmID, db_file)
+    xsd_rdf(model, outdir, dmID, db_file)
 
     return model
 
 
-def xmlHdr(model, schema, schemaFile):
+def xml_hdr(model, schema, schemaFile):
     xstr = '<s3m:dm-' + model[5].strip() + '\n'
     xstr += 'xmlns:s3m="https://www.s3model.com/ns/s3m/"\n'
     xstr += 'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"\n'
@@ -999,7 +1007,7 @@ def xmlHdr(model, schema, schemaFile):
     return(xstr)
 
 
-def xmlCount(row, data):
+def xml_count(row, data):
     xstr = '      <s3m:ms-' + row[16].strip() + '>\n'
     xstr += '      <s3m:ms-' + row[15].strip() + '>\n'
     xstr += '        <label>' + row[1].strip() + '</label>\n'
@@ -1019,7 +1027,7 @@ def xmlCount(row, data):
     return(xstr)
 
 
-def rdfCount(row, data):
+def rdf_count(row, data):
     rstr = '      <rdfs:Class rdf:about="s3m:ms-' + \
         row[15].strip() + '">\n'
     rstr += '        <rdfs:label>' + row[1].strip() + '</rdfs:label>\n'
@@ -1029,7 +1037,7 @@ def rdfCount(row, data):
     return(rstr)
 
 
-def xmlQuantity(row, data):
+def xml_quantity(row, data):
     xstr = '      <s3m:ms-' + row[16].strip() + '>\n'
     xstr += '      <s3m:ms-' + row[15].strip() + '>\n'
     xstr += '        <label>' + row[1].strip() + '</label>\n'
@@ -1049,7 +1057,7 @@ def xmlQuantity(row, data):
     return(xstr)
 
 
-def rdfQuantity(row, data):
+def rdf_quantity(row, data):
     rstr = '      <rdfs:Class rdf:about="s3m:ms-' + \
         row[15].strip() + '">\n'
     rstr += '        <rdfs:label>' + row[1].strip() + '</rdfs:label>\n'
@@ -1059,7 +1067,7 @@ def rdfQuantity(row, data):
     return(rstr)
 
 
-def xmlTemporal(row, data):
+def xml_temporal(row, data):
     xstr = '      <s3m:ms-' + row[16].strip() + '>\n'
     xstr += '      <s3m:ms-' + row[15].strip() + '>\n'
     xstr += '        <label>' + row[1].strip() + '</label>\n'
@@ -1077,7 +1085,7 @@ def xmlTemporal(row, data):
     return(xstr)
 
 
-def rdfTemporal(row, data):
+def rdf_temporal(row, data):
     rstr = '      <rdfs:Class rdf:about="s3m:ms-' + \
         row[15].strip() + '">\n'
     rstr += '        <rdfs:label>' + row[1].strip() + '</rdfs:label>\n'
@@ -1094,7 +1102,7 @@ def rdfTemporal(row, data):
     return(rstr)
 
 
-def xmlString(row, data):
+def xml_string(row, data):
     xstr = '      <s3m:ms-' + row[16].strip() + '>\n'
     xstr += '      <s3m:ms-' + row[15].strip() + '>\n'
     xstr += '        <label>' + row[1].strip() + '</label>\n'
@@ -1106,7 +1114,7 @@ def xmlString(row, data):
     return(xstr)
 
 
-def rdfString(row, data):
+def rdf_string(row, data):
     rstr = '      <rdfs:Class rdf:about="s3m:ms-' + \
         row[15].strip() + '">\n'
     rstr += '        <rdfs:label>' + row[1].strip() + '</rdfs:label>\n'
@@ -1116,7 +1124,7 @@ def rdfString(row, data):
     return(rstr)
 
 
-def makeData(schema, db_file, infile, delim, outdir, connRDF, connXML, connJSON):
+def make_data(schema, db_file, infile, delim, outdir, connRDF, connXML, connJSON):
     """
     Create XML and JSON data files and an RDF graph based on the model.
     """
@@ -1180,21 +1188,21 @@ def makeData(schema, db_file, infile, delim, outdir, connRDF, connXML, connJSON)
                 rdfStr += '</rdfs:Class>\n'
     
                 # get the DM and Entry components.
-                xmlStr += xmlHdr(model, schema, schemaFile)
+                xmlStr += xml_hdr(model, schema, schemaFile)
     
                 for row in rows:
                     if row[2].lower() == 'integer':
-                        xmlStr += xmlCount(row, data)
-                        rdfStr += rdfCount(row, data)
+                        xmlStr += xml_count(row, data)
+                        rdfStr += rdf_count(row, data)
                     elif row[2].lower() == 'float':
-                        xmlStr += xmlQuantity(row, data)
-                        rdfStr += rdfQuantity(row, data)
+                        xmlStr += xml_quantity(row, data)
+                        rdfStr += rdf_quantity(row, data)
                     elif row[2].lower() in ('date', 'datetime', 'time'):
-                        xmlStr += xmlTemporal(row, data)
-                        rdfStr += rdfTemporal(row, data)
+                        xmlStr += xml_temporal(row, data)
+                        rdfStr += rdf_temporal(row, data)
                     elif row[2].lower() == 'string':
-                        xmlStr += xmlString(row, data)
-                        rdfStr += rdfString(row, data)
+                        xmlStr += xml_string(row, data)
+                        rdfStr += rdf_string(row, data)
                     else:
                         raise ValueError("Invalid datatype")
     

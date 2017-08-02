@@ -8,9 +8,10 @@ import click
 import configparser
 import sqlite3
 
-from analyze import analyze
-from generate import makeModel, makeData
-from catalogmgr import getCatalog
+import analyze  # analyze
+import generate  # makeModel, makeData
+import catalogmgr  # getCatalog
+
 @click.command()
 @click.option('--mode', '-m', type=click.Choice(['all', 'editdb', 'generate']),help="See the documentation. If you don't know then use: all", prompt=True)
 @click.option('--infile', '-i', help='Full path and filename of the input CSV file.', prompt=True)
@@ -18,7 +19,7 @@ from catalogmgr import getCatalog
 @click.option('--outdir', '-o', help='Full path to the output directory for writing the database and other files. Overrides the config file default value.')
 @click.option('--delim', '-d', type=click.Choice([',', ';', ':', '|', '$']), help=' Overrides the config file default value.')
 @click.option('--analyzelevel', '-a', type=click.Choice(['simple', 'full']), help=' Overrides the config file default value.')
-def kunteksto(mode, infile, outdir, delim, analyzelevel, dbfile):
+def main(mode, infile, outdir, delim, analyzelevel, dbfile):
     """Kunteksto (ˈkänˌteksto) adds validation and semantics to your data."""
     
     # Setup config info
@@ -48,16 +49,16 @@ def kunteksto(mode, infile, outdir, delim, analyzelevel, dbfile):
         exit(code=1)
         
     elif mode == 'all':
-        outDB = analyze(infile, delim, analyzelevel, outdir)
+        outDB = analyze.analyze(infile, delim, analyzelevel, outdir)
         dname, fname = os.path.split(infile)
         outdir += os.path.sep + fname[:fname.index('.')] 
         prjname = fname[:fname.index('.')]
-        getCatalog(outdir, prjname)
+        catalogmgr.get_catalog(outdir, prjname)
         
         try:
             dbresult = run([config['SQLITEBROWSER']['cmd'],  outDB])
             if dbresult.returncode == 0:
-                modelName = makeModel(outDB, outdir)
+                modelName = generate.make_model(outDB, outdir)
                 datagen(modelName, outDB, infile, delim, outdir, config)
             else:
                 print("\n\nThere was an error running SQLiteBrowser. Please check your configuration and retry or use an alternate DB editor and then run using the generate mode.")
@@ -76,7 +77,7 @@ def kunteksto(mode, infile, outdir, delim, analyzelevel, dbfile):
         dname, fname = os.path.split(dbfile)
         prjname = fname[:fname.index('.')]
         dbName =  prjname + '.db'
-        getCatalog(outdir, prjname)        
+        catalogmgr.get_catalog(outdir, prjname)        
         conn = sqlite3.connect(dbfile)
         c = conn.cursor()
         c.execute("SELECT * FROM model")
@@ -140,7 +141,7 @@ def datagen(modelName, outDB, infile, delim, outdir, config):
 
     # generate the data
     if modelName:
-        makeData(modelName, outDB, infile,  delim, outdir, connRDF, connXML, connJSON)
+        generate.make_data(modelName, outDB, infile,  delim, outdir, connRDF, connXML, connJSON)
 
         if connRDF:
             connRDF.close()
@@ -156,4 +157,4 @@ def datagen(modelName, outDB, infile, delim, outdir, config):
 
 if __name__ == '__main__':
     print('\n Kunteksto started ...\n\n')
-    kunteksto()
+    main()
