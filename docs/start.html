@@ -71,7 +71,7 @@
             
             
               <div class="version">
-                1.2.5
+                1.2.6
               </div>
             
           
@@ -193,7 +193,7 @@ The configuration file is covered in another section. The default configuration 
 <li>Navigate to the directory where you installed Kunteksto.</li>
 <li>Start Kunteksto:</li>
 </ul>
-<div class="highlight-sh"><div class="highlight"><pre><span></span>python3 kunteksto.py
+<div class="highlight-sh"><div class="highlight"><pre><span></span>kunteksto
 </pre></div>
 </div>
 <ul class="simple">
@@ -262,12 +262,12 @@ The configuration file is covered in another section. The default configuration 
 <li>Notice that the validation file Demo_validation_log.csv shows four valid records and one invalid record. The invalid record is due to a &#8216;NaN&#8217; entry in a numeric column.</li>
 <li>In realworld situtaions we will often be generating data on a continuing basis for this same model. To demonstrate this functionality you will use the Demo2.csv file. From the commandline issue this command:</li>
 </ul>
-<div class="highlight-sh"><div class="highlight"><pre><span></span>python3 kunteksto.py -i example_data/Demo2.csv -m generate -db output/Demo/Demo.db
+<div class="highlight-sh"><div class="highlight"><pre><span></span>kunteksto -i example_data/Demo2.csv -m generate -db output/Demo/Demo.db
 </pre></div>
 </div>
 <p>This says to use the Demo2.csv file with the mode for generate and the database to reuse is the Demo.db. The information for the XML Schema is gathered from the information in the database and the XSD file is assumed to be in the directory with the database. A new validation log is generated Demo2_validation_log.csv and it will have two files that are invalid.</p>
 <p>It is important to realize that the CSV files must represent <em>EXACTLY</em> the same type of data in order to reuse the database and schema. If you issue this commandline:</p>
-<div class="highlight-sh"><div class="highlight"><pre><span></span>python3 kunteksto.py -i example_data/Demo3.csv -m generate -db output/Demo/Demo.db
+<div class="highlight-sh"><div class="highlight"><pre><span></span>kunteksto -i example_data/Demo3.csv -m generate -db output/Demo/Demo.db
 </pre></div>
 </div>
 <p>You will see this error message:</p>
@@ -350,7 +350,7 @@ Datafile: Bad_Column_name  Model: Column_1
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.2.5',
+            VERSION:'1.2.6rc12',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

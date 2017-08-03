@@ -71,7 +71,7 @@
             
             
               <div class="version">
-                1.2.5
+                1.2.6
               </div>
             
           
@@ -104,17 +104,18 @@
 <li class="toctree-l2"><a class="reference internal" href="#requirements">Requirements</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#cross-platform-on-anaconda">Cross-Platform on Anaconda</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#linux">Linux</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#windows">Windows</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#mac-osx">Mac OSX</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#linux">Linux</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="start.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="process.html">Process</a></li>
-<li class="toctree-l1"><a class="reference internal" href="future.html">The Future</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configure.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pima.html">Pima Indian Diabetes Dataset Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="future.html">The Future</a></li>
 </ul>
 
             
@@ -200,37 +201,48 @@
 <span id="install"></span><h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="cross-platform-on-anaconda">
 <h3>Cross-Platform on Anaconda<a class="headerlink" href="#cross-platform-on-anaconda" title="Permalink to this headline">¶</a></h3>
-<p>This is the preferred environment for a tool like Kunteksto because it integrates easily with systems for domain experts, data engineers and data scientists.</p>
+<p>This is the <strong>preferred environment</strong> for a tool like Kunteksto because it integrates easily with systems for domain experts, data engineers and data scientists.</p>
 <ul class="simple">
 <li>Install Anaconda Python 3.5+ for your platform according to the instructions here <a class="reference external" href="https://docs.continuum.io/anaconda/install/">https://docs.continuum.io/anaconda/install/</a></li>
 <li>Install SQLiteBrowser as directed by the links above.</li>
-<li>Follow the instructions for your platform for lxml installation. See: <a class="reference external" href="http://lxml.de/installation.html">http://lxml.de/installation.html</a> Because the process can even vary across versions of operating systems, you may need this resource as well: <a class="reference external" href="https://stackoverflow.com/search?q=install+lxml">https://stackoverflow.com/search?q=install+lxml</a></li>
-<li>Create a conda environment: conda create -n Kunteksto python=3</li>
-<li>Activate the environment</li>
-<li>conda install kunteksto</li>
+<li>If you are using Linux or Mac OSX, follow the instructions for your platform for lxml installation. See: <a class="reference external" href="http://lxml.de/installation.html">http://lxml.de/installation.html</a></li>
+<li>Create a conda environment:</li>
 </ul>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>conda create -p kunteksto <span class="nv">python</span><span class="o">=</span><span class="m">3</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>Change to the directory e.g. <em>cd kunteksto</em></li>
+<li>Activate the environment</li>
+<li>pip install kunteksto</li>
+</ul>
+<p>These four quick steps creates a virtual environment in the subdirectory <em>kunteksto</em>. When it is created conda displays how to activate the environment. Once activated then Kunteksto is installed in the subdirectoy along with the environment.</p>
+<p>The last step is to do the <a class="reference internal" href="start.html#tutor"><span class="std std-ref">Tutorial</span></a></p>
+</div>
+<div class="section" id="windows">
+<h3>Windows<a class="headerlink" href="#windows" title="Permalink to this headline">¶</a></h3>
+<p>Details coming soon. Preferably use the Anaconda instructions.</p>
+</div>
+<div class="section" id="mac-osx">
+<h3>Mac OSX<a class="headerlink" href="#mac-osx" title="Permalink to this headline">¶</a></h3>
+<p>Follow the instructions for your platform for lxml installation. See: <a class="reference external" href="http://lxml.de/installation.html">http://lxml.de/installation.html</a></p>
+<p>Details coming soon. Preferably use the Anaconda instructions.</p>
 </div>
 <div class="section" id="linux">
 <h3>Linux<a class="headerlink" href="#linux" title="Permalink to this headline">¶</a></h3>
 <p>Install Python and SQLiteBrowser as directed by the links above.</p>
-<p>Follow the instructions for your platform for lxml installation. See: <a class="reference external" href="http://lxml.de/installation.html">http://lxml.de/installation.html</a> Because the process can even vary across versions of operating systems, you may need this resource as well: <a class="reference external" href="https://stackoverflow.com/search?q=install+lxml">https://stackoverflow.com/search?q=install+lxml</a></p>
+<p>Follow the instructions for your platform for lxml installation. See: <a class="reference external" href="http://lxml.de/installation.html">http://lxml.de/installation.html</a></p>
 <p>Now that that is settled.  The rest is easy.  Just create a virtual environment for Python 3.6 or later, using your favorite tool; conda, virtualenv, etc.</p>
-<p>Download and extract the latest release of Kunteksto from GitHub <a class="reference external" href="https://github.com/DataInsightsInc/Kunteksto/releases">https://github.com/DataInsightsInc/Kunteksto/releases</a></p>
-<p>Activate your virtual environment and navigate to the versioned directory (where you see setup.py) you extracted. For example Kunteksto-1.2.3 and then run:</p>
-<p>python setup.py install</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>conda create -p kunteksto <span class="nv">python</span><span class="o">=</span><span class="m">3</span>
+</pre></div>
+</div>
+<p>Activate your virtual environment and navigate to the <em>kunteksto</em> directory. Then install kunteksto using pip.</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>pip install kunteksto
+</pre></div>
+</div>
 <p>After several minutes of installing all the cool stuff, you&#8217;ll be ready to begin the tutorial.</p>
 <blockquote>
 <div>Go to the <a class="reference internal" href="start.html#tutor"><span class="std std-ref">Tutorial</span></a></div></blockquote>
-</div>
-<div class="section" id="windows">
-<h3>Windows<a class="headerlink" href="#windows" title="Permalink to this headline">¶</a></h3>
-<p>Details coming soon. However, if you are a power user you can probably work it out from the Linux instructions.
-Just install the pre-requisites and then run <em>python setup.py install</em> in a virtual environment.</p>
-</div>
-<div class="section" id="mac-osx">
-<h3>Mac OSX<a class="headerlink" href="#mac-osx" title="Permalink to this headline">¶</a></h3>
-<p>Details coming soon. However, if you are a power user you can probably work it out from the Linux instructions.
-Just install the pre-requisites and then run <em>python setup.py install</em> in a virtual environment.</p>
 <p class="rubric">Footnotes</p>
 <table class="docutils footnote" frame="void" id="f1" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
@@ -300,7 +312,7 @@ Just install the pre-requisites and then run <em>python setup.py install</em> in
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.2.5',
+            VERSION:'1.2.6rc12',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
