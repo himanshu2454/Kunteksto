@@ -41,7 +41,7 @@ Tutorial Steps
 
 .. code-block:: sh
 
-    python3 kunteksto.py
+    kunteksto
 
 - At the **mode** prompt, type *all*
 
@@ -125,7 +125,7 @@ Field descriptions:
 
 .. code-block:: sh
 
-    python3 kunteksto.py -i example_data/Demo2.csv -m generate -db output/Demo/Demo.db
+    kunteksto -i example_data/Demo2.csv -m generate -db output/Demo/Demo.db
 
 This says to use the Demo2.csv file with the mode for generate and the database to reuse is the Demo.db. The information for the XML Schema is gathered from the information in the database and the XSD file is assumed to be in the directory with the database. A new validation log is generated Demo2_validation_log.csv and it will have two files that are invalid. 
 
@@ -133,7 +133,7 @@ It is important to realize that the CSV files must represent *EXACTLY* the same 
 
 .. code-block:: sh
 
-    python3 kunteksto.py -i example_data/Demo3.csv -m generate -db output/Demo/Demo.db
+    kunteksto -i example_data/Demo3.csv -m generate -db output/Demo/Demo.db
 
 You will see this error message:
 

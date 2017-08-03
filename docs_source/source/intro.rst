@@ -27,16 +27,39 @@ Installation
 Cross-Platform on Anaconda
 --------------------------
 
-This is the preferred environment for a tool like Kunteksto because it integrates easily with systems for domain experts, data engineers and data scientists.
+This is the **preferred environment** for a tool like Kunteksto because it integrates easily with systems for domain experts, data engineers and data scientists.
 
 - Install Anaconda Python 3.5+ for your platform according to the instructions here https://docs.continuum.io/anaconda/install/ 
 - Install SQLiteBrowser as directed by the links above. 
-- Follow the instructions for your platform for lxml installation. See: http://lxml.de/installation.html Because the process can even vary across versions of operating systems, you may need this resource as well: https://stackoverflow.com/search?q=install+lxml 
+- If you are using Linux or Mac OSX, follow the instructions for your platform for lxml installation. See: http://lxml.de/installation.html
 
-- Create a conda environment: conda create -n Kunteksto python=3
+- Create a conda environment: 
+
+.. code-block:: sh
+
+    conda create -p kunteksto python=3
+
+- Change to the directory e.g. *cd kunteksto*
 - Activate the environment 
-- conda install kunteksto
+- pip install kunteksto
 
+These four quick steps creates a virtual environment in the subdirectory *kunteksto*. When it is created conda displays how to activate the environment. Once activated then Kunteksto is installed in the subdirectoy along with the environment. 
+
+The last step is to do the :ref:`tutor`
+
+
+
+Windows
+-------
+
+Details coming soon. Preferably use the Anaconda instructions. 
+
+
+Mac OSX
+-------
+Follow the instructions for your platform for lxml installation. See: http://lxml.de/installation.html 
+
+Details coming soon. Preferably use the Anaconda instructions. 
 
 
 Linux
@@ -44,33 +67,24 @@ Linux
 
 Install Python and SQLiteBrowser as directed by the links above. 
 
-Follow the instructions for your platform for lxml installation. See: http://lxml.de/installation.html Because the process can even vary across versions of operating systems, you may need this resource as well: https://stackoverflow.com/search?q=install+lxml 
+Follow the instructions for your platform for lxml installation. See: http://lxml.de/installation.html 
 
 Now that that is settled.  The rest is easy.  Just create a virtual environment for Python 3.6 or later, using your favorite tool; conda, virtualenv, etc. 
 
-Download and extract the latest release of Kunteksto from GitHub https://github.com/DataInsightsInc/Kunteksto/releases
+.. code-block:: sh
 
-Activate your virtual environment and navigate to the versioned directory (where you see setup.py) you extracted. For example Kunteksto-1.2.3 and then run:
+    conda create -p kunteksto python=3
 
-python setup.py install 
+Activate your virtual environment and navigate to the *kunteksto* directory. Then install kunteksto using pip.
+
+.. code-block:: sh
+ 
+    pip install kunteksto
 
 After several minutes of installing all the cool stuff, you'll be ready to begin the tutorial. 
 
 
 	Go to the :ref:`tutor` 
-
-
-Windows
--------
-
-Details coming soon. However, if you are a power user you can probably work it out from the Linux instructions.
-Just install the pre-requisites and then run *python setup.py install* in a virtual environment.
-
-Mac OSX
--------
-
-Details coming soon. However, if you are a power user you can probably work it out from the Linux instructions.
-Just install the pre-requisites and then run *python setup.py install* in a virtual environment.
 
 
 .. rubric:: Footnotes

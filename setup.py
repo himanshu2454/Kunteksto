@@ -26,13 +26,12 @@ setup(
     setup_requires=['pytest-runner',],  
     python_requires='>=3.6',
     packages=['kunteksto'],
-    package_dir={'kunteksto': '.'},
+    package_dir={'kunteksto': 'kunteksto'},
     package_data={'docs': ['docs/*']},
     data_files=[('example_data', ['example_data/Demo.csv','example_data/Demo2.csv','example_data/Demo3.csv','example_data/Demo_info.pdf','example_data/pima-indians-diabetes.data.csv','example_data/pima-indians-diabetes.names']),
                 ('s3model', ['s3model/s3model_3_0_0.xsl','s3model/s3model_3_0_0.xsd','s3model/s3model_3_0_0.rdf','s3model/s3model.owl','s3model/dm-description.xsl']),
                 ('output', ['output/dm-description.xsl']),('catalogs',['catalogs/Kunteksto_catalog.xml']),('',['kunteksto.conf','README.md','LICENSE.txt'])],
     extras_require = {
-        'lxml':  ["lxml==3.7.3"],
         'agraph':  ["agraph-python==6.1.5"]
     },    
     install_requires=[     
@@ -48,6 +47,7 @@ setup(
       'inflection==0.3.1',
       'iso8601==0.1.11',
       'Jinja2==2.9.6',
+      'lxml==3.8.0',
       'MarkupSafe==1.0',
       'multidict==2.1.4',
       'pycurl==7.43.0',

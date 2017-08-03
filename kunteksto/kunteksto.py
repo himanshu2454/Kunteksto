@@ -8,9 +8,9 @@ import click
 import configparser
 import sqlite3
 
-import analyze  # analyze
-import generate  # makeModel, makeData
-import catalogmgr  # getCatalog
+from .analyze  import analyze
+from .generate  import make_model, make_data
+from .catalogmgr import  get_catalog
 
 @click.command()
 @click.option('--mode', '-m', type=click.Choice(['all', 'editdb', 'generate']),help="See the documentation. If you don't know then use: all", prompt=True)
@@ -49,16 +49,16 @@ def main(mode, infile, outdir, delim, analyzelevel, dbfile):
         exit(code=1)
         
     elif mode == 'all':
-        outDB = analyze.analyze(infile, delim, analyzelevel, outdir)
+        outDB = analyze(infile, delim, analyzelevel, outdir)
         dname, fname = os.path.split(infile)
         outdir += os.path.sep + fname[:fname.index('.')] 
         prjname = fname[:fname.index('.')]
-        catalogmgr.get_catalog(outdir, prjname)
+        get_catalog(outdir, prjname)
         
         try:
             dbresult = run([config['SQLITEBROWSER']['cmd'],  outDB])
             if dbresult.returncode == 0:
-                modelName = generate.make_model(outDB, outdir)
+                modelName = make_model(outDB, outdir)
                 datagen(modelName, outDB, infile, delim, outdir, config)
             else:
                 print("\n\nThere was an error running SQLiteBrowser. Please check your configuration and retry or use an alternate DB editor and then run using the generate mode.")
@@ -77,7 +77,7 @@ def main(mode, infile, outdir, delim, analyzelevel, dbfile):
         dname, fname = os.path.split(dbfile)
         prjname = fname[:fname.index('.')]
         dbName =  prjname + '.db'
-        catalogmgr.get_catalog(outdir, prjname)        
+        get_catalog(outdir, prjname)        
         conn = sqlite3.connect(dbfile)
         c = conn.cursor()
         c.execute("SELECT * FROM model")
@@ -141,7 +141,7 @@ def datagen(modelName, outDB, infile, delim, outdir, config):
 
     # generate the data
     if modelName:
-        generate.make_data(modelName, outDB, infile,  delim, outdir, connRDF, connXML, connJSON)
+        make_data(modelName, outDB, infile,  delim, outdir, connRDF, connXML, connJSON)
 
         if connRDF:
             connRDF.close()

@@ -18,10 +18,7 @@ import shortuuid
 import iso8601
 import click
 
-try:
-    from lxml import etree
-except:
-    from xml.etree import ElementTree as etree
+from lxml import etree
     
 
 # RDF storage imports
