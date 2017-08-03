@@ -1,8 +1,13 @@
+=============
 Configuration
 =============
 
 The initial kunteksto.conf file should be okay for most uses and certainly for the demo/tutorials. 
 
+.. _config:
+
+Config File Details
+===================
 Here we cover the details of the configuration options. 
 
 .. sourcecode:: text

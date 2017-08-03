@@ -1,8 +1,13 @@
-=======
-Process
-=======
+=================
+Technical Details
+=================
 
-The data manipulation process to transform standard CSV data into a semantically enhanced S3M data model and data instances is detailed here. Prior to initiating the analysis and model generation process you must know which data field (column) delimiter is used in the CSV. The delimiter / separator options are; comma, semi-colon, colon, pipe or dollar sign characters. If your file uses something else then you must re-save/create a new file using one of these. Also, if you are using Linux, the output directory must already exist. There is no Create a Folder option in the selection window on Linux. You should also check the kunteksto.conf file to enter the location of the SQLiteBrowser tool. By default it is  /usr/bin/sqlitebrowser
+*this section is still in draft form*
+
+
+**Audience:** Interoperability geeks and systems engineers. 
+
+The data manipulation process to transform standard CSV data into a semantically enhanced S3M data model and data instances is detailed here. Prior to initiating the analysis and model generation process you must know which data field (column) delimiter is used in the CSV. The delimiter / separator options are; comma, semi-colon, colon, pipe or dollar sign characters. If your file uses something else then you must re-save/create a new file using one of these. Also, if you are using Linux, the output directory must already exist. There is no Create a Folder option in the selection window on Linux. You should also check the kunteksto.conf file to enter the location of the SQLiteBrowser tool. By default it is /usr/bin/sqlitebrowser
 
 
 Analysis

@@ -13,15 +13,15 @@ from .generate  import make_model, make_data
 from .catalogmgr import  get_catalog
 
 @click.command()
-@click.option('--mode', '-m', type=click.Choice(['all', 'editdb', 'generate']),help="See the documentation. If you don't know then use: all", prompt=True)
-@click.option('--infile', '-i', help='Full path and filename of the input CSV file.', prompt=True)
+@click.option('--mode', '-m', type=click.Choice(['all', 'editdb', 'generate']), help="See the documentation. If you don't know then use: all", prompt="Enter a valid mode")
+@click.option('--infile', '-i', help='Full path and filename of the input CSV file.', prompt="Enter a valid CSV file")
 @click.option('--dbfile', '-db', help='Full path and filename of the existing model database file.', prompt=False)
 @click.option('--outdir', '-o', help='Full path to the output directory for writing the database and other files. Overrides the config file default value.')
 @click.option('--delim', '-d', type=click.Choice([',', ';', ':', '|', '$']), help=' Overrides the config file default value.')
 @click.option('--analyzelevel', '-a', type=click.Choice(['simple', 'full']), help=' Overrides the config file default value.')
 def main(mode, infile, outdir, delim, analyzelevel, dbfile):
     """Kunteksto (ˈkänˌteksto) adds validation and semantics to your data."""
-    
+
     # Setup config info
     config = configparser.ConfigParser()
     config.read('kunteksto.conf')
@@ -49,25 +49,31 @@ def main(mode, infile, outdir, delim, analyzelevel, dbfile):
         exit(code=1)
         
     elif mode == 'all':
-        outDB = analyze(infile, delim, analyzelevel, outdir)
         dname, fname = os.path.split(infile)
         outdir += os.path.sep + fname[:fname.index('.')] 
         prjname = fname[:fname.index('.')]
         get_catalog(outdir, prjname)
-        
-        try:
-            dbresult = run([config['SQLITEBROWSER']['cmd'],  outDB])
-            if dbresult.returncode == 0:
-                modelName = make_model(outDB, outdir)
-                datagen(modelName, outDB, infile, delim, outdir, config)
-            else:
-                print("\n\nThere was an error running SQLiteBrowser. Please check your configuration and retry or use an alternate DB editor and then run using the generate mode.")
+        if not dbfile:
+            outDB = analyze(infile, delim, analyzelevel, outdir)
+            try:
+                dbresult = run([config['SQLITEBROWSER']['cmd'],  outDB])
+                if dbresult.returncode == 0:
+                    modelName = make_model(outDB, outdir)
+                    datagen(modelName, outDB, infile, delim, outdir, config)
+                else:
+                    print("\n\nThere was an error running SQLiteBrowser. Please check your configuration and retry or use an alternate DB editor and then run using the generate mode.")
+                    exit(code=1)
+    
+            except FileNotFoundError:
+                print("There was an error running SQLiteBrowser; FileNotFoundError. Please check your configuration and retry or use an alternate DB editor and then run using the generate mode.")
                 exit(code=1)
-
-        except FileNotFoundError:
-            print("There was an error running SQLiteBrowser; FileNotFoundError. Please check your configuration and retry or use an alternate DB editor and then run using the generate mode.")
-            exit(code=1)
             
+        else:
+            outDB = dbfile
+            modelName = make_model(outDB, outdir)
+            datagen(modelName, outDB, infile, delim, outdir, config)
+            
+        
             
     elif mode == 'generate':
         if not dbfile:

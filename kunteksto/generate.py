@@ -299,7 +299,7 @@ def xdquantity(data):
     xdstr += padding.rjust(indent + 2) + '<xs:annotation>\n'
     xdstr += padding.rjust(indent + 4) + '<xs:documentation>\n'
     xdstr += padding.rjust(indent + 6) + \
-        'This is the Quantity model component used to model floats.\n'
+        'This is the Quantity model component used to model decimals.\n'
     xdstr += padding.rjust(indent + 4) + '</xs:documentation>\n'
     xdstr += padding.rjust(indent + 4) + '<xs:appinfo>\n'
     # add the RDF
@@ -754,7 +754,7 @@ def xsd_data(dataID, indent, def_url, db_file):
     for row in rows:
         if row[2].lower() == 'integer':
             mcDict[row[16].strip()] = xdcount(row)
-        elif row[2].lower() == 'float':
+        elif row[2].lower() == 'decimal':
             mcDict[row[16].strip()] = xdquantity(row)
         elif row[2].lower() in ('date', 'datetime', 'time'):
             mcDict[row[16].strip()] = xdtemporal(row)
@@ -958,6 +958,7 @@ def make_model(db_file, outdir):
     dmID = row[5].strip()
 
     model = outdir + '/dm-' + dmID + '.xsd'
+    print("\nGenerating model file: " + outdir + '/dm-' + dmID + '.xsd\n')
     xsd = open(model, 'w')
     md = []
     md.append(dmID)
@@ -1191,7 +1192,7 @@ def make_data(schema, db_file, infile, delim, outdir, connRDF, connXML, connJSON
                     if row[2].lower() == 'integer':
                         xmlStr += xml_count(row, data)
                         rdfStr += rdf_count(row, data)
-                    elif row[2].lower() == 'float':
+                    elif row[2].lower() == 'decimal':
                         xmlStr += xml_quantity(row, data)
                         rdfStr += rdf_quantity(row, data)
                     elif row[2].lower() in ('date', 'datetime', 'time'):

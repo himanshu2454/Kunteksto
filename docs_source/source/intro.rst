@@ -11,7 +11,7 @@ The importance of this capability and improved data quality is discussed in foun
 
 Target Audience
 ---------------
-Kunteksto design is based around the ability for *domain experts* from any field, with very little programming ability to quickly annotate data extracts to improve the usability of the data.  Data engineers and data scientists can also benefit from Kunteksto in the same ways as domain experts. It just takes a bit more research to discover the semantics.
+Kunteksto design is based around the ability for *domain experts* from any field, with very little programming ability to quickly annotate data extracts to improve the usability of the data.  Data engineers and data scientists can also benefit from Kunteksto in the same ways as domain experts. It just takes a bit more research to discover the semantics that the original domain experts usually have at hand.
 
 Requirements
 ============
@@ -29,19 +29,34 @@ Cross-Platform on Anaconda
 
 This is the **preferred environment** for a tool like Kunteksto because it integrates easily with systems for domain experts, data engineers and data scientists.
 
-- Install Anaconda Python 3.5+ for your platform according to the instructions here https://docs.continuum.io/anaconda/install/ 
+- Install Anaconda Python 3.6+ for your platform according to the instructions here https://docs.continuum.io/anaconda/install/ 
 - Install SQLiteBrowser as directed by the links above. 
-- If you are using Linux or Mac OSX, follow the instructions for your platform for lxml installation. See: http://lxml.de/installation.html
+- If you are using Linux or Mac OSX, follow the instructions for your platform for **lxml** installation. See: http://lxml.de/installation.html
 
-- Create a conda environment: 
+- Open a terminal window and create a conda environment: 
 
 .. code-block:: sh
 
     conda create -p kunteksto python=3
 
-- Change to the directory e.g. *cd kunteksto*
-- Activate the environment 
-- pip install kunteksto
+- Change to the directory
+
+.. code-block:: sh
+    
+    cd kunteksto
+
+
+- Activate the environment according to the instructions.
+
+.. code-block:: sh
+
+    source activate <path/to/directory> 
+
+- install Kunteksto
+
+.. code-block:: sh
+
+    pip install kunteksto
 
 These four quick steps creates a virtual environment in the subdirectory *kunteksto*. When it is created conda displays how to activate the environment. Once activated then Kunteksto is installed in the subdirectoy along with the environment. 
 
@@ -52,14 +67,14 @@ The last step is to do the :ref:`tutor`
 Windows
 -------
 
-Details coming soon. Preferably use the Anaconda instructions. 
+Details coming soon. Preferably use the Anaconda instructions above. 
 
 
 Mac OSX
 -------
 Follow the instructions for your platform for lxml installation. See: http://lxml.de/installation.html 
 
-Details coming soon. Preferably use the Anaconda instructions. 
+Details coming soon. Preferably use the Anaconda instructions above. 
 
 
 Linux

@@ -1,11 +1,4 @@
-=====================================
-Pima Indian Diabetes Dataset Tutorial
-=====================================
 
-.. _pimatutor:
-
-Pima Tutorial
-=============
 
 The source of this data is the **UC Irvine Machine Learning Repository** https://archive.ics.uci.edu/ml/datasets/pima+indians+diabetes
 

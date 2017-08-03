@@ -16,10 +16,12 @@ Contents:
 
    intro
    start
-   process
    configure
-   pima
+   tutorials
    future
+   technical
+   develop
+   license
    
 
 Indices and tables

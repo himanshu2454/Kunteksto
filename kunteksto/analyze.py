@@ -104,7 +104,7 @@ def checkType(h, dataDict):
     if is_int:
         dt = "Integer"
     elif is_float:
-        dt = "Float"
+        dt = "Decimal"
     elif is_date:
         dt = "Date"
     else:
