@@ -112,10 +112,12 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="start.html">Getting Started</a></li>
-<li class="toctree-l1"><a class="reference internal" href="process.html">Process</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configure.html">Configuration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pima.html">Pima Indian Diabetes Dataset Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="future.html">The Future</a></li>
+<li class="toctree-l1"><a class="reference internal" href="technical.html">Technical Details</a></li>
+<li class="toctree-l1"><a class="reference internal" href="develop.html">Developing Kunteksto</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License &amp; Usage</a></li>
 </ul>
 
             
@@ -187,7 +189,7 @@
 <p>The importance of this capability and improved data quality is discussed in foundational <a class="reference external" href="https://datainsights.tech/S3Model">S3Model</a> documentation and references. However, detailed understanding of S3Model is not required to understand and use the power of Kunteksto. Addtional information on the data-centric movement can be found below <a class="footnote-reference" href="#f2" id="id2">[2]</a></p>
 <div class="section" id="target-audience">
 <h3>Target Audience<a class="headerlink" href="#target-audience" title="Permalink to this headline">¶</a></h3>
-<p>Kunteksto design is based around the ability for <em>domain experts</em> from any field, with very little programming ability to quickly annotate data extracts to improve the usability of the data.  Data engineers and data scientists can also benefit from Kunteksto in the same ways as domain experts. It just takes a bit more research to discover the semantics.</p>
+<p>Kunteksto design is based around the ability for <em>domain experts</em> from any field, with very little programming ability to quickly annotate data extracts to improve the usability of the data.  Data engineers and data scientists can also benefit from Kunteksto in the same ways as domain experts. It just takes a bit more research to discover the semantics that the original domain experts usually have at hand.</p>
 </div>
 </div>
 <div class="section" id="requirements">
@@ -203,30 +205,43 @@
 <h3>Cross-Platform on Anaconda<a class="headerlink" href="#cross-platform-on-anaconda" title="Permalink to this headline">¶</a></h3>
 <p>This is the <strong>preferred environment</strong> for a tool like Kunteksto because it integrates easily with systems for domain experts, data engineers and data scientists.</p>
 <ul class="simple">
-<li>Install Anaconda Python 3.5+ for your platform according to the instructions here <a class="reference external" href="https://docs.continuum.io/anaconda/install/">https://docs.continuum.io/anaconda/install/</a></li>
+<li>Install Anaconda Python 3.6+ for your platform according to the instructions here <a class="reference external" href="https://docs.continuum.io/anaconda/install/">https://docs.continuum.io/anaconda/install/</a></li>
 <li>Install SQLiteBrowser as directed by the links above.</li>
-<li>If you are using Linux or Mac OSX, follow the instructions for your platform for lxml installation. See: <a class="reference external" href="http://lxml.de/installation.html">http://lxml.de/installation.html</a></li>
-<li>Create a conda environment:</li>
+<li>If you are using Linux or Mac OSX, follow the instructions for your platform for <strong>lxml</strong> installation. See: <a class="reference external" href="http://lxml.de/installation.html">http://lxml.de/installation.html</a></li>
+<li>Open a terminal window and create a conda environment:</li>
 </ul>
 <div class="highlight-sh"><div class="highlight"><pre><span></span>conda create -p kunteksto <span class="nv">python</span><span class="o">=</span><span class="m">3</span>
 </pre></div>
 </div>
 <ul class="simple">
-<li>Change to the directory e.g. <em>cd kunteksto</em></li>
-<li>Activate the environment</li>
-<li>pip install kunteksto</li>
+<li>Change to the directory</li>
 </ul>
+<div class="highlight-sh"><div class="highlight"><pre><span></span><span class="nb">cd</span> kunteksto
+</pre></div>
+</div>
+<ul class="simple">
+<li>Activate the environment according to the instructions.</li>
+</ul>
+<div class="highlight-sh"><div class="highlight"><pre><span></span><span class="nb">source</span> activate &lt;path/to/directory&gt;
+</pre></div>
+</div>
+<ul class="simple">
+<li>install Kunteksto</li>
+</ul>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>pip install kunteksto
+</pre></div>
+</div>
 <p>These four quick steps creates a virtual environment in the subdirectory <em>kunteksto</em>. When it is created conda displays how to activate the environment. Once activated then Kunteksto is installed in the subdirectoy along with the environment.</p>
-<p>The last step is to do the <a class="reference internal" href="start.html#tutor"><span class="std std-ref">Tutorial</span></a></p>
+<p>The last step is to do the <a class="reference internal" href="start.html#tutor"><span class="std std-ref">Tutorial/Demo</span></a></p>
 </div>
 <div class="section" id="windows">
 <h3>Windows<a class="headerlink" href="#windows" title="Permalink to this headline">¶</a></h3>
-<p>Details coming soon. Preferably use the Anaconda instructions.</p>
+<p>Details coming soon. Preferably use the Anaconda instructions above.</p>
 </div>
 <div class="section" id="mac-osx">
 <h3>Mac OSX<a class="headerlink" href="#mac-osx" title="Permalink to this headline">¶</a></h3>
 <p>Follow the instructions for your platform for lxml installation. See: <a class="reference external" href="http://lxml.de/installation.html">http://lxml.de/installation.html</a></p>
-<p>Details coming soon. Preferably use the Anaconda instructions.</p>
+<p>Details coming soon. Preferably use the Anaconda instructions above.</p>
 </div>
 <div class="section" id="linux">
 <h3>Linux<a class="headerlink" href="#linux" title="Permalink to this headline">¶</a></h3>
@@ -242,7 +257,7 @@
 </div>
 <p>After several minutes of installing all the cool stuff, you&#8217;ll be ready to begin the tutorial.</p>
 <blockquote>
-<div>Go to the <a class="reference internal" href="start.html#tutor"><span class="std std-ref">Tutorial</span></a></div></blockquote>
+<div>Go to the <a class="reference internal" href="start.html#tutor"><span class="std std-ref">Tutorial/Demo</span></a></div></blockquote>
 <p class="rubric">Footnotes</p>
 <table class="docutils footnote" frame="void" id="f1" rules="none">
 <colgroup><col class="label" /><col /></colgroup>
@@ -312,7 +327,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.2.6rc12',
+            VERSION:'1.2.6rc13',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

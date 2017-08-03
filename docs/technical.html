@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Technical Process &mdash; Kunteksto - Context for Your Data</title>
+  <title>Technical Details &mdash; Kunteksto - Context for Your Data</title>
   
 
   
@@ -38,6 +38,7 @@
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="Kunteksto - Context for Your Data" href="index.html"/>
+        <link rel="next" title="Developing Kunteksto" href="develop.html"/>
         <link rel="prev" title="The Future" href="future.html"/> 
 
   
@@ -100,7 +101,7 @@
 <li class="toctree-l1"><a class="reference internal" href="configure.html">Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="future.html">The Future</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Technical Process</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Technical Details</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#analysis">Analysis</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#basic-analysis">Basic Analysis</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#full-analysis">Full Analysis</a></li>
@@ -110,6 +111,8 @@
 <li class="toctree-l2"><a class="reference internal" href="#models-data">Models &amp; Data</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="develop.html">Developing Kunteksto</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License &amp; Usage</a></li>
 </ul>
 
             
@@ -154,13 +157,13 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>Technical Process</li>
+      <li>Technical Details</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/process.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/technical.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -173,8 +176,9 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="technical-process">
-<h1>Technical Process<a class="headerlink" href="#technical-process" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="technical-details">
+<h1>Technical Details<a class="headerlink" href="#technical-details" title="Permalink to this headline">¶</a></h1>
+<p><em>this section is still in draft form</em></p>
 <p><strong>Audience:</strong> Interoperability geeks and systems engineers.</p>
 <p>The data manipulation process to transform standard CSV data into a semantically enhanced S3M data model and data instances is detailed here. Prior to initiating the analysis and model generation process you must know which data field (column) delimiter is used in the CSV. The delimiter / separator options are; comma, semi-colon, colon, pipe or dollar sign characters. If your file uses something else then you must re-save/create a new file using one of these. Also, if you are using Linux, the output directory must already exist. There is no Create a Folder option in the selection window on Linux. You should also check the kunteksto.conf file to enter the location of the SQLiteBrowser tool. By default it is /usr/bin/sqlitebrowser</p>
 <div class="section" id="analysis">
@@ -254,6 +258,8 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
+        <a href="develop.html" class="btn btn-neutral float-right" title="Developing Kunteksto" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
       
         <a href="future.html" class="btn btn-neutral" title="The Future" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
@@ -286,7 +292,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.2.6rc12',
+            VERSION:'1.2.6rc13',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
