@@ -33,32 +33,48 @@ This is the **preferred environment** for a tool like Kunteksto because it integ
 - Install SQLiteBrowser as directed by the links above. 
 - If you are using Linux or Mac OSX, follow the instructions for your platform for **lxml** installation. See: http://lxml.de/installation.html
 
-- Open a terminal window and create a conda environment: 
+.. note::
 
-.. code-block:: sh
+    **Option 1:**
 
-    conda create -p kunteksto python=3
+    Install the complete environment from Anaconda Cloud.
 
-- Change to the directory
+    The environment location is https://anaconda.org/twcook/kunteksto 
 
-.. code-block:: sh
-    
-    cd kunteksto
+    Instructions for installing an environment can be found in the docs https://docs.continuum.io/anaconda-cloud/user-guide/getting-started#sharing-environments 
 
 
-- Activate the environment according to the instructions.
+.. note::
 
-.. code-block:: sh
+    **Option 2:**
 
-    source activate <path/to/directory> 
 
-- install Kunteksto
+    - Open a terminal window and create a conda environment: 
 
-.. code-block:: sh
+    .. code-block:: sh
 
-    pip install kunteksto
+        conda create -p kunteksto python=3
 
-These four quick steps creates a virtual environment in the subdirectory *kunteksto*. When it is created conda displays how to activate the environment. Once activated then Kunteksto is installed in the subdirectoy along with the environment. 
+    - Change to the directory
+
+    .. code-block:: sh
+        
+        cd kunteksto
+
+
+    - Activate the environment according to the instructions.
+
+    .. code-block:: sh
+
+        source activate <path/to/directory> 
+
+    - install Kunteksto
+
+    .. code-block:: sh
+
+        pip install kunteksto
+
+    These four quick steps creates a virtual environment in the subdirectory *kunteksto*. When it is created conda displays how to activate the environment. Once activated then Kunteksto is installed in the subdirectoy along with the environment. 
 
 The last step is to do the :ref:`tutor`
 
@@ -84,19 +100,31 @@ Install Python and SQLiteBrowser as directed by the links above.
 
 Follow the instructions for your platform for lxml installation. See: http://lxml.de/installation.html 
 
-Now that that is settled.  The rest is easy.  Just create a virtual environment for Python 3.6 or later, using your favorite tool; conda, virtualenv, etc. 
+Now that that is settled.  The rest is easy.  
 
-.. code-block:: sh
+.. note::
 
-    conda create -p kunteksto python=3
+    **Option 1:**
 
-Activate your virtual environment and navigate to the *kunteksto* directory. Then install kunteksto using pip.
+    Use the Anaconda instructions above. 
 
-.. code-block:: sh
- 
-    pip install kunteksto
+.. note::
 
-After several minutes of installing all the cool stuff, you'll be ready to begin the tutorial. 
+    **Option 2:**
+
+    Just create a virtual environment for Python 3.6 or later, using your favorite tool; conda, virtualenv, etc. 
+
+    .. code-block:: sh
+
+        conda create -p kunteksto python=3
+
+    Activate your virtual environment and navigate to the *kunteksto* directory. Then install kunteksto using pip.
+
+    .. code-block:: sh
+     
+        pip install kunteksto
+
+    After several minutes of installing all the cool stuff, you'll be ready to begin the tutorial. 
 
 
 	Go to the :ref:`tutor` 
