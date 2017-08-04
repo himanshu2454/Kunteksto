@@ -120,9 +120,9 @@ def analyze(csvInput, delim, level, out_dir):
 
     dname, fname = os.path.split(csvInput)
     prjname = fname[:fname.index('.')]
-    os.makedirs(out_dir + os.path.sep + prjname, exist_ok=True)    
+    os.makedirs(out_dir, exist_ok=True)    
     dbName =  prjname + '.db'
-    db_file = out_dir + os.path.sep + prjname + os.path.sep + dbName
+    db_file = out_dir + os.path.sep + dbName
     
     # if this database already exists then delete it
     try:

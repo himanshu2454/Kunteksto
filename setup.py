@@ -62,7 +62,6 @@ setup(
       'Sphinx==1.5.5',
       'sphinx-rtd-theme==0.2.4',
       'ujson==1.35',
-      'uvloop==0.8.0',
       'xmltodict==0.10.2',
       'yarl==0.9.8',
       ],
