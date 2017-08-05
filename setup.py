@@ -4,7 +4,7 @@ import configparser
 
 config = configparser.ConfigParser()
 config.read('kunteksto.conf')
-VERSION = config['KUNTEKSTO']['version']
+VERSION = config['SYSTEM']['version']
 
 setup(
     name = 'kunteksto',

@@ -18,19 +18,19 @@ Here we cover the details of the configuration options.
 	; Enter the command or full path required to execute SQLite Browser on your system.
 	cmd: sqlitebrowser
 
-Depending upon your OS and installation you may need the full path to the SQLite Browser executable.
+
+For Windows users you need to put it in quotes because of the spaces
 
 .. sourcecode:: text
 
+	cmd: "DB Browser for SQLite.exe"
+
+Depending upon your OS and installation you may need the full path to the SQLite Browser executable and you may need to adjust access permissions.
+
+.. sourcecode:: text
 
 	[KUNTEKSTO]
-	version: 1.2.5
-
-This is the groundtruth for Kunteksto versioning. Any place that it is needed should use this enry.
-
-.. sourcecode:: text
-
-
+	
 	; analyzelevel can be either Simple or Full.
 	analyzelevel: Full
 
@@ -50,7 +50,6 @@ These three items are also available on the commandline. A commandline entry wil
 
 
 	; Default data formats to create. Values are True or False.
-	; These can be changed in the UI before generating data. 
 	xml: True
 	rdf: True
 	json: True
@@ -125,3 +124,11 @@ These values determine what data file format(s) will be generated.  If a file fo
 
 There is currently one repository supported for each filetype. We plan to support the others in the future. 
 
+
+**There are no user editable options in the SYSTEM section.**
+
+.. sourcecode:: text
+
+
+	[SYSTEM]
+	version: 1.2.5

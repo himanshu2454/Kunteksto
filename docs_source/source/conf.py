@@ -25,7 +25,7 @@ import configparser
 
 config = configparser.ConfigParser()
 config.read('../../kunteksto.conf')
-VERSION = config['KUNTEKSTO']['version']
+VERSION = config['SYSTEM']['version']
 
 
 # sys.path.insert(0, os.path.abspath('.'))

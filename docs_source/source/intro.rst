@@ -33,48 +33,33 @@ This is the **preferred environment** for a tool like Kunteksto because it integ
 - Install SQLiteBrowser as directed by the links above. 
 - If you are using Linux or Mac OSX, follow the instructions for your platform for **lxml** installation. See: http://lxml.de/installation.html
 
-.. note::
 
-    **Option 1:**
+- Open a terminal window and create a conda environment. On Windows it is best to open an *Anaconda Terminal* from the Anaconda menu: 
 
-    Install the complete environment from Anaconda Cloud.
+.. code-block:: sh
 
-    The environment location is https://anaconda.org/twcook/kunteksto 
+    conda create -p kunteksto python=3 pycurl ujson
 
-    Instructions for installing an environment can be found in the docs https://docs.continuum.io/anaconda-cloud/user-guide/getting-started#sharing-environments 
+- Change to the directory
 
-
-.. note::
-
-    **Option 2:**
+.. code-block:: sh
+    
+    cd kunteksto
 
 
-    - Open a terminal window and create a conda environment: 
+- Activate the environment according to the instructions shown by Anaconda.
 
-    .. code-block:: sh
+.. code-block:: sh
 
-        conda create -p kunteksto python=3
+    source activate <path/to/directory> 
 
-    - Change to the directory
+- install Kunteksto
 
-    .. code-block:: sh
-        
-        cd kunteksto
+.. code-block:: sh
 
+    pip install kunteksto
 
-    - Activate the environment according to the instructions.
-
-    .. code-block:: sh
-
-        source activate <path/to/directory> 
-
-    - install Kunteksto
-
-    .. code-block:: sh
-
-        pip install kunteksto
-
-    These four quick steps creates a virtual environment in the subdirectory *kunteksto*. When it is created conda displays how to activate the environment. Once activated then Kunteksto is installed in the subdirectoy along with the environment. 
+These four quick steps creates a virtual environment in the subdirectory *kunteksto*. When it is created conda displays how to activate the environment. Once activated then Kunteksto is installed in the subdirectoy along with the environment. 
 
 The last step is to do the :ref:`tutor`
 

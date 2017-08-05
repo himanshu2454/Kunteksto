@@ -115,7 +115,7 @@ Edit these:
     - *max_val* enter the maximum value restriction for integer or decimal columns.	
     - *vals_inclusive* are the minimum and maximum values inclusive in the valid values range. Enter a '1' for yes or a '0' for no.
     - *definition_url* enter a URL (or at least a URI) to a vocabulary or ontology or a webpage that describes or defines the meaning of the data in this column.
-    - *pred_obj_list* enter any additional predicate object pairs to be used to define this resource. Enter them one per line with the predicate and object separated by a space character. You may use namespace abbreviations if they are in the list below. [#f1]_ Otherwise you must include the full URI in order to create valid models.
+    - *pred_obj_list* enter any additional predicate object pairs to be used to define this resource. Enter them one per line with the predicate and object separated by a space character. You may use namespace abbreviations if they are in the list below. Otherwise you must include the full URI in order to create valid models.
     - *def_txt_value* enter the default value for a string datatype column, if there is one.
     - *def_num_value* enter the default value for a decimal or integer datatype column, if there is one.
     - *units* enter the units value for a decimal or integer datatype column. This can be an abbreviation but should come from a standard units vocabulary such as https://github.com/HajoRijgersberg/OM or http://unitsofmeasure.org/trac For integer columns where the values are *counts* you should enter the name of the item(s) being counted. This could be the same as the label or column header if desired.
@@ -223,39 +223,32 @@ You will see this error message:
 
 and no new data files were generated because the data format, in this case a column name, didn't match. 
 
-What's it Good For?
--------------------
+Using this rich data
+--------------------
+
 Now that we have all these files, what can we do with them?
 
 In the :ref:`config` section you will learn about automatically placing your data into appropriate databases/repositories for further usage. If yours is not yet supported, you an manually import from the filesystem. Of course you can also contribute, see :ref:`develop`.
+
+In order to exploit the richness of the RDF data you will need to also load these files into your RDF repository:
+
+- s3model/s3model.owl
+- s3model/s3model_3_0_0.rdf
+- output/Demo/dm-{uuid}.rdf
+
+In your XML DB or in the appropriate place in your data pipeline you will want to use the dm-{uuid}.xsd data model schema to validate your XML data. You should be using XML Catalog files and an example is created for each project in the *catalogs* directory. 
+
+Your JSON data instances can be used as desired on the filesystem of in a document DB. 
+
+Why multiple copies of the same data?
+-------------------------------------
+
+You can choose which types to actually create in the :ref:`config` file. But each one has different qualities. For example the XML data is the most robust as far as any data quality validation is concerned. The RDF is more useful for exploration and knowledge discovery and the JSON is simpler to use in some environments.
 
 
 More Information
 ----------------
 
-- You may also want to perform the :ref:`pimatutor`. This tutorial is based on the popular Pima Indian Diabetes study that is used in many other data science tutorials. The data is realistic as opposed to this simple demo. Also, you will be actually looking up semanntics in online repositories.  
-
-
-.. rubric:: Footnotes
-
-.. [#f1] Namespace abbreviaions list:
-
-    - 'xs':'http://www.w3.org/2001/XMLSchema',
-    - 'xsi':'http://www.w3.org/2001/XMLSchema-instance',
-    - 'xsd':'http://www.w3.org/2001/XMLSchema#',
-    - 'dc':'http://purl.org/dc/elements/1.1/',
-    - 'skos':'http://www.w3.org/2004/02/skos/core#',
-    - 'foaf':'http://xmlns.com/foaf/0.1/',
-    - 'sioc':'http://rdfs.org/sioc/ns#',
-    - 'rdf':'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
-    - 'rdfs':'http://www.w3.org/2000/01/rdf-schema#',
-    - 'dct':'http://purl.org/dc/terms/',
-    - 'owl':'http://www.w3.org/2002/07/owl#',
-    - 'vc':'http://www.w3.org/2007/XMLSchema-versioning',
-    - 's3m':'https://www.s3model.com/ns/s3m/'
-
-
-
-
+- To gain a better grasp of the capability of Kunteksto, you may also want to perform the :ref:`pimatutor`. This tutorial is based on the popular Pima Indian Diabetes study that is used in many other data science tutorials. The data is realistic as opposed to this simple demo. Also, you will be actually looking up semanntics in online repositories.  
 
 
