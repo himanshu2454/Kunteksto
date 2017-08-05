@@ -37,7 +37,18 @@ Tutorial Steps
 
 - Navigate to the directory where you installed Kunteksto.
 
-- With the virtual environment active, start Kunteksto: 
+- **With the virtual environment active.** 
+
+.. note::
+
+    You can see all of the Kunteksto commandline options using the --help flag.
+
+    .. code-block:: sh
+
+        kunteksto --help
+
+
+Start Kunteksto:
 
 .. code-block:: sh
 

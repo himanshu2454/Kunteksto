@@ -5,7 +5,7 @@ Introduction and Installation
 Purpose
 =======
 
-**Kunteksto** (ˈkänˌteksto) [#f1]_ is a tool for helping domain experts, data creators and data users translate their simple CSV formatted data files into the semantically enhanced formats. This provides a path for existing data to be used in conjuntion with the emerging *data-centric, model first* approach in analysis, general artificial intelligence and decision support systems. This approach opens the door for the change to a *data-centric* world as opposed to the *application-centric* one we have now. This new approach enables automatic interoperability avoiding the data quality issues created through data cleaning and massaging. 
+**Kunteksto** (ˈkänˌteksto) [#f1]_ is a tool for helping domain experts, data creators and data users to translate their simple CSV formatted data files into the semantically enhanced formats. This provides a path for existing data to be used in conjuntion with the emerging *data-centric, model first* approach in analysis, general artificial intelligence and decision support systems. This approach opens the door for the change to a *data-centric* world as opposed to the *application-centric* one we have now. This new approach enables automatic interoperability avoiding the data quality issues created through data cleaning and massaging. 
 
 The importance of this capability and improved data quality is discussed in foundational `S3Model <https://datainsights.tech/S3Model>`_ documentation and references. However, detailed understanding of S3Model is not required to understand and use the power of Kunteksto. Addtional information on the data-centric movement can be found below [#f2]_
 
@@ -113,6 +113,49 @@ Now that that is settled.  The rest is easy.
 
 
 	Go to the :ref:`tutor` 
+
+
+What are all the files for?
+===========================
+
+Depending on how and where you installed Kunteksto you will see a varying number of files and subdirectories. Many of them may be part of the Anaconda environment so we won't be covering those.
+
+Referenced from the *kunteksto* directory created at install time:
+
+Files
+-----
+
+- README.md
+    A brief explaination of Kunteksto's purpose and links to background information.
+
+- kunteksto.conf
+    The required configuration file for Kunteksto.
+
+- LICENSE.txt
+    A copy of the copyright notice and license.
+
+
+Directories
+-----------
+
+- example_data
+    Where you will find information and sample data files for the tutorials.
+
+- output
+    The default location of all generated output from Kunteksto. This can be changed either via the configuration file or via the commandline. 
+
+- catalogs
+    Where Kunteksto places XML catalog files that are used in in the data validation process.
+
+- s3model
+    Support files required for operation.
+
+    - s3model.owl - the core S3Model ontology.
+    - s3model_3_0_0.xsd - the reference model schema version 3.0.0
+    - s3model_3_0_0.rdf - the extracted semantics from the reference model schema version 3.0.0
+    - s3model_3_0_0.xsl - a stylesheet providing visualization in a browsser of the reference model schema version 3.0.0
+    - dm-description.xsl - a stylesheet providing visualization in a browser of any S3Model data model. Just place it in the same directory with the dm-{uuid}.xsd file and open the schema in a browser. 
+
 
 
 .. rubric:: Footnotes
