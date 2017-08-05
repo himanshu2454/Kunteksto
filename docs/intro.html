@@ -208,21 +208,9 @@
 <li>Install Anaconda Python 3.6+ for your platform according to the instructions here <a class="reference external" href="https://docs.continuum.io/anaconda/install/">https://docs.continuum.io/anaconda/install/</a></li>
 <li>Install SQLiteBrowser as directed by the links above.</li>
 <li>If you are using Linux or Mac OSX, follow the instructions for your platform for <strong>lxml</strong> installation. See: <a class="reference external" href="http://lxml.de/installation.html">http://lxml.de/installation.html</a></li>
+<li>Open a terminal window and create a conda environment. On Windows it is best to open an <em>Anaconda Terminal</em> from the Anaconda menu:</li>
 </ul>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p><strong>Option 1:</strong></p>
-<p>Install the complete environment from Anaconda Cloud.</p>
-<p>The environment location is <a class="reference external" href="https://anaconda.org/twcook/kunteksto">https://anaconda.org/twcook/kunteksto</a></p>
-<p class="last">Instructions for installing an environment can be found in the docs <a class="reference external" href="https://docs.continuum.io/anaconda-cloud/user-guide/getting-started#sharing-environments">https://docs.continuum.io/anaconda-cloud/user-guide/getting-started#sharing-environments</a></p>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p><strong>Option 2:</strong></p>
-<ul class="simple">
-<li>Open a terminal window and create a conda environment:</li>
-</ul>
-<div class="highlight-sh"><div class="highlight"><pre><span></span>conda create -p kunteksto <span class="nv">python</span><span class="o">=</span><span class="m">3</span>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>conda create -p kunteksto <span class="nv">python</span><span class="o">=</span><span class="m">3</span> pycurl ujson
 </pre></div>
 </div>
 <ul class="simple">
@@ -232,7 +220,7 @@
 </pre></div>
 </div>
 <ul class="simple">
-<li>Activate the environment according to the instructions.</li>
+<li>Activate the environment according to the instructions shown by Anaconda.</li>
 </ul>
 <div class="highlight-sh"><div class="highlight"><pre><span></span><span class="nb">source</span> activate &lt;path/to/directory&gt;
 </pre></div>
@@ -243,8 +231,7 @@
 <div class="highlight-sh"><div class="highlight"><pre><span></span>pip install kunteksto
 </pre></div>
 </div>
-<p class="last">These four quick steps creates a virtual environment in the subdirectory <em>kunteksto</em>. When it is created conda displays how to activate the environment. Once activated then Kunteksto is installed in the subdirectoy along with the environment.</p>
-</div>
+<p>These four quick steps creates a virtual environment in the subdirectory <em>kunteksto</em>. When it is created conda displays how to activate the environment. Once activated then Kunteksto is installed in the subdirectoy along with the environment.</p>
 <p>The last step is to do the <a class="reference internal" href="start.html#tutor"><span class="std std-ref">Tutorial/Demo</span></a></p>
 </div>
 <div class="section" id="windows">
@@ -350,7 +337,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.2.6rc15',
+            VERSION:'1.2.6rc16',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

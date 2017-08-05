@@ -183,13 +183,14 @@
 cmd: sqlitebrowser
 </pre></div>
 </div>
-<p>Depending upon your OS and installation you may need the full path to the SQLite Browser executable.</p>
-<div class="highlight-text"><div class="highlight"><pre><span></span>[KUNTEKSTO]
-version: 1.2.5
+<p>For Windows users you need to put it in quotes because of the spaces</p>
+<div class="highlight-text"><div class="highlight"><pre><span></span>cmd: &quot;DB Browser for SQLite.exe&quot;
 </pre></div>
 </div>
-<p>This is the groundtruth for Kunteksto versioning. Any place that it is needed should use this enry.</p>
-<div class="highlight-text"><div class="highlight"><pre><span></span>; analyzelevel can be either Simple or Full.
+<p>Depending upon your OS and installation you may need the full path to the SQLite Browser executable and you may need to adjust access permissions.</p>
+<div class="highlight-text"><div class="highlight"><pre><span></span>[KUNTEKSTO]
+
+; analyzelevel can be either Simple or Full.
 analyzelevel: Full
 
 ; allowed delimiter (field separator) types are one of these:  , ; : | $
@@ -204,7 +205,6 @@ outdir: output
 </div>
 <p>These three items are also available on the commandline. A commandline entry will override these defaults.</p>
 <div class="highlight-text"><div class="highlight"><pre><span></span>; Default data formats to create. Values are True or False.
-; These can be changed in the UI before generating data.
 xml: True
 rdf: True
 json: True
@@ -275,6 +275,11 @@ status: INACTIVE
 </pre></div>
 </div>
 <p>There is currently one repository supported for each filetype. We plan to support the others in the future.</p>
+<p><strong>There are no user editable options in the SYSTEM section.</strong></p>
+<div class="highlight-text"><div class="highlight"><pre><span></span>[SYSTEM]
+version: 1.2.5
+</pre></div>
+</div>
 </div>
 </div>
 
@@ -322,7 +327,7 @@ status: INACTIVE
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.2.6rc15',
+            VERSION:'1.2.6rc16',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
