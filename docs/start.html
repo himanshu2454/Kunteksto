@@ -188,6 +188,10 @@
 </div>
 <div class="section" id="tutorial-demo">
 <span id="tutor"></span><h2>Tutorial/Demo<a class="headerlink" href="#tutorial-demo" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">There is an example of a complete database, model and data set in the example_data/Demo_with_semantics.zip archive.</p>
+</div>
 <p>Kunteksto includes a demo data file <em>Demo.csv</em>, that you can use to create your first model and data translation. This is a screenshot of the entire file as depicted in a spreadsheet.</p>
 <a class="reference internal image-reference" href="_images/csv_data.png"><img alt="Demo.csv" class="align-center" src="_images/csv_data.png" style="width: 800px; height: 600px;" /></a>
 <p>Notice that there are a few columns to demonstrate various datatypes as well as one column with mixed types that might look like an integer column at first glance but has a missing value.</p>
@@ -276,10 +280,10 @@ The configuration file is covered in <a class="reference internal" href="configu
 <li><em>max_val</em> enter the maximum value restriction for integer or decimal columns.</li>
 <li><em>vals_inclusive</em> are the minimum and maximum values inclusive in the valid values range. Enter a &#8216;1&#8217; for yes or a &#8216;0&#8217; for no.</li>
 <li><em>definition_url</em> enter a URL (or at least a URI) to a vocabulary or ontology or a webpage that describes or defines the meaning of the data in this column.</li>
-<li><em>pred_obj_list</em> enter any additional predicate object pairs to be used to define this resource. Enter them one per line with the predicate and object separated by a space character. You may use namespace abbreviations if they are in the list below. Otherwise you must include the full URI in order to create valid models.</li>
+<li><em>pred_obj_list</em> enter any additional predicate object pairs to be used to define this resource. Enter them one per line with the predicate and object separated by a space character. You may use namespace abbreviations if they are in the list below or have been defined in the [NAMESPACES] section of the configuration file.</li>
 <li><em>def_txt_value</em> enter the default value for a string datatype column, if there is one.</li>
 <li><em>def_num_value</em> enter the default value for a decimal or integer datatype column, if there is one.</li>
-<li><em>units</em> enter the units value for a decimal or integer datatype column. This can be an abbreviation but should come from a standard units vocabulary such as <a class="reference external" href="https://github.com/HajoRijgersberg/OM">https://github.com/HajoRijgersberg/OM</a> or <a class="reference external" href="http://unitsofmeasure.org/trac">http://unitsofmeasure.org/trac</a> For integer columns where the values are <em>counts</em> you should enter the name of the item(s) being counted. This could be the same as the label or column header if desired.</li>
+<li><em>units</em> enter the units value for a decimal or integer datatype column. This can be an abbreviation but should come from a standard units vocabulary such as <a class="reference external" href="https://github.com/HajoRijgersberg/OM">Ontology of units of Measure</a> or <a class="reference external" href="http://unitsofmeasure.org">The Unified Code for Units of Measure</a>. For integer columns where the values are <em>counts</em> you should enter the name of the item(s) being counted. This could be the same as the label or column header if desired.</li>
 </ul>
 </div></blockquote>
 <div class="admonition warning">
@@ -315,15 +319,19 @@ The configuration file is covered in <a class="reference internal" href="configu
 <li>s3m=&#8221;<a class="reference external" href="https://www.s3model.com/ns/s3m/">https://www.s3model.com/ns/s3m/</a>&#8220;</li>
 </ul>
 </div>
-<p>For example, if you want to define an alternate label in addition to the label column, you could use the SKOS <em>skos:altLabel</em> predicate. However, if you want to use the predicate <em>isSettingFor</em> from the Information Objects ontology at <a class="reference external" href="http://www.ontologydesignpatterns.org/ont/dul/IOLite.owl">http://www.ontologydesignpatterns.org/ont/dul/IOLite.owl</a> then you would need to use the full URI: <a class="reference external" href="http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#isSettingFor">http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#isSettingFor</a> as the predicate. The field is an open text field so you must use care in making your entries here.  Each predicate/object pair is entered on one line with a space between the predicate and object. For example:</p>
+<p>For example, if you want to define an alternate label in addition to the label column, you could use the SKOS <em>skos:altLabel</em> predicate. However, if you want to use the predicate <em>isSettingFor</em> from the <a class="reference external" href="http://www.ontologydesignpatterns.org/ont/dul/IOLite.owl">Information Objects ontology</a> then you would need to first define an abbreviation for this ontology in the [NAMESPACES] section of the configuration file. You may do this while editing the database. Just be sure to save the new configuration before closing the database editor so that your changes are saved before the model generator runs.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The field is an open text field so you must use care in making your entries here.  Each predicate/object pair is entered on one line with a space between the predicate and object. For example:</p>
+</div>
 <div class="highlight-sh"><div class="highlight"><pre><span></span>skos:altLabel Blue Spot
-http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#isSettingFor https://www.datainsights.tech/thingies/PurpleKnob
+dul:isSettingFor https://www.datainsights.tech/thingies/PurpleKnob
 </pre></div>
 </div>
-<p>The <em>object</em> can contain spaces. However, the first space character defines the separation between the <em>predicate</em> and <em>object</em>.</p>
-<p>Again, the information in the table in the PDF can help you determine additional meaning about the data if you are not a domain expert in this area of <em>Fake System</em> information. If you do not already have an ontology defining the meaning of these columns then you can search in places like <a class="reference external" href="http://lov.okfn.org/dataset/lov">http://lov.okfn.org/dataset/lov</a> <a class="reference external" href="https://www.bioontology.org/">https://www.bioontology.org/</a> or even places that aren&#8217;t formal ontologies but contain reliable definitions and descriptioins such as <a class="reference external" href="http://www.dictionary.com/">http://www.dictionary.com/</a> and <a class="reference external" href="https://en.wikipedia.org/wiki/Main_Page">https://en.wikipedia.org/wiki/Main_Page</a></p>
+<p>The <em>object</em> portion can contain spaces. However, the first space character defines the separation between the <em>predicate</em> and <em>object</em>.</p>
+<p>Again, the information in the table in the PDF can help you determine additional meaning about the data if you are not a domain expert in this area of <em>Fake System</em> information. If you do not already have an ontology defining the meaning of these columns then you can search in places like <a class="reference external" href="http://lov.okfn.org/dataset/lov">Linked Open Vocabularies</a>  <a class="reference external" href="https://www.bioontology.org/">Biontology</a>  or even places that aren&#8217;t formal ontologies but contain reliable definitions and descriptioins such as <a class="reference external" href="http://www.dictionary.com/">a dictionary</a> or an <a class="reference external" href="https://en.wikipedia.org/wiki/Main_Page">encyclodpedia</a></p>
 <ul class="simple">
-<li>Once you have completed the data description step, <strong>saved your changes</strong> using the <em>Write Changes</em> button in the top toolbar, close the DB Browser. You will then see that model generation happens followed by data generation.</li>
+<li>Once you have completed the data description step, <strong>saved any changes to the configuration file</strong> and <strong>saved your changes</strong> using the <em>Write Changes</em> button in the top toolbar, close the DB Browser. You will then see that model generation happens followed by data generation.</li>
 </ul>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -338,12 +346,15 @@ http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#isSettingFor https://www.d
 </ul>
 <a class="reference internal image-reference" href="_images/output_dir.png"><img alt="Output Directory" class="align-center" src="_images/output_dir.png" style="width: 800px; height: 600px;" /></a>
 <ul class="simple">
-<li>The <em>all</em> mode causes the creation of data instances (XML, JSON and RDF) for each record in the CSV file that are semantically compliant with the RDF and will be valid according to the XML Schema. Demonstrating that the models describe the data. The RDF file does include some constraint definitions based on SHACL <a class="reference external" href="https://www.w3.org/TR/shacl/">https://www.w3.org/TR/shacl/</a> However, there is no builtin processing for these constraints. Full validation is performed via XML for both the data model and data instances. In addition, an XML catalog is dynamically generated for each project and is written to the catalogs subdirectory.</li>
+<li>The <em>all</em> mode causes the creation of data instances (XML, JSON and RDF) for each record in the CSV file that are semantically compliant with the RDF and will be valid according to the XML Schema. Demonstrating that the models describe the data. The RDF file does include some constraint definitions based on <a class="reference external" href="https://www.w3.org/TR/shacl/">Shapes Constraint Language (SHACL)</a> There is no builtin processing for these constraints due to the lack of maturity of this technology. Expect SHACL to become more useful in the near future.</li>
+</ul>
+<p>Full validation is performed via XML for both the data model and data instances. In addition, an XML catalog is dynamically generated for each project and is written to the catalogs subdirectory.</p>
+<ul class="simple">
 <li>Notice that the validation file <em>Demo_validation_log.csv</em> shows four valid records and one invalid record. The invalid record is due to a &#8216;NaN&#8217; entry in a numeric column.</li>
 </ul>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">The S3Model eco-system has a much more sophisticated ability to handle missing and erroneous data. The details are available in the S3Model documentation.</p>
+<p class="last">The S3Model eco-system has a much more sophisticated ability to handle missing and erroneous data. The details are available in the S3Model documentation. This generally requires the model first approach whereas Kunteksto is an after-the-fact bridge.</p>
 </div>
 </div>
 <div class="section" id="additional-steps">
@@ -376,6 +387,14 @@ Datafile: Bad_Column_name  Model: Column_1
 </ul>
 <p>In your XML DB or in the appropriate place in your data pipeline you will want to use the dm-{uuid}.xsd data model schema to validate your XML data. You should be using XML Catalog files and an example is created for each project in the <em>catalogs</em> directory.</p>
 <p>Your JSON data instances can be used as desired on the filesystem of in a document DB.</p>
+<p>There is a growing effort to expand the current data science algorithms to exploit richer data formats such as RDF.
+Some references to get you started:</p>
+<ul class="simple">
+<li><a class="reference external" href="https://www.youtube.com/watch?v=VoEEb_oGN7w">Towards Analytics on Top of Big RDF Data</a> (video).</li>
+<li><a class="reference external" href="https://ablvienna.wordpress.com/2014/10/28/linked-data-meets-data-science/">Linked Data meets Data Science</a></li>
+<li><a class="reference external" href="http://www.kdnuggets.com/tag/rdf">RDF on KDNuggets</a></li>
+<li><a class="reference external" href="http://www.datasciencecentral.com/profiles/blog/list?tag=RDF">RDF on Data Science Central</a></li>
+</ul>
 </div>
 <div class="section" id="why-multiple-copies-of-the-same-data">
 <h3>Why multiple copies of the same data?<a class="headerlink" href="#why-multiple-copies-of-the-same-data" title="Permalink to this headline">¶</a></h3>
@@ -434,7 +453,7 @@ Datafile: Bad_Column_name  Model: Column_1
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.2.6rc16',
+            VERSION:'1.2.6rc17',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

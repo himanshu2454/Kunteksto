@@ -172,7 +172,11 @@
             
   <div class="section" id="configuration">
 <h1>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h1>
-<p>The initial kunteksto.conf file should be okay for most uses and certainly for the demo/tutorials.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Only edit the configuration file with a text editor. Do not use a wordprocessing application such as MS Word or LibreOffice. There are many great opensource and free text editors to choose from.  An easy to use favorite is <a class="reference external" href="https://www.sublimetext.com/">Sublime</a></p>
+</div>
+<p>The initial kunteksto.conf file should be okay for most uses and certainly for the demo/tutorials. You are encouraged to make backup copies, under different names, of the configuration file for different use cases/projects. The active configuration however will always be the one named <strong>kunteksto.conf</strong>.</p>
 <div class="section" id="config-file-details">
 <span id="config"></span><h2>Config File Details<a class="headerlink" href="#config-file-details" title="Permalink to this headline">¶</a></h2>
 <p>Here we cover the details of the configuration options.</p>
@@ -211,6 +215,14 @@ json: True
 </pre></div>
 </div>
 <p>These values determine what data file format(s) will be generated.  If a file format is set to <em>True</em> and no repository is configured for that format; then the files will be written to the filesystem under the defined <em>outdir</em>.</p>
+<div class="highlight-text"><div class="highlight"><pre><span></span>[NAMESPACES]
+; any additional namespaces must be defined here with their abbreviations. The format is is shown below. Note the space after the colon.
+; {abbrev}: {namespace URI}
+
+dul: http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#
+</pre></div>
+</div>
+<p>When defining the semantics for your models you will want to use appropriate ontologies from various public sources such as <a class="reference external" href="http://lov.okfn.org/dataset/lov">Linked Open Vocabularies</a>  <a class="reference external" href="https://www.bioontology.org/">Biontology</a> or some of the many others, as well as your own local ontologies. You must define an abbreviation for each ontology namespace here. The one above shows the example from the Tutorial/Demo of defining the <em>dul</em> abbreviation for the <a class="reference external" href="http://ontologydesignpatterns.org/wiki/Main_Page">Ontology Design Patterns</a> ontology.</p>
 <div class="highlight-text"><div class="highlight"><pre><span></span>; Below are where repository setups are defined for each of the three types of data generation.
 ; If a type is to be generated but no repository is defined for the type. Then the data will be generated
 ; and written to the filesystem in a subdirectory of the output directory.
@@ -327,7 +339,7 @@ version: 1.2.5
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.2.6rc16',
+            VERSION:'1.2.6rc17',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
