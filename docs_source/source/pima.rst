@@ -1,6 +1,6 @@
 
 
-The source of this data is the **UC Irvine Machine Learning Repository** https://archive.ics.uci.edu/ml/datasets/pima+indians+diabetes
+The source of this data is the `UC Irvine Machine Learning Repository <https://archive.ics.uci.edu/ml/datasets/pima+indians+diabetes>`_
 
 
 The details of the original source and other details can be found there. This information may be useful in filling in the database *model* and *record* tables.

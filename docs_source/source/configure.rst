@@ -2,7 +2,11 @@
 Configuration
 =============
 
-The initial kunteksto.conf file should be okay for most uses and certainly for the demo/tutorials. 
+.. warning::
+
+	Only edit the configuration file with a text editor. Do not use a wordprocessing application such as MS Word or LibreOffice. There are many great opensource and free text editors to choose from.  An easy to use favorite is `Sublime <https://www.sublimetext.com/>`_
+
+The initial kunteksto.conf file should be okay for most uses and certainly for the demo/tutorials. You are encouraged to make backup copies, under different names, of the configuration file for different use cases/projects. The active configuration however will always be the one named **kunteksto.conf**. 
 
 .. _config:
 
@@ -61,12 +65,12 @@ These values determine what data file format(s) will be generated.  If a file fo
 
 
 	[NAMESPACES]
-	; any additional namespaces must be defined here with their abbreviations. 
-	; {abbrev}:{namespace URI}
+	; any additional namespaces must be defined here with their abbreviations. The format is is shown below. Note the space after the colon.
+	; {abbrev}: {namespace URI}
 
 	dul: http://www.ontologydesignpatterns.org/ont/dul/DUL.owl# 
 
-When defining the semantics for your models you will want to use appropriate ontologies from various sources such as Linked Open Vocabularies http://lov.okfn.org/dataset/lov  Biontology https://www.bioontology.org/ etc. As well as your own local ontologies. You must define an abbreviation for each ontology namespace here. The one above shows the example from the Tutorial/Demo of defining the *dul* abbreviation for the Ontology Design Patterns ontology.  
+When defining the semantics for your models you will want to use appropriate ontologies from various public sources such as `Linked Open Vocabularies <http://lov.okfn.org/dataset/lov>`_  `Biontology <https://www.bioontology.org/>`_ or some of the many others, as well as your own local ontologies. You must define an abbreviation for each ontology namespace here. The one above shows the example from the Tutorial/Demo of defining the *dul* abbreviation for the `Ontology Design Patterns <http://ontologydesignpatterns.org/wiki/Main_Page>`_ ontology.  
 
 .. sourcecode:: text
 

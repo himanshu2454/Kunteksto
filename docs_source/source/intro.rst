@@ -16,8 +16,8 @@ Kunteksto design is based around the ability for *domain experts* from any field
 Requirements
 ============
 
-- Python 3.6 or later. See: https://www.python.org/downloads/ 
-- Installation of SQLiteBrowser. See: http://sqlitebrowser.org/ or other tool for editing SQLite databases.
+- Python 3.6 or later. See: `Downloads <https://www.python.org/downloads/>`_  
+- Installation of `SQLiteBrowser <http://sqlitebrowser.org/>`_ or other tool for editing SQLite databases.
 
 .. _install:
 
@@ -29,9 +29,9 @@ Cross-Platform on Anaconda
 
 This is the **preferred environment** for a tool like Kunteksto because it integrates easily with systems for domain experts, data engineers and data scientists.
 
-- Install Anaconda Python 3.6+ for your platform according to the instructions here https://docs.continuum.io/anaconda/install/ 
+- Install Anaconda Python 3.6+ for your platform according to the instructions `here <https://docs.continuum.io/anaconda/install/>`_ 
 - Install SQLiteBrowser as directed by the links above. 
-- If you are using Linux or Mac OSX, follow the instructions for your platform for **lxml** installation. See: http://lxml.de/installation.html
+- If you are using Linux or Mac OSX, follow the `instructions for your platform <http://lxml.de/installation.html>`_ for **lxml** installation. 
 
 
 - Open a terminal window and create a conda environment. On Windows it is best to open an *Anaconda Terminal* from the Anaconda menu: 
@@ -73,7 +73,7 @@ Details coming soon. Preferably use the Anaconda instructions above.
 
 Mac OSX
 -------
-Follow the instructions for your platform for lxml installation. See: http://lxml.de/installation.html 
+Follow the `instructions for your platform <http://lxml.de/installation.html>`_ for lxml installation. 
 
 Details coming soon. Preferably use the Anaconda instructions above. 
 
@@ -83,7 +83,7 @@ Linux
 
 Install Python and SQLiteBrowser as directed by the links above. 
 
-Follow the instructions for your platform for lxml installation. See: http://lxml.de/installation.html 
+Follow the `instructions for your platform <http://lxml.de/installation.html>`_ for lxml installation. 
 
 Now that that is settled.  The rest is easy.  
 
@@ -139,7 +139,7 @@ Directories
 -----------
 
 - example_data
-    Where you will find information and sample data files for the tutorials. There is also an example of the completed Demo database named Demo_with_semantics.db. 
+    Where you will find information and sample data files for the tutorials. There is also an example of the completed Demo database, model and data in the archive Demo_with_semantics.zip. 
 
 - output
     The default location of all generated output from Kunteksto. This can be changed either via the configuration file or via the commandline. 
@@ -160,12 +160,12 @@ Directories
 
 .. rubric:: Footnotes
 
-.. [#f1] S3Model is called the Esperanto of information management. Kunteksto is the Esperanto translation for *Context*. See: https://simple.wikipedia.org/wiki/Esperanto for more information about the Esperanto language.
+.. [#f1] S3Model is called the Esperanto of information management. Kunteksto is the Esperanto translation for *Context*. See `Wikipedia <https://simple.wikipedia.org/wiki/Esperanto>`_ for more information about the Esperanto language.
 
 .. [#f2] 
-    -  The Estes Park Group http://estesparkgroup.org/
-    -  The Data-centric Manifesto http://datacentricmanifesto.org/
-    -  Data-centric companies will devour competitors https://goo.gl/xDcpZM
-    -  The Data-Centric Revolution: Gaining Traction https://goo.gl/zdRLm9
-    -  The limits of deep learning https://blog.keras.io/the-limitations-of-deep-learning.html 
-    -  The future of deep learning https://blog.keras.io/the-future-of-deep-learning.html
+    -  `The Estes Park Group <http://estesparkgroup.org/>`_ 
+    -  `The Data-centric Manifesto <http://datacentricmanifesto.org/>`_  
+    -  `Data-centric companies will devour competitors <https://goo.gl/xDcpZM>`_ 
+    -  `The Data-Centric Revolution: Gaining Traction <https://goo.gl/zdRLm9>`_ 
+    -  `The limits of deep learning <https://blog.keras.io/the-limitations-of-deep-learning.html>`_ 
+    -  `The future of deep learning <https://blog.keras.io/the-future-of-deep-learning.html>`_
