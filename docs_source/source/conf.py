@@ -184,7 +184,7 @@ html_static_path = ['_static']
 # bottom, using the given strftime format.
 # The empty string is equivalent to '%b %d, %Y'.
 #
-# html_last_updated_fmt = None
+html_last_updated_fmt = '%Y-%m-%d %H:%M'
 
 # If true, SmartyPants will be used to convert quotes and dashes to
 # typographically correct entities.
@@ -218,7 +218,7 @@ html_static_path = ['_static']
 
 # If true, "Created using Sphinx" is shown in the HTML footer. Default is True.
 #
-# html_show_sphinx = True
+html_show_sphinx = False
 
 # If true, "(C) Copyright ..." is shown in the HTML footer. Default is True.
 #
@@ -238,7 +238,7 @@ html_static_path = ['_static']
 #   'da', 'de', 'en', 'es', 'fi', 'fr', 'h', 'it', 'ja'
 #   'nl', 'no', 'pt', 'ro', 'r', 'sv', 'tr', 'zh'
 #
-# html_search_language = 'en'
+html_search_language = 'en'
 
 # A dictionary with options for the search language support, empty by default.
 # 'ja' uses this config value.

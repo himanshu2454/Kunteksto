@@ -25,7 +25,7 @@ misc/
 # Sphinx
 docs_source/build/*
 docs/_sources/*
-
+docs/.buildinfo
 
 # Setuptools distribution folder.
 /dist/
