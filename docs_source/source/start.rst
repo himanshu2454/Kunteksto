@@ -245,7 +245,7 @@ You will see this error message:
 and no new data files were generated because the data format, in this case a column name, didn't match. 
 
 Using this rich data
---------------------
+====================
 
 Now that we have all these files, what can we do with them?
 
