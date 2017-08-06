@@ -139,7 +139,7 @@ Directories
 -----------
 
 - example_data
-    Where you will find information and sample data files for the tutorials.
+    Where you will find information and sample data files for the tutorials. There is also an example of the completed Demo database named Demo_with_semantics.db. 
 
 - output
     The default location of all generated output from Kunteksto. This can be changed either via the configuration file or via the commandline. 

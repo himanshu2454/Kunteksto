@@ -60,6 +60,17 @@ These values determine what data file format(s) will be generated.  If a file fo
 .. sourcecode:: text
 
 
+	[NAMESPACES]
+	; any additional namespaces must be defined here with their abbreviations. 
+	; {abbrev}:{namespace URI}
+
+	dul: http://www.ontologydesignpatterns.org/ont/dul/DUL.owl# 
+
+When defining the semantics for your models you will want to use appropriate ontologies from various sources such as Linked Open Vocabularies http://lov.okfn.org/dataset/lov  Biontology https://www.bioontology.org/ etc. As well as your own local ontologies. You must define an abbreviation for each ontology namespace here. The one above shows the example from the Tutorial/Demo of defining the *dul* abbreviation for the Ontology Design Patterns ontology.  
+
+.. sourcecode:: text
+
+
 	; Below are where repository setups are defined for each of the three types of data generation.
 	; If a type is to be generated but no repository is defined for the type. Then the data will be generated 
 	; and written to the filesystem in a subdirectory of the output directory.  

@@ -10,6 +10,8 @@ import time
 import datetime
 import csv
 import sqlite3
+import configparser
+
 from uuid import uuid4
 from collections import OrderedDict
 import json
@@ -26,6 +28,14 @@ try:
     from franz.openrdf.rio.rdfformat import RDFFormat
 except:
     pass
+
+# Additional namespace abbreviations
+NSDEF = {}
+config = configparser.ConfigParser()
+config.read('kunteksto.conf')
+
+for abbrev in config['NAMESPACES']:
+    NSDEF[abbrev] = config['NAMESPACES'][abbrev].strip()
 
 
 def xsd_header():
@@ -50,6 +60,9 @@ def xsd_header():
     hstr += '  xmlns:sioc="http://rdfs.org/sioc/ns#"\n'
     hstr += '  xmlns:sh="http://www.w3.org/ns/shacl#"\n'
     hstr += '  xmlns:s3m="https://www.s3model.com/ns/s3m/"\n'
+    for abbrev in NSDEF.keys():
+        hstr += '  xmlns:' + abbrev + '="' + NSDEF[abbrev] + '"\n'
+        
     hstr += '  targetNamespace="https://www.s3model.com/ns/s3m/"\n'
     hstr += '  xml:lang="en-US">\n\n'
     hstr += '  <xs:include schemaLocation="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd"/>\n\n'
@@ -98,7 +111,9 @@ def xdcount_rdf(data):
     rdfStr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + data[10].strip() + '"/>\n'
     if data[11]:  # are there additional predicate-object definitions?
         for po in data[11].splitlines():
-            rdfStr += padding.rjust(indent + 8) + '<' + po.strip() + '/>\n'
+            pred = po.split()[0]
+            obj = po[len(pred):].strip()
+            rdfStr += padding.rjust(indent + 8) + '<' + pred.strip() + ' rdf:resource="' + obj.strip() + '"/>\n'
             
     rdfStr += padding.rjust(indent + 6) +'<sh:property>\n'
     rdfStr += padding.rjust(indent + 8) +'<rdf:Description>\n'
@@ -238,7 +253,9 @@ def xdquantity_rdf(data):
     rdfStr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + data[10].strip() + '"/>\n'
     if data[11]:  # are there additional predicate-object definitions?
         for po in data[11].splitlines():
-            rdfStr += padding.rjust(indent + 8) + '<' + po.strip() + '/>\n'
+            pred = po.split()[0]
+            obj = po[len(pred):].strip()
+            rdfStr += padding.rjust(indent + 8) + '<' + pred.strip() + ' rdf:resource="' + obj.strip() + '"/>\n'
             
     rdfStr += padding.rjust(indent + 6) +'<sh:property>\n'
     rdfStr += padding.rjust(indent + 8) +'<rdf:Description>\n'
@@ -377,7 +394,9 @@ def xdstring_rdf(data):
     rdfStr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + data[10].strip() + '"/>\n'
     if data[11]:  # are there additional predicate-object definitions?
         for po in data[11].splitlines():
-            rdfStr += padding.rjust(indent + 8) + '<' + po.strip() + '/>\n'
+            pred = po.split()[0]
+            obj = po[len(pred):].strip()
+            rdfStr += padding.rjust(indent + 8) + '<' + pred.strip() + ' rdf:resource="' + obj.strip() + '"/>\n'
             
     rdfStr += padding.rjust(indent + 6) +'<sh:property>\n'
     rdfStr += padding.rjust(indent + 8) +'<rdf:Description>\n'
@@ -525,7 +544,9 @@ def xdtemporal_rdf(data):
     rdfStr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + data[10].strip() + '"/>\n'
     if data[11]:  # are there additional predicate-object definitions?
         for po in data[11].splitlines():
-            rdfStr += padding.rjust(indent + 8) + '<' + po.strip() + '/>\n'
+            pred = po.split()[0]
+            obj = po[len(pred):].strip()
+            rdfStr += padding.rjust(indent + 8) + '<' + pred.strip() + ' rdf:resource="' + obj.strip() + '"/>\n'
             
     rdfStr += padding.rjust(indent + 6) +'<sh:property>\n'
     rdfStr += padding.rjust(indent + 8) +'<rdf:Description>\n'
@@ -674,7 +695,9 @@ def units(mcID, data):
         '<rdfs:isDefinedBy rdf:resource="' + data[10].strip() + '"/>\n'
     if data[11]:  # are there additional predicate-object definitions?
         for po in data[11].splitlines():
-            xdstr += padding.rjust(indent + 8) + '<' + po.strip() + '/>\n'
+            pred = po.split()[0]
+            obj = po[len(pred):].strip()
+            xdstr += padding.rjust(indent + 8) + '<' + pred.strip() + ' rdf:resource="' + obj.strip() + '"/>\n'
     xdstr += padding.rjust(indent + 6) + '</rdfs:Class>\n'
     xdstr += padding.rjust(indent + 4) + '</xs:appinfo>\n'
     xdstr += padding.rjust(indent + 2) + '</xs:annotation>\n'
@@ -900,6 +923,9 @@ def xsd_rdf(xsdfile, outdir, dm_id, db_file):
               'sh': 'http://www.w3.org/ns/shacl#',
               'vc': 'http://www.w3.org/2007/XMLSchema-versioning',
               's3m': 'https://www.s3model.com/ns/s3m/'}
+
+    for abbrev in NSDEF.keys():
+        nsDict[abbrev] = NSDEF[abbrev]
 
     parser = etree.XMLParser(ns_clean=True, recover=True)
     clsDef = etree.XPath("//xs:annotation/xs:appinfo/rdfs:Class", namespaces=nsDict)

@@ -14,6 +14,10 @@ Then proceed to the tutorial.
 Tutorial/Demo
 =============
 
+.. note::
+
+    There is an example of a complete database, model and data set in the example_data/Demo_with_semantics.zip archive. 
+
 Kunteksto includes a demo data file *Demo.csv*, that you can use to create your first model and data translation. This is a screenshot of the entire file as depicted in a spreadsheet. 
 
 .. image:: _images/csv_data.png
@@ -126,7 +130,7 @@ Edit these:
     - *max_val* enter the maximum value restriction for integer or decimal columns.	
     - *vals_inclusive* are the minimum and maximum values inclusive in the valid values range. Enter a '1' for yes or a '0' for no.
     - *definition_url* enter a URL (or at least a URI) to a vocabulary or ontology or a webpage that describes or defines the meaning of the data in this column.
-    - *pred_obj_list* enter any additional predicate object pairs to be used to define this resource. Enter them one per line with the predicate and object separated by a space character. You may use namespace abbreviations if they are in the list below. Otherwise you must include the full URI in order to create valid models.
+    - *pred_obj_list* enter any additional predicate object pairs to be used to define this resource. Enter them one per line with the predicate and object separated by a space character. You may use namespace abbreviations if they are in the list below or have been defined in the [NAMESPACES] section of the configuration file. 
     - *def_txt_value* enter the default value for a string datatype column, if there is one.
     - *def_num_value* enter the default value for a decimal or integer datatype column, if there is one.
     - *units* enter the units value for a decimal or integer datatype column. This can be an abbreviation but should come from a standard units vocabulary such as https://github.com/HajoRijgersberg/OM or http://unitsofmeasure.org/trac For integer columns where the values are *counts* you should enter the name of the item(s) being counted. This could be the same as the label or column header if desired.
@@ -166,18 +170,22 @@ The *pred_obj_list* column is slightly different in that you need to supply both
     - sh="http://www.w3.org/ns/shacl#"
     - s3m="https://www.s3model.com/ns/s3m/"
 
-For example, if you want to define an alternate label in addition to the label column, you could use the SKOS *skos:altLabel* predicate. However, if you want to use the predicate *isSettingFor* from the Information Objects ontology at http://www.ontologydesignpatterns.org/ont/dul/IOLite.owl then you would need to use the full URI: http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#isSettingFor as the predicate. The field is an open text field so you must use care in making your entries here.  Each predicate/object pair is entered on one line with a space between the predicate and object. For example:
+For example, if you want to define an alternate label in addition to the label column, you could use the SKOS *skos:altLabel* predicate. However, if you want to use the predicate *isSettingFor* from the Information Objects ontology at http://www.ontologydesignpatterns.org/ont/dul/IOLite.owl then you would need to first define an abbreviation for this ontology in the [NAMESPACES] section of the configuration file. You may do this while editing the database. Just be sure to save the new configuration before closing the database editor so that your changes are saved before the model generator runs. 
+
+.. note::
+
+    The field is an open text field so you must use care in making your entries here.  Each predicate/object pair is entered on one line with a space between the predicate and object. For example:
 
 .. code-block:: sh
 
      skos:altLabel Blue Spot
-     http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#isSettingFor https://www.datainsights.tech/thingies/PurpleKnob
+     dul:isSettingFor https://www.datainsights.tech/thingies/PurpleKnob
 
-The *object* can contain spaces. However, the first space character defines the separation between the *predicate* and *object*. 
+The *object* portion can contain spaces. However, the first space character defines the separation between the *predicate* and *object*. 
 
 Again, the information in the table in the PDF can help you determine additional meaning about the data if you are not a domain expert in this area of *Fake System* information. If you do not already have an ontology defining the meaning of these columns then you can search in places like http://lov.okfn.org/dataset/lov https://www.bioontology.org/ or even places that aren't formal ontologies but contain reliable definitions and descriptioins such as http://www.dictionary.com/ and https://en.wikipedia.org/wiki/Main_Page  
 
-- Once you have completed the data description step, **saved your changes** using the *Write Changes* button in the top toolbar, close the DB Browser. You will then see that model generation happens followed by data generation. 
+- Once you have completed the data description step, **saved any changes to the configuration file** and **saved your changes** using the *Write Changes* button in the top toolbar, close the DB Browser. You will then see that model generation happens followed by data generation. 
 
 .. note::
 
