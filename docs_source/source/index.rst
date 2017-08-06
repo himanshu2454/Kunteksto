@@ -19,7 +19,6 @@ Contents:
    configure
    tutorials
    future
-   technical
    develop
    license
    
