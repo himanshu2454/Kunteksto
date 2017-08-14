@@ -124,6 +124,11 @@ Start Kunteksto:
 
 Edit the title, description, copyright, author and contributor fields as desired. These fields describe the overall metadata for your data model. This metadata describes the where, when and why the data is being modeled. Insure that you do not edit the fields in the warning box.
 
+
+.. note::
+   
+   With your FileManager, navigate to the *kunteksto/example_data* subdirectory and open the *Demo_info.pdf* file. This file simulates what often purports to be a data dictionary that you might receive with a dataset. You will use this to improve the computable semantics of your data. 
+
 You will notice that some of this information can be obtained from the PDF. For other items you have to use your knowledge of the dataset as a domain expert. In this *demo* we are going to say that we have a local ontology that describes the columns and that information is provided below in the *Adding Semantics* section. 
 
 .. warning::
@@ -133,7 +138,7 @@ You will notice that some of this information can be obtained from the PDF. For 
 
 - Select the record table. Note that there is a record for each column of data in Demo.csv. If there is only one record then the likely problem is that an incorrect field delimiter was chosen or the default was changed in the config file.  
 
-   - Each record has a number of fields that allow you to describe more about your data. With your FileManager, navigate to the *kunteksto/example_data* subdirectory and open the *Demo_info.pdf* file. This file simulates what often purports to be a data dictionary that you might receive with a dataset. You will use this to improve the computable semantics of your data. 
+   - Each record has a number of fields that allow you to describe more about your data. 
 
    - Though some fields are pre-filled, it is only a guess and may not be accurate.
    
@@ -152,7 +157,7 @@ You will notice that some of this information can be obtained from the PDF. For 
 
     - *header* is the column names from the data file. **Do Not Edit**.
 
-Edit these columns:
+Edit these columns (see :ref:`semantics`) :
 
     - *label* is a variation of the header text and should be edited as needed to provide a meaningful name for the column.
     
@@ -190,8 +195,16 @@ Edit these columns:
     - *mcid* System Generated, **Do Not Edit**
     - *adid* System Generated, **Do Not Edit**  
 
+
+.. _semantics:
+
 Adding Semantics
 ----------------
+
+.. note::
+   
+   If not already open; with your FileManager, navigate to the *kunteksto/example_data* subdirectory and open the *Demo_info.pdf* file. This file simulates what often purports to be a data dictionary that you might receive with a dataset. You will use this to improve the computable semantics of your data. 
+
 
 Editing the fields in this database will improve the semantics in your model that describes the data. This allows your data consumers to make better decisions about what the data means. Kunteksto produces an executable model that can be used in various validation and knowledge discovery scenarios.
 

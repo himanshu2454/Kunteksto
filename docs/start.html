@@ -269,6 +269,10 @@ The configuration file is covered in <a class="reference internal" href="configu
 </ul>
 </div>
 <p>Edit the title, description, copyright, author and contributor fields as desired. These fields describe the overall metadata for your data model. This metadata describes the where, when and why the data is being modeled. Insure that you do not edit the fields in the warning box.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">With your FileManager, navigate to the <em>kunteksto/example_data</em> subdirectory and open the <em>Demo_info.pdf</em> file. This file simulates what often purports to be a data dictionary that you might receive with a dataset. You will use this to improve the computable semantics of your data.</p>
+</div>
 <p>You will notice that some of this information can be obtained from the PDF. For other items you have to use your knowledge of the dataset as a domain expert. In this <em>demo</em> we are going to say that we have a local ontology that describes the columns and that information is provided below in the <em>Adding Semantics</em> section.</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
@@ -278,7 +282,7 @@ The configuration file is covered in <a class="reference internal" href="configu
 <li><p class="first">Select the record table. Note that there is a record for each column of data in Demo.csv. If there is only one record then the likely problem is that an incorrect field delimiter was chosen or the default was changed in the config file.</p>
 <blockquote>
 <div><ul class="simple">
-<li>Each record has a number of fields that allow you to describe more about your data. With your FileManager, navigate to the <em>kunteksto/example_data</em> subdirectory and open the <em>Demo_info.pdf</em> file. This file simulates what often purports to be a data dictionary that you might receive with a dataset. You will use this to improve the computable semantics of your data.</li>
+<li>Each record has a number of fields that allow you to describe more about your data.</li>
 <li>Though some fields are pre-filled, it is only a guess and may not be accurate.</li>
 <li>It is up to you to be as accurate as possible in describing your data to improve quality and usability.</li>
 </ul>
@@ -293,7 +297,7 @@ The configuration file is covered in <a class="reference internal" href="configu
 <li><em>header</em> is the column names from the data file. <strong>Do Not Edit</strong>.</li>
 </ul>
 </div>
-<p>Edit these columns:</p>
+<p>Edit these columns (see <a class="reference internal" href="#semantics"><span class="std std-ref">Adding Semantics</span></a>) :</p>
 <blockquote>
 <div><ul class="simple">
 <li><em>label</em> is a variation of the header text and should be edited as needed to provide a meaningful name for the column.</li>
@@ -326,7 +330,11 @@ The configuration file is covered in <a class="reference internal" href="configu
 </ul>
 </div>
 <div class="section" id="adding-semantics">
-<h3>Adding Semantics<a class="headerlink" href="#adding-semantics" title="Permalink to this headline">¶</a></h3>
+<span id="semantics"></span><h3>Adding Semantics<a class="headerlink" href="#adding-semantics" title="Permalink to this headline">¶</a></h3>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If not already open; with your FileManager, navigate to the <em>kunteksto/example_data</em> subdirectory and open the <em>Demo_info.pdf</em> file. This file simulates what often purports to be a data dictionary that you might receive with a dataset. You will use this to improve the computable semantics of your data.</p>
+</div>
 <p>Editing the fields in this database will improve the semantics in your model that describes the data. This allows your data consumers to make better decisions about what the data means. Kunteksto produces an executable model that can be used in various validation and knowledge discovery scenarios.</p>
 <p>In the <strong>model</strong> table you should change the fields as you wish to match your organization. The field <em>definition_url</em> is where we point to the overarching definition about this datamodel. This URL will be used as the <em>object</em> portion of a RDF triple where the <em>subject</em> is the unique datamodel ID (dm-{uuid}) and the <em>predicate</em> is <strong>rdfs:isDefinedBy</strong>. We see in our <em>Demo_info.pdf</em> file that it is declared to be found at <a class="reference external" href="https://www.datainsights.tech/Demo_info.pdf">https://www.datainsights.tech/Demo_info.pdf</a> so this is our URL for this field.</p>
 <p>In the <strong>record</strong> table, the <em>definition_url</em> and <em>pred_obj_list</em> are where we add semantics in RDF format. The <em>definition_url</em> is formatted the same as for the <em>definition_url</em> column in the model table.</p>
@@ -464,7 +472,7 @@ Some references to get you started:</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, Data Insights, Inc..
-      Last updated on 2017-08-14 03:54.
+      Last updated on 2017-08-14 04:04.
 
     </p>
   </div> 
