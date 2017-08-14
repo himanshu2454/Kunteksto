@@ -181,8 +181,9 @@ Edit these columns (see :ref:`semantics`) :
     
     - *pred_obj_list* optionally enter any additional predicate object pairs to be used to define this resource. Enter them one per line with the predicate and object separated by a space character. 
 
-    .. warning::
-        You may use namespace abbreviations **ONLY** if they are in the list below or have been defined in the [NAMESPACES] section of the configuration file. To do otherwise will generate an invalid model and be pointless.
+        .. warning::
+            You may use namespace abbreviations **ONLY** if they are in the list below or have been defined in the [NAMESPACES] section of the configuration file. To do otherwise will generate an invalid model and be pointless.
+        
         
     - *def_txt_value* for **string** columns enter the default value for a string datatype column, if there is one.
     

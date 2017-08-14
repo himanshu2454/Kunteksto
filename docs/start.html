@@ -299,29 +299,43 @@ The configuration file is covered in <a class="reference internal" href="configu
 </div>
 <p>Edit these columns (see <a class="reference internal" href="#semantics"><span class="std std-ref">Adding Semantics</span></a>) :</p>
 <blockquote>
-<div><ul class="simple">
-<li><em>label</em> is a variation of the header text and should be edited as needed to provide a meaningful name for the column.</li>
-<li><em>datatype</em> the analyzer attempts to guess the correct datatype for the column. You must enter the correct type; string, integer, decimal or date.</li>
-<li><em>min_len</em> for <strong>string</strong> columns enter the minimum length restriction if there is one.</li>
-<li><em>max_len</em> for <strong>string</strong> columns enter the maximum length restriction if there is one.</li>
-<li><em>choices</em> for <strong>string</strong> columns you may enter a set of choices to restrict the valid values. Separate each choice with a pipe &#8216;|&#8217; character.</li>
-<li><em>regex</em> for <strong>string</strong> columns you may enter a regular expression (<a class="reference external" href="http://www.xmlschemareference.com/regularExpression.html">XML Schema syntax</a>) to constrain the valid string values.</li>
-<li><em>min_val</em> enter the minimum value restriction for <strong>integer or decimal</strong> columns.</li>
-<li><em>max_val</em> enter the maximum value restriction for <strong>integer or decimal</strong> columns.</li>
-<li><em>vals_inclusive</em> for <strong>integer or decimal</strong> columns, are the minimum and maximum values inclusive in the valid values range. Enter a &#8216;1&#8217; for yes or a &#8216;0&#8217; for no.</li>
-<li><em>definition_url</em> enter a URL (or at least a URI) to a vocabulary or ontology or a webpage that describes or defines the meaning of the data in this column.</li>
-<li><em>pred_obj_list</em> optionally enter any additional predicate object pairs to be used to define this resource. Enter them one per line with the predicate and object separated by a space character.</li>
+<div><ul>
+<li><p class="first"><em>label</em> is a variation of the header text and should be edited as needed to provide a meaningful name for the column.</p>
+</li>
+<li><p class="first"><em>datatype</em> the analyzer attempts to guess the correct datatype for the column. You must enter the correct type; string, integer, decimal or date.</p>
+</li>
+<li><p class="first"><em>min_len</em> for <strong>string</strong> columns enter the minimum length restriction if there is one.</p>
+</li>
+<li><p class="first"><em>max_len</em> for <strong>string</strong> columns enter the maximum length restriction if there is one.</p>
+</li>
+<li><p class="first"><em>choices</em> for <strong>string</strong> columns you may enter a set of choices to restrict the valid values. Separate each choice with a pipe &#8216;|&#8217; character.</p>
+</li>
+<li><p class="first"><em>regex</em> for <strong>string</strong> columns you may enter a regular expression (<a class="reference external" href="http://www.xmlschemareference.com/regularExpression.html">XML Schema syntax</a>) to constrain the valid string values.</p>
+</li>
+<li><p class="first"><em>min_val</em> enter the minimum value restriction for <strong>integer or decimal</strong> columns.</p>
+</li>
+<li><p class="first"><em>max_val</em> enter the maximum value restriction for <strong>integer or decimal</strong> columns.</p>
+</li>
+<li><p class="first"><em>vals_inclusive</em> for <strong>integer or decimal</strong> columns, are the minimum and maximum values inclusive in the valid values range. Enter a &#8216;1&#8217; for yes or a &#8216;0&#8217; for no.</p>
+</li>
+<li><p class="first"><em>definition_url</em> enter a URL (or at least a URI) to a vocabulary or ontology or a webpage that describes or defines the meaning of the data in this column.</p>
+</li>
+<li><p class="first"><em>pred_obj_list</em> optionally enter any additional predicate object pairs to be used to define this resource. Enter them one per line with the predicate and object separated by a space character.</p>
+<blockquote>
+<div><div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">You may use namespace abbreviations <strong>ONLY</strong> if they are in the list below or have been defined in the [NAMESPACES] section of the configuration file. To do otherwise will generate an invalid model and be pointless.</p>
+</div>
+</div></blockquote>
+</li>
+<li><p class="first"><em>def_txt_value</em> for <strong>string</strong> columns enter the default value for a string datatype column, if there is one.</p>
+</li>
+<li><p class="first"><em>def_num_value</em> enter the default value for a decimal or integer datatype column, if there is one.</p>
+</li>
+<li><p class="first"><em>units</em> <strong>mandatory</strong> units value for all <strong>decimal or integer</strong> datatype columns. For decimal columns this should come from a standard units vocabulary such as <a class="reference external" href="https://github.com/HajoRijgersberg/OM">Ontology of units of Measure</a> or <a class="reference external" href="http://unitsofmeasure.org">The Unified Code for Units of Measure</a>. For integer columns where the values are <em>counts</em> you should enter the name of the item(s) being counted. For example, if this number represents the number of widgets created today. Then enter &#8220;Widgets* here.</p>
+</li>
 </ul>
 </div></blockquote>
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p>You may use namespace abbreviations <strong>ONLY</strong> if they are in the list below or have been defined in the [NAMESPACES] section of the configuration file. To do otherwise will generate an invalid model and be pointless.</p>
-<ul class="last simple">
-<li><em>def_txt_value</em> for <strong>string</strong> columns enter the default value for a string datatype column, if there is one.</li>
-<li><em>def_num_value</em> enter the default value for a decimal or integer datatype column, if there is one.</li>
-<li><em>units</em> <strong>mandatory</strong> units value for all <strong>decimal or integer</strong> datatype columns. For decimal columns this should come from a standard units vocabulary such as <a class="reference external" href="https://github.com/HajoRijgersberg/OM">Ontology of units of Measure</a> or <a class="reference external" href="http://unitsofmeasure.org">The Unified Code for Units of Measure</a>. For integer columns where the values are <em>counts</em> you should enter the name of the item(s) being counted. For example, if this number represents the number of widgets created today. Then enter &#8220;Widgets* here.</li>
-</ul>
-</div>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <ul class="last simple">
@@ -472,7 +486,7 @@ Some references to get you started:</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, Data Insights, Inc..
-      Last updated on 2017-08-14 04:04.
+      Last updated on 2017-08-14 04:07.
 
     </p>
   </div> 
