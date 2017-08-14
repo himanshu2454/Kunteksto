@@ -29,12 +29,13 @@ Cross-Platform on Anaconda
 
 This is the **preferred environment** for a tool like Kunteksto because it integrates easily with systems for domain experts, data engineers and data scientists.
 
-- Install Anaconda Python 3.6+ for your platform according to the instructions `here <https://docs.continuum.io/anaconda/install/>`_ 
-- Install SQLiteBrowser as directed by the links above. 
+- `Download and install <https://www.continuum.io/downloads>`_ Anaconda Python 3.6+ for your platform.
+- More detailed Anaconda instructions are `here <https://docs.continuum.io/anaconda/install/>`_  if you prefer.
+- Install `SQLiteBrowser <http://sqlitebrowser.org/>`_ or other tool for editing SQLite databases. 
 - If you are using Linux or Mac OSX, follow the `instructions for your platform <http://lxml.de/installation.html>`_ for **lxml** installation. 
 
 
-- Open a terminal window and create a conda environment. On Windows it is best to open an *Anaconda Terminal* from the Anaconda menu: 
+- Open a terminal window and create a conda environment. On Windows it is best to open an *Anaconda Prompt* terminal from the Anaconda menu: 
 
 .. code-block:: sh
 
@@ -46,8 +47,18 @@ This is the **preferred environment** for a tool like Kunteksto because it integ
     
     cd kunteksto
 
+.. _activate: Activate
 
-- Activate the environment according to the instructions shown by Anaconda.
+
+- Activate the environment according to the instructions shown by Anaconda in the terminal window.
+
+**Windows**
+
+.. code-block:: sh
+
+    activate <path/to/directory> 
+
+**or Linux/MacOSX**
 
 .. code-block:: sh
 

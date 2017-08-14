@@ -41,7 +41,31 @@ Tutorial Steps
 
 - Navigate to the directory where you installed Kunteksto.
 
-- **With the virtual environment active.** 
+- With the virtual environment active.
+
+.. caution::
+
+    If you closed and reopened a new window then you need to activate the environment again. 
+
+    **Windows**
+
+    .. code-block:: sh
+
+        activate <path/to/directory> 
+
+    **or Linux/MacOSX**
+
+    .. code-block:: sh
+
+        source activate <path/to/directory> 
+
+
+
+Start Kunteksto:
+
+.. code-block:: sh
+
+    kunteksto
 
 .. note::
 
@@ -52,23 +76,23 @@ Tutorial Steps
         kunteksto --help
 
 
-Start Kunteksto:
-
-.. code-block:: sh
-
-    kunteksto
-
 - At the **Enter a valid mode:** prompt, type *all*
 
 - At the **Enter a valid CSV file:** prompt, type *example_data/Demo.csv* 
 
 - Kunteksto will analyze the input file and create a results database of this CSV file named *output/Demo/Demo.db*  
 
-- The output/Demo/Demo.db file should open in the SQLiteBrowser. If it does not automatically open then you will need to manually open the file with the tool you installed to open SQLite Databases. In the configuration section of these docs you will learn how to fix this issue. 
+- The *kunteksto/output/Demo/Demo.db* file should open in the SQLiteBrowser. 
 
-- Once the database is open use your filemanager to navigate to the *example_data* subdirectory and open the *Demo_info.pdf* file. This file simulates what often purports to be a data dictionary that you might receive with a dataset. You will use this to improve the computable semantics of your data. 
+.. caution::
 
-- In the SQLiteBrowser, select the *Browse Data* tab and the *model* table. Edit the title, description, copyright, author and contributor fields as desired. These fields describe the overall metadata for your data model. Basically it describes the where, when and why the data is being modeled. When you click on a field it places the contents in the larger box on the right side for easier editing. You will notice that some of this information can be obtained from the PDF. Other bits you have to just wing it based on your knowledge of the dataset. In this demo case we are going to say that we have a local ontology that describes the columns. You *MUST* use the *Apply button* to save changes when editing fields.
+    On Windows the SQLite DB Browser may not open. You will receive either a FileNotFound Error or a Permission Error.
+
+    If it does not automatically open then you will need to manually open the *kunteksto/output/Demo/Demo.db* file with the tool you installed to open SQLite Databases. For example, open SQLite DB Browser from the Windows menu and then use File->Open to open *kunteksto/output/Demo/Demo.db*. 
+
+    Later in the :ref:`config` section of these docs you will learn how to fix this issue. For now, continue with the tutorial.
+
+- In the SQLiteBrowser, select the *Browse Data* tab and the *model* table. 
 
 - This image depicts the view of the model table and below that are descriptions of each of the fields to be edited; or not. 
 
@@ -98,12 +122,22 @@ Start Kunteksto:
 	- *entryid* System Generated, **Do Not Edit**
 	- *dataid* System Generated, **Do Not Edit**  
 
+Edit the title, description, copyright, author and contributor fields as desired. These fields describe the overall metadata for your data model. This metadata describes the where, when and why the data is being modeled. Insure that you do not edit the fields in the warning box.
+
+You will notice that some of this information can be obtained from the PDF. For other items you have to use your knowledge of the dataset as a domain expert. In this *demo* we are going to say that we have a local ontology that describes the columns and that information is provided below in the *Adding Semantics* section. 
+
+.. warning::
+
+    You *MUST* use the *Apply button* on the bottom right, to save changes when editing fields. Then use the *Save Changes* button, on the top toolbar, before exiting the DB Browser.
+
 
 - Select the record table. Note that there is a record for each column of data in Demo.csv. If there is only one record then the likely problem is that an incorrect field delimiter was chosen or the default was changed in the config file.  
 
-   - each record has a number of fields that allow you to describe more about your data.
-   - though some fields are pre-filled, it is only a guess and may not be accurate.
-   - it is up to you to be as accurate as possible in describing your data to improve usability
+   - Each record has a number of fields that allow you to describe more about your data. With your FileManager, navigate to the *kunteksto/example_data* subdirectory and open the *Demo_info.pdf* file. This file simulates what often purports to be a data dictionary that you might receive with a dataset. You will use this to improve the computable semantics of your data. 
+
+   - Though some fields are pre-filled, it is only a guess and may not be accurate.
+   
+   - It is up to you to be as accurate as possible in describing your data to improve quality and usability.
 
 .. image:: _images/record_table.png
     :width: 800px
@@ -118,22 +152,38 @@ Start Kunteksto:
 
     - *header* is the column names from the data file. **Do Not Edit**.
 
-Edit these:
+Edit these columns:
 
     - *label* is a variation of the header text and should be edited as needed to provide a meaningful name for the column.
+    
     - *datatype* the analyzer attempts to guess the correct datatype for the column. You must enter the correct type; string, integer, decimal or date. 
-    - *min_len* enter the minimum length restriction if there is one.
-    - *max_len* enter the maximum length restriction if there is one.
-    - *choices* for string datatypes you may enter a set of choices to restrict the valid values. Separate each choice with a pipe '|' character.
-    - *regex* for string datatypes you may enter a regular expression (XML Schema syntax) to constrain the valid string values.
-    - *min_val* enter the minimum value restriction for integer or decimal columns.
-    - *max_val* enter the maximum value restriction for integer or decimal columns.	
-    - *vals_inclusive* are the minimum and maximum values inclusive in the valid values range. Enter a '1' for yes or a '0' for no.
+    
+    - *min_len* for **string** columns enter the minimum length restriction if there is one.
+    
+    - *max_len* for **string** columns enter the maximum length restriction if there is one.
+    
+    - *choices* for **string** columns you may enter a set of choices to restrict the valid values. Separate each choice with a pipe '|' character.
+    
+    - *regex* for **string** columns you may enter a regular expression (`XML Schema syntax <http://www.xmlschemareference.com/regularExpression.html>`_) to constrain the valid string values.
+    
+    - *min_val* enter the minimum value restriction for **integer or decimal** columns.
+    
+    - *max_val* enter the maximum value restriction for **integer or decimal** columns.	
+    
+    - *vals_inclusive* for **integer or decimal** columns, are the minimum and maximum values inclusive in the valid values range. Enter a '1' for yes or a '0' for no.
+    
     - *definition_url* enter a URL (or at least a URI) to a vocabulary or ontology or a webpage that describes or defines the meaning of the data in this column.
-    - *pred_obj_list* enter any additional predicate object pairs to be used to define this resource. Enter them one per line with the predicate and object separated by a space character. You may use namespace abbreviations if they are in the list below or have been defined in the [NAMESPACES] section of the configuration file. 
-    - *def_txt_value* enter the default value for a string datatype column, if there is one.
+    
+    - *pred_obj_list* optionally enter any additional predicate object pairs to be used to define this resource. Enter them one per line with the predicate and object separated by a space character. 
+
+.. warning::
+    You may use namespace abbreviations **ONLY** if they are in the list below or have been defined in the [NAMESPACES] section of the configuration file. To do otherwise will generate an invalid model and be pointless.
+    
+    - *def_txt_value* for **string** columns enter the default value for a string datatype column, if there is one.
+    
     - *def_num_value* enter the default value for a decimal or integer datatype column, if there is one.
-    - *units* enter the units value for a decimal or integer datatype column. This can be an abbreviation but should come from a standard units vocabulary such as `Ontology of units of Measure <https://github.com/HajoRijgersberg/OM>`_ or `The Unified Code for Units of Measure <http://unitsofmeasure.org>`_. For integer columns where the values are *counts* you should enter the name of the item(s) being counted. This could be the same as the label or column header if desired.
+    
+    - *units* **mandatory** units value for all **decimal or integer** datatype columns. For decimal columns this should come from a standard units vocabulary such as `Ontology of units of Measure <https://github.com/HajoRijgersberg/OM>`_ or `The Unified Code for Units of Measure <http://unitsofmeasure.org>`_. For integer columns where the values are *counts* you should enter the name of the item(s) being counted. For example, if this number represents the number of widgets created today. Then enter "Widgets* here. 
 
 .. warning::
 
@@ -143,7 +193,7 @@ Edit these:
 Adding Semantics
 ----------------
 
-Editing the fields in this database will improve the semantics in your model that describes the data. This allows your data consumers to make better decisions about what the data means. Kunteksto produces an executable model that can be used in various validation and knowledge discovery scenarios for your data.
+Editing the fields in this database will improve the semantics in your model that describes the data. This allows your data consumers to make better decisions about what the data means. Kunteksto produces an executable model that can be used in various validation and knowledge discovery scenarios.
 
 In the **model** table you should change the fields as you wish to match your organization. The field *definition_url* is where we point to the overarching definition about this datamodel. This URL will be used as the *object* portion of a RDF triple where the *subject* is the unique datamodel ID (dm-{uuid}) and the *predicate* is **rdfs:isDefinedBy**. We see in our *Demo_info.pdf* file that it is declared to be found at https://www.datainsights.tech/Demo_info.pdf so this is our URL for this field.  
 
@@ -187,9 +237,9 @@ Again, the information in the table in the PDF can help you determine additional
 
 - Once you have completed the data description step, **saved any changes to the configuration file** and **saved your changes** using the *Write Changes* button in the top toolbar, close the DB Browser. You will then see that model generation happens followed by data generation. 
 
-.. note::
+.. warning::
 
-    If for some reason you had to manually open the database with sqlitebrowser or another tool, then the processing will not continue automatically. Use this command to restart the model and data generation process:
+    If for some reason you had to manually open the database with sqlitebrowser or another tool, then the processing will not continue automatically. Use the command below to restart the model and data generation process:
 
     .. code-block:: sh
 

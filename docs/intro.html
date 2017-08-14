@@ -209,10 +209,11 @@
 <h3>Cross-Platform on Anaconda<a class="headerlink" href="#cross-platform-on-anaconda" title="Permalink to this headline">¶</a></h3>
 <p>This is the <strong>preferred environment</strong> for a tool like Kunteksto because it integrates easily with systems for domain experts, data engineers and data scientists.</p>
 <ul class="simple">
-<li>Install Anaconda Python 3.6+ for your platform according to the instructions <a class="reference external" href="https://docs.continuum.io/anaconda/install/">here</a></li>
-<li>Install SQLiteBrowser as directed by the links above.</li>
+<li><a class="reference external" href="https://www.continuum.io/downloads">Download and install</a> Anaconda Python 3.6+ for your platform.</li>
+<li>More detailed Anaconda instructions are <a class="reference external" href="https://docs.continuum.io/anaconda/install/">here</a>  if you prefer.</li>
+<li>Install <a class="reference external" href="http://sqlitebrowser.org/">SQLiteBrowser</a> or other tool for editing SQLite databases.</li>
 <li>If you are using Linux or Mac OSX, follow the <a class="reference external" href="http://lxml.de/installation.html">instructions for your platform</a> for <strong>lxml</strong> installation.</li>
-<li>Open a terminal window and create a conda environment. On Windows it is best to open an <em>Anaconda Terminal</em> from the Anaconda menu:</li>
+<li>Open a terminal window and create a conda environment. On Windows it is best to open an <em>Anaconda Prompt</em> terminal from the Anaconda menu:</li>
 </ul>
 <div class="highlight-sh"><div class="highlight"><pre><span></span>conda create -p kunteksto <span class="nv">python</span><span class="o">=</span><span class="m">3</span> pycurl ujson
 </pre></div>
@@ -224,8 +225,13 @@
 </pre></div>
 </div>
 <ul class="simple">
-<li>Activate the environment according to the instructions shown by Anaconda.</li>
+<li>Activate the environment according to the instructions shown by Anaconda in the terminal window.</li>
 </ul>
+<p><strong>Windows</strong></p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>activate &lt;path/to/directory&gt;
+</pre></div>
+</div>
+<p><strong>or Linux/MacOSX</strong></p>
 <div class="highlight-sh"><div class="highlight"><pre><span></span><span class="nb">source</span> activate &lt;path/to/directory&gt;
 </pre></div>
 </div>
@@ -377,7 +383,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, Data Insights, Inc..
-      Last updated on 2017-08-06 16:56.
+      Last updated on 2017-08-13 13:49.
 
     </p>
   </div> 

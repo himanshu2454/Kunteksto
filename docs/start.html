@@ -204,12 +204,17 @@ The configuration file is covered in <a class="reference internal" href="configu
 <span id="tutorsteps"></span><h2>Tutorial Steps<a class="headerlink" href="#tutorial-steps" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>Navigate to the directory where you installed Kunteksto.</li>
-<li><strong>With the virtual environment active.</strong></li>
+<li>With the virtual environment active.</li>
 </ul>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p>You can see all of the Kunteksto commandline options using the &#8211;help flag.</p>
-<div class="last highlight-sh"><div class="highlight"><pre><span></span>kunteksto --help
+<div class="admonition caution">
+<p class="first admonition-title">Caution</p>
+<p>If you closed and reopened a new window then you need to activate the environment again.</p>
+<p><strong>Windows</strong></p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>activate &lt;path/to/directory&gt;
+</pre></div>
+</div>
+<p><strong>or Linux/MacOSX</strong></p>
+<div class="last highlight-sh"><div class="highlight"><pre><span></span><span class="nb">source</span> activate &lt;path/to/directory&gt;
 </pre></div>
 </div>
 </div>
@@ -217,13 +222,27 @@ The configuration file is covered in <a class="reference internal" href="configu
 <div class="highlight-sh"><div class="highlight"><pre><span></span>kunteksto
 </pre></div>
 </div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>You can see all of the Kunteksto commandline options using the &#8211;help flag.</p>
+<div class="last highlight-sh"><div class="highlight"><pre><span></span>kunteksto --help
+</pre></div>
+</div>
+</div>
 <ul class="simple">
 <li>At the <strong>Enter a valid mode:</strong> prompt, type <em>all</em></li>
 <li>At the <strong>Enter a valid CSV file:</strong> prompt, type <em>example_data/Demo.csv</em></li>
 <li>Kunteksto will analyze the input file and create a results database of this CSV file named <em>output/Demo/Demo.db</em></li>
-<li>The output/Demo/Demo.db file should open in the SQLiteBrowser. If it does not automatically open then you will need to manually open the file with the tool you installed to open SQLite Databases. In the configuration section of these docs you will learn how to fix this issue.</li>
-<li>Once the database is open use your filemanager to navigate to the <em>example_data</em> subdirectory and open the <em>Demo_info.pdf</em> file. This file simulates what often purports to be a data dictionary that you might receive with a dataset. You will use this to improve the computable semantics of your data.</li>
-<li>In the SQLiteBrowser, select the <em>Browse Data</em> tab and the <em>model</em> table. Edit the title, description, copyright, author and contributor fields as desired. These fields describe the overall metadata for your data model. Basically it describes the where, when and why the data is being modeled. When you click on a field it places the contents in the larger box on the right side for easier editing. You will notice that some of this information can be obtained from the PDF. Other bits you have to just wing it based on your knowledge of the dataset. In this demo case we are going to say that we have a local ontology that describes the columns. You <em>MUST</em> use the <em>Apply button</em> to save changes when editing fields.</li>
+<li>The <em>kunteksto/output/Demo/Demo.db</em> file should open in the SQLiteBrowser.</li>
+</ul>
+<div class="admonition caution">
+<p class="first admonition-title">Caution</p>
+<p>On Windows the SQLite DB Browser may not open. You will receive either a FileNotFound Error or a Permission Error.</p>
+<p>If it does not automatically open then you will need to manually open the <em>kunteksto/output/Demo/Demo.db</em> file with the tool you installed to open SQLite Databases. For example, open SQLite DB Browser from the Windows menu and then use File-&gt;Open to open <em>kunteksto/output/Demo/Demo.db</em>.</p>
+<p class="last">Later in the <a class="reference internal" href="configure.html#config"><span class="std std-ref">Config File Details</span></a> section of these docs you will learn how to fix this issue. For now, continue with the tutorial.</p>
+</div>
+<ul class="simple">
+<li>In the SQLiteBrowser, select the <em>Browse Data</em> tab and the <em>model</em> table.</li>
 <li>This image depicts the view of the model table and below that are descriptions of each of the fields to be edited; or not.</li>
 </ul>
 <div class="admonition note">
@@ -249,13 +268,19 @@ The configuration file is covered in <a class="reference internal" href="configu
 <li><em>dataid</em> System Generated, <strong>Do Not Edit</strong></li>
 </ul>
 </div>
+<p>Edit the title, description, copyright, author and contributor fields as desired. These fields describe the overall metadata for your data model. This metadata describes the where, when and why the data is being modeled. Insure that you do not edit the fields in the warning box.</p>
+<p>You will notice that some of this information can be obtained from the PDF. For other items you have to use your knowledge of the dataset as a domain expert. In this <em>demo</em> we are going to say that we have a local ontology that describes the columns and that information is provided below in the <em>Adding Semantics</em> section.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">You <em>MUST</em> use the <em>Apply button</em> on the bottom right, to save changes when editing fields. Then use the <em>Save Changes</em> button, on the top toolbar, before exiting the DB Browser.</p>
+</div>
 <ul>
 <li><p class="first">Select the record table. Note that there is a record for each column of data in Demo.csv. If there is only one record then the likely problem is that an incorrect field delimiter was chosen or the default was changed in the config file.</p>
 <blockquote>
 <div><ul class="simple">
-<li>each record has a number of fields that allow you to describe more about your data.</li>
-<li>though some fields are pre-filled, it is only a guess and may not be accurate.</li>
-<li>it is up to you to be as accurate as possible in describing your data to improve usability</li>
+<li>Each record has a number of fields that allow you to describe more about your data. With your FileManager, navigate to the <em>kunteksto/example_data</em> subdirectory and open the <em>Demo_info.pdf</em> file. This file simulates what often purports to be a data dictionary that you might receive with a dataset. You will use this to improve the computable semantics of your data.</li>
+<li>Though some fields are pre-filled, it is only a guess and may not be accurate.</li>
+<li>It is up to you to be as accurate as possible in describing your data to improve quality and usability.</li>
 </ul>
 </div></blockquote>
 </li>
@@ -268,25 +293,31 @@ The configuration file is covered in <a class="reference internal" href="configu
 <li><em>header</em> is the column names from the data file. <strong>Do Not Edit</strong>.</li>
 </ul>
 </div>
-<p>Edit these:</p>
+<p>Edit these columns:</p>
 <blockquote>
 <div><ul class="simple">
 <li><em>label</em> is a variation of the header text and should be edited as needed to provide a meaningful name for the column.</li>
 <li><em>datatype</em> the analyzer attempts to guess the correct datatype for the column. You must enter the correct type; string, integer, decimal or date.</li>
-<li><em>min_len</em> enter the minimum length restriction if there is one.</li>
-<li><em>max_len</em> enter the maximum length restriction if there is one.</li>
-<li><em>choices</em> for string datatypes you may enter a set of choices to restrict the valid values. Separate each choice with a pipe &#8216;|&#8217; character.</li>
-<li><em>regex</em> for string datatypes you may enter a regular expression (XML Schema syntax) to constrain the valid string values.</li>
-<li><em>min_val</em> enter the minimum value restriction for integer or decimal columns.</li>
-<li><em>max_val</em> enter the maximum value restriction for integer or decimal columns.</li>
-<li><em>vals_inclusive</em> are the minimum and maximum values inclusive in the valid values range. Enter a &#8216;1&#8217; for yes or a &#8216;0&#8217; for no.</li>
+<li><em>min_len</em> for <strong>string</strong> columns enter the minimum length restriction if there is one.</li>
+<li><em>max_len</em> for <strong>string</strong> columns enter the maximum length restriction if there is one.</li>
+<li><em>choices</em> for <strong>string</strong> columns you may enter a set of choices to restrict the valid values. Separate each choice with a pipe &#8216;|&#8217; character.</li>
+<li><em>regex</em> for <strong>string</strong> columns you may enter a regular expression (<a class="reference external" href="http://www.xmlschemareference.com/regularExpression.html">XML Schema syntax</a>) to constrain the valid string values.</li>
+<li><em>min_val</em> enter the minimum value restriction for <strong>integer or decimal</strong> columns.</li>
+<li><em>max_val</em> enter the maximum value restriction for <strong>integer or decimal</strong> columns.</li>
+<li><em>vals_inclusive</em> for <strong>integer or decimal</strong> columns, are the minimum and maximum values inclusive in the valid values range. Enter a &#8216;1&#8217; for yes or a &#8216;0&#8217; for no.</li>
 <li><em>definition_url</em> enter a URL (or at least a URI) to a vocabulary or ontology or a webpage that describes or defines the meaning of the data in this column.</li>
-<li><em>pred_obj_list</em> enter any additional predicate object pairs to be used to define this resource. Enter them one per line with the predicate and object separated by a space character. You may use namespace abbreviations if they are in the list below or have been defined in the [NAMESPACES] section of the configuration file.</li>
-<li><em>def_txt_value</em> enter the default value for a string datatype column, if there is one.</li>
-<li><em>def_num_value</em> enter the default value for a decimal or integer datatype column, if there is one.</li>
-<li><em>units</em> enter the units value for a decimal or integer datatype column. This can be an abbreviation but should come from a standard units vocabulary such as <a class="reference external" href="https://github.com/HajoRijgersberg/OM">Ontology of units of Measure</a> or <a class="reference external" href="http://unitsofmeasure.org">The Unified Code for Units of Measure</a>. For integer columns where the values are <em>counts</em> you should enter the name of the item(s) being counted. This could be the same as the label or column header if desired.</li>
+<li><em>pred_obj_list</em> optionally enter any additional predicate object pairs to be used to define this resource. Enter them one per line with the predicate and object separated by a space character.</li>
 </ul>
 </div></blockquote>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p>You may use namespace abbreviations <strong>ONLY</strong> if they are in the list below or have been defined in the [NAMESPACES] section of the configuration file. To do otherwise will generate an invalid model and be pointless.</p>
+<ul class="last simple">
+<li><em>def_txt_value</em> for <strong>string</strong> columns enter the default value for a string datatype column, if there is one.</li>
+<li><em>def_num_value</em> enter the default value for a decimal or integer datatype column, if there is one.</li>
+<li><em>units</em> <strong>mandatory</strong> units value for all <strong>decimal or integer</strong> datatype columns. For decimal columns this should come from a standard units vocabulary such as <a class="reference external" href="https://github.com/HajoRijgersberg/OM">Ontology of units of Measure</a> or <a class="reference external" href="http://unitsofmeasure.org">The Unified Code for Units of Measure</a>. For integer columns where the values are <em>counts</em> you should enter the name of the item(s) being counted. For example, if this number represents the number of widgets created today. Then enter &#8220;Widgets* here.</li>
+</ul>
+</div>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <ul class="last simple">
@@ -296,7 +327,7 @@ The configuration file is covered in <a class="reference internal" href="configu
 </div>
 <div class="section" id="adding-semantics">
 <h3>Adding Semantics<a class="headerlink" href="#adding-semantics" title="Permalink to this headline">¶</a></h3>
-<p>Editing the fields in this database will improve the semantics in your model that describes the data. This allows your data consumers to make better decisions about what the data means. Kunteksto produces an executable model that can be used in various validation and knowledge discovery scenarios for your data.</p>
+<p>Editing the fields in this database will improve the semantics in your model that describes the data. This allows your data consumers to make better decisions about what the data means. Kunteksto produces an executable model that can be used in various validation and knowledge discovery scenarios.</p>
 <p>In the <strong>model</strong> table you should change the fields as you wish to match your organization. The field <em>definition_url</em> is where we point to the overarching definition about this datamodel. This URL will be used as the <em>object</em> portion of a RDF triple where the <em>subject</em> is the unique datamodel ID (dm-{uuid}) and the <em>predicate</em> is <strong>rdfs:isDefinedBy</strong>. We see in our <em>Demo_info.pdf</em> file that it is declared to be found at <a class="reference external" href="https://www.datainsights.tech/Demo_info.pdf">https://www.datainsights.tech/Demo_info.pdf</a> so this is our URL for this field.</p>
 <p>In the <strong>record</strong> table, the <em>definition_url</em> and <em>pred_obj_list</em> are where we add semantics in RDF format. The <em>definition_url</em> is formatted the same as for the <em>definition_url</em> column in the model table.</p>
 <p>The <em>pred_obj_list</em> column is slightly different in that you need to supply both the predicate and the object.</p>
@@ -334,9 +365,9 @@ dul:isSettingFor https://www.datainsights.tech/thingies/PurpleKnob
 <ul class="simple">
 <li>Once you have completed the data description step, <strong>saved any changes to the configuration file</strong> and <strong>saved your changes</strong> using the <em>Write Changes</em> button in the top toolbar, close the DB Browser. You will then see that model generation happens followed by data generation.</li>
 </ul>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p>If for some reason you had to manually open the database with sqlitebrowser or another tool, then the processing will not continue automatically. Use this command to restart the model and data generation process:</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p>If for some reason you had to manually open the database with sqlitebrowser or another tool, then the processing will not continue automatically. Use the command below to restart the model and data generation process:</p>
 <div class="highlight-sh"><div class="highlight"><pre><span></span>kunteksto -i example_data/Demo.csv -m all -db output/Demo/Demo.db
 </pre></div>
 </div>
@@ -433,7 +464,7 @@ Some references to get you started:</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, Data Insights, Inc..
-      Last updated on 2017-08-06 16:56.
+      Last updated on 2017-08-14 03:54.
 
     </p>
   </div> 
