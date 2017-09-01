@@ -8,9 +8,10 @@ import click
 import configparser
 import sqlite3
 
-from .analyze  import analyze
-from .generate  import make_model, make_data
-from .catalogmgr import  get_catalog
+from analyze  import analyze
+#from generate  import make_model, make_data
+from catalogmgr import  get_catalog
+from modeledit import edit_model
 
 @click.command()
 @click.option('--mode', '-m', type=click.Choice(['all', 'editdb', 'generate']), help="See the documentation. If you don't know then use: all", prompt="Enter a valid mode")
@@ -22,9 +23,11 @@ from .catalogmgr import  get_catalog
 def main(mode, infile, outdir, delim, analyzelevel, dbfile):
     """Kunteksto (ˈkänˌteksto) adds validation and semantics to your data."""
 
-    # Setup config info
+    # Setup config info based on the kunteksto.py working directory
+    dirPath = os.path.dirname(os.path.realpath(__file__))    
+    
     config = configparser.ConfigParser()
-    config.read('kunteksto.conf')
+    config.read(dirPath + os.path.sep + 'kunteksto.conf')
             
     # override the delimiter and/or analyzelevel if provided
     if not delim:
@@ -55,6 +58,8 @@ def main(mode, infile, outdir, delim, analyzelevel, dbfile):
         get_catalog(outdir, prjname)
         if not dbfile:
             outDB = analyze(infile, delim, analyzelevel, outdir)
+            edit_model(outDB)
+            
             try:
                 dbresult = run([config['SQLITEBROWSER']['cmd'],  outDB])
                 if dbresult.returncode == 0:

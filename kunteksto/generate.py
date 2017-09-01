@@ -909,7 +909,7 @@ def xsd_rdf(xsdfile, outdir, dm_id, db_file):
         """
 
     rootdir = '.'
-    nsDict = {'xs': 'http://www.w3.org/2001/XMLSchema',
+    ns_dict = {'xs': 'http://www.w3.org/2001/XMLSchema',
               'xsi': 'http://www.w3.org/2001/XMLSchema-instance',
               'xsd': 'http://www.w3.org/2001/XMLSchema#',
               'dc': 'http://purl.org/dc/elements/1.1/',
@@ -925,13 +925,13 @@ def xsd_rdf(xsdfile, outdir, dm_id, db_file):
               's3m': 'https://www.s3model.com/ns/s3m/'}
 
     for abbrev in NSDEF.keys():
-        nsDict[abbrev] = NSDEF[abbrev]
+        ns_dict[abbrev] = NSDEF[abbrev]
 
     parser = etree.XMLParser(ns_clean=True, recover=True)
-    clsDef = etree.XPath("//xs:annotation/xs:appinfo/rdfs:Class", namespaces=nsDict)
-    shaclDef = etree.XPath("//xs:annotation/xs:appinfo/sh:property", namespaces=nsDict)
+    cls_def = etree.XPath("//xs:annotation/xs:appinfo/rdfs:Class", namespaces=ns_dict)
+    sh_def = etree.XPath("//xs:annotation/xs:appinfo/sh:property", namespaces=ns_dict)
 
-    md = etree.XPath("//rdf:RDF/rdfs:Class", namespaces=nsDict)
+    md = etree.XPath("//rdf:RDF/rdfs:Class", namespaces=ns_dict)
 
     rdf_file = os.open(outdir + '/dm-' + str(dm_id) + '.rdf', os.O_RDWR | os.O_CREAT)
 
@@ -940,8 +940,8 @@ def xsd_rdf(xsdfile, outdir, dm_id, db_file):
     tree = etree.parse(xsdfile, parser)
     root = tree.getroot()
 
-    rdf = clsDef(root)
-    shacl = shaclDef(root)
+    rdf = cls_def(root)
+    shacl = sh_def(root)
     
     for s in shacl:
         rdfstr += '    ' + etree.tostring(s).decode('utf-8') + '\n'

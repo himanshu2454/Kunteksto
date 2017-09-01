@@ -2,7 +2,7 @@
 The Future
 ==========
 
-**Kunteksto** is only a bridge between our current application-centric information management world and a data-centric world where data can be understood and used anywhere without ingestion costs. This is the foundation of *computable, semantic interoperability*.
+**Kunteksto** is only a bridge between the current application-centric information management world and a data-centric world where data can be understood and used anywhere without ingestion costs. This is the foundation of *computable, semantic interoperability*.
 
 What is computable semantic interoperability
 ============================================
