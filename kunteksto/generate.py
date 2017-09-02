@@ -123,15 +123,15 @@ def xdcount_rdf(data):
     rdfStr += padding.rjust(indent + 10) +'<sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>\n'
     
     if data[9]:
-        if data[7]:
-            rdfStr += padding.rjust(indent + 10) +'<sh:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">' + str(data[7]).strip() + '</sh:minInclusive>\n'
-        if data[8]:
-            rdfStr += padding.rjust(indent + 10) +'<sh:maxInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">' + str(data[8]).strip() + '</sh:maxInclusive>\n'    
+        if data[7] is not None and int(data[7]):
+            rdfStr += padding.rjust(indent + 10) +'<sh:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">' + str(int(data[7])).strip() + '</sh:minInclusive>\n'
+        if data[8] is not None and int(data[8]):
+            rdfStr += padding.rjust(indent + 10) +'<sh:maxInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">' + str(int(data[8])).strip() + '</sh:maxInclusive>\n'    
     else:
-        if data[7]:
-            rdfStr += padding.rjust(indent + 10) +'<sh:minExclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">' + str(data[7]).strip() + '</sh:minExclusive>\n'
-        if data[8]:
-            rdfStr += padding.rjust(indent + 10) +'<sh:maxExclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">' + str(data[8]).strip() + '</sh:maxExclusive>\n'
+        if data[7] is not None and int(data[7]):
+            rdfStr += padding.rjust(indent + 10) +'<sh:minExclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">' + str(int(data[7])).strip() + '</sh:minExclusive>\n'
+        if data[8] is not None and int(data[8]):
+            rdfStr += padding.rjust(indent + 10) +'<sh:maxExclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">' + str(int(data[8])).strip() + '</sh:maxExclusive>\n'
     
     rdfStr += padding.rjust(indent + 8) +'</rdf:Description>\n'
     rdfStr += padding.rjust(indent + 6) +'</sh:property>\n'
@@ -209,20 +209,26 @@ def xdcount(data):
             '<xs:element maxOccurs="1" minOccurs="1"  name="xdcount-value" type="xs:int"/>\n'
     if data[13] is not None and int(data[13]):
         xdstr += padding.rjust(indent + 8) + \
-            '<xs:element maxOccurs="1" minOccurs="1"  name="xdcount-value" type="xs:int" default="' + \
-            str(int(data[13])) + '"/>\n'
+            '<xs:element maxOccurs="1" minOccurs="1"  name="xdcount-value" type="xs:int" default="' + str(int(data[13])) + '"/>\n'
     else:
         xdstr += padding.rjust(indent + 8) + \
             '<xs:element maxOccurs="1" minOccurs="1"  name="xdcount-value">\n'
         xdstr += padding.rjust(indent + 10) + '<xs:simpleType>\n'
-        xdstr += padding.rjust(indent + 10) + \
-            '<xs:restriction base="xs:int">\n'
-        if data[7]:
-            xdstr += padding.rjust(indent + 12) + \
-                '<xs:minInclusive value="' + str(int(data[7])) + '"/>\n'
-        if data[8]:
-            xdstr += padding.rjust(indent + 12) + \
-                '<xs:maxInclusive value="' + str(int(data[8])) + '"/>\n'
+        xdstr += padding.rjust(indent + 10) + '<xs:restriction base="xs:int">\n'
+        if data[9]:            
+            if data[7] is not None and int(data[7]):
+                xdstr += padding.rjust(indent + 12) + \
+                    '<xs:minInclusive value="' + str(int(data[7])) + '"/>\n'
+            if data[8] is not None and int(data[8]):
+                xdstr += padding.rjust(indent + 12) + \
+                    '<xs:maxInclusive value="' + str(int(data[8])) + '"/>\n'
+        else:            
+            if data[7] is not None and int(data[7]):
+                xdstr += padding.rjust(indent + 12) + \
+                    '<xs:minExclusive value="' + str(int(data[7])) + '"/>\n'
+            if data[8] is not None and int(data[8]):
+                xdstr += padding.rjust(indent + 12) + \
+                    '<xs:maxExclusive value="' + str(int(data[8])) + '"/>\n'                
         xdstr += padding.rjust(indent + 10) + '</xs:restriction>\n'
         xdstr += padding.rjust(indent + 10) + '</xs:simpleType>\n'
         xdstr += padding.rjust(indent + 8) + '</xs:element>\n'
@@ -265,15 +271,15 @@ def xdquantity_rdf(data):
     rdfStr += padding.rjust(indent + 10) +'<sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>\n'
     
     if data[9]:
-        if data[7]:
-            rdfStr += padding.rjust(indent + 10) +'<sh:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">' + str(data[7]).strip() + '</sh:minInclusive>\n'
-        if data[8]:
-            rdfStr += padding.rjust(indent + 10) +'<sh:maxInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">' + str(data[8]).strip() + '</sh:maxInclusive>\n'    
+        if data[7] is not None and float(data[7]):
+            rdfStr += padding.rjust(indent + 10) +'<sh:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">' + str(float(data[7])).strip() + '</sh:minInclusive>\n'
+        if data[8] is not None and float(data[8]):
+            rdfStr += padding.rjust(indent + 10) +'<sh:maxInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">' + str(float(data[8])).strip() + '</sh:maxInclusive>\n'    
     else:
-        if data[7]:
-            rdfStr += padding.rjust(indent + 10) +'<sh:minExclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">' + str(data[7]).strip() + '</sh:minExclusive>\n'
-        if data[8]:
-            rdfStr += padding.rjust(indent + 10) +'<sh:maxExclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">' + str(data[8]).strip() + '</sh:maxExclusive>\n'
+        if data[7] is not None and float(data[7]):
+            rdfStr += padding.rjust(indent + 10) +'<sh:minExclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">' + str(float(data[7])).strip() + '</sh:minExclusive>\n'
+        if data[8] is not None and float(data[8]):
+            rdfStr += padding.rjust(indent + 10) +'<sh:maxExclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">' + str(float(data[8])).strip() + '</sh:maxExclusive>\n'
     
     rdfStr += padding.rjust(indent + 8) +'</rdf:Description>\n'
     rdfStr += padding.rjust(indent + 6) +'</sh:property>\n'
@@ -359,12 +365,20 @@ def xdquantity(data):
         xdstr += padding.rjust(indent + 10) + '<xs:simpleType>\n'
         xdstr += padding.rjust(indent + 10) + \
             '<xs:restriction base="xs:decimal">\n'
-        if data[7]:
-            xdstr += padding.rjust(indent + 12) + \
-                '<xs:minInclusive value="' + str(data[7]) + '"/>\n'
-        if data[8]:
-            xdstr += padding.rjust(indent + 12) + \
-                '<xs:maxInclusive value="' + str(data[8]) + '"/>\n'
+        if data[9]:            
+            if data[7] is not None and float(data[7]):
+                xdstr += padding.rjust(indent + 12) + \
+                    '<xs:minInclusive value="' + str(float(data[7])) + '"/>\n'
+            if data[8] is not None and float(data[8]):
+                xdstr += padding.rjust(indent + 12) + \
+                    '<xs:maxInclusive value="' + str(float(data[8])) + '"/>\n'
+        else:            
+            if data[7] is not None and float(data[7]):
+                xdstr += padding.rjust(indent + 12) + \
+                    '<xs:minExclusive value="' + str(float(data[7])) + '"/>\n'
+            if data[8] is not None and float(data[8]):
+                xdstr += padding.rjust(indent + 12) + \
+                    '<xs:maxExclusive value="' + str(float(data[8])) + '"/>\n'                
         xdstr += padding.rjust(indent + 10) + '</xs:restriction>\n'
         xdstr += padding.rjust(indent + 10) + '</xs:simpleType>\n'
         xdstr += padding.rjust(indent + 8) + '</xs:element>\n'
@@ -406,10 +420,10 @@ def xdstring_rdf(data):
     rdfStr += padding.rjust(indent + 10) +'<sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>\n'
     if data[12]:
         rdfStr += padding.rjust(indent + 10) + '<sh:defaultValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string">' + data[12].strip() + '</sh:defaultValue>\n'
-    if data[3]:
-        rdfStr += padding.rjust(indent + 10) +'<sh:minLength rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">' + str(data[3]).strip() + '</sh:minLength>\n'
-    if data[4]:
-        rdfStr += padding.rjust(indent + 10) +'<sh:maxLength rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">' + str(data[4]).strip() + '</sh:maxLength>\n'
+    if data[3] is not None and int(data[3]):
+        rdfStr += padding.rjust(indent + 10) +'<sh:minLength rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">' + str(int(data[3])).strip() + '</sh:minLength>\n'
+    if data[4] is not None and int(data[4]):
+        rdfStr += padding.rjust(indent + 10) +'<sh:maxLength rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">' + str(int(data[4])).strip() + '</sh:maxLength>\n'
     if data[6]:
         rdfStr += padding.rjust(indent + 10) +'<sh:pattern rdf:datatype="http://www.w3.org/2001/XMLSchema#string">' + data[6].strip() + '</sh:pattern>\n'
         
@@ -507,15 +521,14 @@ def xdstring(data):
                 xdstr += padding.rjust(indent + 12) + \
                     '<xs:enumeration value="' + e.strip() + '"/>\n'
         else:
-            if data[3]:
-                xdstr += padding.rjust(indent + 12) + \
-                    '<xs:minLength value="' + str(data[3]).strip() + '"/>\n'
-            if data[4]:
-                xdstr += padding.rjust(indent + 12) + \
-                    '<xs:maxLength value="' + str(data[4]).strip() + '"/>\n'
+            if data[3] is not None and int(data[3]):
+                xdstr += padding.rjust(indent + 12) + '<xs:minLength value="' + str(int(data[3])).strip() + '"/>\n'
+                                                                                    
+            if data[4] is not None and int(data[4]):
+                xdstr += padding.rjust(indent + 12) + '<xs:maxLength value="' + str(int(data[4])).strip() + '"/>\n'
+                
             if data[6]:
-                xdstr += padding.rjust(indent + 12) + \
-                    '<xs:pattern value="' + data[6].strip() + '"/>\n'
+                xdstr += padding.rjust(indent + 12) + '<xs:pattern value="' + data[6].strip() + '"/>\n'
         xdstr += padding.rjust(indent + 10) + '</xs:restriction>\n'
         xdstr += padding.rjust(indent + 10) + '</xs:simpleType>\n'
         xdstr += padding.rjust(indent + 8) + '</xs:element>\n'
