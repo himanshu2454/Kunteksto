@@ -58,7 +58,9 @@ def main(mode, infile, outdir, delim, analyzelevel, dbfile):
         if not dbfile:
             outDB = analyze(infile, delim, analyzelevel, outdir)
             edit_model(outDB)
-            edit_record(outDB)            
+            edit_record(outDB)
+            modelName = make_model(outDB, outdir)
+            datagen(modelName, outDB, infile, delim, outdir, config)
         else:
             outDB = dbfile
             modelName = make_model(outDB, outdir)
@@ -89,7 +91,7 @@ def main(mode, infile, outdir, delim, analyzelevel, dbfile):
         dbName = fname[:fname.index('.')] + '.db'
         db_file = outdir + os.path.sep + dbName
         edit_model(db_file)
-        edit_record(db_file)            
+        edit_record(db_file)
                 
     return(True)
 

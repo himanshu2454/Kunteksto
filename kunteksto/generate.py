@@ -71,7 +71,7 @@ def xsd_header():
 
 def xsd_metadata(md):
     """
-    Create the metadata for the S#Model data model.
+    Create the metadata for the S3Model data model.
     """
     
     mds = '<!-- Metadata -->\n  <xs:annotation><xs:appinfo><rdf:RDF><rdfs:Class\n'
@@ -207,10 +207,10 @@ def xdcount(data):
     if not data[7] and not data[8] and not data[13]:
         xdstr += padding.rjust(indent + 8) + \
             '<xs:element maxOccurs="1" minOccurs="1"  name="xdcount-value" type="xs:int"/>\n'
-    if data[13]:
+    if data[13] is not None and int(data[13]):
         xdstr += padding.rjust(indent + 8) + \
             '<xs:element maxOccurs="1" minOccurs="1"  name="xdcount-value" type="xs:int" default="' + \
-            str(int(data[14])) + '"/>\n'
+            str(int(data[13])) + '"/>\n'
     else:
         xdstr += padding.rjust(indent + 8) + \
             '<xs:element maxOccurs="1" minOccurs="1"  name="xdcount-value">\n'
@@ -349,10 +349,10 @@ def xdquantity(data):
     if not data[7] and not data[8] and not data[13]:
         xdstr += padding.rjust(indent + 8) + \
             '<xs:element maxOccurs="1" minOccurs="1"  name="xdquantity-value" type="xs:decimal"/>\n'
-    if data[13]:
+    if data[13] is not None and float(data[13]):
         xdstr += padding.rjust(indent + 8) + \
             '<xs:element maxOccurs="1" minOccurs="1"  name="xdquantity-value" type="xs:decimal" default="' + \
-            str(data[14]) + '"/>\n'
+            str(data[13]) + '"/>\n'
     else:
         xdstr += padding.rjust(indent + 8) + \
             '<xs:element maxOccurs="1" minOccurs="1"  name="xdquantity-value">\n'
