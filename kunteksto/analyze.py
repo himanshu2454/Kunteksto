@@ -135,7 +135,8 @@ def analyze(csvInput, delim, level, out_dir):
     c = conn.cursor()
     c.execute("""CREATE TABLE "model" ("title" CHAR(250), "description" TEXT, "copyright" CHAR(250), "author" CHAR(250), "definition_url" CHAR(500), "dmid" CHAR(40), "entryid" CHAR(40), "dataid" CHAR(40))""")
     c.execute("""CREATE TABLE "record"  (header  char(100), label char(250), datatype char(10), min_len int, max_len int, "choices" TEXT, "regex" CHAR(250), "min_val" FLOAT, "max_val" FLOAT, "vals_Inclusive" BOOL, "definition_url" CHAR(500), "pred_obj_list" TEXT, "def_txt_value" TEXT, "def_num_value" FLOAT, "units" CHAR(50), "mcid" CHAR(40), "adid" CHAR(40))""")
-
+    c.execute("""CREATE INDEX header_idx on record (header)""")
+    
     # create the initial data for the record table.
     data = []
     with open(csvInput) as csvfile:
@@ -152,7 +153,7 @@ def analyze(csvInput, delim, level, out_dir):
         "INSERT INTO record VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", data)
     conn.commit()
 
-    # create the initail data for the model table
+    # create the initial data for the model table
     dmID = str(uuid4())   # data model
     entryID = str(uuid4())   # entry
     dataID = str(uuid4())   # data cluster

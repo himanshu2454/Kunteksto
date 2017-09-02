@@ -407,9 +407,9 @@ def xdstring_rdf(data):
     if data[12]:
         rdfStr += padding.rjust(indent + 10) + '<sh:defaultValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string">' + data[12].strip() + '</sh:defaultValue>\n'
     if data[3]:
-        rdfStr += padding.rjust(indent + 10) +'<sh:minLength rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">' + data[3].strip() + '</sh:minLength>\n'
+        rdfStr += padding.rjust(indent + 10) +'<sh:minLength rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">' + str(data[3]).strip() + '</sh:minLength>\n'
     if data[4]:
-        rdfStr += padding.rjust(indent + 10) +'<sh:maxLength rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">' + data[4].strip() + '</sh:maxLength>\n'
+        rdfStr += padding.rjust(indent + 10) +'<sh:maxLength rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">' + str(data[4]).strip() + '</sh:maxLength>\n'
     if data[6]:
         rdfStr += padding.rjust(indent + 10) +'<sh:pattern rdf:datatype="http://www.w3.org/2001/XMLSchema#string">' + data[6].strip() + '</sh:pattern>\n'
         

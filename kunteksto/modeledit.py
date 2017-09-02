@@ -1,9 +1,5 @@
 """
-A simple TKinter GUI to enter data into a given table in a database.
-
-This program will build a small sample table into a given database
-and then build a simple TKinter window with label and entry widgets
-for each column in the table.
+A simple TKinter GUI to edit the model table in a database.
 """
 import sqlite3
 import tkinter as tk
@@ -12,9 +8,7 @@ from tkinter import TOP, BOTTOM, LEFT, RIGHT, END, ALL
 
 
 def edit_model(outDB):
-    """Main function for demo."""
-    # define some variables for demo only.
-    # In full app, these will come programmatically.
+    """Main function."""
     db = outDB
     tbl = 'model'
 
@@ -25,16 +19,13 @@ def edit_model(outDB):
     
     model_window = EntryWindow(root, *[db, tbl])
     root.mainloop()
+    root.destroy()
 
 
 class EntryWindow(tk.Frame):
 
     """
-    Provides a simple data entry window for a given table in given database.
-
-    Automatically generates labels and entry fields based on the column
-    headers for the given table.  Provides a button to submit the row of data
-    into the table and a button to close window.
+    Provides a simple data edit window for the model table in given database.
     """
 
     def __init__(self, master=None, *args):
