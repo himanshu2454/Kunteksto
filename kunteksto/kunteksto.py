@@ -58,21 +58,7 @@ def main(mode, infile, outdir, delim, analyzelevel, dbfile):
         if not dbfile:
             outDB = analyze(infile, delim, analyzelevel, outdir)
             edit_model(outDB)
-            edit_record(outDB)
-            
-            try:
-                dbresult = run([config['SQLITEBROWSER']['cmd'],  outDB])
-                if dbresult.returncode == 0:
-                    modelName = make_model(outDB, outdir)
-                    datagen(modelName, outDB, infile, delim, outdir, config)
-                else:
-                    print("\n\nThere was an error running SQLiteBrowser. Please check your configuration and retry or use an alternate DB editor and then run using the generate mode.")
-                    exit(code=1)
-    
-            except FileNotFoundError:
-                print("There was an error running SQLiteBrowser; FileNotFoundError. Please check your configuration and retry or use an alternate DB editor and then run using the generate mode.")
-                exit(code=1)
-            
+            edit_record(outDB)            
         else:
             outDB = dbfile
             modelName = make_model(outDB, outdir)
@@ -102,7 +88,8 @@ def main(mode, infile, outdir, delim, analyzelevel, dbfile):
         dname, fname = os.path.split(infile)
         dbName = fname[:fname.index('.')] + '.db'
         db_file = outdir + os.path.sep + dbName
-        run([config['SQLITEBROWSER']['cmd'],  db_file])
+        edit_model(db_file)
+        edit_record(db_file)            
                 
     return(True)
 
