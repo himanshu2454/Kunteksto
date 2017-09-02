@@ -13,6 +13,7 @@ output/json/*
 output/xml/*
 output/*.rdf
 output/*.xsd
+catalogs/
 *_validation_log.csv
 
 *.odt

@@ -60,20 +60,21 @@ Tutorial Steps
         source activate <path/to/directory> 
 
 
-
-Start Kunteksto:
-
-.. code-block:: sh
-
-    kunteksto
-
 .. note::
 
+    Kunteksto can be run in prompt mode or be given several options on the commandline.
     You can see all of the Kunteksto commandline options using the --help flag.
 
     .. code-block:: sh
 
         kunteksto --help
+
+
+For this tutorial you will start Kunteksto in prompt mode. This means that the mandatory items will be requested:
+
+.. code-block:: sh
+
+    kunteksto
 
 
 - At the **Enter a valid mode:** prompt, type *all*
@@ -82,24 +83,10 @@ Start Kunteksto:
 
 - Kunteksto will analyze the input file and create a results database of this CSV file named *output/Demo/Demo.db*  
 
-- The *kunteksto/output/Demo/Demo.db* file should open in the SQLiteBrowser. 
+- The Model Metadata window will open.
 
-.. caution::
+- This image depicts the view of the Model Metadata and below that are descriptions of each of the fields to be edited. Kunteksto prefills the fields with fake data just so you aren't staring at blank input boxes. 
 
-    On Windows the SQLite DB Browser may not open. You will receive either a FileNotFound Error or a Permission Error.
-
-    If it does not automatically open then you will need to manually open the *kunteksto/output/Demo/Demo.db* file with the tool you installed to open SQLite Databases. For example, open SQLite DB Browser from the Windows menu and then use File->Open to open *kunteksto/output/Demo/Demo.db*. 
-
-    Later in the :ref:`config` section of these docs you will learn how to fix this issue. For now, continue with the tutorial.
-
-- In the SQLiteBrowser, select the *Browse Data* tab and the *model* table. 
-
-- This image depicts the view of the model table and below that are descriptions of each of the fields to be edited; or not. 
-
-
-.. note::
-
-    We recommend opening images in a new tab for full resolution. 
 
 .. image:: _images/edit_model.png
     :width: 800px
@@ -110,91 +97,95 @@ Start Kunteksto:
 
 **Model table field descriptions:**
 
-	- *title* is a free text title for your data concept contained in the CSV file.
-	- *description* is a free text, elborated description of the data contained in the CSV file.
-	- *copyright* enter the name of the copyright holder of the model
-	- *author* enter the name of the author of the model
-	- *definition_url* enter a URL (or at least a URI) to a vocabulary or ontology or a webpage that describes or defines the overall concept of the data. 
+	- *Title* is a free text title for your data concept contained in the CSV file.
+	- *Description* is a free text, elborated description of the data contained in the CSV file.
+	- *Copyright* enter the name of the copyright holder of the model
+	- *Author* enter the name of the author of the model
+	- *Defining URL* enter a URL (or at least a URI) to a vocabulary or ontology or a webpage that describes or defines the overall concept of the data model. 
 
-.. warning::
-
-	- *dmid* System Generated, **Do Not Edit**
-	- *entryid* System Generated, **Do Not Edit**
-	- *dataid* System Generated, **Do Not Edit**  
-
-Edit the title, description, copyright, author and contributor fields as desired. These fields describe the overall metadata for your data model. This metadata describes the where, when and why the data is being modeled. Insure that you do not edit the fields in the warning box.
 
 
 .. note::
    
    With your FileManager, navigate to the *kunteksto/example_data* subdirectory and open the *Demo_info.pdf* file. This file simulates what often purports to be a data dictionary that you might receive with a dataset. You will use this to improve the computable semantics of your data. 
 
-You will notice that some of this information can be obtained from the PDF. For other items you have to use your knowledge of the dataset as a domain expert. In this *demo* we are going to say that we have a local ontology that describes the columns and that information is provided below in the *Adding Semantics* section. 
+
+Edit these fields as desired. They describe the overall metadata for your data model. This metadata describes the where, when and why the data is being modeled. 
+
+You will notice that some of this information can be obtained from the PDF. For other items you have to use your knowledge of the dataset as a domain expert. In this *demo* we are going to say that we have a local ontology that describes the columns and that information is provided below in the *Adding Semantics* section below. 
 
 .. warning::
 
-    You *MUST* use the *Apply button* on the bottom right, to save changes when editing fields. Then use the *Save Changes* button, on the top toolbar, before exiting the DB Browser.
+    Use the *Save & Exit* button when you are finished making changes.
 
 
-- Select the record table. Note that there is a record for each column of data in Demo.csv. If there is only one record then the likely problem is that an incorrect field delimiter was chosen or the default was changed in the config file.  
+- The records editor will open next. Note that there is a record for each column of data in Demo.csv. 
 
-   - Each record has a number of fields that allow you to describe more about your data. 
 
-   - Though some fields are pre-filled, it is only a guess and may not be accurate.
-   
-   - It is up to you to be as accurate as possible in describing your data to improve quality and usability.
+.. warning::
 
-.. image:: _images/record_table.png
+    If there is only one record and your Label field looks like this image, then the likely problem is that an incorrect field delimiter was chosen on the commandline or the default was changed in the config file. The config file should have a *comma* as the delim option and is found on or near line 9 in kunteksto.conf. 
+
+    .. image:: _images/bad_delim.png
+        :width: 600px
+        :align: center
+        :height: 200px
+        :alt: Bad Delimiter
+
+
+
+- Each record has a number of fields that allow you to describe more about your data. You can cycle through the records with the *Next* and *Previous* buttons. When you make changes use the *Save* button. Once the changes are written to the database you will see a Saved dialog. 
+
+.. warning::
+
+    If you navigate away from a record without saving it you will loose those changes.
+
+- Though some fields are pre-filled, it is only a guess and may not be accurate.
+
+- It is up to you to be as accurate as possible in describing your data to improve quality and usability. Some fileds are only useful with certain datatypes. See the description of each field below.
+
+.. image:: _images/edit_record.png
     :width: 800px
     :align: center
     :height: 600px
     :alt: Edit Record
 
 
-**Record table field descriptions:**
-
-.. warning::
-
-    - *header* is the column names from the data file. **Do Not Edit**.
+**Record field descriptions:**
 
 Edit these columns (see :ref:`semantics`) :
 
-    - *label* is a variation of the header text and should be edited as needed to provide a meaningful name for the column.
+    - *Label* was derived from the column header text and should be edited as needed to provide a more meaningful name for the column.
     
-    - *datatype* the analyzer attempts to guess the correct datatype for the column. You must enter the correct type; string, integer, decimal or date. 
+    - *Datatype* the analyzer attempts to guess the correct datatype for the column. You must select the correct type; String, Integer, Decimal or Date from the pulldown. 
     
-    - *min_len* for **string** columns enter the minimum length restriction if there is one.
+    - *Minimum Length* for **String** columns enter the minimum length restriction if there is one.
     
-    - *max_len* for **string** columns enter the maximum length restriction if there is one.
+    - *Maximum Length* for **String** columns enter the maximum length restriction if there is one.
     
-    - *choices* for **string** columns you may enter a set of choices to restrict the valid values. Separate each choice with a pipe '|' character.
+    - *Choices* for **String** columns you may enter a set of choices to restrict the valid values. Separate each choice with a pipe '|' character.
     
-    - *regex* for **string** columns you may enter a regular expression (`XML Schema syntax <http://www.xmlschemareference.com/regularExpression.html>`_) to constrain the valid string values.
+    - *Regular Expression* for **String** columns you may enter a regular expression (`XML Schema syntax <http://www.xmlschemareference.com/regularExpression.html>`_) to constrain the valid string values.
     
-    - *min_val* enter the minimum value restriction for **integer or decimal** columns.
+    - *Minimum Value* enter the minimum value restriction for **Integer or Decimal** columns.
     
-    - *max_val* enter the maximum value restriction for **integer or decimal** columns.	
+    - *Maximum Value* enter the maximum value restriction for **Integer or Decimal** columns.	
     
-    - *vals_inclusive* for **integer or decimal** columns, are the minimum and maximum values inclusive in the valid values range. Enter a '1' for yes or a '0' for no.
+    - *Values Inclusive?* for **Integer or Decimal** columns, are the minimum and maximum values inclusive in the valid values range. Enter a '1' for yes or a '0' for no.
     
-    - *definition_url* enter a URL (or at least a URI) to a vocabulary or ontology or a webpage that describes or defines the meaning of the data in this column.
+    - *Defining URL* enter a URL (or at least a URI) to a vocabulary or ontology or a webpage that describes or defines the meaning of the data in this column.
     
-    - *pred_obj_list* optionally enter any additional predicate object pairs to be used to define this resource. Enter them one per line with the predicate and object separated by a space character. 
+    - *Predicates & Objects* optionally enter any additional *predicate object* pairs to be used to define this resource. Enter them one per line with the predicate and object separated by a space character. 
 
         .. warning::
             You may use namespace abbreviations **ONLY** if they are in the list below or have been defined in the [NAMESPACES] section of the configuration file. To do otherwise will generate an invalid model and be pointless.
         
         
-    - *def_txt_value* for **string** columns enter the default value for a string datatype column, if there is one.
+    - *Default Text Value* for **String** columns enter the default value for a string datatype column, if there is one.
     
-    - *def_num_value* enter the default value for a decimal or integer datatype column, if there is one.
+    - *Default Numeric Value* enter the default value for a decimal or integer datatype column, if there is one.
     
-    - *units* **mandatory** units value for all **decimal or integer** datatype columns. For decimal columns this should come from a standard units vocabulary such as `Ontology of units of Measure <https://github.com/HajoRijgersberg/OM>`_ or `The Unified Code for Units of Measure <http://unitsofmeasure.org>`_. For integer columns where the values are *counts* you should enter the name of the item(s) being counted. For example, if this number represents the number of widgets created today. Then enter "Widgets* here. 
-
-.. warning::
-
-    - *mcid* System Generated, **Do Not Edit**
-    - *adid* System Generated, **Do Not Edit**  
+    - *Units* **mandatory** units value for all **Decimal or Integer** datatype columns. For decimal columns this should come from a standard units vocabulary such as `Ontology of units of Measure <https://github.com/HajoRijgersberg/OM>`_ or `The Unified Code for Units of Measure <http://unitsofmeasure.org>`_. For Integer columns where the values are *counts* you should enter the name of the item(s) being counted. For example, if this number represents the number of widgets created today. Then enter "Widgets* here. 
 
 
 .. _semantics:
@@ -204,16 +195,16 @@ Adding Semantics
 
 .. note::
    
-   If not already open; with your FileManager, navigate to the *kunteksto/example_data* subdirectory and open the *Demo_info.pdf* file. This file simulates what often purports to be a data dictionary that you might receive with a dataset. You will use this to improve the computable semantics of your data. 
+   If not already open; with your FileManager navigate to the *kunteksto/example_data* subdirectory and open the *Demo_info.pdf* file. This file simulates what often purports to be a data dictionary that you might receive with a dataset. You will use this to improve the computable semantics of your data. 
 
 
 Editing the fields in this database will improve the semantics in your model that describes the data. This allows your data consumers to make better decisions about what the data means. Kunteksto produces an executable model that can be used in various validation and knowledge discovery scenarios.
 
-In the **model** table you should change the fields as you wish to match your organization. The field *definition_url* is where we point to the overarching definition about this datamodel. This URL will be used as the *object* portion of a RDF triple where the *subject* is the unique datamodel ID (dm-{uuid}) and the *predicate* is **rdfs:isDefinedBy**. We see in our *Demo_info.pdf* file that it is declared to be found at https://www.datainsights.tech/Demo_info.pdf so this is our URL for this field.  
+In the **Model Metadata** you should change the fields as you wish to match your organization. The field *Defining URL* is where we point to the overarching definition about this datamodel. This URL will be used as the *object* portion of a RDF triple where the *subject* is the unique datamodel ID (dm-{uuid}) and the *predicate* is **rdfs:isDefinedBy**. We see in our *Demo_info.pdf* file that it is declared to be found at https://www.datainsights.tech/Demo_info.pdf so this is our URL for this field.  
 
-In the **record** table, the *definition_url* and *pred_obj_list* are where we add semantics in RDF format. The *definition_url* is formatted the same as for the *definition_url* column in the model table. 
+In the **Records Editor**, the *Defining URL* and *Predicates & Objects* are where we add semantics in RDF format. The *Defining URL* is formatted the same as for the *Defining URL* column in the Model Metadata. 
 
-The *pred_obj_list* column is slightly different in that you need to supply both the predicate and the object. 
+The *Predicates & Objects* column is slightly different in that you need to supply both the predicate and the object. 
 
 .. note::
 
@@ -234,9 +225,9 @@ The *pred_obj_list* column is slightly different in that you need to supply both
     - sh="http://www.w3.org/ns/shacl#"
     - s3m="https://www.s3model.com/ns/s3m/"
 
-For example, if you want to define an alternate label in addition to the label column, you could use the SKOS *skos:altLabel* predicate. However, if you want to use the predicate *isSettingFor* from the `Information Objects ontology <http://www.ontologydesignpatterns.org/ont/dul/IOLite.owl>`_ then you would need to first define an abbreviation for this ontology in the [NAMESPACES] section of the configuration file. You may do this while editing the database. Just be sure to save the new configuration before closing the database editor so that your changes are saved before the model generator runs. 
+For example, if you want to define an alternate label in addition to the Label field, you could use the SKOS *skos:altLabel* predicate. However, if you want to use the predicate *isSettingFor* from the `Information Objects ontology <http://www.ontologydesignpatterns.org/ont/dul/IOLite.owl>`_ then you would need to first define an abbreviation for this ontology in the [NAMESPACES] section of the configuration file. You may do this while editing the database. Just be sure to save the new configuration before closing the database editor so that your changes are saved before the model generator runs. 
 
-.. note::
+.. warning::
 
     The field is an open text field so you must use care in making your entries here.  Each predicate/object pair is entered on one line with a space between the predicate and object. For example:
 
@@ -249,19 +240,7 @@ The *object* portion can contain spaces. However, the first space character defi
 
 Again, the information in the table in the PDF can help you determine additional meaning about the data if you are not a domain expert in this area of *Fake System* information. If you do not already have an ontology defining the meaning of these columns then you can search in places like `Linked Open Vocabularies <http://lov.okfn.org/dataset/lov>`_  `Biontology <https://www.bioontology.org/>`_  or even places that aren't formal ontologies but contain reliable definitions and descriptioins such as `a dictionary <http://www.dictionary.com/>`_ or an `encyclodpedia <https://en.wikipedia.org/wiki/Main_Page>`_  
 
-- Once you have completed the data description step, **saved any changes to the configuration file** and **saved your changes** using the *Write Changes* button in the top toolbar, close the DB Browser. You will then see that model generation happens followed by data generation. 
-
-.. warning::
-
-    If for some reason you had to manually open the database with sqlitebrowser or another tool, then the processing will not continue automatically. Use the command below to restart the model and data generation process:
-
-    .. code-block:: sh
-
-        kunteksto -i example_data/Demo.csv -m all -db output/Demo/Demo.db
-
-    This tells Kunteksto to use the Demo.db and restart model and data generation with Demo.csv.
-
-
+- Once you have completed the data description step, **saved any changes to the configuration file** and **saved your changes** using the *Save* button on each Record, close the Record Editor with the *Exit* button. You will then see that model generation happens followed by data generation. 
 
 - In the *output/Demo* directory along with the Demo.db you will see an XML Schema (\*.xsd) model file and a RDF (\*.rdf) file. These are the structural and semantic models that can be used in your analysis as well as shared with others to better describe the data. The RDF file is actually extracted from the XML Schema so only the schema needs to be shared in order to distribute full structural and semantic information in an executable model. Data Insights, Inc. provides a utility with S3Model to extract the semantics from the schema data models. 
 
@@ -280,6 +259,10 @@ Full validation is performed via XML for both the data model and data instances.
 .. note::
 
     The S3Model eco-system has a much more sophisticated ability to handle missing and erroneous data. The details are available in the S3Model documentation. This generally requires the model first approach whereas Kunteksto is an after-the-fact bridge.
+
+
+.. caution::
+    You can rerun this Demo with different options as many times as you wish.  However you will get new data models each time. You should delete the *Demo* directory under the *kunteksto/output/* directory before restarting. 
 
 
 Additional Steps

@@ -17,7 +17,6 @@ Requirements
 ============
 
 - Python 3.6 or later. See: `Downloads <https://www.python.org/downloads/>`_  
-- Installation of `SQLiteBrowser <http://sqlitebrowser.org/>`_ or other tool for editing SQLite databases.
 
 .. _install:
 
@@ -31,7 +30,6 @@ This is the **preferred environment** for a tool like Kunteksto because it integ
 
 - `Download and install <https://www.continuum.io/downloads>`_ Anaconda Python 3.6+ for your platform.
 - More detailed Anaconda instructions are `here <https://docs.continuum.io/anaconda/install/>`_  if you prefer.
-- Install `SQLiteBrowser <http://sqlitebrowser.org/>`_ or other tool for editing SQLite databases. 
 - If you are using Linux or Mac OSX, follow the `instructions for your platform <http://lxml.de/installation.html>`_ for **lxml** installation. 
 
 

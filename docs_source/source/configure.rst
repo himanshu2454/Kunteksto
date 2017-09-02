@@ -14,22 +14,6 @@ Config File Details
 ===================
 Here we cover the details of the configuration options. 
 
-.. sourcecode:: text
-
-	; kunteksto.conf is the configuration file required by Kunteksto. 
-
-	[SQLITEBROWSER]
-	; Enter the command or full path required to execute SQLite Browser on your system.
-	cmd: sqlitebrowser
-
-
-For Windows users you need to put it in quotes because of the spaces
-
-.. sourcecode:: text
-
-	cmd: "DB Browser for SQLite.exe"
-
-Depending upon your OS and installation you may need the full path to the SQLite Browser executable and you may need to adjust access permissions.
 
 .. sourcecode:: text
 
