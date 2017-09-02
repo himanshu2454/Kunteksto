@@ -124,6 +124,16 @@ Now that that is settled.  The rest is easy.
 	Go to the :ref:`tutor` 
 
 
+Update to a New Version
+=======================
+
+When you want to upgrade to a new version of Kunteksto you can just use the line below in your terminal where you have activated the virtual environment. 
+
+.. code-block:: sh
+
+    pip install kunteksto --upgrade
+
+
 What are all the files for?
 ===========================
 
