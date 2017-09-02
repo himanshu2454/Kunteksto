@@ -131,7 +131,7 @@ When you want to upgrade to a new version of Kunteksto you can just use the line
 
 .. code-block:: sh
 
-    pip install kunteksto --upgrade
+    pip install  kunteksto --upgrade --no-cache-dir
 
 
 What are all the files for?
