@@ -157,7 +157,7 @@ Edit these columns (see :ref:`semantics`) :
 
     - *Label* was derived from the column header text and should be edited as needed to provide a more meaningful name for the column.
     
-    - *Datatype* the analyzer attempts to guess the correct datatype for the column. You must select the correct type; String, Integer, Decimal or Date from the pulldown. 
+    - *Datatype* the analyzer attempts to guess the correct datatype for the column. You must select the correct type; String, Integer, Decimal, Date, Time or Datetime from the pulldown. 
     
     - *Minimum Length* for **String** columns enter the minimum length restriction if there is one.
     

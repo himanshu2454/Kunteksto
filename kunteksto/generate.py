@@ -84,8 +84,7 @@ def xsd_metadata(md):
     mds += '    <dc:relation>None</dc:relation>\n'
     mds += '    <dc:coverage>Global</dc:coverage>\n'
     mds += '    <dc:type>S3M Data Model</dc:type>\n'
-    mds += '    <dc:identifier>' + \
-        md[0].replace('dm-', '') + '</dc:identifier>\n'
+    mds += '    <dc:identifier>' + md[0].replace('dm-', '') + '</dc:identifier>\n'
     mds += '    <dc:description>' + md[3] + '</dc:description>\n'
     mds += '    <dc:publisher>Data Insights, Inc. via Kunteksto</dc:publisher>\n'
     mds += '    <dc:date>' + datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S") + \
@@ -123,31 +122,15 @@ def xdcount_rdf(data):
     rdfStr += padding.rjust(indent + 10) +'<sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>\n'
     
     if data[9]:
-        if data[7] is not None:
-            try:
-                if int(data[7]):
-                    rdfStr += padding.rjust(indent + 10) +'<sh:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">' + str(int(data[7])).strip() + '</sh:minInclusive>\n'
-            except:
-                pass
-        if data[8] is not None:
-            try:
-                if int(data[8]):
-                    rdfStr += padding.rjust(indent + 10) +'<sh:maxInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">' + str(int(data[8])).strip() + '</sh:maxInclusive>\n'    
-            except:
-                pass
+        if data[7]:
+            rdfStr += padding.rjust(indent + 10) +'<sh:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">' + data[7].strip() + '</sh:minInclusive>\n'
+        if data[8]:
+            rdfStr += padding.rjust(indent + 10) +'<sh:maxInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">' + data[8].strip() + '</sh:maxInclusive>\n'    
     else:
-        if data[7] is not None:
-            try:
-                if int(data[7]):
-                    rdfStr += padding.rjust(indent + 10) +'<sh:minExclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">' + str(int(data[7])).strip() + '</sh:minExclusive>\n'
-            except:
-                pass
-        if data[8] is not None:
-            try:
-                if int(data[8]):
-                    rdfStr += padding.rjust(indent + 10) +'<sh:maxExclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">' + str(int(data[8])).strip() + '</sh:maxExclusive>\n'
-            except:
-                pass
+        if data[7]:
+            rdfStr += padding.rjust(indent + 10) +'<sh:minExclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">' + data[7].strip() + '</sh:minExclusive>\n'
+        if data[8]:
+            rdfStr += padding.rjust(indent + 10) +'<sh:maxExclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">' + data[8].strip() + '</sh:maxExclusive>\n'
     
     rdfStr += padding.rjust(indent + 8) +'</rdf:Description>\n'
     rdfStr += padding.rjust(indent + 6) +'</sh:property>\n'
@@ -168,29 +151,22 @@ def xdcount(data):
     padding = ('').rjust(indent)
    
     # Adapter
-    xdstr = padding.rjust(indent) + '\n<xs:element name="ms-' + adapterID + \
-        '" substitutionGroup="s3m:Items" type="s3m:mc-' + adapterID + '"/>\n'
-    xdstr += padding.rjust(indent) + \
-        '<xs:complexType name="mc-' + adapterID + '">\n'
+    xdstr = padding.rjust(indent) + '\n<xs:element name="ms-' + adapterID + '" substitutionGroup="s3m:Items" type="s3m:mc-' + adapterID + '"/>\n'
+    xdstr += padding.rjust(indent) + '<xs:complexType name="mc-' + adapterID + '">\n'
     xdstr += padding.rjust(indent + 2) + '<xs:complexContent>\n'
-    xdstr += padding.rjust(indent + 4) + \
-        '<xs:restriction base="s3m:XdAdapterType">\n'
+    xdstr += padding.rjust(indent + 4) + '<xs:restriction base="s3m:XdAdapterType">\n'
     xdstr += padding.rjust(indent + 6) + '<xs:sequence>\n'
-    xdstr += padding.rjust(indent + 8) + \
-        '<xs:element maxOccurs="unbounded" minOccurs="0" ref="s3m:ms-' + mcID + '"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="unbounded" minOccurs="0" ref="s3m:ms-' + mcID + '"/>\n'
     xdstr += padding.rjust(indent + 6) + '</xs:sequence>\n'
     xdstr += padding.rjust(indent + 4) + '</xs:restriction>\n'
     xdstr += padding.rjust(indent + 2) + '</xs:complexContent>\n'
     xdstr += padding.rjust(indent) + '</xs:complexType>\n'
     # model component
-    xdstr += padding.rjust(indent) + '<xs:element name="ms-' + mcID + \
-        '" substitutionGroup="s3m:XdAdapter-value" type="s3m:mc-' + mcID + '"/>\n'
-    xdstr += padding.rjust(indent) + \
-        '<xs:complexType name="mc-' + mcID + '">\n'
+    xdstr += padding.rjust(indent) + '<xs:element name="ms-' + mcID + '" substitutionGroup="s3m:XdAdapter-value" type="s3m:mc-' + mcID + '"/>\n'
+    xdstr += padding.rjust(indent) + '<xs:complexType name="mc-' + mcID + '">\n'
     xdstr += padding.rjust(indent + 2) + '<xs:annotation>\n'
     xdstr += padding.rjust(indent + 4) + '<xs:documentation>\n'
-    xdstr += padding.rjust(indent + 6) + \
-        'This is the Count model component used to model integers.\n'
+    xdstr += padding.rjust(indent + 6) + 'This is the Count model component used to model integers.\n'
     xdstr += padding.rjust(indent + 4) + '</xs:documentation>\n'
     xdstr += padding.rjust(indent + 4) + '<xs:appinfo>\n'   
     # add the RDF
@@ -198,75 +174,39 @@ def xdcount(data):
     xdstr += padding.rjust(indent + 4) + '</xs:appinfo>\n'
     xdstr += padding.rjust(indent + 2) + '</xs:annotation>\n'
     xdstr += padding.rjust(indent + 2) + '<xs:complexContent>\n'
-    xdstr += padding.rjust(indent + 4) + \
-        '<xs:restriction base="s3m:XdCountType">\n'
+    xdstr += padding.rjust(indent + 4) + '<xs:restriction base="s3m:XdCountType">\n'
     xdstr += padding.rjust(indent + 6) + '<xs:sequence>\n'
-    xdstr += padding.rjust(indent + 8) + \
-        '<xs:element maxOccurs="1" minOccurs="1" name="label" type="xs:string" fixed="' + \
-        data[1].strip() + '"/>\n'
-    xdstr += padding.rjust(indent + 8) + \
-        '<xs:element maxOccurs="1" minOccurs="0" ref="s3m:ExceptionalValue"/>\n'
-    xdstr += padding.rjust(indent + 8) + \
-        '<xs:element maxOccurs="1" minOccurs="0" name="vtb" type="xs:dateTime"/>\n'
-    xdstr += padding.rjust(indent + 8) + \
-        '<xs:element maxOccurs="1" minOccurs="0" name="vte" type="xs:dateTime"/>\n'
-    xdstr += padding.rjust(indent + 8) + \
-        '<xs:element maxOccurs="1" minOccurs="0" name="tr" type="xs:dateTime"/>\n'
-    xdstr += padding.rjust(indent + 8) + \
-        '<xs:element maxOccurs="1" minOccurs="0" name="modified" type="xs:dateTime"/>\n'
-    xdstr += padding.rjust(indent + 8) + \
-        '<xs:element maxOccurs="1" minOccurs="0" name="magnitude-status" type="s3m:MagnitudeStatus"/>\n'
-    xdstr += padding.rjust(indent + 8) + \
-        '<xs:element maxOccurs="1" minOccurs="1" name="error"  type="xs:int" default="0"/>\n'
-    xdstr += padding.rjust(indent + 8) + \
-        '<xs:element maxOccurs="1" minOccurs="1" name="accuracy" type="xs:int" default="0"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="label" type="xs:string" fixed="' + data[1].strip() + '"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" ref="s3m:ExceptionalValue"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="vtb" type="xs:dateTime"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="vte" type="xs:dateTime"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="tr" type="xs:dateTime"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="modified" type="xs:dateTime"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="magnitude-status" type="s3m:MagnitudeStatus"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="error"  type="xs:int" default="0"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="accuracy" type="xs:int" default="0"/>\n'
     if not data[7] and not data[8] and not data[13]:
-        xdstr += padding.rjust(indent + 8) + \
-            '<xs:element maxOccurs="1" minOccurs="1"  name="xdcount-value" type="xs:int"/>\n'
-    if data[13] is not None:
-        try:
-            if int(data[13]):
-                xdstr += padding.rjust(indent + 8) +  '<xs:element maxOccurs="1" minOccurs="1"  name="xdcount-value" type="xs:int" default="' + str(int(data[13])) + '"/>\n'
-        except:
-            pass
-        
+        xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdcount-value" type="xs:int"/>\n'
+    if data[13]:
+        xdstr += padding.rjust(indent + 8) +  '<xs:element maxOccurs="1" minOccurs="1"  name="xdcount-value" type="xs:int" default="' + str(int(data[13])) + '"/>\n'       
     else:
-        xdstr += padding.rjust(indent + 8) + \
-            '<xs:element maxOccurs="1" minOccurs="1"  name="xdcount-value">\n'
+        xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdcount-value">\n'
         xdstr += padding.rjust(indent + 10) + '<xs:simpleType>\n'
         xdstr += padding.rjust(indent + 10) + '<xs:restriction base="xs:int">\n'
         if data[9]:            
-            if data[7] is not None:
-                try:
-                    if int(data[7]):
-                        xdstr += padding.rjust(indent + 12) + '<xs:minInclusive value="' + str(int(data[7])) + '"/>\n'
-                except:
-                    pass
-            if data[8] is not None:
-                try:
-                    if int(data[8]):
-                        xdstr += padding.rjust(indent + 12) + '<xs:maxInclusive value="' + str(int(data[8])) + '"/>\n'
-                except:
-                    pass
+            if data[7]:
+                xdstr += padding.rjust(indent + 12) + '<xs:minInclusive value="' + str(int(data[7])) + '"/>\n'
+            if data[8]:
+                xdstr += padding.rjust(indent + 12) + '<xs:maxInclusive value="' + str(int(data[8])) + '"/>\n'
         else:            
-            if data[7] is not None:
-                try:
-                    if int(data[7]):
-                        xdstr += padding.rjust(indent + 12) + '<xs:minExclusive value="' + str(int(data[7])) + '"/>\n'
-                except:
-                    pass
-            if data[8] is not None:
-                try:
-                    if int(data[8]):
-                        xdstr += padding.rjust(indent + 12) + '<xs:maxExclusive value="' + str(int(data[8])) + '"/>\n'  
-                except:
-                    pass
+            if data[7]:
+                xdstr += padding.rjust(indent + 12) + '<xs:minExclusive value="' + str(int(data[7])) + '"/>\n'
+            if data[8]:
+                xdstr += padding.rjust(indent + 12) + '<xs:maxExclusive value="' + str(int(data[8])) + '"/>\n'  
         xdstr += padding.rjust(indent + 10) + '</xs:restriction>\n'
         xdstr += padding.rjust(indent + 10) + '</xs:simpleType>\n'
         xdstr += padding.rjust(indent + 8) + '</xs:element>\n'
-    xdstr += padding.rjust(indent + 8) + \
-        '<xs:element maxOccurs="1" minOccurs="1" name="xdcount-units" type="s3m:mc-' + \
-        unitsID + '"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="xdcount-units" type="s3m:mc-' + unitsID + '"/>\n'
     xdstr += padding.rjust(indent + 6) + '</xs:sequence>\n'
     xdstr += padding.rjust(indent + 4) + '</xs:restriction>\n'
     xdstr += padding.rjust(indent + 2) + '</xs:complexContent>\n'
@@ -303,32 +243,16 @@ def xdquantity_rdf(data):
     rdfStr += padding.rjust(indent + 10) +'<sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>\n'
     
     if data[9]:
-        if data[7] is not None:
-            try:
-                if float(data[7]):
-                    rdfStr += padding.rjust(indent + 10) +'<sh:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">' + str(float(data[7])).strip() + '</sh:minInclusive>\n'
-            except:
-                pass
-        if data[8] is not None:
-            try:
-                if float(data[8]):
-                    rdfStr += padding.rjust(indent + 10) +'<sh:maxInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">' + str(float(data[8])).strip() + '</sh:maxInclusive>\n'    
-            except:
-                pass
+        if data[7]:
+            rdfStr += padding.rjust(indent + 10) +'<sh:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">' + data[7].strip() + '</sh:minInclusive>\n'
+        if data[8]:
+            rdfStr += padding.rjust(indent + 10) +'<sh:maxInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">' + data[8].strip() + '</sh:maxInclusive>\n'    
     else:
-        if data[7] is not None:
-            try:
-                if float(data[7]):
-                    rdfStr += padding.rjust(indent + 10) +'<sh:minExclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">' + str(float(data[7])).strip() + '</sh:minExclusive>\n'
-            except:
-                pass
-        if data[8] is not None:
-            try:
-                if float(data[8]):
-                    rdfStr += padding.rjust(indent + 10) +'<sh:maxExclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">' + str(float(data[8])).strip() + '</sh:maxExclusive>\n'
-            except:
-                pass
-    
+        if data[7]:
+            rdfStr += padding.rjust(indent + 10) +'<sh:minExclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">' + data[7].strip() + '</sh:minExclusive>\n'
+        if data[8]:
+            rdfStr += padding.rjust(indent + 10) +'<sh:maxExclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">' + data[8].strip() + '</sh:maxExclusive>\n'
+   
     rdfStr += padding.rjust(indent + 8) +'</rdf:Description>\n'
     rdfStr += padding.rjust(indent + 6) +'</sh:property>\n'
     
@@ -348,29 +272,22 @@ def xdquantity(data):
     padding = ('').rjust(indent)
     
     # Adapter
-    xdstr = padding.rjust(indent) + '\n<xs:element name="ms-' + adapterID + \
-        '" substitutionGroup="s3m:Items" type="s3m:mc-' + adapterID + '"/>\n'
-    xdstr += padding.rjust(indent) + \
-        '<xs:complexType name="mc-' + adapterID + '">\n'
+    xdstr = padding.rjust(indent) + '\n<xs:element name="ms-' + adapterID + '" substitutionGroup="s3m:Items" type="s3m:mc-' + adapterID + '"/>\n'
+    xdstr += padding.rjust(indent) + '<xs:complexType name="mc-' + adapterID + '">\n'
     xdstr += padding.rjust(indent + 2) + '<xs:complexContent>\n'
-    xdstr += padding.rjust(indent + 4) + \
-        '<xs:restriction base="s3m:XdAdapterType">\n'
+    xdstr += padding.rjust(indent + 4) + '<xs:restriction base="s3m:XdAdapterType">\n'
     xdstr += padding.rjust(indent + 6) + '<xs:sequence>\n'
-    xdstr += padding.rjust(indent + 8) + \
-        '<xs:element maxOccurs="unbounded" minOccurs="0" ref="s3m:ms-' + mcID + '"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="unbounded" minOccurs="0" ref="s3m:ms-' + mcID + '"/>\n'
     xdstr += padding.rjust(indent + 6) + '</xs:sequence>\n'
     xdstr += padding.rjust(indent + 4) + '</xs:restriction>\n'
     xdstr += padding.rjust(indent + 2) + '</xs:complexContent>\n'
     xdstr += padding.rjust(indent) + '</xs:complexType>\n'
     # model component
-    xdstr += padding.rjust(indent) + '<xs:element name="ms-' + mcID + \
-        '" substitutionGroup="s3m:XdAdapter-value" type="s3m:mc-' + mcID + '"/>\n'
-    xdstr += padding.rjust(indent) + \
-        '<xs:complexType name="mc-' + mcID + '">\n'
+    xdstr += padding.rjust(indent) + '<xs:element name="ms-' + mcID + '" substitutionGroup="s3m:XdAdapter-value" type="s3m:mc-' + mcID + '"/>\n'
+    xdstr += padding.rjust(indent) + '<xs:complexType name="mc-' + mcID + '">\n'
     xdstr += padding.rjust(indent + 2) + '<xs:annotation>\n'
     xdstr += padding.rjust(indent + 4) + '<xs:documentation>\n'
-    xdstr += padding.rjust(indent + 6) + \
-        'This is the Quantity model component used to model decimals.\n'
+    xdstr += padding.rjust(indent + 6) + 'This is the Quantity model component used to model decimals.\n'
     xdstr += padding.rjust(indent + 4) + '</xs:documentation>\n'
     xdstr += padding.rjust(indent + 4) + '<xs:appinfo>\n'
     # add the RDF
@@ -378,76 +295,41 @@ def xdquantity(data):
     xdstr += padding.rjust(indent + 4) + '</xs:appinfo>\n'
     xdstr += padding.rjust(indent + 2) + '</xs:annotation>\n'
     xdstr += padding.rjust(indent + 2) + '<xs:complexContent>\n'
-    xdstr += padding.rjust(indent + 4) + \
-        '<xs:restriction base="s3m:XdQuantityType">\n'
+    xdstr += padding.rjust(indent + 4) + '<xs:restriction base="s3m:XdQuantityType">\n'
     xdstr += padding.rjust(indent + 6) + '<xs:sequence>\n'
-    xdstr += padding.rjust(indent + 8) + \
-        '<xs:element maxOccurs="1" minOccurs="1" name="label" type="xs:string" fixed="' + \
-        data[1].strip() + '"/>\n'
-    xdstr += padding.rjust(indent + 8) + \
-        '<xs:element maxOccurs="1" minOccurs="0" ref="s3m:ExceptionalValue"/>\n'
-    xdstr += padding.rjust(indent + 8) + \
-        '<xs:element maxOccurs="1" minOccurs="0" name="vtb" type="xs:dateTime"/>\n'
-    xdstr += padding.rjust(indent + 8) + \
-        '<xs:element maxOccurs="1" minOccurs="0" name="vte" type="xs:dateTime"/>\n'
-    xdstr += padding.rjust(indent + 8) + \
-        '<xs:element maxOccurs="1" minOccurs="0" name="tr" type="xs:dateTime"/>\n'
-    xdstr += padding.rjust(indent + 8) + \
-        '<xs:element maxOccurs="1" minOccurs="0" name="modified" type="xs:dateTime"/>\n'
-    xdstr += padding.rjust(indent + 8) + \
-        '<xs:element maxOccurs="1" minOccurs="0" name="magnitude-status" type="s3m:MagnitudeStatus"/>\n'
-    xdstr += padding.rjust(indent + 8) + \
-        '<xs:element maxOccurs="1" minOccurs="1" name="error"  type="xs:int" default="0"/>\n'
-    xdstr += padding.rjust(indent + 8) + \
-        '<xs:element maxOccurs="1" minOccurs="1" name="accuracy" type="xs:int" default="0"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="label" type="xs:string" fixed="' + data[1].strip() + '"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" ref="s3m:ExceptionalValue"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="vtb" type="xs:dateTime"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="vte" type="xs:dateTime"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="tr" type="xs:dateTime"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="modified" type="xs:dateTime"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="magnitude-status" type="s3m:MagnitudeStatus"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="error"  type="xs:int" default="0"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="accuracy" type="xs:int" default="0"/>\n'
     if not data[7] and not data[8] and not data[13]:
-        xdstr += padding.rjust(indent + 8) + \
-            '<xs:element maxOccurs="1" minOccurs="1"  name="xdquantity-value" type="xs:decimal"/>\n'
-    if data[13] is not None:
-        try:
-            if float(data[13]):
-                xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdquantity-value" type="xs:decimal" default="' + str(data[13]) + '"/>\n'
-        except:
-            pass
+        xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdquantity-value" type="xs:decimal"/>\n'
+    if data[13]:
+        xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdquantity-value" type="xs:decimal" default="' + data[13].strip() + '"/>\n'
     else:
-        xdstr += padding.rjust(indent + 8) + \
-            '<xs:element maxOccurs="1" minOccurs="1"  name="xdquantity-value">\n'
+        xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdquantity-value">\n'
         xdstr += padding.rjust(indent + 10) + '<xs:simpleType>\n'
-        xdstr += padding.rjust(indent + 10) + \
-            '<xs:restriction base="xs:decimal">\n'
+        xdstr += padding.rjust(indent + 10) + '<xs:restriction base="xs:decimal">\n'
         if data[9]:            
-            if data[7] is not None:
-                try:
-                    if float(data[7]):
-                        xdstr += padding.rjust(indent + 12) + '<xs:minInclusive value="' + str(float(data[7])) + '"/>\n'
-                except:
-                    pass
-            if data[8] is not None:
-                try:
-                    if float(data[8]):
-                        xdstr += padding.rjust(indent + 12) + '<xs:maxInclusive value="' + str(float(data[8])) + '"/>\n'
-                except:
-                    pass
+            if data[7]:
+                xdstr += padding.rjust(indent + 12) + '<xs:minInclusive value="' + data[7].strip() + '"/>\n'
+            if data[8]:
+                xdstr += padding.rjust(indent + 12) + '<xs:maxInclusive value="' + data[8].strip() + '"/>\n'
         else:            
-            if data[7] is not None:
-                try:
-                    if float(data[7]):
-                        xdstr += padding.rjust(indent + 12) + '<xs:minExclusive value="' + str(float(data[7])) + '"/>\n'
-                except:
-                    pass
-            if data[8] is not None:
-                try:
-                    if float(data[8]):
-                        xdstr += padding.rjust(indent + 12) + '<xs:maxExclusive value="' + str(float(data[8])) + '"/>\n'  
-                except:
-                    pass
+            if data[7]:
+                xdstr += padding.rjust(indent + 12) + '<xs:minExclusive value="' + data[7].strip() + '"/>\n'
+            if data[8]:
+                xdstr += padding.rjust(indent + 12) + '<xs:maxExclusive value="' + data[8].strip() + '"/>\n'  
                 
         xdstr += padding.rjust(indent + 10) + '</xs:restriction>\n'
         xdstr += padding.rjust(indent + 10) + '</xs:simpleType>\n'
         xdstr += padding.rjust(indent + 8) + '</xs:element>\n'
     xdstr += padding.rjust(indent + 8) + \
-        '<xs:element maxOccurs="1" minOccurs="1" name="xdquantity-units" type="s3m:mc-' + \
-        unitsID + '"/>\n'
+        '<xs:element maxOccurs="1" minOccurs="1" name="xdquantity-units" type="s3m:mc-' + unitsID + '"/>\n'
     xdstr += padding.rjust(indent + 6) + '</xs:sequence>\n'
     xdstr += padding.rjust(indent + 4) + '</xs:restriction>\n'
     xdstr += padding.rjust(indent + 2) + '</xs:complexContent>\n'
@@ -483,19 +365,11 @@ def xdstring_rdf(data):
     rdfStr += padding.rjust(indent + 10) +'<sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>\n'
     if data[12]:
         rdfStr += padding.rjust(indent + 10) + '<sh:defaultValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string">' + data[12].strip() + '</sh:defaultValue>\n'
-    if data[3] is not None:
-        try:
-            if int(data[3]):
-                rdfStr += padding.rjust(indent + 10) +'<sh:minLength rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">' + str(int(data[3])).strip() + '</sh:minLength>\n'
-        except:
-            pass
+    if data[3]:
+        rdfStr += padding.rjust(indent + 10) +'<sh:minLength rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">' + data[3].strip() + '</sh:minLength>\n'
         
-    if data[4] is not None:
-        try:
-            if int(data[4]):
-                rdfStr += padding.rjust(indent + 10) +'<sh:maxLength rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">' + str(int(data[4])).strip() + '</sh:maxLength>\n'
-        except:
-            pass
+    if data[4]:
+        rdfStr += padding.rjust(indent + 10) +'<sh:maxLength rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">' + data[4].strip() + '</sh:maxLength>\n'
         
     if data[6]:
         rdfStr += padding.rjust(indent + 10) +'<sh:pattern rdf:datatype="http://www.w3.org/2001/XMLSchema#string">' + data[6].strip() + '</sh:pattern>\n'
@@ -524,29 +398,22 @@ def xdstring(data):
     padding = ('').rjust(indent)
         
     # Adapter
-    xdstr = padding.rjust(indent) + '\n<xs:element name="ms-' + adapterID + \
-        '" substitutionGroup="s3m:Items" type="s3m:mc-' + adapterID + '"/>\n'
-    xdstr += padding.rjust(indent) + \
-        '<xs:complexType name="mc-' + adapterID + '">\n'
+    xdstr = padding.rjust(indent) + '\n<xs:element name="ms-' + adapterID + '" substitutionGroup="s3m:Items" type="s3m:mc-' + adapterID + '"/>\n'
+    xdstr += padding.rjust(indent) + '<xs:complexType name="mc-' + adapterID + '">\n'
     xdstr += padding.rjust(indent + 2) + '<xs:complexContent>\n'
-    xdstr += padding.rjust(indent + 4) + \
-        '<xs:restriction base="s3m:XdAdapterType">\n'
+    xdstr += padding.rjust(indent + 4) + '<xs:restriction base="s3m:XdAdapterType">\n'
     xdstr += padding.rjust(indent + 6) + '<xs:sequence>\n'
-    xdstr += padding.rjust(indent + 8) + \
-        '<xs:element maxOccurs="unbounded" minOccurs="0" ref="s3m:ms-' + mcID + '"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="unbounded" minOccurs="0" ref="s3m:ms-' + mcID + '"/>\n'
     xdstr += padding.rjust(indent + 6) + '</xs:sequence>\n'
     xdstr += padding.rjust(indent + 4) + '</xs:restriction>\n'
     xdstr += padding.rjust(indent + 2) + '</xs:complexContent>\n'
     xdstr += padding.rjust(indent) + '</xs:complexType>\n'
     # model component
-    xdstr += padding.rjust(indent) + '<xs:element name="ms-' + mcID + \
-        '" substitutionGroup="s3m:XdAdapter-value" type="s3m:mc-' + mcID + '"/>\n'
-    xdstr += padding.rjust(indent) + \
-        '<xs:complexType name="mc-' + mcID + '">\n'
+    xdstr += padding.rjust(indent) + '<xs:element name="ms-' + mcID + '" substitutionGroup="s3m:XdAdapter-value" type="s3m:mc-' + mcID + '"/>\n'
+    xdstr += padding.rjust(indent) + '<xs:complexType name="mc-' + mcID + '">\n'
     xdstr += padding.rjust(indent + 2) + '<xs:annotation>\n'
     xdstr += padding.rjust(indent + 4) + '<xs:documentation>\n'
-    xdstr += padding.rjust(indent + 6) + \
-        'This is the String model component used to model text.\n'
+    xdstr += padding.rjust(indent + 6) + 'This is the String model component used to model text.\n'
     xdstr += padding.rjust(indent + 4) + '</xs:documentation>\n'
     xdstr += padding.rjust(indent + 4) + '<xs:appinfo>\n'
 
@@ -556,57 +423,35 @@ def xdstring(data):
     xdstr += padding.rjust(indent + 4) + '</xs:appinfo>\n'
     xdstr += padding.rjust(indent + 2) + '</xs:annotation>\n'    
     xdstr += padding.rjust(indent + 2) + '<xs:complexContent>\n'
-    xdstr += padding.rjust(indent + 4) + \
-        '<xs:restriction base="s3m:XdStringType">\n'
+    xdstr += padding.rjust(indent + 4) + '<xs:restriction base="s3m:XdStringType">\n'
     xdstr += padding.rjust(indent + 6) + '<xs:sequence>\n'
-    xdstr += padding.rjust(indent + 8) + \
-        '<xs:element maxOccurs="1" minOccurs="1" name="label" type="xs:string" fixed="' + \
-        data[1].strip() + '"/>\n'
-    xdstr += padding.rjust(indent + 8) + \
-        '<xs:element maxOccurs="1" minOccurs="0" ref="s3m:ExceptionalValue"/>\n'
-    xdstr += padding.rjust(indent + 8) + \
-        '<xs:element maxOccurs="1" minOccurs="0" name="vtb" type="xs:dateTime"/>\n'
-    xdstr += padding.rjust(indent + 8) + \
-        '<xs:element maxOccurs="1" minOccurs="0" name="vte" type="xs:dateTime"/>\n'
-    xdstr += padding.rjust(indent + 8) + \
-        '<xs:element maxOccurs="1" minOccurs="0" name="tr" type="xs:dateTime"/>\n'
-    xdstr += padding.rjust(indent + 8) + \
-        '<xs:element maxOccurs="1" minOccurs="0" name="modified" type="xs:dateTime"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="label" type="xs:string" fixed="' + data[1].strip() + '"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" ref="s3m:ExceptionalValue"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="vtb" type="xs:dateTime"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="vte" type="xs:dateTime"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="tr" type="xs:dateTime"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="modified" type="xs:dateTime"/>\n'
 
     if not data[3] and not data[4] and not data[5] and not data[6] and not data[12]:
-        xdstr += padding.rjust(indent + 8) + \
-            '<xs:element maxOccurs="1" minOccurs="1"  name="xdstring-value" type="xs:string"/>\n'
+        xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdstring-value" type="xs:string"/>\n'
 
     elif data[12] and not data[3] and not data[4] and not data[5] and not data[6]:
-        xdstr += padding.rjust(indent + 8) + \
-            '<xs:element maxOccurs="1" minOccurs="1"  name="xdstring-value" type="xs:string" default="' + \
-            data[12].strip() + '"/>\n'
+        xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdstring-value" type="xs:string" default="' + data[12].strip() + '"/>\n'
 
     else:
-        xdstr += padding.rjust(indent + 8) + \
-            '<xs:element maxOccurs="1" minOccurs="1"  name="xdstring-value">\n'
+        xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdstring-value">\n'
         xdstr += padding.rjust(indent + 10) + '<xs:simpleType>\n'
-        xdstr += padding.rjust(indent + 10) + \
-            '<xs:restriction base="xs:string">\n'
+        xdstr += padding.rjust(indent + 10) + '<xs:restriction base="xs:string">\n'
         if data[5]:
             enums = data[5].split('|')
             for e in enums:
-                xdstr += padding.rjust(indent + 12) + \
-                    '<xs:enumeration value="' + e.strip() + '"/>\n'
+                xdstr += padding.rjust(indent + 12) + '<xs:enumeration value="' + e.strip() + '"/>\n'
         else:
-            if data[3] is not None:
-                try:
-                    if int(data[3]):
-                        xdstr += padding.rjust(indent + 12) + '<xs:minLength value="' + str(int(data[3])).strip() + '"/>\n'
-                except:
-                    pass
+            if data[3]:
+                xdstr += padding.rjust(indent + 12) + '<xs:minLength value="' + str(int(data[3])).strip() + '"/>\n'
                                                                                     
             if data[4] is not None:
-                try:
-                    if int(data[4]):
-                        xdstr += padding.rjust(indent + 12) + '<xs:maxLength value="' + str(int(data[4])).strip() + '"/>\n'
-                except:
-                    pass
+                xdstr += padding.rjust(indent + 12) + '<xs:maxLength value="' + str(int(data[4])).strip() + '"/>\n'
                 
             if data[6]:
                 xdstr += padding.rjust(indent + 12) + '<xs:pattern value="' + data[6].strip() + '"/>\n'
@@ -675,29 +520,22 @@ def xdtemporal(data):
     padding = ('').rjust(indent)
     
     # Adapter
-    xdstr = padding.rjust(indent) + '\n<xs:element name="ms-' + adapterID + \
-        '" substitutionGroup="s3m:Items" type="s3m:mc-' + adapterID + '"/>\n'
-    xdstr += padding.rjust(indent) + \
-        '<xs:complexType name="mc-' + adapterID + '">\n'
+    xdstr = padding.rjust(indent) + '\n<xs:element name="ms-' + adapterID + '" substitutionGroup="s3m:Items" type="s3m:mc-' + adapterID + '"/>\n'
+    xdstr += padding.rjust(indent) + '<xs:complexType name="mc-' + adapterID + '">\n'
     xdstr += padding.rjust(indent + 2) + '<xs:complexContent>\n'
-    xdstr += padding.rjust(indent + 4) + \
-        '<xs:restriction base="s3m:XdAdapterType">\n'
+    xdstr += padding.rjust(indent + 4) + '<xs:restriction base="s3m:XdAdapterType">\n'
     xdstr += padding.rjust(indent + 6) + '<xs:sequence>\n'
-    xdstr += padding.rjust(indent + 8) + \
-        '<xs:element maxOccurs="unbounded" minOccurs="0" ref="s3m:ms-' + mcID + '"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="unbounded" minOccurs="0" ref="s3m:ms-' + mcID + '"/>\n'
     xdstr += padding.rjust(indent + 6) + '</xs:sequence>\n'
     xdstr += padding.rjust(indent + 4) + '</xs:restriction>\n'
     xdstr += padding.rjust(indent + 2) + '</xs:complexContent>\n'
     xdstr += padding.rjust(indent) + '</xs:complexType>\n'
     # model component
-    xdstr += padding.rjust(indent) + '<xs:element name="ms-' + mcID + \
-        '" substitutionGroup="s3m:XdAdapter-value" type="s3m:mc-' + mcID + '"/>\n'
-    xdstr += padding.rjust(indent) + \
-        '<xs:complexType name="mc-' + mcID + '">\n'
+    xdstr += padding.rjust(indent) + '<xs:element name="ms-' + mcID + '" substitutionGroup="s3m:XdAdapter-value" type="s3m:mc-' + mcID + '"/>\n'
+    xdstr += padding.rjust(indent) + '<xs:complexType name="mc-' + mcID + '">\n'
     xdstr += padding.rjust(indent + 2) + '<xs:annotation>\n'
     xdstr += padding.rjust(indent + 4) + '<xs:documentation>\n'
-    xdstr += padding.rjust(indent + 6) + \
-        'This is the Temporal model component used to model dates, times or datetimes.\n'
+    xdstr += padding.rjust(indent + 6) + 'This is the Temporal model component used to model dates, times or datetimes.\n'
     xdstr += padding.rjust(indent + 4) + '</xs:documentation>\n'
     
     xdstr += padding.rjust(indent + 4) + '<xs:appinfo>\n'
@@ -708,55 +546,35 @@ def xdtemporal(data):
     
     xdstr += padding.rjust(indent + 2) + '</xs:annotation>\n'
     xdstr += padding.rjust(indent + 2) + '<xs:complexContent>\n'
-    xdstr += padding.rjust(indent + 4) + \
-        '<xs:restriction base="s3m:XdTemporalType">\n'
+    xdstr += padding.rjust(indent + 4) + '<xs:restriction base="s3m:XdTemporalType">\n'
     xdstr += padding.rjust(indent + 6) + '<xs:sequence>\n'
-    xdstr += padding.rjust(indent + 8) + \
-        '<xs:element maxOccurs="1" minOccurs="1" name="label" type="xs:string" fixed="' + \
-        data[1].strip() + '"/>\n'
-    xdstr += padding.rjust(indent + 8) + \
-        '<xs:element maxOccurs="1" minOccurs="0" ref="s3m:ExceptionalValue"/>\n'
-    xdstr += padding.rjust(indent + 8) + \
-        '<xs:element maxOccurs="1" minOccurs="0" name="vtb" type="xs:dateTime"/>\n'
-    xdstr += padding.rjust(indent + 8) + \
-        '<xs:element maxOccurs="1" minOccurs="0" name="vte" type="xs:dateTime"/>\n'
-    xdstr += padding.rjust(indent + 8) + \
-        '<xs:element maxOccurs="1" minOccurs="0" name="tr" type="xs:dateTime"/>\n'
-    xdstr += padding.rjust(indent + 8) + \
-        '<xs:element maxOccurs="1" minOccurs="0" name="modified" type="xs:dateTime"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="label" type="xs:string" fixed="' + data[1].strip() + '"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" ref="s3m:ExceptionalValue"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="vtb" type="xs:dateTime"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="vte" type="xs:dateTime"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="tr" type="xs:dateTime"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="modified" type="xs:dateTime"/>\n'
     if data[2].lower() == 'date':
-        xdstr += padding.rjust(indent + 8) + \
-            '<xs:element maxOccurs="1" minOccurs="0" name="xdtemporal-date" type="xs:date"/>\n'
+        xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="xdtemporal-date" type="xs:date"/>\n'
     else:
-        xdstr += padding.rjust(indent + 8) + \
-            '<xs:element maxOccurs="0" minOccurs="0" name="xdtemporal-date" type="xs:date"/>\n'
+        xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="0" minOccurs="0" name="xdtemporal-date" type="xs:date"/>\n'
 
     if data[2].lower() == 'time':
-        xdstr += padding.rjust(indent + 8) + \
-            '<xs:element maxOccurs="1" minOccurs="0" name="xdtemporal-time" type="xs:time"/>\n'
+        xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="xdtemporal-time" type="xs:time"/>\n'
     else:
-        xdstr += padding.rjust(indent + 8) + \
-            '<xs:element maxOccurs="0" minOccurs="0" name="xdtemporal-time" type="xs:time"/>\n'
+        xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="0" minOccurs="0" name="xdtemporal-time" type="xs:time"/>\n'
 
     if data[2].lower() == 'datetime':
-        xdstr += padding.rjust(indent + 8) + \
-            '<xs:element maxOccurs="1" minOccurs="0" name="xdtemporal-datetime" type="xs:dateTime"/>\n'
+        xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="xdtemporal-datetime" type="xs:dateTime"/>\n'
     else:
-        xdstr += padding.rjust(indent + 8) + \
-            '<xs:element maxOccurs="0" minOccurs="0" name="xdtemporal-datetime" type="xs:dateTime"/>\n'
+        xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="0" minOccurs="0" name="xdtemporal-datetime" type="xs:dateTime"/>\n'
 
-    xdstr += padding.rjust(indent + 8) + \
-        '<xs:element maxOccurs="0" minOccurs="0" name="xdtemporal-day" type="xs:gDay"/>\n'
-    xdstr += padding.rjust(indent + 8) + \
-        '<xs:element maxOccurs="0" minOccurs="0" name="xdtemporal-month" type="xs:gMonth"/>\n'
-    xdstr += padding.rjust(indent + 8) + \
-        '<xs:element maxOccurs="0" minOccurs="0" name="xdtemporal-year" type="xs:gYear"/>\n'
-    xdstr += padding.rjust(indent + 8) + \
-        '<xs:element maxOccurs="0" minOccurs="0" name="xdtemporal-year-month" type="xs:gYearMonth"/>\n'
-    xdstr += padding.rjust(indent + 8) + \
-        '<xs:element maxOccurs="0" minOccurs="0" name="xdtemporal-month-day" type="xs:gMonthDay"/>\n'
-    xdstr += padding.rjust(indent + 8) + \
-        '<xs:element maxOccurs="0" minOccurs="0" name="xdtemporal-duration" type="xs:duration"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="0" minOccurs="0" name="xdtemporal-day" type="xs:gDay"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="0" minOccurs="0" name="xdtemporal-month" type="xs:gMonth"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="0" minOccurs="0" name="xdtemporal-year" type="xs:gYear"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="0" minOccurs="0" name="xdtemporal-year-month" type="xs:gYearMonth"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="0" minOccurs="0" name="xdtemporal-month-day" type="xs:gMonthDay"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="0" minOccurs="0" name="xdtemporal-duration" type="xs:duration"/>\n'
     xdstr += padding.rjust(indent + 6) + '</xs:sequence>\n'
     xdstr += padding.rjust(indent + 4) + '</xs:restriction>\n'
     xdstr += padding.rjust(indent + 2) + '</xs:complexContent>\n'
@@ -775,18 +593,13 @@ def units(mcID, data):
     xdstr = padding.rjust(indent) + '<xs:complexType name="mc-' + mcID + '">\n'
     xdstr += padding.rjust(indent + 2) + '<xs:annotation>\n'
     xdstr += padding.rjust(indent + 4) + '<xs:documentation>\n'
-    xdstr += padding.rjust(indent + 6) + \
-        'This is the String model component used to define Units values for Counts and Quantities.\n'
+    xdstr += padding.rjust(indent + 6) + 'This is the String model component used to define Units values for Counts and Quantities.\n'
     xdstr += padding.rjust(indent + 4) + '</xs:documentation>\n'
     xdstr += padding.rjust(indent + 4) + '<xs:appinfo>\n'
-    xdstr += padding.rjust(indent + 6) + \
-        '<rdfs:Class rdf:about="mc-' + mcID + '">\n'
-    xdstr += padding.rjust(indent + 8) + \
-        '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#XdStringType"/>\n'
-    xdstr += padding.rjust(indent + 8) + \
-        '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
-    xdstr += padding.rjust(indent + 8) + \
-        '<rdfs:isDefinedBy rdf:resource="' + data[10].strip() + '"/>\n'
+    xdstr += padding.rjust(indent + 6) + '<rdfs:Class rdf:about="mc-' + mcID + '">\n'
+    xdstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#XdStringType"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + data[10].strip() + '"/>\n'
     if data[11]:  # are there additional predicate-object definitions?
         for po in data[11].splitlines():
             pred = po.split()[0]
@@ -796,26 +609,16 @@ def units(mcID, data):
     xdstr += padding.rjust(indent + 4) + '</xs:appinfo>\n'
     xdstr += padding.rjust(indent + 2) + '</xs:annotation>\n'
     xdstr += padding.rjust(indent + 2) + '<xs:complexContent>\n'
-    xdstr += padding.rjust(indent + 4) + \
-        '<xs:restriction base="s3m:XdStringType">\n'
+    xdstr += padding.rjust(indent + 4) + '<xs:restriction base="s3m:XdStringType">\n'
     xdstr += padding.rjust(indent + 6) + '<xs:sequence>\n'
-    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="label" type="xs:string" fixed="' + \
-        data[1].strip() + ' Units"/>\n'
-    xdstr += padding.rjust(indent + 8) + \
-        '<xs:element maxOccurs="1" minOccurs="0" ref="s3m:ExceptionalValue"/>\n'
-    xdstr += padding.rjust(indent + 8) + \
-        '<xs:element maxOccurs="1" minOccurs="0" name="vtb" type="xs:dateTime"/>\n'
-    xdstr += padding.rjust(indent + 8) + \
-        '<xs:element maxOccurs="1" minOccurs="0" name="vte" type="xs:dateTime"/>\n'
-    xdstr += padding.rjust(indent + 8) + \
-        '<xs:element maxOccurs="1" minOccurs="0" name="tr" type="xs:dateTime"/>\n'
-    xdstr += padding.rjust(indent + 8) + \
-        '<xs:element maxOccurs="1" minOccurs="0" name="modified" type="xs:dateTime"/>\n'
-    xdstr += padding.rjust(indent + 8) + \
-        '<xs:element maxOccurs="1" minOccurs="1"  name="xdstring-value" type="xs:string" fixed="' + \
-        data[12].strip() + '"/>\n'
-    xdstr += padding.rjust(indent + 8) + \
-        '<xs:element maxOccurs="1" minOccurs="1" name="xdstring-language" type="xs:language" default="en-US"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="label" type="xs:string" fixed="' + data[1].strip() + ' Units"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" ref="s3m:ExceptionalValue"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="vtb" type="xs:dateTime"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="vte" type="xs:dateTime"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="tr" type="xs:dateTime"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="modified" type="xs:dateTime"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdstring-value" type="xs:string" fixed="' + data[12].strip() + '"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="xdstring-language" type="xs:language" default="en-US"/>\n'
     xdstr += padding.rjust(indent + 6) + '</xs:sequence>\n'
     xdstr += padding.rjust(indent + 4) + '</xs:restriction>\n'
     xdstr += padding.rjust(indent + 2) + '</xs:complexContent>\n'
@@ -831,33 +634,24 @@ def xsd_data(dataID, indent, def_url, db_file):
     
     indent += 2
     padding = ('').rjust(indent)
-    dstr = padding.rjust(indent) + '<xs:element name="ms-' + dataID + \
-        '" substitutionGroup="s3m:Item" type="s3m:mc-' + dataID + '"/>\n'
-    dstr += padding.rjust(indent) + \
-        '<xs:complexType name="mc-' + dataID + '">\n'
+    dstr = padding.rjust(indent) + '<xs:element name="ms-' + dataID + '" substitutionGroup="s3m:Item" type="s3m:mc-' + dataID + '"/>\n'
+    dstr += padding.rjust(indent) + '<xs:complexType name="mc-' + dataID + '">\n'
     dstr += padding.rjust(indent + 2) + '<xs:annotation>\n'
     dstr += padding.rjust(indent + 4) + '<xs:documentation>\n'
-    dstr += padding.rjust(indent + 6) + \
-        'This is the Cluster that groups all of the data items (columns) definitions into one unit.\n'
+    dstr += padding.rjust(indent + 6) + 'This is the Cluster that groups all of the data items (columns) definitions into one unit.\n'
     dstr += padding.rjust(indent + 4) + '</xs:documentation>\n'
     dstr += padding.rjust(indent + 4) + '<xs:appinfo>\n'
-    dstr += padding.rjust(indent + 6) + \
-        '<rdfs:Class rdf:about="mc-' + dataID + '">\n'
-    dstr += padding.rjust(indent + 8) + \
-        '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#ClusterType"/>\n'
-    dstr += padding.rjust(indent + 8) + \
-        '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
-    dstr += padding.rjust(indent + 8) + \
-        '<rdfs:isDefinedBy rdf:resource="' + def_url + '"/>\n'
+    dstr += padding.rjust(indent + 6) + '<rdfs:Class rdf:about="mc-' + dataID + '">\n'
+    dstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#ClusterType"/>\n'
+    dstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
+    dstr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + def_url + '"/>\n'
     dstr += padding.rjust(indent + 6) + '</rdfs:Class>\n'
     dstr += padding.rjust(indent + 4) + '</xs:appinfo>\n'
     dstr += padding.rjust(indent + 2) + '</xs:annotation>\n'
     dstr += padding.rjust(indent + 2) + '<xs:complexContent>\n'
-    dstr += padding.rjust(indent + 4) + \
-        '<xs:restriction base="s3m:ClusterType">\n'
+    dstr += padding.rjust(indent + 4) + '<xs:restriction base="s3m:ClusterType">\n'
     dstr += padding.rjust(indent + 6) + '<xs:sequence>\n'
-    dstr += padding.rjust(indent + 8) + \
-        '<xs:element maxOccurs="1" minOccurs="1" name="label" type="xs:string" fixed="Data Items"/>\n'
+    dstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="label" type="xs:string" fixed="Data Items"/>\n'
 
     # now we need to loop through the db and create all of the model components while keeping track so we can add them here too.
     # the dictionary uses the mc uuid as the key. The items are the complete mc code.
@@ -881,8 +675,7 @@ def xsd_data(dataID, indent, def_url, db_file):
             raise ValueError("Invalid datatype")
 
     for mc_id in mcDict.keys():
-        dstr += padding.rjust(indent + 8) + \
-            '<xs:element maxOccurs="1" minOccurs="0" ref="s3m:ms-' + mc_id + '"/>\n'
+        dstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" ref="s3m:ms-' + mc_id + '"/>\n'
 
     dstr += padding.rjust(indent + 6) + '</xs:sequence>\n'
     dstr += padding.rjust(indent + 4) + '</xs:restriction>\n'
@@ -904,42 +697,28 @@ def xsd_entry(data, db_file):
     padding = ('').rjust(indent)
     dataID = str(uuid4())
 
-    estr = padding.rjust(indent) + '<xs:element name="ms-' + data[6].strip(
-    ) + '" substitutionGroup="s3m:Definition" type="s3m:mc-' + data[6].strip() + '"/>\n'
-    estr += padding.rjust(indent) + \
-        '<xs:complexType name="mc-' + data[6].strip() + '">\n'
+    estr = padding.rjust(indent) + '<xs:element name="ms-' + data[6].strip() + '" substitutionGroup="s3m:Definition" type="s3m:mc-' + data[6].strip() + '"/>\n'
+    estr += padding.rjust(indent) + '<xs:complexType name="mc-' + data[6].strip() + '">\n'
     estr += padding.rjust(indent + 2) + '<xs:annotation>\n'
     estr += padding.rjust(indent + 4) + '<xs:documentation>\n'
-    estr += padding.rjust(indent + 6) + \
-        'This is the Entry container that provides all the required contextual information to manage a dataset. It is analogous to a dataset catalog entry.\n'
+    estr += padding.rjust(indent + 6) + 'This is the Entry container that provides all the required contextual information to manage a dataset. It is analogous to a dataset catalog entry.\n'
     estr += padding.rjust(indent + 4) + '</xs:documentation>\n'
     estr += padding.rjust(indent + 4) + '<xs:appinfo>\n'
-    estr += padding.rjust(indent + 6) + \
-        '<rdfs:Class rdf:about="mc-' + data[6].strip() + '">\n'
-    estr += padding.rjust(indent + 8) + \
-        '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#EntryType"/>\n'
-    estr += padding.rjust(indent + 8) + \
-        '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
-    estr += padding.rjust(indent + 8) + \
-        '<rdfs:isDefinedBy rdf:resource="' + data[4].strip() + '"/>\n'
+    estr += padding.rjust(indent + 6) + '<rdfs:Class rdf:about="mc-' + data[6].strip() + '">\n'
+    estr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#EntryType"/>\n'
+    estr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
+    estr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + data[4].strip() + '"/>\n'
     estr += padding.rjust(indent + 6) + '</rdfs:Class>\n'
     estr += padding.rjust(indent + 4) + '</xs:appinfo>\n'
     estr += padding.rjust(indent + 2) + '</xs:annotation>\n'
     estr += padding.rjust(indent + 2) + '<xs:complexContent>\n'
-    estr += padding.rjust(indent + 4) + \
-        '<xs:restriction base="s3m:EntryType">\n'
+    estr += padding.rjust(indent + 4) + '<xs:restriction base="s3m:EntryType">\n'
     estr += padding.rjust(indent + 6) + '<xs:sequence>\n'
-    estr += padding.rjust(indent + 8) + \
-        '<xs:element maxOccurs="1" minOccurs="1" name="label" type="xs:string" fixed="' + \
-        data[0].strip() + '"/>\n'
-    estr += padding.rjust(indent + 8) + \
-        '<xs:element maxOccurs="1" minOccurs="1" name="entry-language" type="xs:language" fixed="en-US"/>\n'
-    estr += padding.rjust(indent + 8) + \
-        '<xs:element maxOccurs="1" minOccurs="1" name="entry-encoding" type="xs:string" fixed="utf-8"/>\n'
+    estr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="label" type="xs:string" fixed="' + data[0].strip() + '"/>\n'
+    estr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="entry-language" type="xs:language" fixed="en-US"/>\n'
+    estr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="entry-encoding" type="xs:string" fixed="utf-8"/>\n'
     estr += padding.rjust(indent + 8) + '<!-- current-state -->\n'
-    estr += padding.rjust(indent + 8) + \
-        '<xs:element maxOccurs="1" minOccurs="1" ref="s3m:ms-' + \
-        data[7].strip() + '"/>\n'
+    estr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" ref="s3m:ms-' + data[7].strip() + '"/>\n'
     estr += padding.rjust(indent + 8) + '<!-- subject -->\n'
     estr += padding.rjust(indent + 8) + '<!-- provider -->\n'
     estr += padding.rjust(indent + 8) + '<!-- participations -->\n'
@@ -964,32 +743,24 @@ def xsd_dm(data):
     indent = 2
     padding = ('').rjust(indent)
 
-    dmstr = padding.rjust(indent) + '<xs:element name="dm-' + \
-        data[5].strip() + '" type="s3m:mc-' + data[5].strip() + '"/>\n'
-    dmstr += padding.rjust(indent) + \
-        '<xs:complexType name="mc-' + data[5].strip() + '">\n'
+    dmstr = padding.rjust(indent) + '<xs:element name="dm-' + data[5].strip() + '" type="s3m:mc-' + data[5].strip() + '"/>\n'
+    dmstr += padding.rjust(indent) + '<xs:complexType name="mc-' + data[5].strip() + '">\n'
     dmstr += padding.rjust(indent + 2) + '<xs:annotation>\n'
     dmstr += padding.rjust(indent + 4) + '<xs:documentation>\n'
     dmstr += padding.rjust(indent + 6) + data[1].strip() + '\n'
     dmstr += padding.rjust(indent + 4) + '</xs:documentation>\n'
     dmstr += padding.rjust(indent + 4) + '<xs:appinfo>\n'
-    dmstr += padding.rjust(indent + 6) + \
-        '<rdfs:Class rdf:about="mc-' + data[5].strip() + '">\n'
-    dmstr += padding.rjust(indent + 8) + \
-        '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#DMType"/>\n'
-    dmstr += padding.rjust(indent + 8) + \
-        '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
-    dmstr += padding.rjust(indent + 8) + \
-        '<rdfs:isDefinedBy rdf:resource="' + data[4].strip() + '"/>\n'
+    dmstr += padding.rjust(indent + 6) + '<rdfs:Class rdf:about="mc-' + data[5].strip() + '">\n'
+    dmstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#DMType"/>\n'
+    dmstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
+    dmstr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + data[4].strip() + '"/>\n'
     dmstr += padding.rjust(indent + 6) + '</rdfs:Class>\n'
     dmstr += padding.rjust(indent + 4) + '</xs:appinfo>\n'
     dmstr += padding.rjust(indent + 2) + '</xs:annotation>\n'
     dmstr += padding.rjust(indent + 2) + '<xs:complexContent>\n'
     dmstr += padding.rjust(indent + 4) + '<xs:restriction base="s3m:DMType">\n'
     dmstr += padding.rjust(indent + 6) + '<xs:sequence>\n'
-    dmstr += padding.rjust(indent + 8) + \
-        '<xs:element maxOccurs="1" minOccurs="1" ref="s3m:ms-' + \
-        data[6].strip() + '"/>\n'
+    dmstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" ref="s3m:ms-' + data[6].strip() + '"/>\n'
     dmstr += padding.rjust(indent + 6) + '</xs:sequence>\n'
     dmstr += padding.rjust(indent + 4) + '</xs:restriction>\n'
     dmstr += padding.rjust(indent + 2) + '</xs:complexContent>\n'
@@ -1054,10 +825,8 @@ def xsd_rdf(xsdfile, outdir, dm_id, db_file):
     conn.close()
 
     for row in rows:
-        rdfstr += '<rdfs:Class xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"  xmlns:s3m="https://www.s3model.com/ns/s3m/" rdf:about="s3m:ms-' + \
-            row[15].strip() + '">\n'
-        rdfstr += '  <s3m:isRMSOf rdf:resource="s3m:mc-' + \
-            row[15].strip() + '"/>\n'
+        rdfstr += '<rdfs:Class xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"  xmlns:s3m="https://www.s3model.com/ns/s3m/" rdf:about="s3m:ms-' + row[15].strip() + '">\n'
+        rdfstr += '  <s3m:isRMSOf rdf:resource="s3m:mc-' + row[15].strip() + '"/>\n'
         rdfstr += '</rdfs:Class>\n'
 
     rdfstr += '</rdf:RDF>\n'
@@ -1102,8 +871,7 @@ def make_model(db_file, outdir):
     try:
         xmlschema_doc = etree.parse(model)
     except:
-        print(
-            'Model Error', "There was an error in generating the schema. Please re-edit the database and look for errors. Probably undefined namespaces or improperly formatted predicate-object pair.")
+        print('Model Error', "There was an error in generating the schema. Please re-edit the database and look for errors. Probably undefined namespaces or improperly formatted predicate-object pair.")
         return None
 
     xsd_rdf(model, outdir, dmID, db_file)
@@ -1132,12 +900,10 @@ def xml_count(row, data):
     xstr += '        <magnitude-status>equal</magnitude-status>\n'
     xstr += '        <error>0</error>\n'
     xstr += '        <accuracy>0</accuracy>\n'
-    xstr += '        <xdcount-value>' + \
-        data[row[0].strip()] + '</xdcount-value>\n'
+    xstr += '        <xdcount-value>' + data[row[0].strip()] + '</xdcount-value>\n'
     xstr += '        <xdcount-units>\n'
     xstr += '          <label>' + row[1].strip() + ' Units</label>\n'
-    xstr += '          <xdstring-value>' + \
-        row[14].strip() + '</xdstring-value>\n'
+    xstr += '          <xdstring-value>' + row[14].strip() + '</xdstring-value>\n'
     xstr += '          <xdstring-language>en-US</xdstring-language>\n'
     xstr += '        </xdcount-units>\n'
     xstr += '      </s3m:ms-' + row[15].strip() + '>\n'
@@ -1146,11 +912,9 @@ def xml_count(row, data):
 
 
 def rdf_count(row, data):
-    rstr = '      <rdfs:Class rdf:about="s3m:ms-' + \
-        row[15].strip() + '">\n'
+    rstr = '      <rdfs:Class rdf:about="s3m:ms-' + row[15].strip() + '">\n'
     rstr += '        <rdfs:label>' + row[1].strip() + '</rdfs:label>\n'
-    rstr += '        <rdfs:value rdf:datatype="xs:int">' + \
-        data[row[0].strip()] + '</rdfs:value>\n'
+    rstr += '        <rdfs:value rdf:datatype="xs:int">' + data[row[0].strip()] + '</rdfs:value>\n'
     rstr += '      </rdfs:Class>\n'
     return(rstr)
 
@@ -1162,12 +926,10 @@ def xml_quantity(row, data):
     xstr += '        <magnitude-status>equal</magnitude-status>\n'
     xstr += '        <error>0</error>\n'
     xstr += '        <accuracy>0</accuracy>\n'
-    xstr += '        <xdquantity-value>' + \
-        data[row[0].strip()] + '</xdquantity-value>\n'
+    xstr += '        <xdquantity-value>' + data[row[0].strip()] + '</xdquantity-value>\n'
     xstr += '        <xdquantity-units>\n'
     xstr += '          <label>' + row[1].strip() + ' Units</label>\n'
-    xstr += '          <xdstring-value>' + \
-        row[14].strip() + '</xdstring-value>\n'
+    xstr += '          <xdstring-value>' + row[14].strip() + '</xdstring-value>\n'
     xstr += '          <xdstring-language>en-US</xdstring-language>\n'
     xstr += '        </xdquantity-units>\n'
     xstr += '      </s3m:ms-' + row[15].strip() + '>\n'
@@ -1176,11 +938,9 @@ def xml_quantity(row, data):
 
 
 def rdf_quantity(row, data):
-    rstr = '      <rdfs:Class rdf:about="s3m:ms-' + \
-        row[15].strip() + '">\n'
+    rstr = '      <rdfs:Class rdf:about="s3m:ms-' + row[15].strip() + '">\n'
     rstr += '        <rdfs:label>' + row[1].strip() + '</rdfs:label>\n'
-    rstr += '        <rdfs:value rdf:datatype="xs:decimal">' + \
-        data[row[0].strip()] + '</rdfs:value>\n'
+    rstr += '        <rdfs:value rdf:datatype="xs:decimal">' + data[row[0].strip()] + '</rdfs:value>\n'
     rstr += '      </rdfs:Class>\n'
     return(rstr)
 
@@ -1190,32 +950,25 @@ def xml_temporal(row, data):
     xstr += '      <s3m:ms-' + row[15].strip() + '>\n'
     xstr += '        <label>' + row[1].strip() + '</label>\n'
     if row[2].lower() == 'date':
-        xstr += '        <xdtemporal-date>' + \
-            data[row[0].strip()] + '</xdtemporal-date>\n'
+        xstr += '        <xdtemporal-date>' + data[row[0].strip()] + '</xdtemporal-date>\n'
     if row[2].lower() == 'time':
-        xstr += '        <xdtemporal-time>' + \
-            data[row[0].strip()] + '</xdtemporal-time>\n'
+        xstr += '        <xdtemporal-time>' + data[row[0].strip()] + '</xdtemporal-time>\n'
     if row[2].lower() == 'datetime':
-        xstr += '        <xdtemporal-datetime>' + \
-            data[row[0].strip()] + '</xdtemporal-datetime>\n'
+        xstr += '        <xdtemporal-datetime>' + data[row[0].strip()] + '</xdtemporal-datetime>\n'
     xstr += '      </s3m:ms-' + row[15].strip() + '>\n'
     xstr += '      </s3m:ms-' + row[16].strip() + '>\n'
     return(xstr)
 
 
 def rdf_temporal(row, data):
-    rstr = '      <rdfs:Class rdf:about="s3m:ms-' + \
-        row[15].strip() + '">\n'
+    rstr = '      <rdfs:Class rdf:about="s3m:ms-' + row[15].strip() + '">\n'
     rstr += '        <rdfs:label>' + row[1].strip() + '</rdfs:label>\n'
     if row[2].lower() == 'date':
-        rstr += '        <rdfs:value rdf:datatype="xs:date">' + \
-            data[row[0].strip()] + '</rdfs:value>\n'
+        rstr += '        <rdfs:value rdf:datatype="xs:date">' + data[row[0].strip()] + '</rdfs:value>\n'
     if row[2].lower() == 'time':
-        rstr += '        <rdfs:value rdf:datatype="xs:time">' + \
-            data[row[0].strip()] + '</rdfs:value>\n'
+        rstr += '        <rdfs:value rdf:datatype="xs:time">' + data[row[0].strip()] + '</rdfs:value>\n'
     if row[2].lower() == 'datetime':
-        rstr += '        <rdfs:value rdf:datatype="xs:dateTime">' + \
-            data[row[0].strip()] + '</rdfs:value>\n'
+        rstr += '        <rdfs:value rdf:datatype="xs:dateTime">' + data[row[0].strip()] + '</rdfs:value>\n'
     rstr += '      </rdfs:Class>\n'
     return(rstr)
 
@@ -1224,8 +977,7 @@ def xml_string(row, data):
     xstr = '      <s3m:ms-' + row[16].strip() + '>\n'
     xstr += '      <s3m:ms-' + row[15].strip() + '>\n'
     xstr += '        <label>' + row[1].strip() + '</label>\n'
-    xstr += '        <xdstring-value>' + \
-        data[row[0].strip()] + '</xdstring-value>\n'
+    xstr += '        <xdstring-value>' + data[row[0].strip()] + '</xdstring-value>\n'
     xstr += '        <xdstring-language>en-US</xdstring-language>\n'
     xstr += '      </s3m:ms-' + row[15].strip() + '>\n'
     xstr += '      </s3m:ms-' + row[16].strip() + '>\n'
@@ -1233,11 +985,9 @@ def xml_string(row, data):
 
 
 def rdf_string(row, data):
-    rstr = '      <rdfs:Class rdf:about="s3m:ms-' + \
-        row[15].strip() + '">\n'
+    rstr = '      <rdfs:Class rdf:about="s3m:ms-' + row[15].strip() + '">\n'
     rstr += '        <rdfs:label>' + row[1].strip() + '</rdfs:label>\n'
-    rstr += '        <rdfs:value rdf:datatype="xs:string">' + \
-        data[row[0].strip()] + '</rdfs:value>\n'
+    rstr += '        <rdfs:value rdf:datatype="xs:string">' + data[row[0].strip()] + '</rdfs:value>\n'
     rstr += '      </rdfs:Class>\n'
     return(rstr)
 
@@ -1301,8 +1051,7 @@ def make_data(schema, db_file, infile, delim, outdir, connRDF, connXML, connJSON
                 xmlStr = ''
                 rdfStr = '<?xml version="1.0" encoding="UTF-8"?>\n<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"\nxmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"\nxmlns:s3m="https://www.s3model.com/ns/s3m/"\nxmlns:xs="http://www.w3.org/2001/XMLSchema">\n'
                 rdfStr += '<rdfs:Class rdf:about="' + file_id + '">\n'
-                rdfStr += '  <s3m:isInstanceOf rdf:resource="dm-' + \
-                    model[5].strip() + '"/>\n'
+                rdfStr += '  <s3m:isInstanceOf rdf:resource="dm-' + model[5].strip() + '"/>\n'
                 rdfStr += '</rdfs:Class>\n'
     
                 # get the DM and Entry components.

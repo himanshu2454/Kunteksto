@@ -53,21 +53,39 @@ class EntryWindow(tk.Frame):
         self.grid_rowconfigure(0, weight=1)
         self.draw_form()
         
+     
+    def validnum(self, value):
+        "Check for numeric entries and return them as a string or return an empty string. "
+        if str(value).isnumeric():
+            return(str(value))
+        elif str(value).find('.') == -1:  # check that there is not a decimal point
+            return('')
+        elif str(value).find('.') > -1:  # check that there is decimal point
+            val_list = []
+            val_list = str(value).split('.')
+            if len(val_list) > 2:
+                return('')
+            if str(val_list[0]).isnumeric() and str(val_list[1]).isnumeric():
+                return(str(val_list[0])+'.'+str(val_list[1]))
+        else:
+            return('')
+            
+     
     def draw_form(self):        
         self.header = self.records[self.recndx][0]
         self.label = tk.StringVar(value=self.records[self.recndx][1])
         self.datatype = tk.StringVar(value=self.records[self.recndx][2])
-        self.min_len = tk.StringVar(value=self.records[self.recndx][3])
-        self.max_len = tk.StringVar(value=self.records[self.recndx][4])
+        self.min_len = tk.StringVar(value=self.validnum(self.records[self.recndx][3]))
+        self.max_len =tk.StringVar(value=self.validnum(self.records[self.recndx][4]))
         self.choices = tk.StringVar(value=self.records[self.recndx][5])
         self.regex = tk.StringVar(value=self.records[self.recndx][6])
-        self.min_val = tk.StringVar(value=self.records[self.recndx][7])
-        self.max_val = tk.StringVar(value=self.records[self.recndx][8])
+        self.min_val = tk.StringVar(value=self.validnum(self.records[self.recndx][7]))
+        self.max_val = tk.StringVar(value=self.validnum(self.records[self.recndx][8]))
         self.vals_inclusive = tk.StringVar(value=self.records[self.recndx][9])
         self.definition_url = tk.StringVar(value=self.records[self.recndx][10])
         self.pred_obj_list = tk.StringVar(value=self.records[self.recndx][11])
         self.def_txt_value = tk.StringVar(value=self.records[self.recndx][12])
-        self.def_num_value = tk.StringVar(value=self.records[self.recndx][13])
+        self.def_num_value = tk.StringVar(value=self.validnum(self.records[self.recndx][13]))
         self.units = tk.StringVar(value=self.records[self.recndx][14])
 
         # Add a label and entry box for each column in table.
@@ -76,7 +94,7 @@ class EntryWindow(tk.Frame):
         label_entry = tk.Entry(self, textvariable=self.label, width=50).grid(row=0, column=1, pady=1, padx=5)
 
         tk.Label(self, text='Datatype').grid(row=1, column=0, pady=1, sticky=E)
-        datatype_entry = tk.OptionMenu(self, self.datatype, 'String', 'Integer', 'Decimal','Date')
+        datatype_entry = tk.OptionMenu(self, self.datatype, 'String', 'Integer', 'Decimal', 'Date', 'Time', 'Datetime')
         datatype_entry.grid(row=1, column=1, pady=1, padx=5)
         
         tk.Label(self, text='Minimum Length').grid(row=2, column=0, pady=1, sticky=E)
@@ -113,7 +131,7 @@ class EntryWindow(tk.Frame):
         def_num_value_entry = tk.Entry(self, textvariable=self.def_num_value, width=50).grid(row=12, column=1, pady=1, padx=5)
         
         tk.Label(self, text='Units').grid(row=13, column=0, pady=1, sticky=E)
-        units_entry = tk.Entry(self, textvariable=self.choices, width=50).grid(row=13, column=1, pady=1, padx=5)
+        units_entry = tk.Entry(self, textvariable=self.units, width=50).grid(row=13, column=1, pady=1, padx=5)
         
         # Add buttons to navigate database.(
         previous_button = tk.Button(self, text='Previous', width=8, command=self.prev_rec)
@@ -129,17 +147,17 @@ class EntryWindow(tk.Frame):
         self.header = self.records[self.recndx][0]
         self.label.set(self.records[self.recndx][1])
         self.datatype.set(self.records[self.recndx][2])
-        self.min_len.set(self.records[self.recndx][3])
-        self.max_len.set(self.records[self.recndx][4])
+        self.min_len.set(self.validnum(self.records[self.recndx][3]))
+        self.max_len.set(self.validnum(self.records[self.recndx][4]))
         self.choices.set(self.records[self.recndx][5])
         self.regex.set(self.records[self.recndx][6])
-        self.min_val.set(self.records[self.recndx][7])
-        self.max_val.set(self.records[self.recndx][8])
+        self.min_val.set(self.validnum(self.records[self.recndx][7]))
+        self.max_val.set(self.validnum(self.records[self.recndx][8]))
         self.vals_inclusive.set(self.records[self.recndx][9])
         self.definition_url.set(self.records[self.recndx][10])
         self.pred_obj_list.set(self.records[self.recndx][11])
         self.def_txt_value.set(self.records[self.recndx][12])
-        self.def_num_value.set(self.records[self.recndx][13])
+        self.def_num_value.set(self.validnum(self.records[self.recndx][13]))
         self.units.set(self.records[self.recndx][14])
         
 

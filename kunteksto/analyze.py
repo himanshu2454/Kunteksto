@@ -17,17 +17,17 @@ record table:
  0 - header = char(100)
  1 - label = char(250)
  2 - datatype = char(10)
- 3 - min_len = int
- 4 - max_len = int
+ 3 - min_len = char(100)
+ 4 - max_len = char(100)
  5 - choices = TEXT
  6 - regex = CHAR(250)
- 7 - min_val = FLOAT
- 8 - max_val = FLOAT
+ 7 - min_val = char(100)
+ 8 - max_val = char(100)
  9 - vals_Inclusive = BOOL
 10 - definition_url = CHAR(500)
 11 - pred_obj_list = TEXT
 12 - def_txt_value = TEXT
-13 - def_num_value = FLOAT
+13 - def_num_value = char(100)
 14 - units = CHAR(50)
 15 - mcid = CHAR(40)
 16 - adid = CHAR(40)
@@ -134,7 +134,7 @@ def analyze(csvInput, delim, level, out_dir):
     conn = sqlite3.connect(db_file)
     c = conn.cursor()
     c.execute("""CREATE TABLE "model" ("title" CHAR(250), "description" TEXT, "copyright" CHAR(250), "author" CHAR(250), "definition_url" CHAR(500), "dmid" CHAR(40), "entryid" CHAR(40), "dataid" CHAR(40))""")
-    c.execute("""CREATE TABLE "record"  (header  char(100), label char(250), datatype char(10), min_len int, max_len int, "choices" TEXT, "regex" CHAR(250), "min_val" FLOAT, "max_val" FLOAT, "vals_Inclusive" BOOL, "definition_url" CHAR(500), "pred_obj_list" TEXT, "def_txt_value" TEXT, "def_num_value" FLOAT, "units" CHAR(50), "mcid" CHAR(40), "adid" CHAR(40))""")
+    c.execute("""CREATE TABLE "record"  (header  char(100), label char(250), datatype char(10), min_len char(100), max_len char(100), "choices" TEXT, "regex" CHAR(250), "min_val" char(100), "max_val" char(100), "vals_Inclusive" BOOL, "definition_url" CHAR(500), "pred_obj_list" TEXT, "def_txt_value" TEXT, "def_num_value" char(100), "units" CHAR(50), "mcid" CHAR(40), "adid" CHAR(40))""")
     c.execute("""CREATE INDEX header_idx on record (header)""")
     
     # create the initial data for the record table.
@@ -145,8 +145,7 @@ def analyze(csvInput, delim, level, out_dir):
             mcID = str(uuid4())  # model component
             adID = str(uuid4())   # adapter
             label = 'The ' + h.replace('_', ' ')
-            data.append((h, label, 'String', None, None, '', '',
-                         None, None, True, '', '', '', None, '', mcID, adID))
+            data.append((h, label, 'String', '', '', '', '', '', '', True, '', '', '', '', '', mcID, adID))
 
     c = conn.cursor()
     c.executemany(
