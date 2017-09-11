@@ -173,13 +173,13 @@ Edit these columns (see :ref:`semantics`) :
         .. note::
             Minimum & Maximum values are checked first for *Inclusive* values. If one does not exist then the *Exclusive* value is checked. Obviously it is illogical to define an inclusive or exclusive minimum or maximum value together.
 
-    - *Minimum Inclusive Value* enter the minimum value restriction for **Integer or Decimal** columns.
+    - *Minimum Inclusive Value* enter the minimum inclusive value restriction for **Integer or Decimal** columns.
     
-    - *Maximum Inclusive Value* enter the maximum value restriction for **Integer or Decimal** columns.	
+    - *Maximum Inclusive Value* enter the maximum inclusive value restriction for **Integer or Decimal** columns.	
     
-    - *Minimum Exclusive Value* enter the minimum value restriction for **Integer or Decimal** columns.
+    - *Minimum Exclusive Value* enter the minimum exclusive value restriction for **Integer or Decimal** columns.
     
-    - *Maximum Exclusive Value* enter the maximum value restriction for **Integer or Decimal** columns. 
+    - *Maximum Exclusive Value* enter the maximum exclusive value restriction for **Integer or Decimal** columns. 
         
     - *Defining URL* enter a URL (or at least a URI) to a vocabulary or ontology or a webpage that describes or defines the meaning of the data in this column.
     
