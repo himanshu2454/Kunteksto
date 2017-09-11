@@ -95,5 +95,5 @@ class EntryWindow(tk.Frame):
             self.quit()
 
         # Add button to save changes to database.
-        submit_button = tk.Button(self, text='Save & Close', width=8, command=lambda: save(self))
+        submit_button = tk.Button(self, text='Save & Close', width=15, command=lambda: save(self))
         submit_button.grid(row= 7, column=0, sticky=E, pady=10, padx=1)
