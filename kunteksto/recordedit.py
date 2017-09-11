@@ -132,7 +132,9 @@ class EntryWindow(tk.Frame):
         definition_url_entry = tk.Entry(self, textvariable=self.definition_url, width=50).grid(row=11, column=1, pady=1, padx=5)
         
         tk.Label(self, text='Predicates & Objects').grid(row=12, column=0, pady=1, sticky=E)
-        pred_obj_list_entry = tk.Entry(self, textvariable=self.pred_obj_list, width=50).grid(row=12, column=1, pady=1, padx=5)
+        pred_obj_list_entry = tk.Text(self, height=3, width=50)
+        pred_obj_list_entry.insert(END, self.pred_obj_list.get())
+        pred_obj_list_entry.grid(row=12, column=1, pady=1, padx=5)
         
         tk.Label(self, text='Default Text Value').grid(row=13, column=0, pady=1, sticky=E)
         def_txt_value_entry = tk.Entry(self, textvariable=self.def_txt_value, width=50).grid(row=13, column=1, pady=1, padx=5)
