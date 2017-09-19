@@ -16,6 +16,8 @@ Tutorial/Demo
 
 .. note::
 
+    It is **HIGHLY RECOMMEDED** that you read through this entire, short tutorial before beginning. You will gain more insight and save time if you follow this advice.
+
     There is an example of a complete database, model and data set in the example_data/Demo_with_semantics.zip archive. 
 
 Kunteksto includes a demo data file *Demo.csv*, that you can use to create your first model and data translation. This is a screenshot of the entire file as depicted in a spreadsheet. 
@@ -171,7 +173,7 @@ Edit these columns (see :ref:`semantics`) :
     
 
         .. note::
-            Minimum & Maximum values are checked first for *Inclusive* values. If one does not exist then the *Exclusive* value is checked. Obviously it is illogical to define an inclusive or exclusive minimum or maximum value together.
+            Minimum & Maximum values are checked first for *Inclusive* values. If one does not exist then the *Exclusive* value is checked. Obviously it is illogical to define an inclusive or exclusive minimum AND maximum value together.
 
     - *Minimum Inclusive Value* enter the minimum inclusive value restriction for **Integer or Decimal** columns.
     

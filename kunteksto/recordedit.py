@@ -40,7 +40,8 @@ class EntryWindow(tk.Frame):
         self.records = []
         for t in tmp:
             self.records.append(list(t))
-            
+        
+        # how many records do we have    
         self.numrecs = len(self.records)
         self.recndx = 0
         self.init_window()
@@ -149,13 +150,15 @@ class EntryWindow(tk.Frame):
         previous_button = tk.Button(self, text='Previous', width=8, command=self.prev_rec)
         previous_button.grid(row= 25, column=0, sticky=E, pady=10, padx=1)
         next_button = tk.Button(self, text='Next', width=8, command=self.next_rec)
-        next_button.grid(row= 25, column=40, sticky=E, pady=10, padx=1)
+        next_button.grid(row= 25, column=35, sticky=E, pady=10, padx=1)
         save_button = tk.Button(self, text='Save', width=8, command=self.save_rec)
         save_button.grid(row= 27, column=0, sticky=E, pady=10, padx=1)
         exit_button = tk.Button(self, text='Exit', width=8, command=self.quit)
-        exit_button.grid(row= 27, column=40, sticky=E, pady=10, padx=1)
+        exit_button.grid(row= 27, column=35, sticky=E, pady=10, padx=1)
         
     def update_values(self):
+        """Update the values in the UI each time a new record is selected via the Next/Previous buttons. """
+        print(self.records[self.recndx])
         self.header = self.records[self.recndx][0]
         self.label.set(self.records[self.recndx][1])
         self.datatype.set(self.records[self.recndx][2])
@@ -210,15 +213,15 @@ class EntryWindow(tk.Frame):
         updates.append(self.units.get())
         updates.append(self.min_val_ex.get())
         updates.append(self.max_val_ex.get())
-        
+
         # Build the SQL statement
         stmnt = ('UPDATE record SET label = ?, datatype = ?, min_len = ?, max_len = ?, choices = ?, regex = ?, min_val_in = ?, max_val_in = ?, description = ?, definition_url = ?, pred_obj_list = ?, def_txt_value = ?, def_num_value =?, units = ?, min_val_ex = ?, max_val_ex = ? WHERE header = "{0}"'.format(self.header))
         with sqlite3.connect(self.database) as conn:
             c = conn.cursor()
             c.execute(stmnt, updates)
             conn.commit()
-            
-            "Update the records list in the context of the DB update"
+                        
+            "Update the self.records list in the context of the DB update"
             self.records[self.recndx][1] = self.label.get()
             self.records[self.recndx][2] = self.datatype.get()
             self.records[self.recndx][3] = self.min_len.get()
@@ -233,7 +236,7 @@ class EntryWindow(tk.Frame):
             self.records[self.recndx][12] = self.def_txt_value.get()
             self.records[self.recndx][13] = self.def_num_value.get()
             self.records[self.recndx][14] = self.units.get()
-            self.records[self.recndx][17] = self.min_val_in.get()
-            self.records[self.recndx][18] = self.max_val_in.get()
+            self.records[self.recndx][17] = self.min_val_ex.get()
+            self.records[self.recndx][18] = self.max_val_ex.get()
             
             messagebox.showinfo(self.database, "Record Saved")
