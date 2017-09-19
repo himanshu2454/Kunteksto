@@ -108,7 +108,6 @@ def xdcount_rdf(data):
     rdfStr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#XdCountType"/>\n'
     rdfStr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
     rdfStr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + data[10].strip() + '"/>\n'
-    rdfStr += padding.rjust(indent + 8) + '<rdfs:comment>' + data[9].strip() + '</rdfs:comment>\n'
     if data[11]:  # are there additional predicate-object definitions?
         for po in data[11].splitlines():
             pred = po.split()[0]
@@ -122,14 +121,16 @@ def xdcount_rdf(data):
     rdfStr += padding.rjust(indent + 10) +'<sh:maxCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:maxCount>\n'
     rdfStr += padding.rjust(indent + 10) +'<sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>\n'
     
-    if data[7]:
-        rdfStr += padding.rjust(indent + 10) +'<sh:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">' + data[7].strip() + '</sh:minInclusive>\n'
-    elif data[17]:
-        rdfStr += padding.rjust(indent + 10) +'<sh:minExclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">' + data[17].strip() + '</sh:minExclusive>\n'
-    if data[8]:
-        rdfStr += padding.rjust(indent + 10) +'<sh:maxInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">' + data[8].strip() + '</sh:maxInclusive>\n'    
-    elif data[18]:
-        rdfStr += padding.rjust(indent + 10) +'<sh:maxExclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">' + data[18].strip() + '</sh:maxExclusive>\n'
+    if data[9]:
+        if data[7]:
+            rdfStr += padding.rjust(indent + 10) +'<sh:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">' + data[7].strip() + '</sh:minInclusive>\n'
+        if data[8]:
+            rdfStr += padding.rjust(indent + 10) +'<sh:maxInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">' + data[8].strip() + '</sh:maxInclusive>\n'    
+    else:
+        if data[7]:
+            rdfStr += padding.rjust(indent + 10) +'<sh:minExclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">' + data[7].strip() + '</sh:minExclusive>\n'
+        if data[8]:
+            rdfStr += padding.rjust(indent + 10) +'<sh:maxExclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">' + data[8].strip() + '</sh:maxExclusive>\n'
     
     rdfStr += padding.rjust(indent + 8) +'</rdf:Description>\n'
     rdfStr += padding.rjust(indent + 6) +'</sh:property>\n'
@@ -165,7 +166,7 @@ def xdcount(data):
     xdstr += padding.rjust(indent) + '<xs:complexType name="mc-' + mcID + '">\n'
     xdstr += padding.rjust(indent + 2) + '<xs:annotation>\n'
     xdstr += padding.rjust(indent + 4) + '<xs:documentation>\n'
-    xdstr += padding.rjust(indent + 6) + data[9].strip() + '\n'
+    xdstr += padding.rjust(indent + 6) + 'This is the Count model component used to model integers.\n'
     xdstr += padding.rjust(indent + 4) + '</xs:documentation>\n'
     xdstr += padding.rjust(indent + 4) + '<xs:appinfo>\n'   
     # add the RDF
@@ -192,16 +193,16 @@ def xdcount(data):
         xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdcount-value">\n'
         xdstr += padding.rjust(indent + 10) + '<xs:simpleType>\n'
         xdstr += padding.rjust(indent + 10) + '<xs:restriction base="xs:int">\n'
-        
-        if data[7]:
-            xdstr += padding.rjust(indent + 12) + '<xs:minInclusive value="' + str(int(data[7])) + '"/>\n'
-        elif data[7]:
-            xdstr += padding.rjust(indent + 12) + '<xs:minExclusive value="' + str(int(data[7])) + '"/>\n'
-        if data[8]:
-            xdstr += padding.rjust(indent + 12) + '<xs:maxInclusive value="' + str(int(data[8])) + '"/>\n'
-        elif data[8]:
-            xdstr += padding.rjust(indent + 12) + '<xs:maxExclusive value="' + str(int(data[8])) + '"/>\n'  
-            
+        if data[9]:            
+            if data[7]:
+                xdstr += padding.rjust(indent + 12) + '<xs:minInclusive value="' + str(int(data[7])) + '"/>\n'
+            if data[8]:
+                xdstr += padding.rjust(indent + 12) + '<xs:maxInclusive value="' + str(int(data[8])) + '"/>\n'
+        else:            
+            if data[7]:
+                xdstr += padding.rjust(indent + 12) + '<xs:minExclusive value="' + str(int(data[7])) + '"/>\n'
+            if data[8]:
+                xdstr += padding.rjust(indent + 12) + '<xs:maxExclusive value="' + str(int(data[8])) + '"/>\n'  
         xdstr += padding.rjust(indent + 10) + '</xs:restriction>\n'
         xdstr += padding.rjust(indent + 10) + '</xs:simpleType>\n'
         xdstr += padding.rjust(indent + 8) + '</xs:element>\n'
@@ -228,7 +229,6 @@ def xdquantity_rdf(data):
     rdfStr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#XdQuantityType"/>\n'
     rdfStr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
     rdfStr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + data[10].strip() + '"/>\n'
-    rdfStr += padding.rjust(indent + 8) + '<rdfs:comment>' + data[9].strip() + '</rdfs:comment>\n'
     if data[11]:  # are there additional predicate-object definitions?
         for po in data[11].splitlines():
             pred = po.split()[0]
@@ -242,15 +242,17 @@ def xdquantity_rdf(data):
     rdfStr += padding.rjust(indent + 10) +'<sh:maxCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:maxCount>\n'
     rdfStr += padding.rjust(indent + 10) +'<sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>\n'
     
-    if data[7]:
-        rdfStr += padding.rjust(indent + 10) +'<sh:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">' + data[7].strip() + '</sh:minInclusive>\n'
-    elif data[17]:
-        rdfStr += padding.rjust(indent + 10) +'<sh:minExclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">' + data[17].strip() + '</sh:minExclusive>\n'
-    if data[8]:
-        rdfStr += padding.rjust(indent + 10) +'<sh:maxInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">' + data[8].strip() + '</sh:maxInclusive>\n'    
-    elif data[18]:
-        rdfStr += padding.rjust(indent + 10) +'<sh:maxExclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">' + data[18].strip() + '</sh:maxExclusive>\n'
-       
+    if data[9]:
+        if data[7]:
+            rdfStr += padding.rjust(indent + 10) +'<sh:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">' + data[7].strip() + '</sh:minInclusive>\n'
+        if data[8]:
+            rdfStr += padding.rjust(indent + 10) +'<sh:maxInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">' + data[8].strip() + '</sh:maxInclusive>\n'    
+    else:
+        if data[7]:
+            rdfStr += padding.rjust(indent + 10) +'<sh:minExclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">' + data[7].strip() + '</sh:minExclusive>\n'
+        if data[8]:
+            rdfStr += padding.rjust(indent + 10) +'<sh:maxExclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">' + data[8].strip() + '</sh:maxExclusive>\n'
+   
     rdfStr += padding.rjust(indent + 8) +'</rdf:Description>\n'
     rdfStr += padding.rjust(indent + 6) +'</sh:property>\n'
     
@@ -285,7 +287,7 @@ def xdquantity(data):
     xdstr += padding.rjust(indent) + '<xs:complexType name="mc-' + mcID + '">\n'
     xdstr += padding.rjust(indent + 2) + '<xs:annotation>\n'
     xdstr += padding.rjust(indent + 4) + '<xs:documentation>\n'
-    xdstr += padding.rjust(indent + 6) + data[9].strip() + '\n'
+    xdstr += padding.rjust(indent + 6) + 'This is the Quantity model component used to model decimals.\n'
     xdstr += padding.rjust(indent + 4) + '</xs:documentation>\n'
     xdstr += padding.rjust(indent + 4) + '<xs:appinfo>\n'
     # add the RDF
@@ -312,15 +314,16 @@ def xdquantity(data):
         xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdquantity-value">\n'
         xdstr += padding.rjust(indent + 10) + '<xs:simpleType>\n'
         xdstr += padding.rjust(indent + 10) + '<xs:restriction base="xs:decimal">\n'
-
-        if data[7]:
-            xdstr += padding.rjust(indent + 12) + '<xs:minInclusive value="' + str(float(data[7])) + '"/>\n'
-        elif data[7]:
-            xdstr += padding.rjust(indent + 12) + '<xs:minExclusive value="' + str(float(data[7])) + '"/>\n'
-        if data[8]:
-            xdstr += padding.rjust(indent + 12) + '<xs:maxInclusive value="' + str(float(data[8])) + '"/>\n'
-        elif data[8]:
-            xdstr += padding.rjust(indent + 12) + '<xs:maxExclusive value="' + str(float(data[8])) + '"/>\n'  
+        if data[9]:            
+            if data[7]:
+                xdstr += padding.rjust(indent + 12) + '<xs:minInclusive value="' + data[7].strip() + '"/>\n'
+            if data[8]:
+                xdstr += padding.rjust(indent + 12) + '<xs:maxInclusive value="' + data[8].strip() + '"/>\n'
+        else:            
+            if data[7]:
+                xdstr += padding.rjust(indent + 12) + '<xs:minExclusive value="' + data[7].strip() + '"/>\n'
+            if data[8]:
+                xdstr += padding.rjust(indent + 12) + '<xs:maxExclusive value="' + data[8].strip() + '"/>\n'  
                 
         xdstr += padding.rjust(indent + 10) + '</xs:restriction>\n'
         xdstr += padding.rjust(indent + 10) + '</xs:simpleType>\n'
@@ -348,7 +351,6 @@ def xdstring_rdf(data):
     rdfStr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#XdStringType"/>\n'
     rdfStr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
     rdfStr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + data[10].strip() + '"/>\n'
-    rdfStr += padding.rjust(indent + 8) + '<rdfs:comment>' + data[9].strip() + '</rdfs:comment>\n'
     if data[11]:  # are there additional predicate-object definitions?
         for po in data[11].splitlines():
             pred = po.split()[0]
@@ -411,7 +413,7 @@ def xdstring(data):
     xdstr += padding.rjust(indent) + '<xs:complexType name="mc-' + mcID + '">\n'
     xdstr += padding.rjust(indent + 2) + '<xs:annotation>\n'
     xdstr += padding.rjust(indent + 4) + '<xs:documentation>\n'
-    xdstr += padding.rjust(indent + 6) + data[9].strip() + '\n'
+    xdstr += padding.rjust(indent + 6) + 'This is the String model component used to model text.\n'
     xdstr += padding.rjust(indent + 4) + '</xs:documentation>\n'
     xdstr += padding.rjust(indent + 4) + '<xs:appinfo>\n'
 
@@ -479,7 +481,6 @@ def xdtemporal_rdf(data):
     rdfStr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#XdTemporalType"/>\n'
     rdfStr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
     rdfStr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + data[10].strip() + '"/>\n'
-    rdfStr += padding.rjust(indent + 8) + '<rdfs:comment>' + data[9].strip() + '</rdfs:comment>\n'
     if data[11]:  # are there additional predicate-object definitions?
         for po in data[11].splitlines():
             pred = po.split()[0]
@@ -534,7 +535,7 @@ def xdtemporal(data):
     xdstr += padding.rjust(indent) + '<xs:complexType name="mc-' + mcID + '">\n'
     xdstr += padding.rjust(indent + 2) + '<xs:annotation>\n'
     xdstr += padding.rjust(indent + 4) + '<xs:documentation>\n'
-    xdstr += padding.rjust(indent + 6) + data[9].strip() + '\n'
+    xdstr += padding.rjust(indent + 6) + 'This is the Temporal model component used to model dates, times or datetimes.\n'
     xdstr += padding.rjust(indent + 4) + '</xs:documentation>\n'
     
     xdstr += padding.rjust(indent + 4) + '<xs:appinfo>\n'
