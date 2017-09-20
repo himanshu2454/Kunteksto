@@ -157,9 +157,7 @@ Edit these columns (see :ref:`semantics`) :
 
     - *Label* was derived from the column header text and should be edited as needed to provide a more meaningful name for the column.
     
-    - *Datatype* the analyzer attempts to guess the correct datatype for the column. You must select the correct type; String, Integer, Decimal, Date, Time or Datetime from the pulldown. For **DECIMAL** fields the separator is a period character. Using a comma as a decimal separator is not supported.
-
-    - *Description* is a free text, elborated description of the data in this column.
+    - *Datatype* the analyzer attempts to guess the correct datatype for the column. You must select the correct type; String, Integer, Decimal, Date, Time or Datetime from the pulldown. 
     
     - *Minimum Length* for **String** columns enter the minimum length restriction if there is one.
     
@@ -169,18 +167,12 @@ Edit these columns (see :ref:`semantics`) :
     
     - *Regular Expression* for **String** columns you may enter a regular expression (`XML Schema syntax <http://www.xmlschemareference.com/regularExpression.html>`_) to constrain the valid string values.
     
-
-        .. note::
-            Minimum & Maximum values are checked first for *Inclusive* values. If one does not exist then the *Exclusive* value is checked. Obviously it is illogical to define an inclusive or exclusive minimum or maximum value together.
-
-    - *Minimum Inclusive Value* enter the minimum inclusive value restriction for **Integer or Decimal** columns.
+    - *Minimum Value* enter the minimum value restriction for **Integer or Decimal** columns.
     
-    - *Maximum Inclusive Value* enter the maximum inclusive value restriction for **Integer or Decimal** columns.	
+    - *Maximum Value* enter the maximum value restriction for **Integer or Decimal** columns.	
     
-    - *Minimum Exclusive Value* enter the minimum exclusive value restriction for **Integer or Decimal** columns.
+    - *Values Inclusive?* for **Integer or Decimal** columns, are the minimum and maximum values inclusive in the valid values range. Enter a '1' for yes or a '0' for no.
     
-    - *Maximum Exclusive Value* enter the maximum exclusive value restriction for **Integer or Decimal** columns. 
-        
     - *Defining URL* enter a URL (or at least a URI) to a vocabulary or ontology or a webpage that describes or defines the meaning of the data in this column.
     
     - *Predicates & Objects* optionally enter any additional *predicate object* pairs to be used to define this resource. Enter them one per line with the predicate and object separated by a space character. 
@@ -193,7 +185,7 @@ Edit these columns (see :ref:`semantics`) :
     
     - *Default Numeric Value* enter the default value for a decimal or integer datatype column, if there is one.
     
-    - *Units* **mandatory** units value for all **Decimal and Integer** datatype columns. For decimal columns this should come from a standard units vocabulary such as `Ontology of units of Measure <https://github.com/HajoRijgersberg/OM>`_ or `The Unified Code for Units of Measure <http://unitsofmeasure.org>`_. For Integer columns where the values are *counts* you should enter the name of the item(s) being counted. For example, if this number represents the number of widgets created today. Then enter "Widgets* here. 
+    - *Units* **mandatory** units value for all **Decimal or Integer** datatype columns. For decimal columns this should come from a standard units vocabulary such as `Ontology of units of Measure <https://github.com/HajoRijgersberg/OM>`_ or `The Unified Code for Units of Measure <http://unitsofmeasure.org>`_. For Integer columns where the values are *counts* you should enter the name of the item(s) being counted. For example, if this number represents the number of widgets created today. Then enter "Widgets* here. 
 
 
 .. _semantics:

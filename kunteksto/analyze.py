@@ -21,9 +21,9 @@ record table:
  4 - max_len = char(100)
  5 - choices = TEXT
  6 - regex = CHAR(250)
- 7 - min_val_in = char(100)
- 8 - max_val_in = char(100)
- 9 - description = TEXT
+ 7 - min_val = char(100)
+ 8 - max_val = char(100)
+ 9 - vals_Inclusive = BOOL
 10 - definition_url = CHAR(500)
 11 - pred_obj_list = TEXT
 12 - def_txt_value = TEXT
@@ -31,8 +31,6 @@ record table:
 14 - units = CHAR(50)
 15 - mcid = CHAR(40)
 16 - adid = CHAR(40)
-17 - min_val_ex = char(100)
-18 - max_val_ex = char(100)
 
 """
 import sys
@@ -136,7 +134,7 @@ def analyze(csvInput, delim, level, out_dir):
     conn = sqlite3.connect(db_file)
     c = conn.cursor()
     c.execute("""CREATE TABLE "model" ("title" CHAR(250), "description" TEXT, "copyright" CHAR(250), "author" CHAR(250), "definition_url" CHAR(500), "dmid" CHAR(40), "entryid" CHAR(40), "dataid" CHAR(40))""")
-    c.execute("""CREATE TABLE "record"  (header  char(100), label char(250), datatype char(10), min_len char(100), max_len char(100), "choices" TEXT, "regex" CHAR(250), "min_val_in" char(100), "max_val_in" char(100), "description" TEXT, "definition_url" CHAR(500), "pred_obj_list" TEXT, "def_txt_value" TEXT, "def_num_value" char(100), "units" CHAR(50), "mcid" CHAR(40), "adid" CHAR(40), "min_val_ex" char(100), "max_val_ex" char(100))""")
+    c.execute("""CREATE TABLE "record"  (header  char(100), label char(250), datatype char(10), min_len char(100), max_len char(100), "choices" TEXT, "regex" CHAR(250), "min_val" char(100), "max_val" char(100), "vals_Inclusive" BOOL, "definition_url" CHAR(500), "pred_obj_list" TEXT, "def_txt_value" TEXT, "def_num_value" char(100), "units" CHAR(50), "mcid" CHAR(40), "adid" CHAR(40))""")
     c.execute("""CREATE INDEX header_idx on record (header)""")
     
     # create the initial data for the record table.
@@ -147,11 +145,11 @@ def analyze(csvInput, delim, level, out_dir):
             mcID = str(uuid4())  # model component
             adID = str(uuid4())   # adapter
             label = 'The ' + h.replace('_', ' ')
-            data.append((h, label, 'String', '', '', '', '', '', '', '', '', '', '', '', '', mcID, adID,'',''))
+            data.append((h, label, 'String', '', '', '', '', '', '', True, '', '', '', '', '', mcID, adID))
 
     c = conn.cursor()
     c.executemany(
-        "INSERT INTO record VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", data)
+        "INSERT INTO record VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", data)
     conn.commit()
 
     # create the initial data for the model table
@@ -188,7 +186,7 @@ def analyze(csvInput, delim, level, out_dir):
                     
                 # edit the database record for the correct type
                 c = conn.cursor()
-                c.execute("""UPDATE record SET datatype = ?, max_val_in = ?, min_val_in = ? WHERE header = ? """, vals)
+                c.execute("""UPDATE record SET datatype = ?, max_val = ?, min_val = ? WHERE header = ? """, vals)
                 conn.commit()
     
             conn.close()
