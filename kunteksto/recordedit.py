@@ -79,8 +79,8 @@ class EntryWindow(tk.Frame):
         self.max_len =tk.StringVar(value=self.validnum(self.records[self.recndx][4]))
         self.choices = tk.StringVar(value=self.records[self.recndx][5])
         self.regex = tk.StringVar(value=self.records[self.recndx][6])
-        self.min_val = tk.StringVar(value=self.validnum(self.records[self.recndx][7]))
-        self.max_val = tk.StringVar(value=self.validnum(self.records[self.recndx][8]))
+        self.min_inc_val = tk.StringVar(value=self.validnum(self.records[self.recndx][7]))
+        self.max_inc_val = tk.StringVar(value=self.validnum(self.records[self.recndx][8]))
         self.description = tk.StringVar(value=self.records[self.recndx][9])
         self.definition_url = tk.StringVar(value=self.records[self.recndx][10])
         self.pred_obj_list = tk.StringVar(value=self.records[self.recndx][11])
@@ -110,10 +110,10 @@ class EntryWindow(tk.Frame):
         self.regex_entry = tk.Entry(self, textvariable=self.regex, width=50).grid(row=5, column=1, pady=1, padx=5)
 
         tk.Label(self, text='Minimum Inclusive Value').grid(row=6, column=0, pady=1, sticky=E)
-        self.min_val_entry = tk.Entry(self, textvariable=self.min_val, width=50).grid(row=6, column=1, pady=1, padx=5)
+        self.min_inc_val_entry = tk.Entry(self, textvariable=self.min_inc_val, width=50).grid(row=6, column=1, pady=1, padx=5)
         
         tk.Label(self, text='Maximum Inclusive Value').grid(row=7, column=0, pady=1, sticky=E)
-        self.max_val_entry = tk.Entry(self, textvariable=self.max_val, width=50).grid(row=7, column=1, pady=1, padx=5)
+        self.max_inc_val_entry = tk.Entry(self, textvariable=self.max_inc_val, width=50).grid(row=7, column=1, pady=1, padx=5)
         
         tk.Label(self, text='Description').grid(row=8, column=0, pady=1, sticky=E)
         self.description_entry = tk.Text(self, height=5, width=50)
@@ -124,7 +124,9 @@ class EntryWindow(tk.Frame):
         self.definition_url_entry = tk.Entry(self, textvariable=self.definition_url, width=50).grid(row=9, column=1, pady=1, padx=5)
         
         tk.Label(self, text='Predicates & Objects').grid(row=10, column=0, pady=1, sticky=E)
-        self.pred_obj_list_entry = tk.Entry(self, textvariable=self.pred_obj_list, width=50).grid(row=10, column=1, pady=1, padx=5)
+        self.pred_obj_list_entry = tk.Text(self, height=5, width=50)
+        self.pred_obj_list_entry.insert(END, self.pred_obj_list.get())
+        self.pred_obj_list_entry.grid(row=10, column=1, pady=1, padx=5)
         
         tk.Label(self, text='Default Text Value').grid(row=11, column=0, pady=1, sticky=E)
         self.def_txt_value_entry = tk.Entry(self, textvariable=self.def_txt_value, width=50).grid(row=11, column=1, pady=1, padx=5)
@@ -153,11 +155,12 @@ class EntryWindow(tk.Frame):
         self.max_len.set(self.validnum(self.records[self.recndx][4]))
         self.choices.set(self.records[self.recndx][5])
         self.regex.set(self.records[self.recndx][6])
-        self.min_val.set(self.validnum(self.records[self.recndx][7]))
-        self.max_val.set(self.validnum(self.records[self.recndx][8]))
+        self.min_inc_val.set(self.validnum(self.records[self.recndx][7]))
+        self.max_inc_val.set(self.validnum(self.records[self.recndx][8]))
         self.description_entry.delete(1.0, END)  # clear the display
         self.description.set(self.records[self.recndx][9])
         self.definition_url.set(self.records[self.recndx][10])
+        self.pred_obj_list_entry.delete(1.0, END)  # clear the display
         self.pred_obj_list.set(self.records[self.recndx][11])
         self.def_txt_value.set(self.records[self.recndx][12])
         self.def_num_value.set(self.validnum(self.records[self.recndx][13]))
@@ -189,17 +192,17 @@ class EntryWindow(tk.Frame):
         updates.append(self.max_len.get())
         updates.append(self.choices.get())
         updates.append(self.regex.get())
-        updates.append(self.min_val.get())
-        updates.append(self.max_val.get())
+        updates.append(self.min_inc_val.get())
+        updates.append(self.max_inc_val.get())
         updates.append(self.description_entry.get("1.0",'end-1c'))
         updates.append(self.definition_url.get())
-        updates.append(self.pred_obj_list.get())
+        updates.append(self.pred_obj_list_entry.get("1.0",'end-1c'))
         updates.append(self.def_txt_value.get())
         updates.append(self.def_num_value.get())
         updates.append(self.units.get())
         
         # Build the SQL statement
-        stmnt = ('UPDATE record SET label = ?, datatype = ?, min_len = ?, max_len = ?, choices = ?, regex = ?, min_val = ?, max_val = ?, description = ?, definition_url = ?, pred_obj_list = ?, def_txt_value = ?, def_num_value =?, units = ? WHERE header = "{0}"'.format(self.header))
+        stmnt = ('UPDATE record SET label = ?, datatype = ?, min_len = ?, max_len = ?, choices = ?, regex = ?, min_inc_val = ?, max_inc_val = ?, description = ?, definition_url = ?, pred_obj_list = ?, def_txt_value = ?, def_num_value =?, units = ? WHERE header = "{0}"'.format(self.header))
         with sqlite3.connect(self.database) as conn:
             c = conn.cursor()
             c.execute(stmnt, updates)
@@ -212,8 +215,8 @@ class EntryWindow(tk.Frame):
             self.records[self.recndx][4] = self.max_len.get()
             self.records[self.recndx][5] = self.choices.get()
             self.records[self.recndx][6] = self.regex.get()
-            self.records[self.recndx][7] = self.min_val.get()
-            self.records[self.recndx][8] = self.max_val.get()
+            self.records[self.recndx][7] = self.min_inc_val.get()
+            self.records[self.recndx][8] = self.max_inc_val.get()
             self.records[self.recndx][9] = self.description.get()
             self.records[self.recndx][10] = self.definition_url.get()
             self.records[self.recndx][11] = self.pred_obj_list.get()

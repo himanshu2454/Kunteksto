@@ -166,6 +166,10 @@ Edit these columns (see :ref:`semantics`) :
     - *Choices* for **String** columns you may enter a set of choices to restrict the valid values. Separate each choice with a pipe '|' character.
     
     - *Regular Expression* for **String** columns you may enter a regular expression (`XML Schema syntax <http://www.xmlschemareference.com/regularExpression.html>`_) to constrain the valid string values.
+
+        .. warning::
+            The decimal separator throughout Kunteksto is a period, do not use a comma. Do not use thousands separators.
+            
     
     - *Minimum Value* enter the minimum value restriction for **Integer or Decimal** columns.
     

@@ -21,8 +21,8 @@ record table:
  4 - max_len = char(100)
  5 - choices = TEXT
  6 - regex = CHAR(250)
- 7 - min_val = char(100)
- 8 - max_val = char(100)
+ 7 - min_inc_val = char(100)
+ 8 - max_inc_val = char(100)
  9 - description = TEXT
 10 - definition_url = CHAR(500)
 11 - pred_obj_list = TEXT
@@ -54,8 +54,8 @@ def checkType(h, dataDict):
     is_float = False
     is_date = False
     is_str = False
-    maxval = None
-    minval = None
+    maxincval = None
+    minincval = None
     
     for x in dlist:
         try:
@@ -94,12 +94,12 @@ def checkType(h, dataDict):
     
     if is_int:
         intlist = [int(x) for x in dlist]
-        maxval = max(intlist)
-        minval = min(intlist)
+        maxincval = max(intlist)
+        minincval = min(intlist)
     if is_float:
         flist = [float(x) for x in dlist]
-        maxval = max(flist)
-        minval = min(flist)
+        maxincval = max(flist)
+        minincval = min(flist)
     
     if is_int:
         dt = "Integer"
@@ -110,7 +110,7 @@ def checkType(h, dataDict):
     else:
         dt = "String"
 
-    return(dt, maxval, minval, h)
+    return(dt, maxincval, minincval, h)
 
 def analyze(csvInput, delim, level, out_dir):
     """
@@ -134,7 +134,7 @@ def analyze(csvInput, delim, level, out_dir):
     conn = sqlite3.connect(db_file)
     c = conn.cursor()
     c.execute("""CREATE TABLE "model" ("title" CHAR(250), "description" TEXT, "copyright" CHAR(250), "author" CHAR(250), "definition_url" CHAR(500), "dmid" CHAR(40), "entryid" CHAR(40), "dataid" CHAR(40))""")
-    c.execute("""CREATE TABLE "record"  (header  char(100), label char(250), datatype char(10), min_len char(100), max_len char(100), "choices" TEXT, "regex" CHAR(250), "min_val" char(100), "max_val" char(100), "description" TEXT, "definition_url" CHAR(500), "pred_obj_list" TEXT, "def_txt_value" TEXT, "def_num_value" char(100), "units" CHAR(50), "mcid" CHAR(40), "adid" CHAR(40))""")
+    c.execute("""CREATE TABLE "record"  (header  char(100), label char(250), datatype char(10), min_len char(100), max_len char(100), "choices" TEXT, "regex" CHAR(250), "min_inc_val" char(100), "max_inc_val" char(100), "description" TEXT, "definition_url" CHAR(500), "pred_obj_list" TEXT, "def_txt_value" TEXT, "def_num_value" char(100), "units" CHAR(50), "mcid" CHAR(40), "adid" CHAR(40))""")
     c.execute("""CREATE INDEX header_idx on record (header)""")
     
     # create the initial data for the record table.
@@ -186,7 +186,7 @@ def analyze(csvInput, delim, level, out_dir):
                     
                 # edit the database record for the correct type
                 c = conn.cursor()
-                c.execute("""UPDATE record SET datatype = ?, max_val = ?, min_val = ? WHERE header = ? """, vals)
+                c.execute("""UPDATE record SET datatype = ?, max_inc_val = ?, min_inc_val = ? WHERE header = ? """, vals)
                 conn.commit()
     
             conn.close()
