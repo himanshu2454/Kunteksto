@@ -91,49 +91,49 @@ class EntryWindow(tk.Frame):
         # Add a label and entry box for each column in table.
         
         tk.Label(self, text='Label').grid(row=0, column=0, pady=1, sticky=E)
-        label_entry = tk.Entry(self, textvariable=self.label, width=50).grid(row=0, column=1, pady=1, padx=5)
+        self.label_entry = tk.Entry(self, textvariable=self.label, width=50).grid(row=0, column=1, pady=1, padx=5)
 
         tk.Label(self, text='Datatype').grid(row=1, column=0, pady=1, sticky=E)
-        datatype_entry = tk.OptionMenu(self, self.datatype, 'String', 'Integer', 'Decimal', 'Date', 'Time', 'Datetime')
-        datatype_entry.grid(row=1, column=1, pady=1, padx=5)
+        self.datatype_entry = tk.OptionMenu(self, self.datatype, 'String', 'Integer', 'Decimal', 'Date', 'Time', 'Datetime')
+        self.datatype_entry.grid(row=1, column=1, pady=1, padx=5)
         
         tk.Label(self, text='Minimum Length').grid(row=2, column=0, pady=1, sticky=E)
-        min_len_entry = tk.Entry(self, textvariable=self.min_len, width=50).grid(row=2, column=1, pady=1, padx=5)
+        self.min_len_entry = tk.Entry(self, textvariable=self.min_len, width=50).grid(row=2, column=1, pady=1, padx=5)
 
         tk.Label(self, text='Maximum Length').grid(row=3, column=0, pady=1, sticky=E)
-        max_len_entry = tk.Entry(self, textvariable=self.max_len, width=50).grid(row=3, column=1, pady=1, padx=5)
+        self.max_len_entry = tk.Entry(self, textvariable=self.max_len, width=50).grid(row=3, column=1, pady=1, padx=5)
 
         tk.Label(self, text='Choices').grid(row=4, column=0, pady=1, sticky=E)
-        choices_entry = tk.Entry(self, textvariable=self.choices, width=50).grid(row=4, column=1, pady=1, padx=5)
+        self.choices_entry = tk.Entry(self, textvariable=self.choices, width=50).grid(row=4, column=1, pady=1, padx=5)
 
         tk.Label(self, text='Regular Expression').grid(row=5, column=0, pady=1, sticky=E)
-        regex_entry = tk.Entry(self, textvariable=self.regex, width=50).grid(row=5, column=1, pady=1, padx=5)
+        self.regex_entry = tk.Entry(self, textvariable=self.regex, width=50).grid(row=5, column=1, pady=1, padx=5)
 
         tk.Label(self, text='Minimum Inclusive Value').grid(row=6, column=0, pady=1, sticky=E)
-        min_val_entry = tk.Entry(self, textvariable=self.min_val, width=50).grid(row=6, column=1, pady=1, padx=5)
+        self.min_val_entry = tk.Entry(self, textvariable=self.min_val, width=50).grid(row=6, column=1, pady=1, padx=5)
         
         tk.Label(self, text='Maximum Inclusive Value').grid(row=7, column=0, pady=1, sticky=E)
-        max_val_entry = tk.Entry(self, textvariable=self.max_val, width=50).grid(row=7, column=1, pady=1, padx=5)
+        self.max_val_entry = tk.Entry(self, textvariable=self.max_val, width=50).grid(row=7, column=1, pady=1, padx=5)
         
         tk.Label(self, text='Description').grid(row=8, column=0, pady=1, sticky=E)
-        description_entry = tk.Text(self, height=5, width=50)
-        description_entry.insert(END, self.description.get())
-        description_entry.grid(row=8, column=1, pady=1, padx=5)
+        self.description_entry = tk.Text(self, height=5, width=50)
+        self.description_entry.insert(END, self.description.get())
+        self.description_entry.grid(row=8, column=1, pady=1, padx=5)
         
         tk.Label(self, text='Defining URL').grid(row=9, column=0, pady=1, sticky=E)
-        definition_url_entry = tk.Entry(self, textvariable=self.definition_url, width=50).grid(row=9, column=1, pady=1, padx=5)
+        self.definition_url_entry = tk.Entry(self, textvariable=self.definition_url, width=50).grid(row=9, column=1, pady=1, padx=5)
         
         tk.Label(self, text='Predicates & Objects').grid(row=10, column=0, pady=1, sticky=E)
-        pred_obj_list_entry = tk.Entry(self, textvariable=self.pred_obj_list, width=50).grid(row=10, column=1, pady=1, padx=5)
+        self.pred_obj_list_entry = tk.Entry(self, textvariable=self.pred_obj_list, width=50).grid(row=10, column=1, pady=1, padx=5)
         
         tk.Label(self, text='Default Text Value').grid(row=11, column=0, pady=1, sticky=E)
-        def_txt_value_entry = tk.Entry(self, textvariable=self.def_txt_value, width=50).grid(row=11, column=1, pady=1, padx=5)
+        self.def_txt_value_entry = tk.Entry(self, textvariable=self.def_txt_value, width=50).grid(row=11, column=1, pady=1, padx=5)
         
         tk.Label(self, text='Default Numeric Value').grid(row=12, column=0, pady=1, sticky=E)
-        def_num_value_entry = tk.Entry(self, textvariable=self.def_num_value, width=50).grid(row=12, column=1, pady=1, padx=5)
+        self.def_num_value_entry = tk.Entry(self, textvariable=self.def_num_value, width=50).grid(row=12, column=1, pady=1, padx=5)
         
         tk.Label(self, text='Units').grid(row=13, column=0, pady=1, sticky=E)
-        units_entry = tk.Entry(self, textvariable=self.units, width=50).grid(row=13, column=1, pady=1, padx=5)
+        self.units_entry = tk.Entry(self, textvariable=self.units, width=50).grid(row=13, column=1, pady=1, padx=5)
         
         # Add buttons to navigate database.(
         previous_button = tk.Button(self, text='Previous', width=8, command=self.prev_rec)
@@ -155,6 +155,7 @@ class EntryWindow(tk.Frame):
         self.regex.set(self.records[self.recndx][6])
         self.min_val.set(self.validnum(self.records[self.recndx][7]))
         self.max_val.set(self.validnum(self.records[self.recndx][8]))
+        self.description_entry.delete(1.0, END)  # clear the display
         self.description.set(self.records[self.recndx][9])
         self.definition_url.set(self.records[self.recndx][10])
         self.pred_obj_list.set(self.records[self.recndx][11])
@@ -190,7 +191,7 @@ class EntryWindow(tk.Frame):
         updates.append(self.regex.get())
         updates.append(self.min_val.get())
         updates.append(self.max_val.get())
-        updates.append(self.description.get())
+        updates.append(self.description_entry.get("1.0",'end-1c'))
         updates.append(self.definition_url.get())
         updates.append(self.pred_obj_list.get())
         updates.append(self.def_txt_value.get())
