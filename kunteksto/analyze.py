@@ -23,7 +23,7 @@ record table:
  6 - regex = CHAR(250)
  7 - min_val = char(100)
  8 - max_val = char(100)
- 9 - vals_Inclusive = BOOL
+ 9 - description = TEXT
 10 - definition_url = CHAR(500)
 11 - pred_obj_list = TEXT
 12 - def_txt_value = TEXT
@@ -134,7 +134,7 @@ def analyze(csvInput, delim, level, out_dir):
     conn = sqlite3.connect(db_file)
     c = conn.cursor()
     c.execute("""CREATE TABLE "model" ("title" CHAR(250), "description" TEXT, "copyright" CHAR(250), "author" CHAR(250), "definition_url" CHAR(500), "dmid" CHAR(40), "entryid" CHAR(40), "dataid" CHAR(40))""")
-    c.execute("""CREATE TABLE "record"  (header  char(100), label char(250), datatype char(10), min_len char(100), max_len char(100), "choices" TEXT, "regex" CHAR(250), "min_val" char(100), "max_val" char(100), "vals_Inclusive" BOOL, "definition_url" CHAR(500), "pred_obj_list" TEXT, "def_txt_value" TEXT, "def_num_value" char(100), "units" CHAR(50), "mcid" CHAR(40), "adid" CHAR(40))""")
+    c.execute("""CREATE TABLE "record"  (header  char(100), label char(250), datatype char(10), min_len char(100), max_len char(100), "choices" TEXT, "regex" CHAR(250), "min_val" char(100), "max_val" char(100), "description" TEXT, "definition_url" CHAR(500), "pred_obj_list" TEXT, "def_txt_value" TEXT, "def_num_value" char(100), "units" CHAR(50), "mcid" CHAR(40), "adid" CHAR(40))""")
     c.execute("""CREATE INDEX header_idx on record (header)""")
     
     # create the initial data for the record table.
@@ -145,7 +145,7 @@ def analyze(csvInput, delim, level, out_dir):
             mcID = str(uuid4())  # model component
             adID = str(uuid4())   # adapter
             label = 'The ' + h.replace('_', ' ')
-            data.append((h, label, 'String', '', '', '', '', '', '', True, '', '', '', '', '', mcID, adID))
+            data.append((h, label, 'String', '', '', '', '', '', '', '', '', '', '', '', '', mcID, adID))
 
     c = conn.cursor()
     c.executemany(
