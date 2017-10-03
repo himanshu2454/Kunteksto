@@ -296,15 +296,20 @@ You can see all of the Kunteksto commandline options using the &#8211;help flag.
 <blockquote>
 <div><div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p class="last">The decimal separator throughout Kunteksto is a period, do not use a comma. Do not use thousands separators.</p>
+<p class="last">The decimal separator throughout Kunteksto is a period, do not use a comma. Do not use thousands separators.
+Also, if you mix min/max inclusive or exclusive in an illogical manner, they system will take the inclusive value and ignore the exclusive value.</p>
 </div>
 </div></blockquote>
 </li>
-<li><p class="first"><em>Minimum Value</em> enter the minimum value restriction for <strong>Integer or Decimal</strong> columns.</p>
+<li><p class="first"><em>Minimum Inclusive Value</em> enter the minimum inclusive value restriction for <strong>Integer or Decimal</strong> columns.</p>
 </li>
-<li><p class="first"><em>Maximum Value</em> enter the maximum value restriction for <strong>Integer or Decimal</strong> columns.</p>
+<li><p class="first"><em>Maximum Inclusive Value</em> enter the maximum inclusive value restriction for <strong>Integer or Decimal</strong> columns.</p>
 </li>
-<li><p class="first"><em>Values Inclusive?</em> for <strong>Integer or Decimal</strong> columns, are the minimum and maximum values inclusive in the valid values range. Enter a &#8216;1&#8217; for yes or a &#8216;0&#8217; for no.</p>
+<li><p class="first"><em>Minimum Exclusive Value</em> enter the minimum exclusive value restriction for <strong>Integer or Decimal</strong> columns.</p>
+</li>
+<li><p class="first"><em>Maximum Exclusive Value</em> enter the maximum exclusive value restriction for <strong>Integer or Decimal</strong> columns.</p>
+</li>
+<li><p class="first"><em>Description</em> for all columns enter a textual description that might be used for human readable documentation.</p>
 </li>
 <li><p class="first"><em>Defining URL</em> enter a URL (or at least a URI) to a vocabulary or ontology or a webpage that describes or defines the meaning of the data in this column.</p>
 </li>
@@ -461,7 +466,7 @@ Some references to get you started:</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, Data Insights, Inc..
-      Last updated on 2017-10-02 20:04.
+      Last updated on 2017-10-03 09:16.
 
     </p>
   </div> 

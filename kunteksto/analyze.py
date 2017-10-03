@@ -31,6 +31,8 @@ record table:
 14 - units = CHAR(50)
 15 - mcid = CHAR(40)
 16 - adid = CHAR(40)
+17 - min_exc_val = char(100)
+18 - max_exc_val = char(100)
 
 """
 import sys
@@ -48,7 +50,7 @@ from subprocess import run
 import click
 
 def checkType(h, dataDict):
-    """ test each data item from a column. if one is not a type, turn off that type."""
+    """ test each data item from a column. if one is not a type, turn off that type. If the type is an int or a float then the min/max is set as inclusive. Exclusive is never set."""
     dlist = dataDict[h]
     is_int = False
     is_float = False
@@ -134,7 +136,7 @@ def analyze(csvInput, delim, level, out_dir):
     conn = sqlite3.connect(db_file)
     c = conn.cursor()
     c.execute("""CREATE TABLE "model" ("title" CHAR(250), "description" TEXT, "copyright" CHAR(250), "author" CHAR(250), "definition_url" CHAR(500), "dmid" CHAR(40), "entryid" CHAR(40), "dataid" CHAR(40))""")
-    c.execute("""CREATE TABLE "record"  (header  char(100), label char(250), datatype char(10), min_len char(100), max_len char(100), "choices" TEXT, "regex" CHAR(250), "min_inc_val" char(100), "max_inc_val" char(100), "description" TEXT, "definition_url" CHAR(500), "pred_obj_list" TEXT, "def_txt_value" TEXT, "def_num_value" char(100), "units" CHAR(50), "mcid" CHAR(40), "adid" CHAR(40))""")
+    c.execute("""CREATE TABLE "record"  (header  char(100), label char(250), datatype char(10), min_len char(100), max_len char(100), "choices" TEXT, "regex" CHAR(250), "min_inc_val" char(100), "max_inc_val" char(100), "description" TEXT, "definition_url" CHAR(500), "pred_obj_list" TEXT, "def_txt_value" TEXT, "def_num_value" char(100), "units" CHAR(50), "mcid" CHAR(40), "adid" CHAR(40), "min_exc_val" char(100), "max_exc_val" char(100))""")
     c.execute("""CREATE INDEX header_idx on record (header)""")
     
     # create the initial data for the record table.
@@ -145,11 +147,11 @@ def analyze(csvInput, delim, level, out_dir):
             mcID = str(uuid4())  # model component
             adID = str(uuid4())   # adapter
             label = 'The ' + h.replace('_', ' ')
-            data.append((h, label, 'String', '', '', '', '', '', '', '', '', '', '', '', '', mcID, adID))
+            data.append((h, label, 'String', '', '', '', '', '', '', '', '', '', '', '', '', mcID, adID,'',''))
 
     c = conn.cursor()
     c.executemany(
-        "INSERT INTO record VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", data)
+        "INSERT INTO record VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", data)
     conn.commit()
 
     # create the initial data for the model table

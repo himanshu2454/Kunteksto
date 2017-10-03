@@ -87,6 +87,8 @@ class EntryWindow(tk.Frame):
         self.def_txt_value = tk.StringVar(value=self.records[self.recndx][12])
         self.def_num_value = tk.StringVar(value=self.validnum(self.records[self.recndx][13]))
         self.units = tk.StringVar(value=self.records[self.recndx][14])
+        self.min_exc_val = tk.StringVar(value=self.validnum(self.records[self.recndx][17]))
+        self.max_exc_val = tk.StringVar(value=self.validnum(self.records[self.recndx][18]))
 
         # Add a label and entry box for each column in table.
         
@@ -115,27 +117,33 @@ class EntryWindow(tk.Frame):
         tk.Label(self, text='Maximum Inclusive Value').grid(row=7, column=0, pady=1, sticky=E)
         self.max_inc_val_entry = tk.Entry(self, textvariable=self.max_inc_val, width=50).grid(row=7, column=1, pady=1, padx=5)
         
-        tk.Label(self, text='Description').grid(row=8, column=0, pady=1, sticky=E)
+        tk.Label(self, text='Minimum Exclusive Value').grid(row=8, column=0, pady=1, sticky=E)
+        self.min_exc_val_entry = tk.Entry(self, textvariable=self.min_exc_val, width=50).grid(row=8, column=1, pady=1, padx=5)
+    
+        tk.Label(self, text='Maximum Exclusive Value').grid(row=9, column=0, pady=1, sticky=E)
+        self.max_exc_val_entry = tk.Entry(self, textvariable=self.max_exc_val, width=50).grid(row=9, column=1, pady=1, padx=5)
+
+        tk.Label(self, text='Description').grid(row=10, column=0, pady=1, sticky=E)
         self.description_entry = tk.Text(self, height=5, width=50)
         self.description_entry.insert(END, self.description.get())
-        self.description_entry.grid(row=8, column=1, pady=1, padx=5)
+        self.description_entry.grid(row=10, column=1, pady=1, padx=5)
         
-        tk.Label(self, text='Defining URL').grid(row=9, column=0, pady=1, sticky=E)
-        self.definition_url_entry = tk.Entry(self, textvariable=self.definition_url, width=50).grid(row=9, column=1, pady=1, padx=5)
+        tk.Label(self, text='Defining URL').grid(row=11, column=0, pady=1, sticky=E)
+        self.definition_url_entry = tk.Entry(self, textvariable=self.definition_url, width=50).grid(row=11, column=1, pady=1, padx=5)
         
-        tk.Label(self, text='Predicates & Objects').grid(row=10, column=0, pady=1, sticky=E)
+        tk.Label(self, text='Predicates & Objects').grid(row=12, column=0, pady=1, sticky=E)
         self.pred_obj_list_entry = tk.Text(self, height=5, width=50)
         self.pred_obj_list_entry.insert(END, self.pred_obj_list.get())
-        self.pred_obj_list_entry.grid(row=10, column=1, pady=1, padx=5)
+        self.pred_obj_list_entry.grid(row=12, column=1, pady=1, padx=5)
         
-        tk.Label(self, text='Default Text Value').grid(row=11, column=0, pady=1, sticky=E)
-        self.def_txt_value_entry = tk.Entry(self, textvariable=self.def_txt_value, width=50).grid(row=11, column=1, pady=1, padx=5)
+        tk.Label(self, text='Default Text Value').grid(row=13, column=0, pady=1, sticky=E)
+        self.def_txt_value_entry = tk.Entry(self, textvariable=self.def_txt_value, width=50).grid(row=13, column=1, pady=1, padx=5)
         
-        tk.Label(self, text='Default Numeric Value').grid(row=12, column=0, pady=1, sticky=E)
-        self.def_num_value_entry = tk.Entry(self, textvariable=self.def_num_value, width=50).grid(row=12, column=1, pady=1, padx=5)
+        tk.Label(self, text='Default Numeric Value').grid(row=14, column=0, pady=1, sticky=E)
+        self.def_num_value_entry = tk.Entry(self, textvariable=self.def_num_value, width=50).grid(row=14, column=1, pady=1, padx=5)
         
-        tk.Label(self, text='Units').grid(row=13, column=0, pady=1, sticky=E)
-        self.units_entry = tk.Entry(self, textvariable=self.units, width=50).grid(row=13, column=1, pady=1, padx=5)
+        tk.Label(self, text='Units').grid(row=15, column=0, pady=1, sticky=E)
+        self.units_entry = tk.Entry(self, textvariable=self.units, width=50).grid(row=15, column=1, pady=1, padx=5)
         
         # Add buttons to navigate database.(
         previous_button = tk.Button(self, text='Previous', width=8, command=self.prev_rec)
@@ -165,6 +173,8 @@ class EntryWindow(tk.Frame):
         self.def_txt_value.set(self.records[self.recndx][12])
         self.def_num_value.set(self.validnum(self.records[self.recndx][13]))
         self.units.set(self.records[self.recndx][14])
+        self.min_exc_val.set(self.validnum(self.records[self.recndx][17]))
+        self.max_exc_val.set(self.validnum(self.records[self.recndx][18]))
         
 
     def prev_rec(self):
@@ -200,9 +210,11 @@ class EntryWindow(tk.Frame):
         updates.append(self.def_txt_value.get())
         updates.append(self.def_num_value.get())
         updates.append(self.units.get())
+        updates.append(self.min_exc_val.get())
+        updates.append(self.max_exc_val.get())
         
         # Build the SQL statement
-        stmnt = ('UPDATE record SET label = ?, datatype = ?, min_len = ?, max_len = ?, choices = ?, regex = ?, min_inc_val = ?, max_inc_val = ?, description = ?, definition_url = ?, pred_obj_list = ?, def_txt_value = ?, def_num_value =?, units = ? WHERE header = "{0}"'.format(self.header))
+        stmnt = ('UPDATE record SET label = ?, datatype = ?, min_len = ?, max_len = ?, choices = ?, regex = ?, min_inc_val = ?, max_inc_val = ?, description = ?, definition_url = ?, pred_obj_list = ?, def_txt_value = ?, def_num_value =?, units = ?, min_exc_val = ?, max_exc_val = ? WHERE header = "{0}"'.format(self.header))
         with sqlite3.connect(self.database) as conn:
             c = conn.cursor()
             c.execute(stmnt, updates)
@@ -223,5 +235,7 @@ class EntryWindow(tk.Frame):
             self.records[self.recndx][12] = self.def_txt_value.get()
             self.records[self.recndx][13] = self.def_num_value.get()
             self.records[self.recndx][14] = self.units.get()
+            self.records[self.recndx][7] = self.min_exc_val.get()
+            self.records[self.recndx][8] = self.max_exc_val.get()
             
             messagebox.showinfo(self.database, "Record Saved")
