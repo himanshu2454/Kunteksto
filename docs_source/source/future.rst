@@ -13,7 +13,7 @@ The Big Data age is well underway and will not be slowing down in the future. Cu
 
 This ability of the machine to decide can only happen when it has access to the full semantics of the original data capture. These semantics are usually locked up in the source code and the database structure of the originating application. If there existed a standard, core data model for all domains, for all time; then it would be possible to build reusable rules based on reusable data. Now this model exists. `S3Model <https://datainsights.tech/S3Model>`_ is the foundation of the new data-centric world. This new world does require a new paradigm in how data modeling is performed. The change from application-centric to data-centric is the new approach to information management and analysis.
 
-Data Insights, Inc. offers forward looking modeling tools for enterprises to begin their transition from application-centric information management to data-centric, computable, model-backed information management. This new paradigm saves money and improves information quality. 
+Data Insights, Inc. offers forward looking modeling tools for enterprises to begin their transition from application-centric information management to data-centric, computable, model-based information management. This new paradigm saves money and improves information quality. 
 
 .. raw:: html
 
