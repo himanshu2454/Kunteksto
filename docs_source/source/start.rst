@@ -166,12 +166,20 @@ Edit these columns (see :ref:`semantics`) :
     - *Choices* for **String** columns you may enter a set of choices to restrict the valid values. Separate each choice with a pipe '|' character.
     
     - *Regular Expression* for **String** columns you may enter a regular expression (`XML Schema syntax <http://www.xmlschemareference.com/regularExpression.html>`_) to constrain the valid string values.
+
+        .. warning::
+            The decimal separator throughout Kunteksto is a period, do not use a comma. Do not use thousands separators.
+            Also, if you mix min/max inclusive or exclusive in an illogical manner, they system will take the inclusive value and ignore the exclusive value.
     
-    - *Minimum Value* enter the minimum value restriction for **Integer or Decimal** columns.
+    - *Minimum Inclusive Value* enter the minimum inclusive value restriction for **Integer or Decimal** columns.
     
-    - *Maximum Value* enter the maximum value restriction for **Integer or Decimal** columns.	
+    - *Maximum Inclusive Value* enter the maximum inclusive value restriction for **Integer or Decimal** columns.	
     
-    - *Values Inclusive?* for **Integer or Decimal** columns, are the minimum and maximum values inclusive in the valid values range. Enter a '1' for yes or a '0' for no.
+    - *Minimum Exclusive Value* enter the minimum exclusive value restriction for **Integer or Decimal** columns.
+    
+    - *Maximum Exclusive Value* enter the maximum exclusive value restriction for **Integer or Decimal** columns.   
+    
+    - *Description* for all columns enter a textual description that might be used for human readable documentation.
     
     - *Defining URL* enter a URL (or at least a URI) to a vocabulary or ontology or a webpage that describes or defines the meaning of the data in this column.
     
