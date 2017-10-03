@@ -11,6 +11,7 @@ import datetime
 import csv
 import sqlite3
 import configparser
+from urllib.parse import quote
 
 from uuid import uuid4
 from collections import OrderedDict
@@ -107,12 +108,12 @@ def xdcount_rdf(data):
     rdfStr += padding.rjust(indent + 6) + '<rdfs:Class rdf:about="mc-' + mcID + '">\n'
     rdfStr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#XdCountType"/>\n'
     rdfStr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
-    rdfStr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + data[10].strip() + '"/>\n'
+    rdfStr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + quote(data[10].strip()) + '"/>\n'
     if data[11]:  # are there additional predicate-object definitions?
         for po in data[11].splitlines():
             pred = po.split()[0]
             obj = po[len(pred):].strip()
-            rdfStr += padding.rjust(indent + 8) + '<' + pred.strip() + ' rdf:resource="' + obj.strip() + '"/>\n'
+            rdfStr += padding.rjust(indent + 8) + '<' + pred.strip() + ' rdf:resource="' + quote(obj.strip()) + '"/>\n'
             
     rdfStr += padding.rjust(indent + 6) +'<sh:property>\n'
     rdfStr += padding.rjust(indent + 8) +'<rdf:Description>\n'
@@ -225,12 +226,12 @@ def xdquantity_rdf(data):
     rdfStr += padding.rjust(indent + 6) + '<rdfs:Class rdf:about="mc-' + mcID + '">\n'
     rdfStr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#XdQuantityType"/>\n'
     rdfStr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
-    rdfStr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + data[10].strip() + '"/>\n'
+    rdfStr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + quote(data[10].strip()) + '"/>\n'
     if data[11]:  # are there additional predicate-object definitions?
         for po in data[11].splitlines():
             pred = po.split()[0]
             obj = po[len(pred):].strip()
-            rdfStr += padding.rjust(indent + 8) + '<' + pred.strip() + ' rdf:resource="' + obj.strip() + '"/>\n'
+            rdfStr += padding.rjust(indent + 8) + '<' + pred.strip() + ' rdf:resource="' + quote(obj.strip()) + '"/>\n'
             
     rdfStr += padding.rjust(indent + 6) +'<sh:property>\n'
     rdfStr += padding.rjust(indent + 8) +'<rdf:Description>\n'
@@ -343,12 +344,12 @@ def xdstring_rdf(data):
     rdfStr += padding.rjust(indent + 6) + '<rdfs:Class rdf:about="mc-' + mcID + '">\n'
     rdfStr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#XdStringType"/>\n'
     rdfStr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
-    rdfStr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + data[10].strip() + '"/>\n'
+    rdfStr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + quote(data[10].strip()) + '"/>\n'
     if data[11]:  # are there additional predicate-object definitions?
         for po in data[11].splitlines():
             pred = po.split()[0]
             obj = po[len(pred):].strip()
-            rdfStr += padding.rjust(indent + 8) + '<' + pred.strip() + ' rdf:resource="' + obj.strip() + '"/>\n'
+            rdfStr += padding.rjust(indent + 8) + '<' + pred.strip() + ' rdf:resource="' + quote(obj.strip()) + '"/>\n'
             
     rdfStr += padding.rjust(indent + 6) +'<sh:property>\n'
     rdfStr += padding.rjust(indent + 8) +'<rdf:Description>\n'
@@ -473,12 +474,12 @@ def xdtemporal_rdf(data):
     rdfStr += padding.rjust(indent + 6) + '<rdfs:Class rdf:about="mc-' + mcID + '">\n'
     rdfStr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#XdTemporalType"/>\n'
     rdfStr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
-    rdfStr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + data[10].strip() + '"/>\n'
+    rdfStr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + quote(data[10].strip()) + '"/>\n'
     if data[11]:  # are there additional predicate-object definitions?
         for po in data[11].splitlines():
             pred = po.split()[0]
             obj = po[len(pred):].strip()
-            rdfStr += padding.rjust(indent + 8) + '<' + pred.strip() + ' rdf:resource="' + obj.strip() + '"/>\n'
+            rdfStr += padding.rjust(indent + 8) + '<' + pred.strip() + ' rdf:resource="' + quote(obj.strip()) + '"/>\n'
             
     rdfStr += padding.rjust(indent + 6) +'<sh:property>\n'
     rdfStr += padding.rjust(indent + 8) +'<rdf:Description>\n'
@@ -592,12 +593,12 @@ def units(mcID, data):
     xdstr += padding.rjust(indent + 6) + '<rdfs:Class rdf:about="mc-' + mcID + '">\n'
     xdstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#XdStringType"/>\n'
     xdstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
-    xdstr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + data[10].strip() + '"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + quote(data[10].strip()) + '"/>\n'
     if data[11]:  # are there additional predicate-object definitions?
         for po in data[11].splitlines():
             pred = po.split()[0]
             obj = po[len(pred):].strip()
-            xdstr += padding.rjust(indent + 8) + '<' + pred.strip() + ' rdf:resource="' + obj.strip() + '"/>\n'
+            xdstr += padding.rjust(indent + 8) + '<' + pred.strip() + ' rdf:resource="' + quote(obj.strip()) + '"/>\n'
     xdstr += padding.rjust(indent + 6) + '</rdfs:Class>\n'
     xdstr += padding.rjust(indent + 4) + '</xs:appinfo>\n'
     xdstr += padding.rjust(indent + 2) + '</xs:annotation>\n'
@@ -700,7 +701,7 @@ def xsd_entry(data, db_file):
     estr += padding.rjust(indent + 6) + '<rdfs:Class rdf:about="mc-' + data[6].strip() + '">\n'
     estr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#EntryType"/>\n'
     estr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
-    estr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + data[4].strip() + '"/>\n'
+    estr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + quote(data[4].strip()) + '"/>\n'
     estr += padding.rjust(indent + 6) + '</rdfs:Class>\n'
     estr += padding.rjust(indent + 4) + '</xs:appinfo>\n'
     estr += padding.rjust(indent + 2) + '</xs:annotation>\n'
@@ -746,7 +747,7 @@ def xsd_dm(data):
     dmstr += padding.rjust(indent + 6) + '<rdfs:Class rdf:about="mc-' + data[5].strip() + '">\n'
     dmstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#DMType"/>\n'
     dmstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
-    dmstr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + data[4].strip() + '"/>\n'
+    dmstr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + quote(data[4].strip()) + '"/>\n'
     dmstr += padding.rjust(indent + 6) + '</rdfs:Class>\n'
     dmstr += padding.rjust(indent + 4) + '</xs:appinfo>\n'
     dmstr += padding.rjust(indent + 2) + '</xs:annotation>\n'
