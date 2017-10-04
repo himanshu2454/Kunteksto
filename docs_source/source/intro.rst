@@ -90,7 +90,7 @@ Details coming soon. Preferably use the Anaconda instructions above.
 Linux
 -----
 
-Install Python and SQLiteBrowser as directed by the links above. 
+Install Python 3.6.x See: `Downloads <https://www.python.org/downloads/>`_ 
 
 Follow the `instructions for your platform <http://lxml.de/installation.html>`_ for lxml installation. 
 
