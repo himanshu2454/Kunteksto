@@ -96,7 +96,7 @@ class EntryWindow(tk.Frame):
         self.label_entry = tk.Entry(self, textvariable=self.label, width=50).grid(row=0, column=1, pady=1, padx=5)
 
         tk.Label(self, text='Datatype').grid(row=1, column=0, pady=1, sticky=E)
-        self.datatype_entry = tk.OptionMenu(self, self.datatype, 'String', 'Integer', 'Decimal', 'Date', 'Time', 'Datetime')
+        self.datatype_entry = tk.OptionMenu(self, self.datatype, 'String', 'Integer', 'Decimal', 'Float', 'Date', 'Time', 'Datetime')
         self.datatype_entry.grid(row=1, column=1, pady=1, padx=5)
         
         tk.Label(self, text='Minimum Length').grid(row=2, column=0, pady=1, sticky=E)

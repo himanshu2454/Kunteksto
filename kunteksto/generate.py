@@ -333,6 +333,126 @@ def xdquantity(data):
 
     return(xdstr)
 
+
+def xdfloat_rdf(data):
+    """
+    Create RDF including SHACL constraints for xdFloat model.
+    """
+    mcID = data[15].strip()    
+    rdfStr = ''
+    indent = 2
+    padding = ('').rjust(indent)
+    rdfStr += padding.rjust(indent + 6) + '<rdfs:Class rdf:about="mc-' + mcID + '">\n'
+    rdfStr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#XdFloatType"/>\n'
+    rdfStr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
+    rdfStr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + quote(data[10].strip()) + '"/>\n'
+    if data[11]:  # are there additional predicate-object definitions?
+        for po in data[11].splitlines():
+            pred = po.split()[0]
+            obj = po[len(pred):].strip()
+            rdfStr += padding.rjust(indent + 8) + '<' + pred.strip() + ' rdf:resource="' + quote(obj.strip()) + '"/>\n'
+            
+    rdfStr += padding.rjust(indent + 6) +'<sh:property>\n'
+    rdfStr += padding.rjust(indent + 8) +'<rdf:Description>\n'
+    rdfStr += padding.rjust(indent + 8) +'<sh:path rdf:resource="mc-' + mcID + '/xdfloat-value"/>\n'
+    rdfStr += padding.rjust(indent + 8) +'<sh:datatype rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>\n'
+    rdfStr += padding.rjust(indent + 10) +'<sh:maxCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:maxCount>\n'
+    rdfStr += padding.rjust(indent + 10) +'<sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>\n'
+    
+    if data[7]:
+        rdfStr += padding.rjust(indent + 10) +'<sh:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#float">' + data[7].strip() + '</sh:minInclusive>\n'
+    elif data[17]:
+        rdfStr += padding.rjust(indent + 10) +'<sh:minExclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#float">' + data[17].strip() + '</sh:minExclusive>\n'
+        
+    if data[8]:
+        rdfStr += padding.rjust(indent + 10) +'<sh:maxInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#float">' + data[8].strip() + '</sh:maxInclusive>\n'    
+    elif data[18]:
+        rdfStr += padding.rjust(indent + 10) +'<sh:maxExclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#float">' + data[18].strip() + '</sh:maxExclusive>\n'    
+   
+    rdfStr += padding.rjust(indent + 8) +'</rdf:Description>\n'
+    rdfStr += padding.rjust(indent + 6) +'</sh:property>\n'
+    
+    rdfStr += padding.rjust(indent + 6) + '</rdfs:Class>\n'
+    return(rdfStr)
+
+
+def xdfloat(data):
+    """
+    Create xdFloat model used for floats.
+    """
+    
+    adapterID = data[16].strip()
+    mcID = data[15].strip()
+    unitsID = str(uuid4())
+    indent = 2
+    padding = ('').rjust(indent)
+    
+    # Adapter
+    xdstr = padding.rjust(indent) + '\n<xs:element name="ms-' + adapterID + '" substitutionGroup="s3m:Items" type="s3m:mc-' + adapterID + '"/>\n'
+    xdstr += padding.rjust(indent) + '<xs:complexType name="mc-' + adapterID + '">\n'
+    xdstr += padding.rjust(indent + 2) + '<xs:complexContent>\n'
+    xdstr += padding.rjust(indent + 4) + '<xs:restriction base="s3m:XdAdapterType">\n'
+    xdstr += padding.rjust(indent + 6) + '<xs:sequence>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="unbounded" minOccurs="0" ref="s3m:ms-' + mcID + '"/>\n'
+    xdstr += padding.rjust(indent + 6) + '</xs:sequence>\n'
+    xdstr += padding.rjust(indent + 4) + '</xs:restriction>\n'
+    xdstr += padding.rjust(indent + 2) + '</xs:complexContent>\n'
+    xdstr += padding.rjust(indent) + '</xs:complexType>\n'
+    # model component
+    xdstr += padding.rjust(indent) + '<xs:element name="ms-' + mcID + '" substitutionGroup="s3m:XdAdapter-value" type="s3m:mc-' + mcID + '"/>\n'
+    xdstr += padding.rjust(indent) + '<xs:complexType name="mc-' + mcID + '">\n'
+    xdstr += padding.rjust(indent + 2) + '<xs:annotation>\n'
+    xdstr += padding.rjust(indent + 4) + '<xs:documentation>\n'
+    xdstr += padding.rjust(indent + 6) + data[9].strip() + '\n'
+    xdstr += padding.rjust(indent + 4) + '</xs:documentation>\n'
+    xdstr += padding.rjust(indent + 4) + '<xs:appinfo>\n'
+    # add the RDF
+    xdstr += xdquantity_rdf(data)
+    xdstr += padding.rjust(indent + 4) + '</xs:appinfo>\n'
+    xdstr += padding.rjust(indent + 2) + '</xs:annotation>\n'
+    xdstr += padding.rjust(indent + 2) + '<xs:complexContent>\n'
+    xdstr += padding.rjust(indent + 4) + '<xs:restriction base="s3m:XdFloatType">\n'
+    xdstr += padding.rjust(indent + 6) + '<xs:sequence>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="label" type="xs:string" fixed="' + data[1].strip() + '"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" ref="s3m:ExceptionalValue"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="vtb" type="xs:dateTime"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="vte" type="xs:dateTime"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="tr" type="xs:dateTime"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="modified" type="xs:dateTime"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="magnitude-status" type="s3m:MagnitudeStatus"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="error"  type="xs:int" default="0"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="accuracy" type="xs:int" default="0"/>\n'
+    if not data[7] and not data[8] and not data[17] and not data[18] and not data[13]:
+        xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdfloat-value" type="xs:float"/>\n'
+    if data[13]:
+        xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdfloat-value" type="xs:float" default="' + data[13].strip() + '"/>\n'
+    else:
+        xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdfloat-value">\n'
+        xdstr += padding.rjust(indent + 10) + '<xs:simpleType>\n'
+        xdstr += padding.rjust(indent + 10) + '<xs:restriction base="xs:float">\n'
+        if data[7]:
+            xdstr += padding.rjust(indent + 12) + '<xs:minInclusive value="' + data[7].strip() + '"/>\n'
+        elif data[17]:
+            xdstr += padding.rjust(indent + 12) + '<xs:minExclusive value="' + data[17].strip() + '"/>\n'
+        if data[8]:
+            xdstr += padding.rjust(indent + 12) + '<xs:maxInclusive value="' + data[8].strip() + '"/>\n'
+        elif data[18]:
+            xdstr += padding.rjust(indent + 12) + '<xs:maxExclusive value="' + data[18].strip() + '"/>\n'
+                
+        xdstr += padding.rjust(indent + 10) + '</xs:restriction>\n'
+        xdstr += padding.rjust(indent + 10) + '</xs:simpleType>\n'
+        xdstr += padding.rjust(indent + 8) + '</xs:element>\n'
+    xdstr += padding.rjust(indent + 8) +     '<xs:element maxOccurs="1" minOccurs="0" name="xdfloat-units" type="s3m:mc-' + unitsID + '"/>\n'
+    xdstr += padding.rjust(indent + 6) + '</xs:sequence>\n'
+    xdstr += padding.rjust(indent + 4) + '</xs:restriction>\n'
+    xdstr += padding.rjust(indent + 2) + '</xs:complexContent>\n'
+    xdstr += padding.rjust(indent) + '</xs:complexType>\n'
+
+    xdstr += units(unitsID, data)
+
+    return(xdstr)
+
+
 def xdstring_rdf(data):
     """
     Create RDF including SHACL constraints for xdString model.
@@ -939,6 +1059,32 @@ def rdf_quantity(row, data):
     return(rstr)
 
 
+def xml_float(row, data):
+    xstr = '      <s3m:ms-' + row[16].strip() + '>\n'
+    xstr += '      <s3m:ms-' + row[15].strip() + '>\n'
+    xstr += '        <label>' + row[1].strip() + '</label>\n'
+    xstr += '        <magnitude-status>equal</magnitude-status>\n'
+    xstr += '        <error>0</error>\n'
+    xstr += '        <accuracy>0</accuracy>\n'
+    xstr += '        <xdfloat-value>' + data[row[0].strip()] + '</xdfloat-value>\n'
+    xstr += '        <xdfloat-units>\n'
+    xstr += '          <label>' + row[1].strip() + ' Units</label>\n'
+    xstr += '          <xdstring-value>' + row[14].strip() + '</xdstring-value>\n'
+    xstr += '          <xdstring-language>en-US</xdstring-language>\n'
+    xstr += '        </xdfloat-units>\n'
+    xstr += '      </s3m:ms-' + row[15].strip() + '>\n'
+    xstr += '      </s3m:ms-' + row[16].strip() + '>\n'
+    return(xstr)
+
+
+def rdf_quantity(row, data):
+    rstr = '      <rdfs:Class rdf:about="s3m:ms-' + row[15].strip() + '">\n'
+    rstr += '        <rdfs:label>' + row[1].strip() + '</rdfs:label>\n'
+    rstr += '        <rdfs:value rdf:datatype="xs:float">' + data[row[0].strip()] + '</rdfs:value>\n'
+    rstr += '      </rdfs:Class>\n'
+    return(rstr)
+
+
 def xml_temporal(row, data):
     xstr = '      <s3m:ms-' + row[16].strip() + '>\n'
     xstr += '      <s3m:ms-' + row[15].strip() + '>\n'
@@ -998,8 +1144,7 @@ def make_data(schema, db_file, infile, delim, outdir, connRDF, connXML, connJSON
     modelSchema = etree.XMLSchema(schema_doc)
 
     print('\n\nGeneration: ', "Generate data for: " + schemaFile + ' using ' + base + '\n')
-    namespaces = {"https://www.s3model.com/ns/s3m/": "s3m",
-                  "http://www.w3.org/2001/XMLSchema-instance": "xsi"}
+    namespaces = {"https://www.s3model.com/ns/s3m/": "s3m", "http://www.w3.org/2001/XMLSchema-instance": "xsi"}
     xmldir = outdir + '/xml/'
     os.makedirs(xmldir, exist_ok=True)
     rdfdir = outdir + '/rdf/'
@@ -1058,6 +1203,9 @@ def make_data(schema, db_file, infile, delim, outdir, connRDF, connXML, connJSON
                     elif row[2].lower() == 'decimal':
                         xmlStr += xml_quantity(row, data)
                         rdfStr += rdf_quantity(row, data)
+                    elif row[2].lower() == 'float':
+                        xmlStr += xml_float(row, data)
+                        rdfStr += rdf_float(row, data)
                     elif row[2].lower() in ('date', 'datetime', 'time'):
                         xmlStr += xml_temporal(row, data)
                         rdfStr += rdf_temporal(row, data)

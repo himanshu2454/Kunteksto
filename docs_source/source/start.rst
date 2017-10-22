@@ -169,7 +169,7 @@ Edit these columns (see :ref:`semantics`) :
 
         .. warning::
             The decimal separator throughout Kunteksto is a period, do not use a comma. Do not use thousands separators.
-            Also, if you mix min/max inclusive or exclusive in an illogical manner, they system will take the inclusive value and ignore the exclusive value.
+            Also, if you mix min/max inclusive or exclusive in an illogical manner, the system will take the inclusive value and ignore the exclusive value.
     
     - *Minimum Inclusive Value* enter the minimum inclusive value restriction for **Integer or Decimal** columns.
     
