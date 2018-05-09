@@ -173,9 +173,9 @@
 <h1>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h1>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p class="last">Only edit the configuration file with a text editor. Do not use a wordprocessing application such as MS Word or LibreOffice. There are many great opensource and free text editors to choose from.  An easy to use favorite is <a class="reference external" href="https://www.sublimetext.com/">Sublime</a></p>
+<p class="last">Only edit the configuration file with a text editor. Do not use a word processing application such as MS Word or LibreOffice. There are many great opensource and free text editors from which to choose.  An easy to use favorite is <a class="reference external" href="https://www.sublimetext.com/">Sublime</a></p>
 </div>
-<p>The initial kunteksto.conf file should be okay for most uses and certainly for the demo/tutorials. You are encouraged to make backup copies, under different names, of the configuration file for different use cases/projects. The active configuration however will always be the one named <strong>kunteksto.conf</strong>.</p>
+<p>The initial kunteksto.conf file should be okay for most uses and indeed for the demo/tutorials. You are encouraged to make backup copies, under different names, of the configuration file for different use cases/projects. The active configuration, however, is always the one named <strong>kunteksto.conf</strong>.</p>
 <div class="section" id="config-file-details">
 <span id="config"></span><h2>Config File Details<a class="headerlink" href="#config-file-details" title="Permalink to this headline">¶</a></h2>
 <p>Here we cover the details of the configuration options.</p>
@@ -188,35 +188,35 @@ analyzelevel: Full
 ; The default delimiter is defined here.
 delim: ;
 
-; A default output directory may be defined here. It can be overridden on the commandline.
+; A default output directory may be defined here. It can be overridden on the command line.
 ; The &#39;output&#39; directory is relative to the installation directory of Kunteksto.
 ; Typically it is only used for the Demo and Tutorials.
 outdir: output
 </pre></div>
 </div>
-<p>These three items are also available on the commandline. A commandline entry will override these defaults.</p>
+<p>These three items are also available on the command line. A command line entry overrides these defaults.</p>
 <div class="highlight-text"><div class="highlight"><pre><span></span>; Default data formats to create. Values are True or False.
 xml: True
 rdf: True
 json: True
 </pre></div>
 </div>
-<p>These values determine what data file format(s) will be generated.  If a file format is set to <em>True</em> and no repository is configured for that format; then the files will be written to the filesystem under the defined <em>outdir</em>.</p>
+<p>These values determine what data file format(s) are generated.  If a file format is set to <em>True</em> and no repository is configured for that format; then the files are written to the filesystem under the defined <em>outdir</em>.</p>
 <div class="highlight-text"><div class="highlight"><pre><span></span>[NAMESPACES]
-; any additional namespaces must be defined here with their abbreviations. The format is is shown below. Note the space after the colon.
+; any additional namespaces must be defined here with their abbreviations. The format is shown below. Note the space after the colon.
 ; {abbrev}: {namespace URI}
 
 dul: http://www.ontologydesignpatterns.org/ont/dul/DUL.owl#
 </pre></div>
 </div>
-<p>When defining the semantics for your models you will want to use appropriate ontologies from various public sources such as <a class="reference external" href="http://lov.okfn.org/dataset/lov">Linked Open Vocabularies</a>  <a class="reference external" href="https://www.bioontology.org/">Biontology</a> or some of the many others, as well as your own local ontologies. You must define an abbreviation for each ontology namespace here. The one above shows the example from the Tutorial/Demo of defining the <em>dul</em> abbreviation for the <a class="reference external" href="http://ontologydesignpatterns.org/wiki/Main_Page">Ontology Design Patterns</a> ontology.</p>
-<div class="highlight-text"><div class="highlight"><pre><span></span>; Below are where repository setups are defined for each of the three types of data generation.
-; If a type is to be generated but no repository is defined for the type. Then the data will be generated
+<p>When defining the semantics for your models, you should use appropriate ontologies from various public sources such as <a class="reference external" href="http://lov.okfn.org/dataset/lov">Linked Open Vocabularies</a>  <a class="reference external" href="https://www.bioontology.org/">Biontology</a> or some of the many others, as well as your local ontologies. You must define an abbreviation for each ontology namespace here. The one above shows the example from the Tutorial/Demo of defining the <em>dul</em> abbreviation for the <a class="reference external" href="http://ontologydesignpatterns.org/wiki/Main_Page">Ontology Design Patterns</a> ontology.</p>
+<div class="highlight-text"><div class="highlight"><pre><span></span>; Below are where repository setup definitions for each of the three types of data generation are expressed.
+; If a type is to be generated, but no repository is defined for the type. Then the data is generated
 ; and written to the filesystem in a subdirectory of the output directory.
 
 
 ; A default repository where we can write the output XML instead of to the filesystem.
-; The config will only process the first one with an ACTIVE status.
+; The config processes only the first one with an ACTIVE status.
 
 [BASEX]
 status: INACTIVE
@@ -232,7 +232,7 @@ status: INACTIVE
 
 
 ; A default repository where we can write the output RDF instead of to the filesystem.
-; The config will only process the first one with an ACTIVE status.
+; The config processes only the first one with an ACTIVE status.
 
 
 [ALLEGROGRAPH]
@@ -257,7 +257,7 @@ status: INACTIVE
 
 
 ; A default repository where we can write the output JSON instead of to the filesystem.
-; The config will only process the first one with an ACTIVE status.
+; The config processes only the first one with an ACTIVE status.
 
 [MONGODB]
 status: INACTIVE
@@ -274,7 +274,7 @@ status: INACTIVE
 </pre></div>
 </div>
 <p>There is currently one repository supported for each filetype. We plan to support the others in the future.</p>
-<p><strong>There are no user editable options in the SYSTEM section.</strong></p>
+<p><strong>There are no options editable by the user in the SYSTEM section.</strong></p>
 <div class="highlight-text"><div class="highlight"><pre><span></span>[SYSTEM]
 version: 1.2.5
 </pre></div>
@@ -305,7 +305,7 @@ version: 1.2.5
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, Data Insights, Inc..
-      Last updated on 2017-10-24 10:00.
+      Last updated on 2018-05-09 14:23.
 
     </p>
   </div> 

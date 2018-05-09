@@ -191,14 +191,14 @@
 <span id="tutor"></span><h2>Tutorial/Demo<a class="headerlink" href="#tutorial-demo" title="Permalink to this headline">¶</a></h2>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">There is an example of a complete database, model and data set in the example_data/Demo_with_semantics.zip archive.</p>
+<p class="last">There is an example of a complete database, model, and data set in the example_data/Demo_with_semantics.zip archive.</p>
 </div>
-<p>Kunteksto includes a demo data file <em>Demo.csv</em>, that you can use to create your first model and data translation. This is a screenshot of the entire file as depicted in a spreadsheet.</p>
+<p>Kunteksto includes a demo data file <em>Demo.csv</em>, that you can use to create your first model and data translation. Below is a screenshot of the entire file as depicted in a spreadsheet.</p>
 <a class="reference internal image-reference" href="_images/csv_data.png"><img alt="Demo.csv" class="align-center" src="_images/csv_data.png" style="width: 800px; height: 600px;" /></a>
 <p>Notice that there are a few columns to demonstrate various datatypes as well as one column with mixed types that might look like an integer column at first glance but has a missing value.</p>
-<p>This tutorial does not demonstrate all of the functionality of Kunteksto but it does demonstrate the process of creating a model based on data and then enhancing that data with improved semantics.</p>
-<p>Kunteksto is a commandline tool that uses a combination of commandline options as well as a configuration file.
-The configuration file is covered in <a class="reference internal" href="configure.html#config"><span class="std std-ref">Config File Details</span></a>. The default configuration is fine for the tutorials.</p>
+<p>This tutorial does not demonstrate all of the functionality of Kunteksto, but it does demonstrate the process of creating a model based on data and then enhancing that data with improved semantics.</p>
+<p>Kunteksto is a command line tool that uses a combination of command line options as well as a configuration file.
+The configuration file options are covered in <a class="reference internal" href="configure.html#config"><span class="std std-ref">Config File Details</span></a>. The default configuration is okay for the tutorials.</p>
 </div>
 <div class="section" id="tutorial-steps">
 <span id="tutorsteps"></span><h2>Tutorial Steps<a class="headerlink" href="#tutorial-steps" title="Permalink to this headline">¶</a></h2>
@@ -208,7 +208,7 @@ The configuration file is covered in <a class="reference internal" href="configu
 </ul>
 <div class="admonition caution">
 <p class="first admonition-title">Caution</p>
-<p>If you closed and reopened a new window then you need to activate the environment again.</p>
+<p>If you closed and reopened a new window, then you need to activate the environment again.</p>
 <p><strong>Windows</strong></p>
 <div class="highlight-sh"><div class="highlight"><pre><span></span>activate &lt;path/to/directory&gt;
 </pre></div>
@@ -220,62 +220,62 @@ The configuration file is covered in <a class="reference internal" href="configu
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>Kunteksto can be run in prompt mode or be given several options on the commandline.
-You can see all of the Kunteksto commandline options using the &#8211;help flag.</p>
+<p>Kunteksto can be executed in prompt mode, or several options can be provided on the command line.
+You can see all of the Kunteksto command line options using the &#8211;help flag.</p>
 <div class="last highlight-sh"><div class="highlight"><pre><span></span>kunteksto --help
 </pre></div>
 </div>
 </div>
-<p>For this tutorial you will start Kunteksto in prompt mode. This means that the mandatory items will be requested:</p>
+<p>For this tutorial, you start Kunteksto in prompt mode. These mandatory items will be requested:</p>
 <div class="highlight-sh"><div class="highlight"><pre><span></span>kunteksto
 </pre></div>
 </div>
 <ul class="simple">
 <li>At the <strong>Enter a valid mode:</strong> prompt, type <em>all</em></li>
 <li>At the <strong>Enter a valid CSV file:</strong> prompt, type <em>example_data/Demo.csv</em></li>
-<li>Kunteksto will analyze the input file and create a results database of this CSV file named <em>output/Demo/Demo.db</em></li>
-<li>The Model Metadata window will open.</li>
-<li>This image depicts the view of the Model Metadata and below that are descriptions of each of the fields to be edited. Kunteksto prefills the fields with fake data just so you aren&#8217;t staring at blank input boxes.</li>
+<li>Kunteksto analyzes the input file and creates a results database of this CSV file named <em>output/Demo/Demo.db</em></li>
+<li>The Model Metadata window opens.</li>
+<li>This image depicts the view of the Model Metadata and below that are descriptions of each of the fields to be edited. Kunteksto prefills the fields with fake data so that you are not staring at blank input boxes.</li>
 </ul>
 <a class="reference internal image-reference" href="_images/edit_model.png"><img alt="Edit Model" class="align-center" src="_images/edit_model.png" style="width: 800px; height: 600px;" /></a>
 <p><strong>Model table field descriptions:</strong></p>
 <blockquote>
 <div><ul class="simple">
 <li><em>Title</em> is a free text title for your data concept contained in the CSV file.</li>
-<li><em>Description</em> is a free text, elborated description of the data contained in the CSV file.</li>
+<li><em>Description</em> is a free text, elaborated description of the data contained in the CSV file.</li>
 <li><em>Copyright</em> enter the name of the copyright holder of the model</li>
 <li><em>Author</em> enter the name of the author of the model</li>
-<li><em>Defining URL</em> enter a URL (or at least a URI) to a vocabulary or ontology or a webpage that describes or defines the overall concept of the data model.</li>
+<li><em>Defining URL</em> enter a URL (or at least a URI) to a controlled vocabulary or ontology or a webpage that describes or defines the overall concept of the data model.</li>
 </ul>
 </div></blockquote>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">With your FileManager, navigate to the <em>kunteksto/example_data</em> subdirectory and open the <em>Demo_info.pdf</em> file. This file simulates what often purports to be a data dictionary that you might receive with a dataset. You will use this to improve the computable semantics of your data.</p>
+<p class="last">With your file manager, navigate to the <em>kunteksto/example_data</em> subdirectory and open the <em>Demo_info.pdf</em> file. This file simulates what often purports to be a data dictionary that you might receive with a dataset. Using information from this document improves the computable semantics of your data.</p>
 </div>
-<p>Edit these fields as desired. They describe the overall metadata for your data model. This metadata describes the where, when and why the data is being modeled.</p>
-<p>You will notice that some of this information can be obtained from the PDF. For other items you have to use your knowledge of the dataset as a domain expert. In this <em>demo</em> we are going to say that we have a local ontology that describes the columns and that information is provided below in the <em>Adding Semantics</em> section below.</p>
+<p>Edit these fields as desired. They describe the overall metadata for your data model. This metadata describes the where, when and why the data is useful to the model.</p>
+<p>Notice that some of this information can be obtained from the PDF. For other items, you have to use your knowledge of the dataset as a domain expert. In this <em>demo</em> we are going to say that we have a local ontology that describes the columns and that information is provided below in the <em>Adding Semantics</em> section below.</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <p class="last">Use the <em>Save &amp; Exit</em> button when you are finished making changes.</p>
 </div>
 <ul class="simple">
-<li>The records editor will open next. Note that there is a record for each column of data in Demo.csv.</li>
+<li>The records editor opens next. Note that there is a record for each column of data in Demo.csv.</li>
 </ul>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p>If there is only one record and your Label field looks like this image, then the likely problem is that an incorrect field delimiter was chosen on the commandline or the default was changed in the config file. The config file should have a <em>comma</em> as the delim option and is found on or near line 9 in kunteksto.conf.</p>
+<p>If there is only one record and your Label field looks like this image, then the likely problem is that an incorrect field delimiter was chosen on the command line or the default was changed in the config file. The config file should have a <em>comma</em> as the delim option, and this entry is found on or near line 9 in kunteksto.conf.</p>
 <a class="last reference internal image-reference" href="_images/bad_delim.png"><img alt="Bad Delimiter" class="align-center" src="_images/bad_delim.png" style="width: 600px; height: 200px;" /></a>
 </div>
 <ul class="simple">
-<li>Each record has a number of fields that allow you to describe more about your data. You can cycle through the records with the <em>Next</em> and <em>Previous</em> buttons. When you make changes use the <em>Save</em> button. Once the changes are written to the database you will see a Saved dialog.</li>
+<li>Each record has some fields that allow you to describe more about your data. You can cycle through the records with the <em>Next</em> and <em>Previous</em> buttons. When you make changes, use the <em>Save</em> button to record those changes. Once the changes are written to the database, a <strong>Saved</strong> dialog box appears.</li>
 </ul>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p class="last">If you navigate away from a record without saving it you will loose those changes.</p>
+<p class="last">If you navigate away from a record without saving it, those changes are lost.</p>
 </div>
 <ul class="simple">
 <li>Though some fields are pre-filled, it is only a guess and may not be accurate.</li>
-<li>It is up to you to be as accurate as possible in describing your data to improve quality and usability. Some fileds are only useful with certain datatypes. See the description of each field below.</li>
+<li>It is up to you to be as accurate as possible in describing your data to improve quality and usability. Some fields are not used with all data types. See the description of each field below.</li>
 </ul>
 <a class="reference internal image-reference" href="_images/edit_record.png"><img alt="Edit Record" class="align-center" src="_images/edit_record.png" style="width: 800px; height: 600px;" /></a>
 <p><strong>Record field descriptions:</strong></p>
@@ -296,8 +296,8 @@ You can see all of the Kunteksto commandline options using the &#8211;help flag.
 <blockquote>
 <div><div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p class="last">The decimal separator throughout Kunteksto is a period, do not use a comma. Do not use thousands separators.
-Also, if you mix min/max inclusive or exclusive in an illogical manner, the system will take the inclusive value and ignore the exclusive value.</p>
+<p class="last">The decimal separator throughout Kunteksto is a period, do not use a comma. Do not use a thousands separators.
+Also, if you mix min/max inclusive or exclusive in an illogical manner, the system takes the inclusive value and ignore the exclusive value.</p>
 </div>
 </div></blockquote>
 </li>
@@ -309,23 +309,23 @@ Also, if you mix min/max inclusive or exclusive in an illogical manner, the syst
 </li>
 <li><p class="first"><em>Maximum Exclusive Value</em> enter the maximum exclusive value restriction for <strong>Integer or Decimal</strong> columns.</p>
 </li>
-<li><p class="first"><em>Description</em> for all columns enter a textual description that might be used for human readable documentation.</p>
+<li><p class="first"><em>Description</em> for all columns enter a textual description that might be used for human-readable documentation.</p>
 </li>
-<li><p class="first"><em>Defining URL</em> enter a URL (or at least a URI) to a vocabulary or ontology or a webpage that describes or defines the meaning of the data in this column.</p>
+<li><p class="first"><em>Defining URL</em> enter a URL (or at least a URI) to a controlled vocabulary or ontology or a webpage that describes or defines the meaning of the data in this column.</p>
 </li>
 <li><p class="first"><em>Predicates &amp; Objects</em> optionally enter any additional <em>predicate object</em> pairs to be used to define this resource. Enter them one per line with the predicate and object separated by a space character.</p>
 <blockquote>
 <div><div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p class="last">You may use namespace abbreviations <strong>ONLY</strong> if they are in the list below or have been defined in the [NAMESPACES] section of the configuration file. To do otherwise will generate an invalid model and be pointless.</p>
+<p class="last">You may use namespace abbreviations <strong>ONLY</strong> if they are in the list below or have been defined in the [NAMESPACES] section of the configuration file. To do otherwise generates an invalid model and be pointless.</p>
 </div>
 </div></blockquote>
 </li>
-<li><p class="first"><em>Default Text Value</em> for <strong>String</strong> columns enter the default value for a string datatype column, if there is one.</p>
+<li><p class="first"><em>Default Text Value</em> for <strong>String</strong> columns enter the default value for a string datatype column if there is one.</p>
 </li>
 <li><p class="first"><em>Default Numeric Value</em> enter the default value for a decimal or integer datatype column, if there is one.</p>
 </li>
-<li><p class="first"><em>Units</em> <strong>mandatory</strong> units value for all <strong>Decimal or Integer</strong> datatype columns. For decimal columns this should come from a standard units vocabulary such as <a class="reference external" href="https://github.com/HajoRijgersberg/OM">Ontology of units of Measure</a> or <a class="reference external" href="http://unitsofmeasure.org">The Unified Code for Units of Measure</a>. For Integer columns where the values are <em>counts</em> you should enter the name of the item(s) being counted. For example, if this number represents the number of widgets created today. Then enter &#8220;Widgets* here.</p>
+<li><p class="first"><em>Units</em> <strong>mandatory</strong> units value for all <strong>Decimal or Integer</strong> datatype columns. For decimal columns, this should come from a standard units vocabulary such as <a class="reference external" href="https://github.com/HajoRijgersberg/OM">Ontology of units of Measure</a> or <a class="reference external" href="http://unitsofmeasure.org">The Unified Code for Units of Measure</a>. For Integer columns where the values are <em>counts</em> you should enter the name of the item(s) to be counted. For example, if this number represents the number of widgets created today. Then enter &#8220;Widgets* here.</p>
 </li>
 </ul>
 </div></blockquote>
@@ -333,10 +333,10 @@ Also, if you mix min/max inclusive or exclusive in an illogical manner, the syst
 <span id="semantics"></span><h3>Adding Semantics<a class="headerlink" href="#adding-semantics" title="Permalink to this headline">¶</a></h3>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">If not already open; with your FileManager navigate to the <em>kunteksto/example_data</em> subdirectory and open the <em>Demo_info.pdf</em> file. This file simulates what often purports to be a data dictionary that you might receive with a dataset. You will use this to improve the computable semantics of your data.</p>
+<p class="last">If not already open; with your FileManager navigate to the <em>kunteksto/example_data</em> subdirectory and open the <em>Demo_info.pdf</em> file. This file simulates what often purports to be a data dictionary that you might receive with a dataset. You use this information to improve the computable semantics of your data.</p>
 </div>
-<p>Editing the fields in this database will improve the semantics in your model that describes the data. This allows your data consumers to make better decisions about what the data means. Kunteksto produces an executable model that can be used in various validation and knowledge discovery scenarios.</p>
-<p>In the <strong>Model Metadata</strong> you should change the fields as you wish to match your organization. The field <em>Defining URL</em> is where we point to the overarching definition about this datamodel. This URL will be used as the <em>object</em> portion of a RDF triple where the <em>subject</em> is the unique datamodel ID (dm-{uuid}) and the <em>predicate</em> is <strong>rdfs:isDefinedBy</strong>. We see in our <em>Demo_info.pdf</em> file that it is declared to be found at <a class="reference external" href="https://www.datainsights.tech/Demo_info.pdf">https://www.datainsights.tech/Demo_info.pdf</a> so this is our URL for this field.</p>
+<p>Editing the fields in this database improves the semantics in your model that describes the data. This information allows your data consumers to make better decisions about what the data means. Kunteksto produces an executable model that can be used in various validation and knowledge discovery scenarios.</p>
+<p>In the <strong>Model Metadata</strong> you should change the fields as you wish to match your organization. The field <em>Defining URL</em> is where we point to the overarching definition of this datamodel. This URL is used as the <em>object</em> portion of a RDF triple where the <em>subject</em> is the unique datamodel ID (dm-{uuid}) and the <em>predicate</em> is <strong>rdfs:isDefinedBy</strong>. We see in our <em>Demo_info.pdf</em> file that it is declared to exist at <a class="reference external" href="https://www.datainsights.tech/Demo_info.pdf">https://www.datainsights.tech/Demo_info.pdf</a> so this is our URL for this field.</p>
 <p>In the <strong>Records Editor</strong>, the <em>Defining URL</em> and <em>Predicates &amp; Objects</em> are where we add semantics in RDF format. The <em>Defining URL</em> is formatted the same as for the <em>Defining URL</em> column in the Model Metadata.</p>
 <p>The <em>Predicates &amp; Objects</em> column is slightly different in that you need to supply both the predicate and the object.</p>
 <div class="admonition note">
@@ -369,36 +369,36 @@ dul:isSettingFor https://www.datainsights.tech/thingies/PurpleKnob
 </pre></div>
 </div>
 <p>The <em>object</em> portion can contain spaces. However, the first space character defines the separation between the <em>predicate</em> and <em>object</em>.</p>
-<p>Again, the information in the table in the PDF can help you determine additional meaning about the data if you are not a domain expert in this area of <em>Fake System</em> information. If you do not already have an ontology defining the meaning of these columns then you can search in places like <a class="reference external" href="http://www.bartoc.org/">BARTOC</a>, <a class="reference external" href="http://lov.okfn.org/dataset/lov">Linked Open Vocabularies</a>  <a class="reference external" href="https://www.bioontology.org/">Biontology</a>  or even places that aren&#8217;t formal ontologies but contain reliable definitions and descriptioins such as <a class="reference external" href="http://www.dictionary.com/">a dictionary</a> or an <a class="reference external" href="https://en.wikipedia.org/wiki/Main_Page">encyclodpedia</a></p>
+<p>Again, the information in the table in the PDF can help you determine additional meaning about the data if you are not a domain expert in this area of <em>Fake System</em> information. If you do not already have an ontology defining the meaning of these columns then you can search in places like <a class="reference external" href="http://www.bartoc.org/">BARTOC</a>, <a class="reference external" href="http://lov.okfn.org/dataset/lov">Linked Open Vocabularies</a>  <a class="reference external" href="https://www.bioontology.org/">Biontology</a>  or even places that aren&#8217;t formal ontologies but contain reliable definitions and descriptions such as <a class="reference external" href="http://www.dictionary.com/">a dictionary</a> or an <a class="reference external" href="https://en.wikipedia.org/wiki/Main_Page">encyclopedia</a>.</p>
 <ul class="simple">
-<li>Once you have completed the data description step, <strong>saved any changes to the configuration file</strong> and <strong>saved your changes</strong> using the <em>Save</em> button on each Record, close the Record Editor with the <em>Exit</em> button. You will then see that model generation happens followed by data generation.</li>
-<li>In the <em>output/Demo</em> directory along with the Demo.db you will see an XML Schema (*.xsd) model file and a RDF (*.rdf) file. These are the structural and semantic models that can be used in your analysis as well as shared with others to better describe the data. The RDF file is actually extracted from the XML Schema so only the schema needs to be shared in order to distribute full structural and semantic information in an executable model. Data Insights, Inc. provides a utility with S3Model to extract the semantics from the schema data models.</li>
+<li>Once you have completed the data description step, <strong>saved any changes to the configuration file</strong> and <strong>saved your changes</strong> using the <em>Save</em> button on each Record, close the Record Editor with the <em>Exit</em> button. This action starts the model generation process, followed by the data generation process.</li>
+<li>In the <em>output/Demo</em> directory along with the Demo.db, you find an XML Schema (*.xsd) model file and a RDF (*.rdf) file. These are the structural and semantic models that can be used in your analysis as well as shared with others to describe the data better. The RDF file is extracted from the XML Schema, so only the schema needs to be shared to distribute full structural and semantic information in an executable model. Data Insights, Inc. provides a utility with S3Model to extract the semantics from the schema data models.</li>
 </ul>
 <a class="reference internal image-reference" href="_images/output_dir.png"><img alt="Output Directory" class="align-center" src="_images/output_dir.png" style="width: 800px; height: 600px;" /></a>
 <ul class="simple">
-<li>The <em>all</em> mode causes the creation of data instances (XML, JSON and RDF) for each record in the CSV file that are semantically compliant with the RDF and will be valid according to the XML Schema. Demonstrating that the models describe the data. The RDF file does include some constraint definitions based on <a class="reference external" href="https://www.w3.org/TR/shacl/">Shapes Constraint Language (SHACL)</a> There is no builtin processing for these constraints due to the lack of maturity of this technology. Expect SHACL to become more useful in the near future.</li>
+<li>The <em>all</em> mode causes the creation of data instances (XML, JSON, and RDF) for each record in the CSV file that is semantically compliant with the RDF and is valid according to the XML Schema. This validation process demonstrates that the models describe the data. The RDF file does include some constraint definitions based on <a class="reference external" href="https://www.w3.org/TR/shacl/">Shapes Constraint Language (SHACL)</a> There is no built-in processing for these constraints due to the lack of maturity of this technology. Expect SHACL to become more useful soon.</li>
 </ul>
-<p>Full validation is performed via XML for both the data model and data instances. In addition, an XML catalog is dynamically generated for each project and is written to the catalogs subdirectory.</p>
+<p>Full validation is performed via XML for both the data model and data instances. Also, an XML catalog is dynamically generated for each project and is written to the catalogs subdirectory.</p>
 <ul class="simple">
 <li>Notice that the validation file <em>Demo_validation_log.csv</em> shows four valid records and one invalid record. The invalid record is due to a &#8216;NaN&#8217; entry in a numeric column.</li>
 </ul>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">The S3Model eco-system has a much more sophisticated ability to handle missing and erroneous data. The details are available in the S3Model documentation. This generally requires the model first approach whereas Kunteksto is an after-the-fact bridge.</p>
+<p class="last">The S3Model eco-system has a much more sophisticated ability to handle missing and erroneous data. The details are available in the S3Model documentation. To use this expanded exceptional value tagging generally requires the model first approach whereas Kunteksto is an after-the-fact bridge.</p>
 </div>
 <div class="admonition caution">
 <p class="first admonition-title">Caution</p>
-<p class="last">You can rerun this Demo with different options as many times as you wish.  However you will get new data models each time. You should delete the <em>Demo</em> directory under the <em>kunteksto/output/</em> directory before restarting.</p>
+<p class="last">You can rerun this Demo with different options as many times as you wish.  However, this creates a new data model each time. You should delete the <em>Demo</em> directory under the <em>kunteksto/output/</em> directory before restarting.</p>
 </div>
 </div>
 <div class="section" id="additional-steps">
 <h3>Additional Steps<a class="headerlink" href="#additional-steps" title="Permalink to this headline">¶</a></h3>
-<p>In realworld situtaions we will often be generating data on a continuing basis for this same model. To demonstrate this functionality you will use the Demo2.csv file. From the commandline issue this command:</p>
+<p>In real-world situations, we often generate data on a continuing basis for this same model. To demonstrate this functionality, use the Demo2.csv file. From the command line issue this command:</p>
 <div class="highlight-sh"><div class="highlight"><pre><span></span>kunteksto -i example_data/Demo2.csv -m generate -db output/Demo/Demo.db
 </pre></div>
 </div>
-<p>This says to use the <em>Demo2.csv</em> file with the mode for generate and the database to reuse is the <em>Demo.db</em>. The information for the XML Schema is gathered from the information in the database and the *.xsd file is assumed to be in the directory with the database. A new validation log is generated <em>Demo2_validation_log.csv</em> and it will have two files that are invalid.</p>
-<p>It is important to realize that the CSV files must represent <strong>EXACTLY</strong> the same type of data in order to reuse the database and schema. If you issue this on the commandline:</p>
+<p>This command entry says to use the <em>Demo2.csv</em> file with the mode passed as <em>generate</em> and the database to reuse is the <em>Demo.db</em>. The information for the XML Schema is gathered from the information in the database, and the *.xsd file is assumed to be in the directory with the database. A new validation log is generated <em>Demo2_validation_log.csv</em> and two files are shown as invalid.</p>
+<p>It is important to realize that the CSV files must represent <strong>EXACTLY</strong> the same type of data to reuse the database and schema. If you issue this on the command line:</p>
 <div class="highlight-sh"><div class="highlight"><pre><span></span>kunteksto -i example_data/Demo3.csv -m generate -db output/Demo/Demo.db
 </pre></div>
 </div>
@@ -407,21 +407,21 @@ dul:isSettingFor https://www.datainsights.tech/thingies/PurpleKnob
 Datafile: Bad_Column_name  Model: Column_1
 </pre></div>
 </div>
-<p>and no new data files were generated because the data format, in this case a column name, didn&#8217;t match.</p>
+<p>also, no new data files were generated because the data format, in this case, a column name, didn&#8217;t match.</p>
 </div>
 </div>
 <div class="section" id="using-this-rich-data">
 <h2>Using this rich data<a class="headerlink" href="#using-this-rich-data" title="Permalink to this headline">¶</a></h2>
 <p>Now that we have all these files, what can we do with them?</p>
-<p>In the <a class="reference internal" href="configure.html#config"><span class="std std-ref">Config File Details</span></a> section you will learn about automatically placing your data into appropriate databases/repositories for further usage. If yours is not yet supported, you an manually import from the filesystem. Of course you can also contribute, see <a class="reference internal" href="develop.html#develop"><span class="std std-ref">Developing Kunteksto</span></a>.</p>
-<p>In order to exploit the richness of the RDF data you will need to also load these files into your RDF repository:</p>
+<p>In the <a class="reference internal" href="configure.html#config"><span class="std std-ref">Config File Details</span></a> section you learn about automatically placing your data into appropriate databases/repositories for further usage. If yours is not yet supported, you can manually import from the filesystem. Of course, you can also contribute, see <a class="reference internal" href="develop.html#develop"><span class="std std-ref">Developing Kunteksto</span></a>.</p>
+<p>To exploit the richness of the RDF data, you load these files into your RDF repository:</p>
 <ul class="simple">
 <li>s3model/s3model.owl</li>
 <li>s3model/s3model_3_0_0.rdf</li>
 <li>output/Demo/dm-{uuid}.rdf</li>
 </ul>
-<p>In your XML DB or in the appropriate place in your data pipeline you will want to use the dm-{uuid}.xsd data model schema to validate your XML data. You should be using XML Catalog files and an example is created for each project in the <em>catalogs</em> directory.</p>
-<p>Your JSON data instances can be used as desired on the filesystem of in a document DB.</p>
+<p>In your XML DB or the appropriate place in your data pipeline, you will want to use the dm-{uuid}.xsd data model schema to validate your XML data. You should be using XML Catalog files, and an example is created for each project in the <em>catalogs</em> directory.</p>
+<p>Your JSON data instances can be used as desired on the filesystem or in a document DB.</p>
 <p>There is a growing effort to expand the current data science algorithms to exploit richer data formats such as RDF.
 Some references to get you started:</p>
 <ul class="simple">
@@ -432,12 +432,12 @@ Some references to get you started:</p>
 </ul>
 <div class="section" id="why-multiple-copies-of-the-same-data">
 <h3>Why multiple copies of the same data?<a class="headerlink" href="#why-multiple-copies-of-the-same-data" title="Permalink to this headline">¶</a></h3>
-<p>You can choose which types to actually create in the <a class="reference internal" href="configure.html#config"><span class="std std-ref">Config File Details</span></a> file. But each one has different qualities. For example the XML data is the most robust as far as any data quality validation is concerned. The RDF is more useful for exploration and knowledge discovery and the JSON is simpler to use in some environments.</p>
+<p>You can choose which types to create in the <a class="reference internal" href="configure.html#config"><span class="std std-ref">Config File Details</span></a> file. However, each one has different qualities. For example, the XML data is the most robust as far as any data quality validation is concerned. The RDF is more useful for exploration and knowledge discovery, and the JSON is simpler to use in some environments.</p>
 </div>
 <div class="section" id="more-information">
 <h3>More Information<a class="headerlink" href="#more-information" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>To gain a better grasp of the capability of Kunteksto, you may also want to perform the <a class="reference internal" href="tutorials.html#pimatutor"><span class="std std-ref">Pima Indian Diabetes Dataset Tutorial</span></a>. This tutorial is based on the popular Pima Indian Diabetes study that is used in many other data science tutorials. The data is realistic as opposed to this simple demo. Also, you will be actually looking up semanntics in online repositories.</li>
+<li>To gain a better grasp of the capability of Kunteksto, you may also want to perform the <a class="reference internal" href="tutorials.html#pimatutor"><span class="std std-ref">Pima Indian Diabetes Dataset Tutorial</span></a>. This tutorial uses the famous Pima Indian Diabetes study seen in many other data science tutorials. The data is realistic as opposed to this simple demo. Also, you experience looking up semantics in online repositories and enriching your data.</li>
 </ul>
 </div>
 </div>
@@ -466,7 +466,7 @@ Some references to get you started:</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, Data Insights, Inc..
-      Last updated on 2017-10-24 10:00.
+      Last updated on 2018-05-09 14:23.
 
     </p>
   </div> 
