@@ -62,13 +62,19 @@ Anaconda is the **preferred environment** for a tool like Kunteksto because it i
 
     source activate <path/to/directory> 
 
+- the pycurl library must be manually installed using this command
+
+.. code-block:: sh
+
+    conda install pycurl==7.43.0 
+
 - install Kunteksto
 
 .. code-block:: sh
 
     pip install kunteksto
 
-These four quick steps to create a virtual environment in the subdirectory *kunteksto*. Once the environment is created, conda displays how to activate the environment. When activated then Kunteksto is installed in the subdirectory along with the environment. 
+These quick steps create a virtual environment in the subdirectory *kunteksto*. Once the environment is created, conda displays how to activate the environment. When activated then Kunteksto is installed in the subdirectory along with the environment. 
 
 The last step is to do the :ref:`tutor`
 
