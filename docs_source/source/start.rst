@@ -45,7 +45,7 @@ Tutorial Steps
 
 .. caution::
 
-    If you closed and reopened a new window, then you need to activate the environment again. 
+    If you closed and reopened a new window, then you need to activate the environment again. Also, be certain that you are in the kunteksto directory. 
 
     **Windows**
 
