@@ -5,10 +5,10 @@ Tutorials
 Additional tutorials to perform after the Getting Started :ref:`tutor`.
 
 
-.. _pimatutor:
+.. _tradetutor:
 
-Pima Indian Diabetes Dataset Tutorial
-=====================================
+Global Commodity Trade Statistics
+=================================
 
 
-.. include:: pima.rst
+.. include:: trade.rst
