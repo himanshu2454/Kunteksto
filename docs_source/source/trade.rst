@@ -72,6 +72,6 @@ If you haven't yet chosen repositories for this data here are some suggestions, 
 
 `CouchDB <http://couchdb.apache.org/>`_
 
-There are many other options for persistence depending on your needs. For example, you could use `PostgreSQL <https://www.postgresql.org/>`_ to persist you XML or JSON data.
+There are many other options for persistence depending on your needs. For example, you could use `PostgreSQL <https://www.postgresql.org/>`_ to persist your XML or JSON data.
 
 
