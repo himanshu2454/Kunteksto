@@ -100,7 +100,7 @@
 <li class="toctree-l1"><a class="reference internal" href="start.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configure.html">Configuration</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Tutorials</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#pima-indian-diabetes-dataset-tutorial">Pima Indian Diabetes Dataset Tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#global-commodity-trade-statistics">Global Commodity Trade Statistics</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="future.html">The Future</a></li>
@@ -172,12 +172,51 @@
   <div class="section" id="tutorials">
 <h1>Tutorials<a class="headerlink" href="#tutorials" title="Permalink to this headline">¶</a></h1>
 <p>Additional tutorials to perform after the Getting Started <a class="reference internal" href="start.html#tutor"><span class="std std-ref">Tutorial/Demo</span></a>.</p>
-<div class="section" id="pima-indian-diabetes-dataset-tutorial">
-<span id="pimatutor"></span><h2>Pima Indian Diabetes Dataset Tutorial<a class="headerlink" href="#pima-indian-diabetes-dataset-tutorial" title="Permalink to this headline">¶</a></h2>
-<p>The source of this data is the <a class="reference external" href="https://archive.ics.uci.edu/ml/datasets/pima+indians+diabetes">UC Irvine Machine Learning Repository</a></p>
-<p>The details of the original data source and other details are located on the site. This information may be useful in filling in the database <em>model</em> and <em>record</em> tables.</p>
-<p>A copy of the data file <em>pima-indians-diabetes.data.csv</em> and the data dictionary <em>pima-indians-diabetes.names</em> are included in the <em>example_data</em> directory.</p>
-<p><strong>This tutorial is incomplete at this time</strong></p>
+<div class="section" id="global-commodity-trade-statistics">
+<span id="tradetutor"></span><h2>Global Commodity Trade Statistics<a class="headerlink" href="#global-commodity-trade-statistics" title="Permalink to this headline">¶</a></h2>
+<p>The original data set is provided by <a class="reference external" href="http://data.un.org/Explorer.aspx">UNdata</a></p>
+<p>The best source of this data is the <a class="reference external" href="https://www.kaggle.com/unitednations/global-commodity-trade-statistics">Kaggle Competition</a></p>
+<p>The details of the original data source and other information are located on the site. This information may be useful in filling in the database <em>model</em> and <em>record</em> tables. The <em>Column Metadata</em> tab on the download page has some of the information for each record.</p>
+<p><a class="reference external" href="https://www.kaggle.com/unitednations/global-commodity-trade-statistics/data">Download the dataset</a> Extract the CSV data and place it anywhere you like.</p>
+<p>Following the same step by step procedures outlined in the <em>Getting Started</em> section.</p>
+<ul class="simple">
+<li>Navigate to the directory where you installed Kunteksto.</li>
+<li>With the virtual environment active.</li>
+</ul>
+<div class="admonition caution">
+<p class="first admonition-title">Caution</p>
+<p>If you closed and reopened a new window, then you need to activate the environment again. Also, be sure that you are in the kunteksto directory.</p>
+<p><strong>Windows</strong></p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>activate &lt;path/to/directory&gt;
+</pre></div>
+</div>
+<p><strong>or Linux/MacOSX</strong></p>
+<div class="last highlight-sh"><div class="highlight"><pre><span></span><span class="nb">source</span> activate &lt;path/to/directory&gt;
+</pre></div>
+</div>
+</div>
+<p>For this tutorial, you start Kunteksto in prompt mode. These mandatory items will be requested:</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>kunteksto
+</pre></div>
+</div>
+<ul class="simple">
+<li>At the <strong>Enter a valid mode:</strong> prompt, type <em>all</em></li>
+<li>At the <strong>Enter a valid CSV file:</strong> prompt, type <em>&lt;location of the file&gt;/commodity_trade_statistics_data.csv</em></li>
+<li>Kunteksto analyzes the input file and creates a results database in the <em>output</em> directory.</li>
+</ul>
+<p>Now explore the RDF data in your graphDB or the XML or JSON data in a DB of your choice.</p>
+<p>If you haven&#8217;t yet chosen repositories for this data here are some suggestions, in no particular order.</p>
+<p><strong>RDF</strong></p>
+<p><a class="reference external" href="https://docs.marklogic.com/guide/semantics/intro">MarkLogic</a></p>
+<p><a class="reference external" href="https://franz.com/agraph/allegrograph/">AllegroGraph</a></p>
+<p><a class="reference external" href="https://www.stardog.com/">StarDog</a></p>
+<p><strong>XML</strong></p>
+<p><a class="reference external" href="http://basex.org/">BaseX</a></p>
+<p><a class="reference external" href="http://exist-db.org/exist/apps/homepage/index.html">eXistDB</a></p>
+<p><strong>JSON</strong></p>
+<p><a class="reference external" href="https://www.mongodb.com/">MongoDB</a></p>
+<p><a class="reference external" href="http://couchdb.apache.org/">CouchDB</a></p>
+<p>There are many other options for persistence depending on your needs. For example, you could use <a class="reference external" href="https://www.postgresql.org/">PostgreSQL</a> to persist you XML or JSON data.</p>
 </div>
 </div>
 
@@ -204,7 +243,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, Data Insights, Inc..
-      Last updated on 2018-05-09 14:23.
+      Last updated on 2018-05-11 18:17.
 
     </p>
   </div> 
