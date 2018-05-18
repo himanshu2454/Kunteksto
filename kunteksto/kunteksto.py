@@ -27,6 +27,7 @@ def main(mode, infile, outdir, delim, analyzelevel, dbfile):
     # Setup config info based on the current working directory
     config = configparser.ConfigParser()
     config.read('kunteksto.conf')
+    print("Kunteksto version: " + config['SYSTEM']['version'] + " using S3Model RM: " + config['SYSTEM']['rmversion'] + "\n\n")
             
     # override the delimiter and/or analyzelevel if provided
     if not delim:
