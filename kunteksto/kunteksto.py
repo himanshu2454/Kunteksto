@@ -28,6 +28,12 @@ def main(mode, infile, outdir, delim, analyzelevel, dbfile):
     config = configparser.ConfigParser()
     config.read('kunteksto.conf')
     print("Kunteksto version: " + config['SYSTEM']['version'] + " using S3Model RM: " + config['SYSTEM']['rmversion'] + "\n\n")
+    
+    # Set environment variables for AllegroGraph
+    os.environ['AGRAPH_HOST'] = config['ALLEGROGRAPH']['host']
+    os.environ['AGRAPH_PORT'] = config['ALLEGROGRAPH']['port']
+    os.environ['AGRAPH_USER'] = config['ALLEGROGRAPH']['user']
+    os.environ['AGRAPH_PASSWORD'] = config['ALLEGROGRAPH']['password']
             
     # override the delimiter and/or analyzelevel if provided
     if not delim:
@@ -117,7 +123,7 @@ def datagen(modelName, outDB, infile, delim, outdir, config):
     if config['KUNTEKSTO']['xml']:
         if config['BASEX']['status'].upper() == "ACTIVE":
             try:
-                import BaseXClient
+                from BaseXClient import BaseXClient
                 connXML = BaseXClient.Session(config['BASEX']['host'], int(config['BASEX']['port']), config['BASEX']['user'], config['BASEX']['pw'])
                 connXML.execute("create db " + config['BASEX']['dbname'])
             except:

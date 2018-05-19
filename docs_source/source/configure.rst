@@ -4,9 +4,12 @@ Configuration
 
 .. warning::
 
-    Only edit the configuration file with a text editor. Do not use a word processing application such as MS Word or LibreOffice. There are many great opensource and free text editors from which to choose.  An easy to use favorite is `Sublime <https://www.sublimetext.com/>`_
+    Only edit the configuration file with a text editor. Do not use a word processing application such as MS Word or LibreOffice. There are many great opensource and free text editors from which to choose.  Some favorites, in no particular order, are:
+    - `Atom <https://atom.io/>`_
+    - `VS Code <https://code.visualstudio.com/>`_
+    - `Sublime <https://www.sublimetext.com/>`_
 
-The initial kunteksto.conf file should be okay for most uses and indeed for the demo/tutorials. You are encouraged to make backup copies, under different names, of the configuration file for different use cases/projects. The active configuration, however, is always the one named **kunteksto.conf**. 
+The initial kunteksto.conf file should be okay for most uses and indeed for this initial tutorial. You are encouraged to make backup copies, under different names, of the configuration file for different use cases/projects. The active configuration, however, is always the one named **kunteksto.conf**. 
 
 .. _config:
 

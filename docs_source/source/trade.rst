@@ -6,7 +6,7 @@ The best source of this data is the `Kaggle Competition <https://www.kaggle.com/
 
 The details of the original data source and other information are located on the site. This information may be useful in filling in the database *model* and *record* tables. The *Column Metadata* tab on the download page has some of the information for each record. 
 
-`Download the dataset <https://www.kaggle.com/unitednations/global-commodity-trade-statistics/data>`_ Extract the CSV data and place it anywhere you like. 
+`Download the dataset <https://www.kaggle.com/unitednations/global-commodity-trade-statistics/data>`_ Extract the CSV data and place it the *kunteksto/example_data* directory.
 
 
 Following the same step by step procedures outlined in the *Getting Started* section.
@@ -14,11 +14,12 @@ Following the same step by step procedures outlined in the *Getting Started* sec
 
 - Navigate to the directory where you installed Kunteksto.
 
-- With the virtual environment active.
+- Be certain the virtual environment is active.
 
 .. caution::
 
-    If you closed and reopened a new window, then you need to activate the environment again. Also, be sure that you are in the kunteksto directory. 
+    If you closed and reopened a new window, then you need to activate the environment again. Also, be sure that you are in the *kunteksto* directory. 
+
 
     **Windows**
 
@@ -33,45 +34,24 @@ Following the same step by step procedures outlined in the *Getting Started* sec
         source activate <path/to/directory> 
 
 
-For this tutorial, you start Kunteksto in prompt mode. These mandatory items will be requested:
+For this tutorial, you start Kunteksto in prompt mode. 
 
 .. code-block:: sh
 
     kunteksto
 
 
-- At the **Enter a valid mode:** prompt, type *all*
+These mandatory items will be requested:
 
-- At the **Enter a valid CSV file:** prompt, type *<location of the file>/commodity_trade_statistics_data.csv* 
+	- At the **Enter a valid mode:** prompt, type *all*
 
-- Kunteksto analyzes the input file and creates a results database in the *output* directory.
-
-Now explore the RDF data in your graphDB or the XML or JSON data in a DB of your choice.
-
-If you haven't yet chosen repositories for this data here are some suggestions, in no particular order.
+	- At the **Enter a valid CSV file:** prompt, type *example_data/commodity_trade_statistics_data.csv* 
 
 
-**RDF**
+Kunteksto analyzes the input file and creates a results database in the *output* directory.
 
-`MarkLogic <https://docs.marklogic.com/guide/semantics/intro>`_
+The output RDF will be in the Kunteksto repository in AllegroGraph which you can explore through the AllegroGraph WebView browser tool or using `Gruff <https://franz.com/agraph/gruff/>`_ which I **HIGHLY** recommend. You can also explore the XML using the `BaseX GUI <http://basex.org/basex/gui/>`_. 
 
-`AllegroGraph <https://franz.com/agraph/allegrograph/>`_
-
-`StarDog <https://www.stardog.com/>`_
-
-
-**XML**
-
-`BaseX <http://basex.org/>`_
-
-`eXistDB <http://exist-db.org/exist/apps/homepage/index.html>`_
-
-**JSON**
-
-`MongoDB <https://www.mongodb.com/>`_
-
-`CouchDB <http://couchdb.apache.org/>`_
-
-There are many other options for persistence depending on your needs. For example, you could use `PostgreSQL <https://www.postgresql.org/>`_ to persist your XML or JSON data.
+There are many written and video tutorials on using these tools. Check the `AllegroGraph YouTube Channel <https://www.youtube.com/user/AllegroGraph/videos>`_ and the `BaseX Getting Started <http://docs.basex.org/wiki/Getting_Started>`_.
 
 

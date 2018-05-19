@@ -334,6 +334,6 @@ You can choose which types to create in the :ref:`config` file. However, each on
 More Information
 ----------------
 
-- To gain a better grasp of the capability of Kunteksto, you may also want to perform the :ref:`pimatutor`. This tutorial uses the famous Pima Indian Diabetes study seen in many other data science tutorials. The data is realistic as opposed to this simple demo. Also, you experience looking up semantics in online repositories and enriching your data.  
+- To gain a better grasp of the capability of Kunteksto, you may also want to perform the :ref:`advtutor`. These tutorial demonstrate the power of S3Model using persistent storage. 
 
 
