@@ -41,7 +41,7 @@ import time
 import csv
 import sqlite3
 
-from uuid import uuid4
+from cuid import cuid
 from collections import OrderedDict
 import iso8601
 import configparser
@@ -50,7 +50,8 @@ from subprocess import run
 import click
 
 def checkType(h, dataDict):
-    """ test each data item from a column. if one is not a type, turn off that type. If the type is an int or a float then the min/max is set as inclusive. Exclusive is never set."""
+    """ test each data item from a column. if one is not a type, turn off that type. 
+    If the type is an int or a float then the min/max is set as inclusive. Exclusive is never set."""
     dlist = dataDict[h]
     is_int = False
     is_float = False
@@ -144,8 +145,8 @@ def analyze(csvInput, delim, level, out_dir):
     with open(csvInput) as csvfile:
         reader = csv.DictReader(csvfile, delimiter=delim)
         for h in reader.fieldnames:
-            mcID = str(uuid4())  # model component
-            adID = str(uuid4())   # adapter
+            mcID = str(cuid())  # model component
+            adID = str(cuid())   # adapter
             label = 'The ' + h.replace('_', ' ')
             data.append((h, label, 'String', '', '', '', '', '', '', '', '', '', '', '', '', mcID, adID,'',''))
 
@@ -155,11 +156,11 @@ def analyze(csvInput, delim, level, out_dir):
     conn.commit()
 
     # create the initial data for the model table
-    dmID = str(uuid4())   # data model
-    entryID = str(uuid4())   # entry
-    dataID = str(uuid4())   # data cluster
+    dmID = str(cuid())   # data model
+    entryID = str(cuid())   # entry
+    dataID = str(cuid())   # data cluster
 
-    data = [('S3M Data Model', 'S3M Data Model for ' + csvInput, 'Copyright 2017, Data Insights, Inc.',
+    data = [('S3M Data Model', 'S3M Data Model for ' + csvInput, 'Copyright 2018, Data Insights, Inc.',
              'Data Insights, Inc.', 'http://www.some_url.com', dmID, entryID, dataID)]
     c.executemany("insert into model values (?,?,?,?,?,?,?,?)", data)
     conn.commit()

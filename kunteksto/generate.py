@@ -12,8 +12,9 @@ import csv
 import sqlite3
 import configparser
 from urllib.parse import quote
+from xml.sax.saxutils import escape
 
-from uuid import uuid4
+from cuid import cuid
 from collections import OrderedDict
 import json
 import xmltodict
@@ -66,7 +67,7 @@ def xsd_header():
         
     hstr += '  targetNamespace="https://www.s3model.com/ns/s3m/"\n'
     hstr += '  xml:lang="en-US">\n\n'
-    hstr += '  <xs:include schemaLocation="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd"/>\n\n'
+    hstr += '  <xs:include schemaLocation="https://www.s3model.com/ns/s3m/s3model_3_1_0.xsd"/>\n\n'
     return(hstr)
 
 
@@ -106,7 +107,7 @@ def xdcount_rdf(data):
     indent = 2
     padding = ('').rjust(indent)
     rdfStr += padding.rjust(indent + 6) + '<rdfs:Class rdf:about="mc-' + mcID + '">\n'
-    rdfStr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#XdCountType"/>\n'
+    rdfStr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_1_0.xsd#XdCountType"/>\n'
     rdfStr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
     rdfStr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + quote(data[10].strip()) + '"/>\n'
     if data[11]:  # are there additional predicate-object definitions?
@@ -144,7 +145,7 @@ def xdcount(data):
     
     adapterID = data[16].strip()
     mcID = data[15].strip()
-    unitsID = str(uuid4())
+    unitsID = str(cuid())
     indent = 2
     padding = ('').rjust(indent)
    
@@ -175,11 +176,14 @@ def xdcount(data):
     xdstr += padding.rjust(indent + 4) + '<xs:restriction base="s3m:XdCountType">\n'
     xdstr += padding.rjust(indent + 6) + '<xs:sequence>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="label" type="xs:string" fixed="' + data[1].strip() + '"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<!-- act -->\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" ref="s3m:ExceptionalValue"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="vtb" type="xs:dateTime"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="vte" type="xs:dateTime"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="tr" type="xs:dateTime"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="modified" type="xs:dateTime"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<!-- latitude -->\n'
+    xdstr += padding.rjust(indent + 8) + '<!-- longitude -->\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="magnitude-status" type="s3m:MagnitudeStatus"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="error"  type="xs:int" default="0"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="accuracy" type="xs:int" default="0"/>\n'
@@ -224,7 +228,7 @@ def xdquantity_rdf(data):
     indent = 2
     padding = ('').rjust(indent)
     rdfStr += padding.rjust(indent + 6) + '<rdfs:Class rdf:about="mc-' + mcID + '">\n'
-    rdfStr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#XdQuantityType"/>\n'
+    rdfStr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_1_0.xsd#XdQuantityType"/>\n'
     rdfStr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
     rdfStr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + quote(data[10].strip()) + '"/>\n'
     if data[11]:  # are there additional predicate-object definitions?
@@ -264,7 +268,7 @@ def xdquantity(data):
     
     adapterID = data[16].strip()
     mcID = data[15].strip()
-    unitsID = str(uuid4())
+    unitsID = str(cuid())
     indent = 2
     padding = ('').rjust(indent)
     
@@ -295,11 +299,14 @@ def xdquantity(data):
     xdstr += padding.rjust(indent + 4) + '<xs:restriction base="s3m:XdQuantityType">\n'
     xdstr += padding.rjust(indent + 6) + '<xs:sequence>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="label" type="xs:string" fixed="' + data[1].strip() + '"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<!-- act -->\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" ref="s3m:ExceptionalValue"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="vtb" type="xs:dateTime"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="vte" type="xs:dateTime"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="tr" type="xs:dateTime"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="modified" type="xs:dateTime"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<!-- latitude -->\n'
+    xdstr += padding.rjust(indent + 8) + '<!-- longitude -->\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="magnitude-status" type="s3m:MagnitudeStatus"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="error"  type="xs:int" default="0"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="accuracy" type="xs:int" default="0"/>\n'
@@ -343,7 +350,7 @@ def xdfloat_rdf(data):
     indent = 2
     padding = ('').rjust(indent)
     rdfStr += padding.rjust(indent + 6) + '<rdfs:Class rdf:about="mc-' + mcID + '">\n'
-    rdfStr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#XdFloatType"/>\n'
+    rdfStr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_1_0.xsd#XdFloatType"/>\n'
     rdfStr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
     rdfStr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + quote(data[10].strip()) + '"/>\n'
     if data[11]:  # are there additional predicate-object definitions?
@@ -383,7 +390,7 @@ def xdfloat(data):
     
     adapterID = data[16].strip()
     mcID = data[15].strip()
-    unitsID = str(uuid4())
+    unitsID = str(cuid())
     indent = 2
     padding = ('').rjust(indent)
     
@@ -414,11 +421,14 @@ def xdfloat(data):
     xdstr += padding.rjust(indent + 4) + '<xs:restriction base="s3m:XdFloatType">\n'
     xdstr += padding.rjust(indent + 6) + '<xs:sequence>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="label" type="xs:string" fixed="' + data[1].strip() + '"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<!-- act -->\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" ref="s3m:ExceptionalValue"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="vtb" type="xs:dateTime"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="vte" type="xs:dateTime"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="tr" type="xs:dateTime"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="modified" type="xs:dateTime"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<!-- latitude -->\n'
+    xdstr += padding.rjust(indent + 8) + '<!-- longitude -->\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="magnitude-status" type="s3m:MagnitudeStatus"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="error"  type="xs:int" default="0"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="accuracy" type="xs:int" default="0"/>\n'
@@ -462,7 +472,7 @@ def xdstring_rdf(data):
     indent = 2
     padding = ('').rjust(indent)
     rdfStr += padding.rjust(indent + 6) + '<rdfs:Class rdf:about="mc-' + mcID + '">\n'
-    rdfStr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#XdStringType"/>\n'
+    rdfStr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_1_0.xsd#XdStringType"/>\n'
     rdfStr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
     rdfStr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + quote(data[10].strip()) + '"/>\n'
     if data[11]:  # are there additional predicate-object definitions?
@@ -540,11 +550,14 @@ def xdstring(data):
     xdstr += padding.rjust(indent + 4) + '<xs:restriction base="s3m:XdStringType">\n'
     xdstr += padding.rjust(indent + 6) + '<xs:sequence>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="label" type="xs:string" fixed="' + data[1].strip() + '"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<!-- act -->\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" ref="s3m:ExceptionalValue"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="vtb" type="xs:dateTime"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="vte" type="xs:dateTime"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="tr" type="xs:dateTime"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="modified" type="xs:dateTime"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<!-- latitude -->\n'
+    xdstr += padding.rjust(indent + 8) + '<!-- longitude -->\n'
 
     if not data[3] and not data[4] and not data[5] and not data[6] and not data[12]:
         xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdstring-value" type="xs:string"/>\n'
@@ -592,7 +605,7 @@ def xdtemporal_rdf(data):
     indent = 2
     padding = ('').rjust(indent)
     rdfStr += padding.rjust(indent + 6) + '<rdfs:Class rdf:about="mc-' + mcID + '">\n'
-    rdfStr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#XdTemporalType"/>\n'
+    rdfStr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_1_0.xsd#XdTemporalType"/>\n'
     rdfStr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
     rdfStr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + quote(data[10].strip()) + '"/>\n'
     if data[11]:  # are there additional predicate-object definitions?
@@ -663,11 +676,14 @@ def xdtemporal(data):
     xdstr += padding.rjust(indent + 4) + '<xs:restriction base="s3m:XdTemporalType">\n'
     xdstr += padding.rjust(indent + 6) + '<xs:sequence>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="label" type="xs:string" fixed="' + data[1].strip() + '"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<!-- act -->\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" ref="s3m:ExceptionalValue"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="vtb" type="xs:dateTime"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="vte" type="xs:dateTime"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="tr" type="xs:dateTime"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="modified" type="xs:dateTime"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<!-- latitude -->\n'
+    xdstr += padding.rjust(indent + 8) + '<!-- longitude -->\n'
     if data[2].lower() == 'date':
         xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="xdtemporal-date" type="xs:date"/>\n'
     else:
@@ -711,7 +727,7 @@ def units(mcID, data):
     xdstr += padding.rjust(indent + 4) + '</xs:documentation>\n'
     xdstr += padding.rjust(indent + 4) + '<xs:appinfo>\n'
     xdstr += padding.rjust(indent + 6) + '<rdfs:Class rdf:about="mc-' + mcID + '">\n'
-    xdstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#XdStringType"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_1_0.xsd#XdStringType"/>\n'
     xdstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
     xdstr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + quote(data[10].strip()) + '"/>\n'
     if data[11]:  # are there additional predicate-object definitions?
@@ -756,7 +772,7 @@ def xsd_data(dataID, indent, def_url, db_file):
     dstr += padding.rjust(indent + 4) + '</xs:documentation>\n'
     dstr += padding.rjust(indent + 4) + '<xs:appinfo>\n'
     dstr += padding.rjust(indent + 6) + '<rdfs:Class rdf:about="mc-' + dataID + '">\n'
-    dstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#ClusterType"/>\n'
+    dstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_1_0.xsd#ClusterType"/>\n'
     dstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
     dstr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + def_url + '"/>\n'
     dstr += padding.rjust(indent + 6) + '</rdfs:Class>\n'
@@ -802,56 +818,9 @@ def xsd_data(dataID, indent, def_url, db_file):
     return(dstr)
 
 
-def xsd_entry(data, db_file):
-    """
-    Create the Entry model that si a wrapper for the data as well as various provenance components in S3Model.
-    """
-    
-    indent = 2
-    padding = ('').rjust(indent)
-    dataID = str(uuid4())
-
-    estr = padding.rjust(indent) + '<xs:element name="ms-' + data[6].strip() + '" substitutionGroup="s3m:Definition" type="s3m:mc-' + data[6].strip() + '"/>\n'
-    estr += padding.rjust(indent) + '<xs:complexType name="mc-' + data[6].strip() + '">\n'
-    estr += padding.rjust(indent + 2) + '<xs:annotation>\n'
-    estr += padding.rjust(indent + 4) + '<xs:documentation>\n'
-    estr += padding.rjust(indent + 6) + 'This is the Entry container that provides all the required contextual information to manage a dataset. It is analogous to a dataset catalog entry.\n'
-    estr += padding.rjust(indent + 4) + '</xs:documentation>\n'
-    estr += padding.rjust(indent + 4) + '<xs:appinfo>\n'
-    estr += padding.rjust(indent + 6) + '<rdfs:Class rdf:about="mc-' + data[6].strip() + '">\n'
-    estr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#EntryType"/>\n'
-    estr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
-    estr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + quote(data[4].strip()) + '"/>\n'
-    estr += padding.rjust(indent + 6) + '</rdfs:Class>\n'
-    estr += padding.rjust(indent + 4) + '</xs:appinfo>\n'
-    estr += padding.rjust(indent + 2) + '</xs:annotation>\n'
-    estr += padding.rjust(indent + 2) + '<xs:complexContent>\n'
-    estr += padding.rjust(indent + 4) + '<xs:restriction base="s3m:EntryType">\n'
-    estr += padding.rjust(indent + 6) + '<xs:sequence>\n'
-    estr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="label" type="xs:string" fixed="' + data[0].strip() + '"/>\n'
-    estr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="entry-language" type="xs:language" fixed="en-US"/>\n'
-    estr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="entry-encoding" type="xs:string" fixed="utf-8"/>\n'
-    estr += padding.rjust(indent + 8) + '<!-- current-state -->\n'
-    estr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" ref="s3m:ms-' + data[7].strip() + '"/>\n'
-    estr += padding.rjust(indent + 8) + '<!-- subject -->\n'
-    estr += padding.rjust(indent + 8) + '<!-- provider -->\n'
-    estr += padding.rjust(indent + 8) + '<!-- participations -->\n'
-    estr += padding.rjust(indent + 8) + '<!-- protocol -->\n'
-    estr += padding.rjust(indent + 8) + '<!-- workflow -->\n'
-    estr += padding.rjust(indent + 8) + '<!-- audit -->\n'
-    estr += padding.rjust(indent + 8) + '<!-- attestation -->\n'
-    estr += padding.rjust(indent + 8) + '<!-- entry links -->\n'
-    estr += padding.rjust(indent + 6) + '</xs:sequence>\n'
-    estr += padding.rjust(indent + 4) + '</xs:restriction>\n'
-    estr += padding.rjust(indent + 2) + '</xs:complexContent>\n'
-    estr += padding.rjust(indent) + '</xs:complexType>\n\n'
-    estr += xsd_data(data[7].strip(), indent, data[4].strip(), db_file)
-    return(estr)
-
-
 def xsd_dm(data):
     """
-    Create the Data Model wrapper for the metadata and Entry.
+    Create the Data Model wrapper for the metadata and the data Cluster.
     """
     
     indent = 2
@@ -865,7 +834,7 @@ def xsd_dm(data):
     dmstr += padding.rjust(indent + 4) + '</xs:documentation>\n'
     dmstr += padding.rjust(indent + 4) + '<xs:appinfo>\n'
     dmstr += padding.rjust(indent + 6) + '<rdfs:Class rdf:about="mc-' + data[5].strip() + '">\n'
-    dmstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_0_0.xsd#DMType"/>\n'
+    dmstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_1_0.xsd#DMType"/>\n'
     dmstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
     dmstr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + quote(data[4].strip()) + '"/>\n'
     dmstr += padding.rjust(indent + 6) + '</rdfs:Class>\n'
@@ -874,7 +843,21 @@ def xsd_dm(data):
     dmstr += padding.rjust(indent + 2) + '<xs:complexContent>\n'
     dmstr += padding.rjust(indent + 4) + '<xs:restriction base="s3m:DMType">\n'
     dmstr += padding.rjust(indent + 6) + '<xs:sequence>\n'
-    dmstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" ref="s3m:ms-' + data[6].strip() + '"/>\n'
+    dmstr += padding.rjust(indent + 8) + ("<xs:element maxOccurs='1' minOccurs='1' name='label' type='xs:string' fixed=" + '"' + escape(data[0].strip()) + '"' + "/>\n")
+    # TODO: add language, encoding & current state elements to DB
+    dmstr += padding.rjust(indent + 8) + ("<xs:element maxOccurs='1' minOccurs='1' name='dm-language' type='xs:language' fixed='" + 'en-US' + "'/>\n")
+    dmstr += padding.rjust(indent + 8) + ("<xs:element maxOccurs='1' minOccurs='1' name='dm-encoding' type='xs:string' fixed='" + 'utf-8' + "'/>\n")
+    dmstr += padding.rjust(indent + 8) + ("<xs:element maxOccurs='1' minOccurs='0' name='current-state' type='xs:string' default='" + 'new' + "'/>\n")
+    dmstr += padding.rjust(indent + 8) + ("<xs:element maxOccurs='1' minOccurs='1' ref='s3m:ms-" + str(data[7]) + "'/>\n")
+    dmstr += padding.rjust(indent + 8) + '<!-- subject -->\n'
+    dmstr += padding.rjust(indent + 8) + '<!-- provider -->\n'
+    dmstr += padding.rjust(indent + 8) + '<!-- participations -->\n'
+    dmstr += padding.rjust(indent + 8) + '<!-- protocol -->\n'
+    dmstr += padding.rjust(indent + 8) + '<!-- workflow -->\n'
+    dmstr += padding.rjust(indent + 8) + '<!-- acs -->\n'
+    dmstr += padding.rjust(indent + 8) + '<!-- audit -->\n'
+    dmstr += padding.rjust(indent + 8) + '<!-- attestation -->\n'
+    dmstr += padding.rjust(indent + 8) + '<!-- entry links -->\n'
     dmstr += padding.rjust(indent + 6) + '</xs:sequence>\n'
     dmstr += padding.rjust(indent + 4) + '</xs:restriction>\n'
     dmstr += padding.rjust(indent + 2) + '</xs:complexContent>\n'
@@ -975,8 +958,7 @@ def make_model(db_file, outdir):
     xsd_str = xsd_header()
     xsd_str += xsd_metadata(md)
     xsd_str += xsd_dm(row)
-    xsd_str += xsd_entry(row, db_file)
-
+    xsd_str += xsd_data(row[7], 0, def_url, db_file)    
     xsd_str += '\n</xs:schema>\n'
 
     # write the xsd file
@@ -985,7 +967,7 @@ def make_model(db_file, outdir):
     try:
         xmlschema_doc = etree.parse(model)
     except:
-        print('Model Error', "There was an error in generating the schema. Please re-edit the database and look for errors. Probably undefined namespaces or improperly formatted predicate-object pair.")
+        print('Model Error', "There was an error in generating the schema. Please re-edit the database and look for errors. You probably undefined namespaces or improperly formatted predicate-object pair.")
         return None
 
     xsd_rdf(model, outdir, dmID, db_file)
@@ -998,10 +980,10 @@ def xml_hdr(model, schema, schemaFile):
     xstr += 'xmlns:s3m="https://www.s3model.com/ns/s3m/"\n'
     xstr += 'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"\n'
     xstr += 'xsi:schemaLocation="https://www.s3model.com/ns/s3m/ https://dmgen.s3model.com/dmlib/' + schemaFile + '">\n'
-    xstr += '  <s3m:ms-' + model[6].strip() + '>\n'
     xstr += '    <label>' + model[0].strip() + '</label>\n'
-    xstr += '    <entry-language>en-US</entry-language>\n'
-    xstr += '    <entry-encoding>utf-8</entry-encoding>\n'
+    xstr += '    <dm-language>en-US</dm-language>\n'
+    xstr += '    <dm-encoding>utf-8</dm-encoding>\n'
+    xstr += '    <current-state>new</current-state>\n'    
     xstr += '    <s3m:ms-' + model[7].strip() + '>\n'
     xstr += '      <label>Data Items</label>\n'
     return(xstr)
@@ -1171,7 +1153,7 @@ def make_data(schema, db_file, infile, delim, outdir, connRDF, connXML, connJSON
         val_log = 'id,valid\n'
         reader = csv.DictReader(csvfile, delimiter=delim)
         
-        # this test is really for the 'generate' mode. 
+        # this test is for the 'generate' mode to insure the model matches the input CSV file. 
         hdrs = reader.fieldnames
         for i in range(0,len(hdrs)):
             if hdrs[i] != rows[i][0]:
@@ -1193,7 +1175,7 @@ def make_data(schema, db_file, infile, delim, outdir, connRDF, connXML, connJSON
                 rdfStr += '  <s3m:isInstanceOf rdf:resource="dm-' + model[5].strip() + '"/>\n'
                 rdfStr += '</rdfs:Class>\n'
     
-                # get the DM and Entry components.
+                # get the DM content.
                 xmlStr += xml_hdr(model, schema, schemaFile)
     
                 for row in rows:
@@ -1216,20 +1198,19 @@ def make_data(schema, db_file, infile, delim, outdir, connRDF, connXML, connJSON
                         raise ValueError("Invalid datatype")
     
                 xmlStr += '    </s3m:ms-' + model[7].strip() + '>\n'
-                xmlStr += '  </s3m:ms-' + model[6].strip() + '>\n'
                 xmlStr += '</s3m:dm-' + model[5].strip() + '>\n'
     
-                # validate the XML data file and enter the appropriate RDF statement as well as an enry in the validation log.
+                # validate the XML data file and enter the appropriate RDF statement as well as an entry in the validation log.
                 try:
                     tree = etree.parse(StringIO(xmlStr))
                     modelSchema.assertValid(tree)
                     rdfStr += '  <rdfs:Class rdf:about="' + file_id + '">\n'
-                    rdfStr += '    <rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/DataInstanceValid"/>\n'
+                    rdfStr += '    <rdf:type rdf:resource="https://www.s3model.com/ns/s3m/s3model/DataInstanceValid"/>\n'
                     rdfStr += '  </rdfs:Class>\n'
                     val_log += file_id + ',true\n'
                 except etree.DocumentInvalid:
                     rdfStr += '  <rdfs:Class rdf:about="' + file_id + '">\n'
-                    rdfStr += '    <rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/DataInstanceError"/>\n'
+                    rdfStr += '    <rdf:type rdf:resource="https://www.s3model.com/ns/s3m/s3model/DataInstanceError"/>\n'
                     rdfStr += '  </rdfs:Class>\n'
                     val_log += file_id + ',false\n'
     
