@@ -14,10 +14,6 @@ Then proceed to the tutorial.
 Tutorial/Demo
 =============
 
-.. note::
-
-    There is an example of a complete database, model, and data set in the example_data/Demo_with_semantics.zip archive. 
-
 Kunteksto includes a demo data file *Demo.csv*, that you can use to create your first model and data translation. Below is a screenshot of the entire file as depicted in a spreadsheet. 
 
 .. image:: _images/csv_data.png
