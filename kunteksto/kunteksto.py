@@ -28,13 +28,7 @@ def main(mode, infile, outdir, delim, analyzelevel, dbfile):
     config = configparser.ConfigParser()
     config.read('kunteksto.conf')
     print("Kunteksto version: " + config['SYSTEM']['version'] + " using S3Model RM: " + config['SYSTEM']['rmversion'] + "\n\n")
-    
-    # Set environment variables for AllegroGraph
-    os.environ['AGRAPH_HOST'] = config['ALLEGROGRAPH']['host']
-    os.environ['AGRAPH_PORT'] = config['ALLEGROGRAPH']['port']
-    os.environ['AGRAPH_USER'] = config['ALLEGROGRAPH']['user']
-    os.environ['AGRAPH_PASSWORD'] = config['ALLEGROGRAPH']['password']
-            
+                
     # override the delimiter and/or analyzelevel if provided
     if not delim:
         delim = config['KUNTEKSTO']['delim']
@@ -106,28 +100,38 @@ def datagen(modelName, outDB, infile, delim, outdir, config):
     """
     Generate XML, JSON and RDF data from the CSV. 
     """
-    
     # open a connection to the RDF store if one is defined and RDF is to be generated.  
     if config['KUNTEKSTO']['rdf']:
         if config['ALLEGROGRAPH']['status'].upper() == "ACTIVE":
+            # Set environment variables for AllegroGraph
+            os.environ['AGRAPH_HOST'] = config['ALLEGROGRAPH']['host']
+            os.environ['AGRAPH_PORT'] = config['ALLEGROGRAPH']['port']
+            os.environ['AGRAPH_USER'] = config['ALLEGROGRAPH']['user']
+            os.environ['AGRAPH_PASSWORD'] = config['ALLEGROGRAPH']['password']            
             try:
                 from franz.openrdf.connect import ag_connect
-                connRDF = ag_connect(config['ALLEGROGRAPH']['repo'], host=config['ALLEGROGRAPH']['host'], port=config['ALLEGROGRAPH']['port'],  user=config['ALLEGROGRAPH']['user'], password=config['ALLEGROGRAPH']['pw'])
-            except:
+                connRDF = ag_connect(config['ALLEGROGRAPH']['repo'], host=os.environ.get('AGRAPH_HOST'), port=os.environ.get('AGRAPH_PORT'),  user=os.environ.get('AGRAPH_USER'), password=os.environ.get('AGRAPH_PASSWORD'))
+                print('Current Kunteksto RDF Repository Size: ', connRDF.size(), '\n')
+                print('AllegroGraph connections are okay.\n\n')
+            except: 
                 connRDF = None
-                print('RDF Connection Error', 'Could not create connection to Allegrograph.')
+                print("Unexpected error: ", sys.exc_info()[0])
+                print('RDF Connection Error', 'Could not create connection to AllegroGraph.')
         else:
             connRDF = None
 
     # open a connection to the XML DB if one is defined and XML is to be generated.
     if config['KUNTEKSTO']['xml']:
         if config['BASEX']['status'].upper() == "ACTIVE":
+            from BaseXClient import BaseXClient
             try:
                 from BaseXClient import BaseXClient
-                connXML = BaseXClient.Session(config['BASEX']['host'], int(config['BASEX']['port']), config['BASEX']['user'], config['BASEX']['pw'])
+                connXML = BaseXClient.Session(config['BASEX']['host'], int(config['BASEX']['port']), config['BASEX']['user'], config['BASEX']['password'])
                 connXML.execute("create db " + config['BASEX']['dbname'])
-            except:
+                print("BaseX ", connXML.info())
+            except: 
                 connXML = None
+                print("Unexpected error: ", sys.exc_info()[0])
                 print('XML Connection Error', 'Could not create connection to BaseX.')
         else:
             connXML = None

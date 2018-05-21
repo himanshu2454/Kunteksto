@@ -27,26 +27,19 @@
   
 
   
-  
     <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="Kunteksto - Context for Your Data" href="index.html"/>
-        <link rel="next" title="The Future" href="future.html"/>
-        <link rel="prev" title="Configuration" href="configure.html"/> 
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="The Future" href="future.html" />
+    <link rel="prev" title="Configuration" href="configure.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
@@ -63,7 +56,7 @@
 
           
             
-            <img src="_static/Kunteksto_logo.svg" class="logo" />
+            <img src="_static/Kunteksto_logo.svg" class="logo" alt="Logo"/>
           
           </a>
 
@@ -71,7 +64,7 @@
             
             
               <div class="version">
-                1.3.8
+                1.5.0
               </div>
             
           
@@ -125,7 +118,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">Kunteksto</a>
@@ -133,9 +126,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -181,6 +175,7 @@
 <span id="advtutor"></span><h1>Advanced Tutorials<a class="headerlink" href="#advanced-tutorials" title="Permalink to this headline">¶</a></h1>
 <p>Below are additional tutorials to perform after the <strong>Getting Started</strong> <a class="reference internal" href="start.html#tutor"><span class="std std-ref">Tutorial/Demo</span></a>.</p>
 <p>These tutorials require the installation of the <a class="reference external" href="https://franz.com/agraph/downloads/?ui=new">AllegroGraph</a> database and the <a class="reference external" href="http://basex.org">BaseX</a> database.</p>
+<p>If you are not familiar with semantic graph datases please see the <a class="reference external" href="https://allegrograph.com/support/documentation/current/agraph-introduction.html">AllegroGraph Documentation</a></p>
 <div class="section" id="prerequisites">
 <h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="id1">
@@ -193,7 +188,7 @@
 <h3>AllegroGraph<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
 <p><a class="reference external" href="https://franz.com/agraph/downloads/?ui=new">Download and Install the server for your platform based on these instructions</a> .</p>
 <p>When asked for the superuser username and password use these:</p>
-<div class="highlight-sh"><div class="highlight"><pre><span></span>user: admin
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>user: admin
 password: admin
 </pre></div>
 </div>
@@ -215,7 +210,7 @@ password: admin
 <h3>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h3>
 <p>Using a text editor, edit the <em>status</em> entries in kunteksto.conf for [BASEX] and [ALLEGROGRAPH]. Change them from INACTIVE to ACTIVE. When completed they should look like this:</p>
 <p>For BaseX:</p>
-<div class="highlight-text"><div class="highlight"><pre><span></span>[BASEX]
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[BASEX]
 status: ACTIVE
 host: localhost
 port: 1984
@@ -225,7 +220,7 @@ password: admin
 </pre></div>
 </div>
 <p>For AllegroGraph:</p>
-<div class="highlight-text"><div class="highlight"><pre><span></span>[ALLEGROGRAPH]
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[ALLEGROGRAPH]
 status: ACTIVE
 host: localhost
 port: 10035
@@ -238,7 +233,7 @@ password: admin
 <div class="section" id="database-checks">
 <h3>Database Checks<a class="headerlink" href="#database-checks" title="Permalink to this headline">¶</a></h3>
 <p>From the kunteksto directory run</p>
-<div class="highlight-sh"><div class="highlight"><pre><span></span>python utils/db_setup.py
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>python utils/db_setup.py
 </pre></div>
 </div>
 <p>This python script tests the database connections and installs some content needed for the tutorials.</p>
@@ -268,16 +263,16 @@ password: admin
 <p class="first admonition-title">Caution</p>
 <p>If you closed and reopened a new window, then you need to activate the environment again. Also, be sure that you are in the <em>kunteksto</em> directory.</p>
 <p><strong>Windows</strong></p>
-<div class="highlight-sh"><div class="highlight"><pre><span></span>activate &lt;path/to/directory&gt;
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>activate &lt;path/to/directory&gt;
 </pre></div>
 </div>
 <p><strong>or Linux/MacOSX</strong></p>
-<div class="last highlight-sh"><div class="highlight"><pre><span></span><span class="nb">source</span> activate &lt;path/to/directory&gt;
+<div class="last highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span> activate &lt;path/to/directory&gt;
 </pre></div>
 </div>
 </div>
 <p>For this tutorial, you start Kunteksto in prompt mode.</p>
-<div class="highlight-sh"><div class="highlight"><pre><span></span>kunteksto
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>kunteksto
 </pre></div>
 </div>
 <p>These mandatory items will be requested:</p>
@@ -295,9 +290,7 @@ password: admin
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -316,7 +309,7 @@ password: admin
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, Data Insights, Inc..
-      Last updated on 2018-05-19 15:03.
+      Last updated on 2018-05-21 09:29.
 
     </p>
   </div> 
@@ -337,7 +330,8 @@ password: admin
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.3.8',
+            VERSION:'1.5.0',
+            LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -347,7 +341,7 @@ password: admin
       <script type="text/javascript" src="_static/jquery.js"></script>
       <script type="text/javascript" src="_static/underscore.js"></script>
       <script type="text/javascript" src="_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 
@@ -356,14 +350,11 @@ password: admin
     <script type="text/javascript" src="_static/js/theme.js"></script>
   
 
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-   
+  </script> 
 
 </body>
 </html>

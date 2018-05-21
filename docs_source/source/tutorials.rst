@@ -10,6 +10,8 @@ Below are additional tutorials to perform after the **Getting Started** :ref:`tu
 
 These tutorials require the installation of the `AllegroGraph <https://franz.com/agraph/downloads/?ui=new>`_ database and the `BaseX <http://basex.org>`_ database. 
 
+If you are not familiar with semantic graph datases please see the `AllegroGraph Documentation <https://allegrograph.com/support/documentation/current/agraph-introduction.html>`_ 
+
 
 Prerequisites
 =============
