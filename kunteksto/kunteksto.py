@@ -152,7 +152,7 @@ def datagen(modelName, outDB, infile, delim, outdir, config):
 
     # generate the data
     if modelName:
-        make_data(modelName, outDB, infile,  delim, outdir, connRDF, connXML, connJSON)
+        make_data(modelName, outDB, infile,  delim, outdir, connRDF, connXML, connJSON, config)
 
         if connRDF:
             connRDF.close()

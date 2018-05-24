@@ -23,6 +23,7 @@ import iso8601
 import click
 
 from lxml import etree
+from lxml import sax
     
 
 # RDF storage imports
@@ -784,7 +785,7 @@ def xsd_data(dataID, indent, def_url, db_file):
     dstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="label" type="xs:string" fixed="Data Items"/>\n'
 
     # now we need to loop through the db and create all of the model components while keeping track so we can add them here too.
-    # the dictionary uses the mc uuid as the key. The items are the complete mc code.
+    # the dictionary uses the mc-{cuid} as the key. The items are the complete mc code.
     mcDict = OrderedDict()
     conn = sqlite3.connect(db_file)
     c = conn.cursor()
@@ -801,8 +802,10 @@ def xsd_data(dataID, indent, def_url, db_file):
             mcDict[row[16].strip()] = xdtemporal(row)
         elif row[2].lower() == 'string':
             mcDict[row[16].strip()] = xdstring(row)
+        elif row[2].lower() == 'float':
+            mcDict[row[16].strip()] = xdfloat(row)
         else:
-            raise ValueError("Invalid datatype")
+            raise ValueError("Invalid datatype. The type " + row[2] + " is not a valid choice.")
 
     for mc_id in mcDict.keys():
         dstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" ref="s3m:ms-' + mc_id + '"/>\n'
@@ -927,7 +930,7 @@ def xsd_rdf(xsdfile, outdir, dm_id, db_file):
         rdfstr += '</rdfs:Class>\n'
 
     rdfstr += '</rdf:RDF>\n'
-
+    
     os.write(rdf_file, rdfstr.encode("utf-8"))
     os.close(rdf_file)
 
@@ -1066,6 +1069,13 @@ def rdf_quantity(row, data):
     rstr += '      </rdfs:Class>\n'
     return(rstr)
 
+def rdf_float(row, data):
+    rstr = '      <rdfs:Class rdf:about="s3m:ms-' + row[15].strip() + '">\n'
+    rstr += '        <rdfs:label>' + row[1].strip() + '</rdfs:label>\n'
+    rstr += '        <rdfs:value rdf:datatype="xs:float">' + data[row[0].strip()] + '</rdfs:value>\n'
+    rstr += '      </rdfs:Class>\n'
+    return(rstr)
+
 
 def xml_temporal(row, data):
     xstr = '      <s3m:ms-' + row[16].strip() + '>\n'
@@ -1114,16 +1124,20 @@ def rdf_string(row, data):
     return(rstr)
 
 
-def make_data(schema, db_file, infile, delim, outdir, connRDF, connXML, connJSON):
+def make_data(schema, db_file, infile, delim, outdir, connRDF, connXML, connJSON, config):
     """
     Create XML and JSON data files and an RDF graph based on the model.
     """
     base = os.path.basename(infile)
     filePrefix = os.path.splitext(base)[0]
     schemaFile = os.path.basename(schema)
-
-    schema_doc = etree.parse(schema)
-    modelSchema = etree.XMLSchema(schema_doc)
+    
+    try:
+        schema_doc = etree.parse(schema)
+        modelSchema = etree.XMLSchema(schema_doc)
+    except etree.XMLSchemaParseError as e:
+        print("\n\nCannot parse this schema. Please check the database " + db_file + " for errors.\n" + str(e.args))
+        sys.exit(1)
 
     print('\n\nGeneration: ', "Generate data for: " + schemaFile + ' using ' + base + '\n')
     namespaces = {"https://www.s3model.com/ns/s3m/": "s3m", "http://www.w3.org/2001/XMLSchema-instance": "xsi"}
@@ -1150,7 +1164,6 @@ def make_data(schema, db_file, infile, delim, outdir, connRDF, connXML, connJSON
     f.close()
     
     with open(infile) as csvfile:
-        val_log = 'id,valid\n'
         reader = csv.DictReader(csvfile, delimiter=delim)
         
         # this test is for the 'generate' mode to insure the model matches the input CSV file. 
@@ -1160,15 +1173,17 @@ def make_data(schema, db_file, infile, delim, outdir, connRDF, connXML, connJSON
                 print("\n\nThere was an error matching the data input file to the selected model database.")
                 print('Datafile: ' + hdrs[i] + '  Model: ' + rows[i][0] + '\n\n')
                 exit(code=1)
-                        
+
+
+        vlog = open(outdir + os.path.sep + filePrefix + '_validation_log.csv', 'w')   
+        vlog.write('id,status,error\n')
+        vlog.close()
         # for data in reader:
         with click.progressbar(reader, label="Writing " + str(csv_len) + " data files: ", length=csv_len) as bar:
             for data in bar:
-            
-                file_id = filePrefix + '-' + shortuuid.uuid()
-    
-                xmlProlog = '<?xml version="1.0" encoding="UTF-8"?>\n'  # lxml doesn't want this in the file during validation, it has to be reinserted afterwards. 
-    
+                vlog = open(outdir + os.path.sep + filePrefix + '_validation_log.csv', 'a')                   
+                file_id = filePrefix + '-' + shortuuid.uuid()    
+                xmlProlog = '<?xml version="1.0" encoding="UTF-8"?>\n'  # lxml doesn't want this in the file during validation, it has to be reinserted afterwards.     
                 xmlStr = ''
                 rdfStr = '<?xml version="1.0" encoding="UTF-8"?>\n<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"\nxmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"\nxmlns:s3m="https://www.s3model.com/ns/s3m/"\nxmlns:xs="http://www.w3.org/2001/XMLSchema">\n'
                 rdfStr += '<rdfs:Class rdf:about="' + file_id + '">\n'
@@ -1201,50 +1216,142 @@ def make_data(schema, db_file, infile, delim, outdir, connRDF, connXML, connJSON
                 xmlStr += '</s3m:dm-' + model[5].strip() + '>\n'
     
                 # validate the XML data file and enter the appropriate RDF statement as well as an entry in the validation log.
+                print("Validating: " + file_id)
                 try:
                     tree = etree.parse(StringIO(xmlStr))
                     modelSchema.assertValid(tree)
                     rdfStr += '  <rdfs:Class rdf:about="' + file_id + '">\n'
                     rdfStr += '    <rdf:type rdf:resource="https://www.s3model.com/ns/s3m/s3model/DataInstanceValid"/>\n'
                     rdfStr += '  </rdfs:Class>\n'
-                    val_log += file_id + ',true\n'
-                except etree.DocumentInvalid:
+                    vlog.write(file_id + ',valid,' + str(e.args) + '\n')
+                except etree.DocumentInvalid as e:
                     rdfStr += '  <rdfs:Class rdf:about="' + file_id + '">\n'
                     rdfStr += '    <rdf:type rdf:resource="https://www.s3model.com/ns/s3m/s3model/DataInstanceError"/>\n'
                     rdfStr += '  </rdfs:Class>\n'
-                    val_log += file_id + ',false\n'
-    
+                    vlog.write(file_id + ',invalid,' + str(e.args) + '\n')
+                except etree.LxmlSyntaxError as e:
+                    rdfStr += '  <rdfs:Class rdf:about="' + file_id + '">\n'
+                    rdfStr += '    <rdf:type rdf:resource="https://www.s3model.com/ns/s3m/s3model/DataInstanceError"/>\n'
+                    rdfStr += '  </rdfs:Class>\n'
+                    vlog.write(file_id + ',invalid,' + str(e.args) + '\n')
+                except etree.C14NError as e:
+                    rdfStr += '  <rdfs:Class rdf:about="' + file_id + '">\n'
+                    rdfStr += '    <rdf:type rdf:resource="https://www.s3model.com/ns/s3m/s3model/DataInstanceError"/>\n'
+                    rdfStr += '  </rdfs:Class>\n'
+                    vlog.write(file_id + ',invalid,' + str(e.args) + '\n')
+                except etree.DTDError as e:
+                    rdfStr += '  <rdfs:Class rdf:about="' + file_id + '">\n'
+                    rdfStr += '    <rdf:type rdf:resource="https://www.s3model.com/ns/s3m/s3model/DataInstanceError"/>\n'
+                    rdfStr += '  </rdfs:Class>\n'
+                    vlog.write(file_id + ',invalid,' + str(e.args) + '\n')
+                except etree.LxmlRegistryError as e:
+                    rdfStr += '  <rdfs:Class rdf:about="' + file_id + '">\n'
+                    rdfStr += '    <rdf:type rdf:resource="https://www.s3model.com/ns/s3m/s3model/DataInstanceError"/>\n'
+                    rdfStr += '  </rdfs:Class>\n'
+                    vlog.write(file_id + ',invalid,' + str(e.args) + '\n')
+                except etree.ParserError as e:
+                    rdfStr += '  <rdfs:Class rdf:about="' + file_id + '">\n'
+                    rdfStr += '    <rdf:type rdf:resource="https://www.s3model.com/ns/s3m/s3model/DataInstanceError"/>\n'
+                    rdfStr += '  </rdfs:Class>\n'
+                    vlog.write(file_id + ',invalid,' + str(e.args) + '\n')
+                except etree.RelaxNGError as e:
+                    rdfStr += '  <rdfs:Class rdf:about="' + file_id + '">\n'
+                    rdfStr += '    <rdf:type rdf:resource="https://www.s3model.com/ns/s3m/s3model/DataInstanceError"/>\n'
+                    rdfStr += '  </rdfs:Class>\n'
+                    vlog.write(file_id + ',invalid,' + str(e.args) + '\n')
+                except etree.SchematronError as e:
+                    rdfStr += '  <rdfs:Class rdf:about="' + file_id + '">\n'
+                    rdfStr += '    <rdf:type rdf:resource="https://www.s3model.com/ns/s3m/s3model/DataInstanceError"/>\n'
+                    rdfStr += '  </rdfs:Class>\n'
+                    vlog.write(file_id + ',invalid,' + str(e.args) + '\n')
+                except etree.SerialisationError as e:
+                    rdfStr += '  <rdfs:Class rdf:about="' + file_id + '">\n'
+                    rdfStr += '    <rdf:type rdf:resource="https://www.s3model.com/ns/s3m/s3model/DataInstanceError"/>\n'
+                    rdfStr += '  </rdfs:Class>\n'
+                    vlog.write(file_id + ',invalid,' + str(e.args) + '\n')
+                except etree.XIncludeError as e:
+                    rdfStr += '  <rdfs:Class rdf:about="' + file_id + '">\n'
+                    rdfStr += '    <rdf:type rdf:resource="https://www.s3model.com/ns/s3m/s3model/DataInstanceError"/>\n'
+                    rdfStr += '  </rdfs:Class>\n'
+                    vlog.write(file_id + ',invalid,' + str(e.args) + '\n')
+                except etree.XMLSchemaValidateError as e:
+                    rdfStr += '  <rdfs:Class rdf:about="' + file_id + '">\n'
+                    rdfStr += '    <rdf:type rdf:resource="https://www.s3model.com/ns/s3m/s3model/DataInstanceError"/>\n'
+                    rdfStr += '  </rdfs:Class>\n'
+                    vlog.write(file_id + ',invalid,' + str(e.args) + '\n')
+                except etree.XPathError as e:
+                    rdfStr += '  <rdfs:Class rdf:about="' + file_id + '">\n'
+                    rdfStr += '    <rdf:type rdf:resource="https://www.s3model.com/ns/s3m/s3model/DataInstanceError"/>\n'
+                    rdfStr += '  </rdfs:Class>\n'
+                    vlog.write(file_id + ',invalid,' + str(e.args) + '\n')
+                except etree.XSLTError as e:
+                    rdfStr += '  <rdfs:Class rdf:about="' + file_id + '">\n'
+                    rdfStr += '    <rdf:type rdf:resource="https://www.s3model.com/ns/s3m/s3model/DataInstanceError"/>\n'
+                    rdfStr += '  </rdfs:Class>\n'
+                    vlog.write(file_id + ',invalid,' + str(e.args) + '\n')
+                except sax.SaxError as e:
+                    rdfStr += '  <rdfs:Class rdf:about="' + file_id + '">\n'
+                    rdfStr += '    <rdf:type rdf:resource="https://www.s3model.com/ns/s3m/s3model/DataInstanceError"/>\n'
+                    rdfStr += '  </rdfs:Class>\n'
+                    vlog.write(file_id + ',invalid,' + str(e.args) + '\n')
+                except Exception as e:
+                    rdfStr += '  <rdfs:Class rdf:about="' + file_id + '">\n'
+                    rdfStr += '    <rdf:type rdf:resource="https://www.s3model.com/ns/s3m/s3model/DataInstanceError"/>\n'
+                    rdfStr += '  </rdfs:Class>\n'
+                    vlog.write(file_id + ',invalid,' + str(e.args) + '\n')
+                finally:
+                    vlog.close()
+                    
                 rdfStr += '</rdf:RDF>\n'
                 
                 # add the prolog back to the top
                 xmlStr = xmlProlog + xmlStr
+
+                if config['KUNTEKSTO']['xml'].lower() == 'true':
+                    if connXML:
+                        try:
+                            connXML.add(file_id + '.xml', xmlStr)
+                        except Exception as e:
+                            vlog = open(outdir + os.path.sep + filePrefix + '_validation_log.csv', 'a')                   
+                            vlog.write(file_id + ',BaseXDB Error,' + str(e.args) + '\n')
+                            vlog.close()
+                    else:
+                        xmlFile = open(xmldir + file_id + '.xml', 'w')
+                        xmlFile.write(xmlStr)
+                        xmlFile.close()
     
-                if connXML:
-                    connXML.add(file_id + '.xml', xmlStr)
-                else:
-                    xmlFile = open(xmldir + file_id + '.xml', 'w')
-                    xmlFile.write(xmlStr)
-                    xmlFile.close()
+                if config['KUNTEKSTO']['rdf'].lower() == 'true':    
+                    if connRDF:
+                        try:
+                            connRDF.addData(rdfStr, rdf_format=RDFFormat.RDFXML, base_uri=None, context=None)
+                        except Exception as e:
+                            vlog = open(outdir + os.path.sep + filePrefix + '_validation_log.csv', 'a')                   
+                            vlog.write(file_id + ',AllegroDB Error,' + str(e.args) + '\n')
+                            vlog.close()                    
+                    else:
+                        rdfFile = open(rdfdir + file_id + '.rdf', 'w')
+                        rdfFile.write(rdfStr)
+                        rdfFile.close()
+
+                if config['KUNTEKSTO']['json'].lower() == 'true':
+                    try:
+                        d = xmltodict.parse(xmlStr, xml_attribs=True, process_namespaces=True, namespaces=namespaces)
+                        jsonStr = json.dumps(d, indent=4)
+                    except Exception as e:
+                        vlog = open(outdir + os.path.sep + filePrefix + '_validation_log.csv', 'a')                   
+                        vlog.write(file_id + ',JSON Parse Error,' + str(e.args) + '\n')
+                        vlog.close()                                            
     
-                if connRDF:
-                    connRDF.addData(rdfStr, rdf_format=RDFFormat.RDFXML,
-                                    base_uri=None, context=None)
-                else:
-                    rdfFile = open(rdfdir + file_id + '.rdf', 'w')
-                    rdfFile.write(rdfStr)
-                    rdfFile.close()
-    
-                d = xmltodict.parse(xmlStr, xml_attribs=True,
-                                    process_namespaces=True, namespaces=namespaces)
-                jsonStr = json.dumps(d, indent=4)
-                if connJSON:
-                    from bson.json_util import loads
-                    connJSON[filePrefix].insert_one(loads(jsonStr))
-                else:
-                    jsonFile = open(jsondir + file_id + '.json', 'w')
-                    jsonFile.write(jsonStr)
-                    jsonFile.close()
-    vlog = open(outdir + os.path.sep + filePrefix + '_validation_log.csv', 'w')
-    vlog.write(val_log)
-    vlog.close()
+                    if connJSON:
+                        try:
+                            from bson.json_util import loads
+                            connJSON[filePrefix].insert_one(loads(jsonStr))
+                        except Exception as e:
+                            vlog = open(outdir + os.path.sep + filePrefix + '_validation_log.csv', 'a')                   
+                            vlog.write(file_id + ',MongoDB Error,' + str(e.args) + '\n')
+                            vlog.close()                                            
+                    else:
+                        jsonFile = open(jsondir + file_id + '.json', 'w')
+                        jsonFile.write(jsonStr)
+                        jsonFile.close()
     return True

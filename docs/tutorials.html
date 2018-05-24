@@ -176,6 +176,8 @@
 <p>Below are additional tutorials to perform after the <strong>Getting Started</strong> <a class="reference internal" href="start.html#tutor"><span class="std std-ref">Tutorial/Demo</span></a>.</p>
 <p>These tutorials require the installation of the <a class="reference external" href="https://franz.com/agraph/downloads/?ui=new">AllegroGraph</a> database and the <a class="reference external" href="http://basex.org">BaseX</a> database.</p>
 <p>If you are not familiar with semantic graph datases please see the <a class="reference external" href="https://allegrograph.com/support/documentation/current/agraph-introduction.html">AllegroGraph Documentation</a></p>
+<blockquote>
+<div>Optionally, you may install <a class="reference external" href="https://www.mongodb.com/">MongoDB</a> to persist the generated JSON files.</div></blockquote>
 <div class="section" id="prerequisites">
 <h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="id1">
@@ -229,6 +231,14 @@ user: admin
 password: admin
 </pre></div>
 </div>
+<p>Unless you are using MongoDB for JSON persistence you will likely want to turn off JSON generation.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>; Default data formats to create. Values are True or False.
+; These can be changed in the UI before generating data.
+xml: True
+rdf: True
+json: False
+</pre></div>
+</div>
 </div>
 <div class="section" id="database-checks">
 <h3>Database Checks<a class="headerlink" href="#database-checks" title="Permalink to this headline">¶</a></h3>
@@ -236,7 +246,7 @@ password: admin
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>python utils/db_setup.py
 </pre></div>
 </div>
-<p>This python script tests the database connections and installs some content needed for the tutorials.</p>
+<p>This python script tests the database connections and installs the S3Model ontology and 3.1.0 Reference Model RDF.</p>
 <p>During execution, the script displays several lines of output to the terminal. Specifically look for <em>AllegroGraph connections are okay.</em> and <em>BaseX connections are okay.</em> or any lines that start with <strong>ERROR:</strong>.</p>
 <div class="admonition caution">
 <p class="first admonition-title">Caution</p>
@@ -246,6 +256,7 @@ password: admin
 <div class="section" id="viewing-the-rdf-repository">
 <h3>Viewing the RDF Repository<a class="headerlink" href="#viewing-the-rdf-repository" title="Permalink to this headline">¶</a></h3>
 <p>You can view the Kunteksto repository by using <a class="reference external" href="http://127.0.0.1:10035/#/repositories/Kunteksto">this link</a> in a browser. Right click and open it in a new tab. Then under <strong>Explore the Repository</strong> click the <em>View Triples</em> link. These triples are the S3Model ontolgy and the S3Model 3.1.0 RDF. These triples connect all of your RDF into an graph, even when they do not have other semantics linking them. The Gruff UI allows for graphically exploring repository.</p>
+<p>You may also use the Gruff GUI Client to explore the respoitory at any time. See the <a class="reference external" href="https://franz.com/agraph/gruff/learning-center.lhtml">Franz, Inc. Learning Center</a> for more information.</p>
 </div>
 </div>
 <div class="section" id="global-commodity-trade-statistics">
@@ -309,7 +320,7 @@ password: admin
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, Data Insights, Inc..
-      Last updated on 2018-05-21 09:29.
+      Last updated on 2018-05-21 09:52.
 
     </p>
   </div> 

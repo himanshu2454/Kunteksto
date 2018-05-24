@@ -12,6 +12,8 @@ These tutorials require the installation of the `AllegroGraph <https://franz.com
 
 If you are not familiar with semantic graph datases please see the `AllegroGraph Documentation <https://allegrograph.com/support/documentation/current/agraph-introduction.html>`_ 
 
+ Optionally, you may install `MongoDB <https://www.mongodb.com/>`_ to persist the generated JSON files.
+
 
 Prerequisites
 =============
@@ -83,6 +85,16 @@ For AllegroGraph:
     password: admin
 
 
+Unless you are using MongoDB for JSON persistence you will likely want to turn off JSON generation.
+
+.. sourcecode:: text
+
+	; Default data formats to create. Values are True or False.
+	; These can be changed in the UI before generating data. 
+	xml: True
+	rdf: True
+	json: False
+
 
 Database Checks
 ---------------
@@ -92,7 +104,7 @@ From the kunteksto directory run
 
     python utils/db_setup.py
 
-This python script tests the database connections and installs some content needed for the tutorials.
+This python script tests the database connections and installs the S3Model ontology and 3.1.0 Reference Model RDF.
 
 During execution, the script displays several lines of output to the terminal. Specifically look for *AllegroGraph connections are okay.* and *BaseX connections are okay.* or any lines that start with **ERROR:**.
 
@@ -105,6 +117,8 @@ Viewing the RDF Repository
 --------------------------
 
 You can view the Kunteksto repository by using `this link <http://127.0.0.1:10035/#/repositories/Kunteksto>`_ in a browser. Right click and open it in a new tab. Then under **Explore the Repository** click the *View Triples* link. These triples are the S3Model ontolgy and the S3Model 3.1.0 RDF. These triples connect all of your RDF into an graph, even when they do not have other semantics linking them. The Gruff UI allows for graphically exploring repository.
+
+You may also use the Gruff GUI Client to explore the respoitory at any time. See the `Franz, Inc. Learning Center <https://franz.com/agraph/gruff/learning-center.lhtml>`_ for more information.
 
 
 
