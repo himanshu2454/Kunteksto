@@ -27,26 +27,19 @@
   
 
   
-  
     <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="Kunteksto - Context for Your Data" href="index.html"/>
-        <link rel="next" title="Getting Started" href="start.html"/>
-        <link rel="prev" title="Kunteksto" href="index.html"/> 
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Getting Started" href="start.html" />
+    <link rel="prev" title="Kunteksto" href="index.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
@@ -63,7 +56,7 @@
 
           
             
-            <img src="_static/Kunteksto_logo.svg" class="logo" />
+            <img src="_static/Kunteksto_logo.svg" class="logo" alt="Logo"/>
           
           </a>
 
@@ -71,7 +64,7 @@
             
             
               <div class="version">
-                1.3.7
+                1.5.0
               </div>
             
           
@@ -119,7 +112,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="start.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configure.html">Configuration</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Advanced Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="future.html">The Future</a></li>
 <li class="toctree-l1"><a class="reference internal" href="develop.html">Developing Kunteksto</a></li>
 <li class="toctree-l1"><a class="reference internal" href="license.html">License &amp; Usage</a></li>
@@ -134,7 +127,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">Kunteksto</a>
@@ -142,9 +135,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -214,36 +208,36 @@
 <li>If you are using Linux or Mac OSX, follow the <a class="reference external" href="http://lxml.de/installation.html">instructions for your platform</a> for <strong>lxml</strong> installation.</li>
 <li>Open a terminal window and create a conda environment. On Windows it is best to open an <em>Anaconda Prompt</em> terminal from the Anaconda menu:</li>
 </ul>
-<div class="highlight-sh"><div class="highlight"><pre><span></span>conda create -p kunteksto <span class="nv">python</span><span class="o">=</span><span class="m">3</span> pycurl ujson
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda create -p kunteksto <span class="nv">python</span><span class="o">=</span><span class="m">3</span> pycurl ujson
 </pre></div>
 </div>
 <ul class="simple">
 <li>Change to the directory</li>
 </ul>
-<div class="highlight-sh"><div class="highlight"><pre><span></span><span class="nb">cd</span> kunteksto
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> kunteksto
 </pre></div>
 </div>
 <ul class="simple">
 <li>Activate the environment according to the instructions shown by Anaconda in the terminal window.</li>
 </ul>
 <p><strong>Windows</strong></p>
-<div class="highlight-sh"><div class="highlight"><pre><span></span>activate &lt;path/to/directory&gt;
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>activate &lt;path/to/directory&gt;
 </pre></div>
 </div>
 <p><strong>or Linux/MacOSX</strong></p>
-<div class="highlight-sh"><div class="highlight"><pre><span></span><span class="nb">source</span> activate &lt;path/to/directory&gt;
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span> activate &lt;path/to/directory&gt;
 </pre></div>
 </div>
 <ul class="simple">
 <li>Windows users will need to manually install the pycurl library using this command</li>
 </ul>
-<div class="highlight-sh"><div class="highlight"><pre><span></span>conda install <span class="nv">pycurl</span><span class="o">==</span><span class="m">7</span>.43.0
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda install pycurl
 </pre></div>
 </div>
 <ul class="simple">
 <li>install Kunteksto</li>
 </ul>
-<div class="highlight-sh"><div class="highlight"><pre><span></span>pip install kunteksto
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pip install kunteksto
 </pre></div>
 </div>
 <p>These quick steps create a virtual environment in the subdirectory <em>kunteksto</em>. Once the environment is created, conda displays how to activate the environment. When activated then Kunteksto is installed in the subdirectory along with the environment.</p>
@@ -272,11 +266,11 @@
 <p class="first admonition-title">Note</p>
 <p><strong>Option 2:</strong></p>
 <p>Just create a virtual environment for Python 3.6 or later, using your favorite tools such as conda or virtualenv.</p>
-<div class="highlight-sh"><div class="highlight"><pre><span></span>conda create -p kunteksto <span class="nv">python</span><span class="o">=</span><span class="m">3</span>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda create -p kunteksto <span class="nv">python</span><span class="o">=</span><span class="m">3</span>
 </pre></div>
 </div>
 <p>Activate your virtual environment and navigate to the <em>kunteksto</em> directory. Then install kunteksto using pip.</p>
-<div class="highlight-sh"><div class="highlight"><pre><span></span>pip install kunteksto
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pip install kunteksto
 </pre></div>
 </div>
 <p>After several minutes of installing all the cool stuff, you are ready to begin the tutorial.</p>
@@ -287,7 +281,7 @@
 <div class="section" id="update-to-a-new-version">
 <h2>Update to a New Version<a class="headerlink" href="#update-to-a-new-version" title="Permalink to this headline">¶</a></h2>
 <p>When you want to upgrade to a new version of Kunteksto you can use the line below in your terminal where you have activated the virtual environment.</p>
-<div class="highlight-sh"><div class="highlight"><pre><span></span>pip install  kunteksto --upgrade --no-cache-dir
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pip install  kunteksto --upgrade --no-cache-dir
 </pre></div>
 </div>
 </div>
@@ -300,7 +294,7 @@
 <ul class="simple">
 <li><dl class="first docutils">
 <dt>README.md</dt>
-<dd>A brief explanation of Kunteksto&#8217;s purpose and links to background information.</dd>
+<dd>A brief explanation of Kunteksto’s purpose and links to background information.</dd>
 </dl>
 </li>
 <li><dl class="first docutils">
@@ -373,9 +367,7 @@
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -394,7 +386,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, Data Insights, Inc..
-      Last updated on 2018-05-10 08:27.
+      Last updated on 2018-05-25 13:04.
 
     </p>
   </div> 
@@ -415,7 +407,8 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.3.7',
+            VERSION:'1.5.0',
+            LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -425,7 +418,7 @@
       <script type="text/javascript" src="_static/jquery.js"></script>
       <script type="text/javascript" src="_static/underscore.js"></script>
       <script type="text/javascript" src="_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 
@@ -434,14 +427,11 @@
     <script type="text/javascript" src="_static/js/theme.js"></script>
   
 
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-   
+  </script> 
 
 </body>
 </html>

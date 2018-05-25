@@ -14,16 +14,12 @@ Then proceed to the tutorial.
 Tutorial/Demo
 =============
 
-.. note::
-
-    There is an example of a complete database, model, and data set in the example_data/Demo_with_semantics.zip archive. 
-
 Kunteksto includes a demo data file *Demo.csv*, that you can use to create your first model and data translation. Below is a screenshot of the entire file as depicted in a spreadsheet. 
 
 .. image:: _images/csv_data.png
-    :width: 800px
+    :width: 500px
     :align: center
-    :height: 600px
+    :height: 300px
     :alt: Demo.csv
 
 Notice that there are a few columns to demonstrate various datatypes as well as one column with mixed types that might look like an integer column at first glance but has a missing value. 
@@ -89,9 +85,9 @@ For this tutorial, you start Kunteksto in prompt mode. These mandatory items wil
 
 
 .. image:: _images/edit_model.png
-    :width: 800px
+    :width: 500px
     :align: center
-    :height: 600px
+    :height: 300px
     :alt: Edit Model
 
 
@@ -127,9 +123,9 @@ Notice that some of this information can be obtained from the PDF. For other ite
     If there is only one record and your Label field looks like this image, then the likely problem is that an incorrect field delimiter was chosen on the command line or the default was changed in the config file. The config file should have a *comma* as the delim option, and this entry is found on or near line 9 in kunteksto.conf. 
 
     .. image:: _images/bad_delim.png
-        :width: 600px
+        :width: 400px
         :align: center
-        :height: 200px
+        :height: 100px
         :alt: Bad Delimiter
 
 
@@ -145,9 +141,9 @@ Notice that some of this information can be obtained from the PDF. For other ite
 - It is up to you to be as accurate as possible in describing your data to improve quality and usability. Some fields are not used with all data types. See the description of each field below.
 
 .. image:: _images/edit_record.png
-    :width: 800px
+    :width: 500px
     :align: center
-    :height: 600px
+    :height: 300px
     :alt: Edit Record
 
 
@@ -229,6 +225,7 @@ The *Predicates & Objects* column is slightly different in that you need to supp
     - dct="http://purl.org/dc/terms/"
     - skos="http://www.w3.org/2004/02/skos/core#"
     - foaf="http://xmlns.com/foaf/0.1/"
+    - schema="http://schema.org/"
     - sioc="http://rdfs.org/sioc/ns#"
     - sh="http://www.w3.org/ns/shacl#"
     - s3m="https://www.s3model.com/ns/s3m/"
@@ -253,9 +250,9 @@ Again, the information in the table in the PDF can help you determine additional
 - In the *output/Demo* directory along with the Demo.db, you find an XML Schema (\*.xsd) model file and a RDF (\*.rdf) file. These are the structural and semantic models that can be used in your analysis as well as shared with others to describe the data better. The RDF file is extracted from the XML Schema, so only the schema needs to be shared to distribute full structural and semantic information in an executable model. Data Insights, Inc. provides a utility with S3Model to extract the semantics from the schema data models. 
 
 .. image:: _images/output_dir.png
-    :width: 800px
+    :width: 500px
     :align: center
-    :height: 600px
+    :height: 300px
     :alt: Output Directory
 
 - The *all* mode causes the creation of data instances (XML, JSON, and RDF) for each record in the CSV file that is semantically compliant with the RDF and is valid according to the XML Schema. This validation process demonstrates that the models describe the data. The RDF file does include some constraint definitions based on `Shapes Constraint Language (SHACL) <https://www.w3.org/TR/shacl/>`_ There is no built-in processing for these constraints due to the lack of maturity of this technology. Expect SHACL to become more useful soon. 
@@ -334,6 +331,6 @@ You can choose which types to create in the :ref:`config` file. However, each on
 More Information
 ----------------
 
-- To gain a better grasp of the capability of Kunteksto, you may also want to perform the :ref:`pimatutor`. This tutorial uses the famous Pima Indian Diabetes study seen in many other data science tutorials. The data is realistic as opposed to this simple demo. Also, you experience looking up semantics in online repositories and enriching your data.  
+- To gain a better grasp of the capability of Kunteksto, you may also want to perform the :ref:`advtutor`. These tutorial demonstrate the power of S3Model using persistent storage. 
 
 

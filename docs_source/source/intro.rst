@@ -66,7 +66,7 @@ Anaconda is the **preferred environment** for a tool like Kunteksto because it i
 
 .. code-block:: sh
 
-    conda install pycurl==7.43.0 
+    conda install pycurl
 
 - install Kunteksto
 
