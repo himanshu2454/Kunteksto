@@ -184,7 +184,7 @@
 <div class="section" id="tutorial-demo">
 <span id="tutor"></span><h2>Tutorial/Demo<a class="headerlink" href="#tutorial-demo" title="Permalink to this headline">¶</a></h2>
 <p>Kunteksto includes a demo data file <em>Demo.csv</em>, that you can use to create your first model and data translation. Below is a screenshot of the entire file as depicted in a spreadsheet.</p>
-<a class="reference internal image-reference" href="_images/csv_data.png"><img alt="Demo.csv" class="align-center" src="_images/csv_data.png" style="width: 800px; height: 600px;" /></a>
+<a class="reference internal image-reference" href="_images/csv_data.png"><img alt="Demo.csv" class="align-center" src="_images/csv_data.png" style="width: 500px; height: 300px;" /></a>
 <p>Notice that there are a few columns to demonstrate various datatypes as well as one column with mixed types that might look like an integer column at first glance but has a missing value.</p>
 <p>This tutorial does not demonstrate all of the functionality of Kunteksto, but it does demonstrate the process of creating a model based on data and then enhancing that data with improved semantics.</p>
 <p>Kunteksto is a command line tool that uses a combination of command line options as well as a configuration file.
@@ -227,7 +227,7 @@ You can see all of the Kunteksto command line options using the –help flag.</p
 <li>The Model Metadata window opens.</li>
 <li>This image depicts the view of the Model Metadata and below that are descriptions of each of the fields to be edited. Kunteksto prefills the fields with fake data so that you are not staring at blank input boxes.</li>
 </ul>
-<a class="reference internal image-reference" href="_images/edit_model.png"><img alt="Edit Model" class="align-center" src="_images/edit_model.png" style="width: 800px; height: 600px;" /></a>
+<a class="reference internal image-reference" href="_images/edit_model.png"><img alt="Edit Model" class="align-center" src="_images/edit_model.png" style="width: 500px; height: 300px;" /></a>
 <p><strong>Model table field descriptions:</strong></p>
 <blockquote>
 <div><ul class="simple">
@@ -254,7 +254,7 @@ You can see all of the Kunteksto command line options using the –help flag.</p
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <p>If there is only one record and your Label field looks like this image, then the likely problem is that an incorrect field delimiter was chosen on the command line or the default was changed in the config file. The config file should have a <em>comma</em> as the delim option, and this entry is found on or near line 9 in kunteksto.conf.</p>
-<a class="last reference internal image-reference" href="_images/bad_delim.png"><img alt="Bad Delimiter" class="align-center" src="_images/bad_delim.png" style="width: 600px; height: 200px;" /></a>
+<a class="last reference internal image-reference" href="_images/bad_delim.png"><img alt="Bad Delimiter" class="align-center" src="_images/bad_delim.png" style="width: 400px; height: 100px;" /></a>
 </div>
 <ul class="simple">
 <li>Each record has some fields that allow you to describe more about your data. You can cycle through the records with the <em>Next</em> and <em>Previous</em> buttons. When you make changes, use the <em>Save</em> button to record those changes. Once the changes are written to the database, a <strong>Saved</strong> dialog box appears.</li>
@@ -267,7 +267,7 @@ You can see all of the Kunteksto command line options using the –help flag.</p
 <li>Though some fields are pre-filled, it is only a guess and may not be accurate.</li>
 <li>It is up to you to be as accurate as possible in describing your data to improve quality and usability. Some fields are not used with all data types. See the description of each field below.</li>
 </ul>
-<a class="reference internal image-reference" href="_images/edit_record.png"><img alt="Edit Record" class="align-center" src="_images/edit_record.png" style="width: 800px; height: 600px;" /></a>
+<a class="reference internal image-reference" href="_images/edit_record.png"><img alt="Edit Record" class="align-center" src="_images/edit_record.png" style="width: 500px; height: 300px;" /></a>
 <p><strong>Record field descriptions:</strong></p>
 <p>Edit these columns (see <a class="reference internal" href="#semantics"><span class="std std-ref">Adding Semantics</span></a>) :</p>
 <blockquote>
@@ -344,6 +344,7 @@ Also, if you mix min/max inclusive or exclusive in an illogical manner, the syst
 <li>dct=”<a class="reference external" href="http://purl.org/dc/terms/">http://purl.org/dc/terms/</a>”</li>
 <li>skos=”<a class="reference external" href="http://www.w3.org/2004/02/skos">http://www.w3.org/2004/02/skos</a>/core#”</li>
 <li>foaf=”<a class="reference external" href="http://xmlns.com/foaf/0.1/">http://xmlns.com/foaf/0.1/</a>”</li>
+<li>schema=”<a class="reference external" href="http://schema.org/">http://schema.org/</a>”</li>
 <li>sioc=”<a class="reference external" href="http://rdfs.org/sioc">http://rdfs.org/sioc</a>/ns#”</li>
 <li>sh=”<a class="reference external" href="http://www.w3.org/ns">http://www.w3.org/ns</a>/shacl#”</li>
 <li>s3m=”<a class="reference external" href="https://www.s3model.com/ns/s3m/">https://www.s3model.com/ns/s3m/</a>”</li>
@@ -364,7 +365,7 @@ dul:isSettingFor https://www.datainsights.tech/thingies/PurpleKnob
 <li>Once you have completed the data description step, <strong>saved any changes to the configuration file</strong> and <strong>saved your changes</strong> using the <em>Save</em> button on each Record, close the Record Editor with the <em>Exit</em> button. This action starts the model generation process, followed by the data generation process.</li>
 <li>In the <em>output/Demo</em> directory along with the Demo.db, you find an XML Schema (*.xsd) model file and a RDF (*.rdf) file. These are the structural and semantic models that can be used in your analysis as well as shared with others to describe the data better. The RDF file is extracted from the XML Schema, so only the schema needs to be shared to distribute full structural and semantic information in an executable model. Data Insights, Inc. provides a utility with S3Model to extract the semantics from the schema data models.</li>
 </ul>
-<a class="reference internal image-reference" href="_images/output_dir.png"><img alt="Output Directory" class="align-center" src="_images/output_dir.png" style="width: 800px; height: 600px;" /></a>
+<a class="reference internal image-reference" href="_images/output_dir.png"><img alt="Output Directory" class="align-center" src="_images/output_dir.png" style="width: 500px; height: 300px;" /></a>
 <ul class="simple">
 <li>The <em>all</em> mode causes the creation of data instances (XML, JSON, and RDF) for each record in the CSV file that is semantically compliant with the RDF and is valid according to the XML Schema. This validation process demonstrates that the models describe the data. The RDF file does include some constraint definitions based on <a class="reference external" href="https://www.w3.org/TR/shacl/">Shapes Constraint Language (SHACL)</a> There is no built-in processing for these constraints due to the lack of maturity of this technology. Expect SHACL to become more useful soon.</li>
 </ul>
@@ -454,7 +455,7 @@ Some references to get you started:</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, Data Insights, Inc..
-      Last updated on 2018-05-21 09:48.
+      Last updated on 2018-05-25 13:13.
 
     </p>
   </div> 

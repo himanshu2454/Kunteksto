@@ -60,6 +60,7 @@ def xsd_header():
     hstr += '  xmlns:dct="http://purl.org/dc/terms/"\n'
     hstr += '  xmlns:skos="http://www.w3.org/2004/02/skos/core#"\n'
     hstr += '  xmlns:foaf="http://xmlns.com/foaf/0.1/"\n'
+    hstr += '  xmlns:schema="http://schema.org/"\n'
     hstr += '  xmlns:sioc="http://rdfs.org/sioc/ns#"\n'
     hstr += '  xmlns:sh="http://www.w3.org/ns/shacl#"\n'
     hstr += '  xmlns:s3m="https://www.s3model.com/ns/s3m/"\n'
@@ -186,16 +187,16 @@ def xdcount(data):
     xdstr += padding.rjust(indent + 8) + '<!-- latitude -->\n'
     xdstr += padding.rjust(indent + 8) + '<!-- longitude -->\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="magnitude-status" type="s3m:MagnitudeStatus"/>\n'
-    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="error"  type="xs:int" default="0"/>\n'
-    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="accuracy" type="xs:int" default="0"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="error"  type="xs:integer" default="0"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="accuracy" type="xs:integer" default="0"/>\n'
     if not data[7] and not data[8] and not data[17] and not data [18] and not data[13]:
-        xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdcount-value" type="xs:int"/>\n'
+        xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdcount-value" type="xs:integer"/>\n'
     if data[13]:
-        xdstr += padding.rjust(indent + 8) +  '<xs:element maxOccurs="1" minOccurs="1"  name="xdcount-value" type="xs:int" default="' + str(int(data[13])) + '"/>\n'       
+        xdstr += padding.rjust(indent + 8) +  '<xs:element maxOccurs="1" minOccurs="1"  name="xdcount-value" type="xs:integer" default="' + str(int(data[13])) + '"/>\n'       
     else:
         xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdcount-value">\n'
         xdstr += padding.rjust(indent + 10) + '<xs:simpleType>\n'
-        xdstr += padding.rjust(indent + 10) + '<xs:restriction base="xs:int">\n'
+        xdstr += padding.rjust(indent + 10) + '<xs:restriction base="xs:integer">\n'
         if data[7]:
             xdstr += padding.rjust(indent + 12) + '<xs:minInclusive value="' + str(int(data[7])) + '"/>\n'
         elif data[17]:
@@ -309,8 +310,8 @@ def xdquantity(data):
     xdstr += padding.rjust(indent + 8) + '<!-- latitude -->\n'
     xdstr += padding.rjust(indent + 8) + '<!-- longitude -->\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="magnitude-status" type="s3m:MagnitudeStatus"/>\n'
-    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="error"  type="xs:int" default="0"/>\n'
-    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="accuracy" type="xs:int" default="0"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="error"  type="xs:integer" default="0"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="accuracy" type="xs:integer" default="0"/>\n'
     if not data[7] and not data[8] and not data[17] and not data[18] and not data[13]:
         xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdquantity-value" type="xs:decimal"/>\n'
     if data[13]:
@@ -431,8 +432,8 @@ def xdfloat(data):
     xdstr += padding.rjust(indent + 8) + '<!-- latitude -->\n'
     xdstr += padding.rjust(indent + 8) + '<!-- longitude -->\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="magnitude-status" type="s3m:MagnitudeStatus"/>\n'
-    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="error"  type="xs:int" default="0"/>\n'
-    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="accuracy" type="xs:int" default="0"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="error"  type="xs:integer" default="0"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="accuracy" type="xs:integer" default="0"/>\n'
     if not data[7] and not data[8] and not data[17] and not data[18] and not data[13]:
         xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdfloat-value" type="xs:float"/>\n'
     if data[13]:
@@ -880,6 +881,7 @@ def xsd_rdf(xsdfile, outdir, dm_id, db_file):
               'dc': 'http://purl.org/dc/elements/1.1/',
               'skos': 'http://www.w3.org/2004/02/skos/core#',
               'foaf': 'http://xmlns.com/foaf/0.1/',
+              'schema': 'http://schema.org/',
               'sioc': 'http://rdfs.org/sioc/ns#',
               'rdf': 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
               'rdfs': 'http://www.w3.org/2000/01/rdf-schema#',
@@ -933,7 +935,29 @@ def xsd_rdf(xsdfile, outdir, dm_id, db_file):
     
     os.write(rdf_file, rdfstr.encode("utf-8"))
     os.close(rdf_file)
+    
+    if config['ALLEGROGRAPH']['status'].upper() == "ACTIVE":
+        # Set environment variables for AllegroGraph
+        os.environ['AGRAPH_HOST'] = config['ALLEGROGRAPH']['host']
+        os.environ['AGRAPH_PORT'] = config['ALLEGROGRAPH']['port']
+        os.environ['AGRAPH_USER'] = config['ALLEGROGRAPH']['user']
+        os.environ['AGRAPH_PASSWORD'] = config['ALLEGROGRAPH']['password']            
+        try:
+            from franz.openrdf.connect import ag_connect
+            connRDF = ag_connect(config['ALLEGROGRAPH']['repo'], host=os.environ.get('AGRAPH_HOST'), port=os.environ.get('AGRAPH_PORT'),  user=os.environ.get('AGRAPH_USER'), password=os.environ.get('AGRAPH_PASSWORD'))
+            print('Current Kunteksto RDF Repository Size: ', connRDF.size(), '\n')
+            print('AllegroGraph connections are okay.\n\n')
+        except: 
+            connRDF = None
+            print("Unexpected error: ", sys.exc_info()[0])
+            print('RDF Connection Error', 'Could not create connection to AllegroGraph.')
 
+        if connRDF:
+            try:
+                connRDF.addData(rdfstr, rdf_format=RDFFormat.RDFXML, base_uri=None, context=None)
+            except Exception as e:
+                print('\n\nAllegroGraphDB Error: Could not load the Model RDF for ' + xsdfile + '\n' + str(e.args) + '\n')
+                sys.exit(1)                    
 
 def make_model(db_file, outdir):
     """
@@ -1013,7 +1037,7 @@ def xml_count(row, data):
 def rdf_count(row, data):
     rstr = '      <rdfs:Class rdf:about="s3m:ms-' + row[15].strip() + '">\n'
     rstr += '        <rdfs:label>' + row[1].strip() + '</rdfs:label>\n'
-    rstr += '        <rdfs:value rdf:datatype="xs:int">' + data[row[0].strip()] + '</rdfs:value>\n'
+    rstr += '        <rdfs:value rdf:datatype="xs:integer">' + data[row[0].strip()] + '</rdfs:value>\n'
     rstr += '      </rdfs:Class>\n'
     return(rstr)
 
@@ -1223,7 +1247,7 @@ def make_data(schema, db_file, infile, delim, outdir, connRDF, connXML, connJSON
                     rdfStr += '  <rdfs:Class rdf:about="' + file_id + '">\n'
                     rdfStr += '    <rdf:type rdf:resource="https://www.s3model.com/ns/s3m/s3model/DataInstanceValid"/>\n'
                     rdfStr += '  </rdfs:Class>\n'
-                    vlog.write(file_id + ',valid,' + str(e.args) + '\n')
+                    vlog.write(file_id + ',valid,,\n')
                 except etree.DocumentInvalid as e:
                     rdfStr += '  <rdfs:Class rdf:about="' + file_id + '">\n'
                     rdfStr += '    <rdf:type rdf:resource="https://www.s3model.com/ns/s3m/s3model/DataInstanceError"/>\n'

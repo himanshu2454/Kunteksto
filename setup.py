@@ -19,7 +19,7 @@ setup(
 """,
     author = 'Timothy W. Cook',
     author_email = 'tim@datainsights.tech',
-    url = 'https://datainsights.tech/Kunteksto/',  
+    url = 'https://datainsights.tech/',  
     download_url = 'https://github.com/DataInsightsInc/Kunteksto/archive/' + VERSION + '.tar.gz',  
     keywords = ['context rdf xml machine learning data-centric semantic interoperability semantics'], 
     tests_require=['pytest',],  

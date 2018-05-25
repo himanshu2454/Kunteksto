@@ -53,7 +53,7 @@ def checkType(h, dataDict):
     """ test each data item from a column. if one is not a type, turn off that type. 
     If the type is an int or a float then the min/max is set as inclusive. Exclusive is never set."""
     dlist = dataDict[h]
-    is_int = False
+    is_integer = False
     is_float = False
     is_date = False
     is_str = False
@@ -63,14 +63,14 @@ def checkType(h, dataDict):
     for x in dlist:
         try:
             int(x)
-            is_int = True
+            is_integer = True
         except:
-            is_int = False
+            is_integer = False
             break
     
     for x in dlist:
         try:
-            if not is_int:
+            if not is_integer:
                 float(x)
                 is_float = True
         except:
@@ -79,7 +79,7 @@ def checkType(h, dataDict):
     
     for x in dlist:
         try:
-            if not is_int and not is_float:
+            if not is_integer and not is_float:
                 iso8601.parse_date(x)
                 is_date = True
         except:
@@ -88,14 +88,14 @@ def checkType(h, dataDict):
     
     for x in dlist:
         try:
-            if not is_int and not is_float and not is_date:
+            if not is_integer and not is_float and not is_date:
                 str(x)
                 is_str = True
         except:
             is_str = False
             break
     
-    if is_int:
+    if is_integer:
         intlist = [int(x) for x in dlist]
         maxincval = max(intlist)
         minincval = min(intlist)
@@ -104,7 +104,7 @@ def checkType(h, dataDict):
         maxincval = max(flist)
         minincval = min(flist)
     
-    if is_int:
+    if is_integer:
         dt = "Integer"
     elif is_float:
         dt = "Decimal"  # most of the time it really is a decimal.

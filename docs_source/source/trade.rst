@@ -1,7 +1,7 @@
 
 .. warning::
 
-	This dataset contains more than 8 million rows of data. If you are using the free version of AllegroGraphDB then processing this file will exceed the 5 million triples limit many times over. 
+	This dataset contains more than 8 million rows of data. If you are using the free version of AllegroGraphDB then processing this file will exceed the 5 million triples limit many times over. The file will still process and all of the XML files will be generated. However, most of the triples will not be stored in AllegroGraph.
 
 	
 The original data set is provided at `UNdata Comtrade <http://data.un.org/DataMartInfo.aspx#ComTrade>`_ site.

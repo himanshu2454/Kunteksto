@@ -122,6 +122,16 @@ You may also use the Gruff GUI Client to explore the respoitory at any time. See
 
 
 
+.. _honeytutor:
+
+US Honey Production
+===================
+
+
+.. include:: honey.rst
+
+
+
 .. _tradetutor:
 
 Global Commodity Trade Statistics
