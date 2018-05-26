@@ -20,7 +20,7 @@ Requirements
 - `SQLiteDB <https://www.sqlite.org/index.html>`_ is used by Kunteksto and we recommend the `SQLiteDB Browser <http://sqlitebrowser.org/>`_
    to allow external editing of the database. See the `tutorials <https://www.guru99.com/download-install-sqlite.html>`_ on using SQLiteDB.
    
-   Python and SQLiteDB are installed with Anaconda. 
+- Python and SQLiteDB are both installed with Anaconda. 
 
 .. _install:
 
@@ -34,7 +34,6 @@ Anaconda is the **preferred environment** for a tool like Kunteksto because it i
 
 - `Download and install <https://www.continuum.io/downloads>`_ Anaconda Python 3.6+ for your platform.
 - More detailed Anaconda instructions are `here <https://docs.continuum.io/anaconda/install/>`_  if you prefer.
-- If you are using Linux or Mac OSX, follow the `instructions for your platform <http://lxml.de/installation.html>`_ for **lxml** installation. 
 
 .. note::
     Anaconda now offers to install the `VS Code editor <https://code.visualstudio.com/download>`_. Unless you already have a preferred text editor,

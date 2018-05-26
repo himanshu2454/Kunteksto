@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                1.5.0
+                1.5.1
               </div>
             
           
@@ -195,6 +195,12 @@
 <h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>Python 3.6 or later. See: <a class="reference external" href="https://www.python.org/downloads/">Downloads</a></li>
+<li><dl class="first docutils">
+<dt><a class="reference external" href="https://www.sqlite.org/index.html">SQLiteDB</a> is used by Kunteksto and we recommend the <a class="reference external" href="http://sqlitebrowser.org/">SQLiteDB Browser</a></dt>
+<dd>to allow external editing of the database. See the <a class="reference external" href="https://www.guru99.com/download-install-sqlite.html">tutorials</a> on using SQLiteDB.</dd>
+</dl>
+</li>
+<li>Python and SQLiteDB are both installed with Anaconda.</li>
 </ul>
 </div>
 <div class="section" id="installation">
@@ -205,7 +211,13 @@
 <ul class="simple">
 <li><a class="reference external" href="https://www.continuum.io/downloads">Download and install</a> Anaconda Python 3.6+ for your platform.</li>
 <li>More detailed Anaconda instructions are <a class="reference external" href="https://docs.continuum.io/anaconda/install/">here</a>  if you prefer.</li>
-<li>If you are using Linux or Mac OSX, follow the <a class="reference external" href="http://lxml.de/installation.html">instructions for your platform</a> for <strong>lxml</strong> installation.</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Anaconda now offers to install the <a class="reference external" href="https://code.visualstudio.com/download">VS Code editor</a>. Unless you already have a preferred text editor,
+this is a good choice.</p>
+</div>
+<ul class="simple">
 <li>Open a terminal window and create a conda environment. On Windows it is best to open an <em>Anaconda Prompt</em> terminal from the Anaconda menu:</li>
 </ul>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda create -p kunteksto <span class="nv">python</span><span class="o">=</span><span class="m">3</span> pycurl ujson
@@ -386,7 +398,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, Data Insights, Inc..
-      Last updated on 2018-05-25 13:04.
+      Last updated on 2018-05-26 09:25.
 
     </p>
   </div> 
@@ -407,7 +419,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.5.0',
+            VERSION:'1.5.1',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
