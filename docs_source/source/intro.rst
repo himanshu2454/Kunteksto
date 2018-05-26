@@ -36,6 +36,10 @@ Anaconda is the **preferred environment** for a tool like Kunteksto because it i
 - More detailed Anaconda instructions are `here <https://docs.continuum.io/anaconda/install/>`_  if you prefer.
 - If you are using Linux or Mac OSX, follow the `instructions for your platform <http://lxml.de/installation.html>`_ for **lxml** installation. 
 
+.. note::
+    Anaconda now offers to install the `VS Code editor <https://code.visualstudio.com/download>`_. Unless you already have a preferred text editor,
+    this is a good choice.
+
 
 - Open a terminal window and create a conda environment. On Windows it is best to open an *Anaconda Prompt* terminal from the Anaconda menu: 
 
