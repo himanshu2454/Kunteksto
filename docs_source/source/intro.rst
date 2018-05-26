@@ -17,6 +17,10 @@ Requirements
 ============
 
 - Python 3.6 or later. See: `Downloads <https://www.python.org/downloads/>`_  
+- `SQLiteDB <https://www.sqlite.org/index.html>`_ is used by Kunteksto and we recommend the `SQLiteDB Browser <http://sqlitebrowser.org/>`_
+   to allow external editing of the database. See the `tutorials <https://www.guru99.com/download-install-sqlite.html>`_ on using SQLiteDB.
+   
+   Python and SQLiteDB are installed with Anaconda. 
 
 .. _install:
 
