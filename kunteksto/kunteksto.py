@@ -55,7 +55,7 @@ def main(mode, infile, outdir, delim, analyzelevel, dbfile):
         dname, fname = os.path.split(infile)
         outdir += os.path.sep + fname[:fname.index('.')] 
         prjname = fname[:fname.index('.')]
-        get_catalog(outdir, prjname)
+        get_catalog(outdir, prjname) # Set the environment variable XML_CATALOG_FILES for lxml
         if not dbfile:
             outDB = analyze(infile, delim, analyzelevel, outdir)
             edit_model(outDB)

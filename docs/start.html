@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                1.6.0
+                1.6.1
               </div>
             
           
@@ -387,7 +387,7 @@ Expect SHACL to become more useful soon.</p>
 <p>Full validation is performed via XML for both the data model and data instances. Even if you chose to not persist the XML by
 setting <strong>xml: False</strong> in the kunteksto.conf file.
 Also, an <a class="reference external" href="https://en.wikipedia.org/wiki/XML_catalog">XML catalog</a> is dynamically generated for each project and is written to
-the <em>kunteksto/catalogs</em> directory.</p>
+the <em>kunteksto/catalogs</em> directory. The environment variable <strong>XML_CATALOG_FILES</strong> is set to be used by the <a class="reference external" href="http://lxml.de/">lxml</a> validator.</p>
 <p>Notice that the validation file <em>Demo_validation_log.csv</em> shows four valid records and one invalid record.
 The invalid record is due to a ‘NaN’ entry in a numeric column.</p>
 <div class="admonition note">
@@ -549,7 +549,7 @@ These tutorials demonstrate the power of S3Model using persistent storage.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, Data Insights, Inc..
-      Last updated on 2018-06-03 14:06.
+      Last updated on 2018-06-03 15:06.
 
     </p>
   </div> 
@@ -570,7 +570,7 @@ These tutorials demonstrate the power of S3Model using persistent storage.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.6.0',
+            VERSION:'1.6.1',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

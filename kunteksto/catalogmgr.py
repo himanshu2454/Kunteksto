@@ -19,13 +19,13 @@ def get_catalog(outdir, prjname):
 </catalog>
   
 """    
-    if os.path.isfile('catalogs'+os.path.sep+prjname+'_catalog.xml'):
-        os.environ['XML_CATALOG_FILES'] = 'catalogs'+os.path.sep+prjname+'_catalog.xml'
+    if os.path.isfile('catalogs' + os.path.sep + prjname + '_catalog.xml'):
+        os.environ['XML_CATALOG_FILES'] = 'catalogs' + os.path.sep + prjname + '_catalog.xml'
     else:
         f=open('catalogs'+os.path.sep+prjname+'_catalog.xml', 'w')
         f.write(cat_txt)
         f.close()
-        os.environ['XML_CATALOG_FILES'] = 'catalogs'+os.path.sep+prjname+'_catalog.xml'
+        os.environ['XML_CATALOG_FILES'] = 'catalogs' + os.path.sep + prjname + '_catalog.xml'
     return
 
 

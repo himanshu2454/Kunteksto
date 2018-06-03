@@ -5,6 +5,8 @@ The source of this data is from the `Kaggle project <https://www.kaggle.com/jess
 
 Download **honeyproduction.csv** data set for this tutorial and place it in the  *kunteksto/example_data* directory.
 
+For those without an account on Kaggle, we have included a copy in the example_data directory.
+
 The metadata (click on Data then on the Column Metadata tab) information is useful when filling in the database *model* and *record* tables. 
 
 You can find more metadata information about this dataset in `Wrangling The Honey Production Dataset <https://www.kaggle.com/jessicali9530/wrangling-the-honey-production-dataset/data>`_. 

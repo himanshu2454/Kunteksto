@@ -152,6 +152,9 @@ When you want to upgrade to a new version of Kunteksto you can use the line belo
     pip install  kunteksto --upgrade --no-cache-dir
 
 
+Be certain that you remove any project based catalog files from the *kunteksto/catalogs* directory. For example the *Demo_catalog.xml* file.
+ 
+
 What are all the files for?
 ===========================
 
