@@ -243,7 +243,12 @@ For example, if you want to define an alternate label in addition to the Label f
 
 The *object* portion can contain spaces. However, the first space character defines the separation between the *predicate* and *object*. 
 
-Again, the information in the table in the PDF can help you determine additional meaning about the data if you are not a domain expert in this area of *Fake System* information. If you do not already have an ontology defining the meaning of these columns then you can search in places like `BARTOC <http://www.bartoc.org/>`_, `Linked Open Vocabularies <http://lov.okfn.org/dataset/lov>`_  `Biontology <https://www.bioontology.org/>`_  or even places that aren't formal ontologies but contain reliable definitions and descriptions such as `a dictionary <http://www.dictionary.com/>`_ or an `encyclopedia <https://en.wikipedia.org/wiki/Main_Page>`_.  
+Again, the information in the table in the PDF can help you determine additional meaning about the data if you are not a 
+domain expert in this area of *Fake System* information. If you do not already have an ontology defining the meaning of these 
+columns then you can search in places like `BARTOC <http://www.bartoc.org/>`_, 
+`Linked Open Vocabularies <http://lov.okfn.org/dataset/lov>`_ and `Biontology <https://www.bioontology.org/>`_  
+or even places that aren't formal ontologies but contain reliable definitions and descriptions such as 
+`a dictionary <http://www.dictionary.com/>`_ or an `encyclopedia <https://en.wikipedia.org/wiki/Main_Page>`_.  
 
 - Once you have completed the data description step, **saved any changes to the configuration file** and **saved your changes** using the *Save* button on each Record, close the Record Editor with the *Exit* button. This action starts the model generation process, followed by the data generation process. 
 
@@ -255,23 +260,116 @@ Again, the information in the table in the PDF can help you determine additional
     :height: 300px
     :alt: Output Directory
 
-- The *all* mode causes the creation of data instances (XML, JSON, and RDF) for each record in the CSV file that is semantically compliant with the RDF and is valid according to the XML Schema. This validation process demonstrates that the models describe the data. The RDF file does include some constraint definitions based on `Shapes Constraint Language (SHACL) <https://www.w3.org/TR/shacl/>`_ There is no built-in processing for these constraints due to the lack of maturity of this technology. Expect SHACL to become more useful soon. 
 
-Full validation is performed via XML for both the data model and data instances. Also, an XML catalog is dynamically generated for each project and is written to the catalogs subdirectory.
+The *all* mode causes the creation of data instances (XML, JSON, and RDF) for each record in the CSV file that is semantically 
+compliant with the RDF and is valid according to the XML Schema. This validation process demonstrates that the models describe the 
+data. The RDF file does include some constraint definitions based on `Shapes Constraint Language (SHACL) <https://www.w3.org/TR/shacl/>`_ 
+There is no built-in processing for these constraints due to the lack of maturity of this technology. 
+Expect SHACL to become more useful soon. 
 
-- Notice that the validation file *Demo_validation_log.csv* shows four valid records and one invalid record. The invalid record is due to a 'NaN' entry in a numeric column. 
+
+Data Validation
+===============
+
+Full validation is performed via XML for both the data model and data instances. Even if you chose to not persist the XML in the 
+kunteksto.conf file. Also, an `XML catalog <https://en.wikipedia.org/wiki/XML_catalog>`_ is dynamically generated for each project 
+and is written to the catalogs subdirectory.
+
+Notice that the validation file *Demo_validation_log.csv* shows four valid records and one invalid record. 
+The invalid record is due to a 'NaN' entry in a numeric column. 
 
 .. note::
 
-    The S3Model eco-system has a much more sophisticated ability to handle missing and erroneous data. The details are available in the S3Model documentation. To use this expanded exceptional value tagging generally requires the model first approach whereas Kunteksto is an after-the-fact bridge.
+    The S3Model eco-system has a much more sophisticated ability to handle missing and erroneous data. 
+    The details are available in the `S3Model documentation <https://datainsights.tech/S3Model/>`_. To use this expanded exceptional value tagging generally requires 
+    the model first approach whereas Kunteksto is an after-the-fact bridge.
 
 
-.. caution::
-    You can rerun this Demo with different options as many times as you wish.  However, this creates a new data model each time. You should delete the *Demo* directory under the *kunteksto/output/* directory before restarting. 
+However, Kunteksto does perform a limited error detection and notification process based on the information available.  
+Referencing the file name from the *Demo_validation_log* and then using your text editor or an XML editor, 
+open that file from both the XML directory and the RDF directory.
+
+.. note::
+
+    Your validation log will look like this with different Demo-{cuid} filenames. 
+
+    .. code-block:: text
+
+        id,status,error
+        Demo-ezLjYMbbGFusJHaH9wGGjW,valid,,
+        Demo-y85Ek6fCVEYWbMp8caFrpg,valid,,
+        Demo-9tuc75QkP96brgysqigesa,valid,,
+        Demo-5bsmn23jLrYndDnqLCVw4A,invalid,Element 'xdquantity-value': 'NaN' is not a valid value of the local atomic type.,
+        Demo-WoPMrVD2QFpExXrGjAG4BW,valid,,
+
+
+In this case you would open 
+
+.. code-block:: sh
+
+  kunteksto/output/Demo/xml/Demo-5bsmn23jLrYndDnqLCVw4A.xml 
+
+and
+
+.. code-block:: sh
+
+  kunteksto/output/Demo/rdf/Demo-5bsmn23jLrYndDnqLCVw4A.rdf 
+
+
+Around line 45 in the XML file you will see the invalid entry.
+
+.. code-block:: xml
+
+      <s3m:ms-cjhxjgjxf00061ll3xgekbx7g>
+        <label>The Column 3</label>
+        <!--ERROR MSG: Element 'xdquantity-value': 'NaN' is not a valid value of the local atomic type.-->
+        <s3m:INV>
+          <ev-name>Invalid</ev-name>
+        </s3m:INV>
+        <magnitude-status>equal</magnitude-status>
+        <error>0</error>
+        <accuracy>0</accuracy>
+        <xdquantity-value>NaN</xdquantity-value>
+        <xdquantity-units>
+          <label>The Column 3 Units</label>
+          <xdstring-value/>
+          <xdstring-language>en-US</xdstring-language>
+        </xdquantity-units>
+      </s3m:ms-cjhxjgjxf00061ll3xgekbx7g>
+
+
+Notice that Kunteksto has inserted a human readable comment with the error message from the schema validator. Kunteksto has also inserted the 
+machine processable `ExceptionalValue child named **Invalid** <https://datainsights.tech/S3Model/rm/s3model_3_1_0_xsd_Complex_Type_s3m_INVType.html#INVType>`_ 
+from the `S3Model Reference Model <https://datainsights.tech/S3Model/rm/index.html>`_. *Use right-click and open in a new tab for those two links.*
+
+This invalid status is also represented in the RDF as shown here.
+
+.. code-block:: xml
+
+
+    <rdfs:Class rdf:about="Demo-5bsmn23jLrYndDnqLCVw4A/s3m:dm-cjhxjgjzv000e1ll3knmw6y54/s3m:ms-cjhxjgjzv000g1ll3uqhwvefu/s3m:ms-cjhxjgjxf00071ll3o67ko2hb/s3m:ms-cjhxjgjxf00061ll3xgekbx7g/xdquantity-value">
+      <rdfs:comment>"Element 'xdquantity-value': 'NaN' is not a valid value of the local atomic type."</rdfs:comment>
+    </rdfs:Class>
+
+    <rdfs:Class rdf:about="Demo-5bsmn23jLrYndDnqLCVw4A">
+      <rdf:type rdf:resource="https://www.s3model.com/ns/s3m/s3model/DataInstanceInvalid"/>
+    </rdfs:Class>
+
+
+Shown above are two *Subject, Predicate, Object* RDF triples in the canonical RDF/XML syntax.
+
+  - In the first triple, the full path to the invalid element is the subject and a comment is asserted containing the error message.
+  - In the second triple, the file is declared as an invalid data instance in accordance with the 
+    `S3Model ontology <http://datainsights.tech/S3Model/owl/>`_ *Opening the link in a new tab is suggested*. 
 
 
 Additional Steps
 ----------------
+
+.. caution::
+    You can rerun this Demo with different options as many times as you wish.  However, this creates a new data model each time. 
+    You should delete the *Demo* directory under the *kunteksto/output/* directory before restarting. 
+
 
 In real-world situations, we often generate data on a continuing basis for this same model. To demonstrate this functionality, use the Demo2.csv file. From the command line issue this command: 
 
@@ -292,9 +390,10 @@ You will see this error message:
 .. code-block:: sh
 
     There was an error matching the data input file to the selected model database.
-    Datafile: Bad_Column_name  Model: Column_1
+    The Datafile contains: Bad_Column_name  The Model contains: Column_1
 
-also, no new data files were generated because the data format, in this case, a column name, didn't match. 
+This is because Demo3.csv has a column that is different in name from what is expected in the model. 
+Therefore, no new data files were generated because the input file does not match the model. 
 
 Using this rich data
 ====================
@@ -306,31 +405,47 @@ In the :ref:`config` section you learn about automatically placing your data int
 To exploit the richness of the RDF data, you load these files into your RDF repository:
 
 - s3model/s3model.owl
-- s3model/s3model_3_0_0.rdf
+- s3model/s3model_3_1_0.rdf
 - output/Demo/dm-{uuid}.rdf
 
 In your XML DB or the appropriate place in your data pipeline, you will want to use the dm-{uuid}.xsd data model schema to validate your XML data. You should be using XML Catalog files, and an example is created for each project in the *catalogs* directory. 
 
 Your JSON data instances can be used as desired on the filesystem or in a document DB. 
 
+.. _mlai:
+
+Machine Learning & AI
+=====================
+
 There is a growing effort to expand the current data science algorithms to exploit richer data formats such as RDF. 
 Some references to get you started:
 
+- `The Power of Machine Learning and Graphs <https://www.youtube.com/watch?v=feGvnBNwLwY&>`_ (video).
+- `Knowledge Graphs for a Connected World - AI, Deep & Machine Learning Meetup <https://www.youtube.com/watch?v=PAumnCRZuMY&>`_ (video).
+- `Knowledge Graphs Webinar <https://youtu.be/cjxzBmpBq5Q?t=25m28s>`_  (video).
 - `Towards Analytics on Top of Big RDF Data <https://www.youtube.com/watch?v=VoEEb_oGN7w>`_ (video).
 - `Linked Data meets Data Science <https://ablvienna.wordpress.com/2014/10/28/linked-data-meets-data-science/>`_
 - `RDF on KDNuggets <http://www.kdnuggets.com/tag/rdf>`_
 - `RDF on Data Science Central <http://www.datasciencecentral.com/profiles/blog/list?tag=RDF>`_
 
+Search on YouTube or use your favorite search engine with keywords *Semantic Graph Analytics Machine Learning* 
+for more up to date references. What you **will not** find is a tool similar to Kunteksto for converting your plain old data 
+into semantic graph RDF with data validation based on a validated model. No one else tells you how difficult it is to get good, 
+clean data into your graph. **Garbage in, garbage out**. 
+
 
 Why multiple copies of the same data?
 -------------------------------------
 
-You can choose which types to create in the :ref:`config` file. However, each one has different qualities. For example, the XML data is the most robust as far as any data quality validation is concerned. The RDF is more useful for exploration and knowledge discovery, and the JSON is simpler to use in some environments.
+You can choose which types to create in the :ref:`config` file. However, each one has different qualities. 
+For example, the XML data is the most robust as far as any data quality validation is concerned. 
+The RDF is more useful for exploration and knowledge discovery, and the JSON is simpler to use in some environments.
 
 
 More Information
 ----------------
 
-- To gain a better grasp of the capability of Kunteksto, you may also want to perform the :ref:`advtutor`. These tutorial demonstrate the power of S3Model using persistent storage. 
+To gain a better understanding of the capability of Kunteksto, you should also perform the :ref:`advtutor`. 
+These tutorials demonstrate the power of S3Model using persistent storage. 
 
 

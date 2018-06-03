@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                1.5.1
+                1.6.0
               </div>
             
           
@@ -95,10 +95,14 @@
 <li class="toctree-l2"><a class="reference internal" href="#tutorial-demo">Tutorial/Demo</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#tutorial-steps">Tutorial Steps</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#adding-semantics">Adding Semantics</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#data-validation">Data Validation</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#additional-steps">Additional Steps</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#using-this-rich-data">Using this rich data</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#using-this-rich-data">Using this rich data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#machine-learning-ai">Machine Learning &amp; AI</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#why-multiple-copies-of-the-same-data">Why multiple copies of the same data?</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#more-information">More Information</a></li>
 </ul>
@@ -360,30 +364,107 @@ dul:isSettingFor https://www.datainsights.tech/thingies/PurpleKnob
 </pre></div>
 </div>
 <p>The <em>object</em> portion can contain spaces. However, the first space character defines the separation between the <em>predicate</em> and <em>object</em>.</p>
-<p>Again, the information in the table in the PDF can help you determine additional meaning about the data if you are not a domain expert in this area of <em>Fake System</em> information. If you do not already have an ontology defining the meaning of these columns then you can search in places like <a class="reference external" href="http://www.bartoc.org/">BARTOC</a>, <a class="reference external" href="http://lov.okfn.org/dataset/lov">Linked Open Vocabularies</a>  <a class="reference external" href="https://www.bioontology.org/">Biontology</a>  or even places that aren’t formal ontologies but contain reliable definitions and descriptions such as <a class="reference external" href="http://www.dictionary.com/">a dictionary</a> or an <a class="reference external" href="https://en.wikipedia.org/wiki/Main_Page">encyclopedia</a>.</p>
+<p>Again, the information in the table in the PDF can help you determine additional meaning about the data if you are not a
+domain expert in this area of <em>Fake System</em> information. If you do not already have an ontology defining the meaning of these
+columns then you can search in places like <a class="reference external" href="http://www.bartoc.org/">BARTOC</a>,
+<a class="reference external" href="http://lov.okfn.org/dataset/lov">Linked Open Vocabularies</a> and <a class="reference external" href="https://www.bioontology.org/">Biontology</a>
+or even places that aren’t formal ontologies but contain reliable definitions and descriptions such as
+<a class="reference external" href="http://www.dictionary.com/">a dictionary</a> or an <a class="reference external" href="https://en.wikipedia.org/wiki/Main_Page">encyclopedia</a>.</p>
 <ul class="simple">
 <li>Once you have completed the data description step, <strong>saved any changes to the configuration file</strong> and <strong>saved your changes</strong> using the <em>Save</em> button on each Record, close the Record Editor with the <em>Exit</em> button. This action starts the model generation process, followed by the data generation process.</li>
 <li>In the <em>output/Demo</em> directory along with the Demo.db, you find an XML Schema (*.xsd) model file and a RDF (*.rdf) file. These are the structural and semantic models that can be used in your analysis as well as shared with others to describe the data better. The RDF file is extracted from the XML Schema, so only the schema needs to be shared to distribute full structural and semantic information in an executable model. Data Insights, Inc. provides a utility with S3Model to extract the semantics from the schema data models.</li>
 </ul>
 <a class="reference internal image-reference" href="_images/output_dir.png"><img alt="Output Directory" class="align-center" src="_images/output_dir.png" style="width: 500px; height: 300px;" /></a>
-<ul class="simple">
-<li>The <em>all</em> mode causes the creation of data instances (XML, JSON, and RDF) for each record in the CSV file that is semantically compliant with the RDF and is valid according to the XML Schema. This validation process demonstrates that the models describe the data. The RDF file does include some constraint definitions based on <a class="reference external" href="https://www.w3.org/TR/shacl/">Shapes Constraint Language (SHACL)</a> There is no built-in processing for these constraints due to the lack of maturity of this technology. Expect SHACL to become more useful soon.</li>
-</ul>
-<p>Full validation is performed via XML for both the data model and data instances. Also, an XML catalog is dynamically generated for each project and is written to the catalogs subdirectory.</p>
-<ul class="simple">
-<li>Notice that the validation file <em>Demo_validation_log.csv</em> shows four valid records and one invalid record. The invalid record is due to a ‘NaN’ entry in a numeric column.</li>
-</ul>
+<p>The <em>all</em> mode causes the creation of data instances (XML, JSON, and RDF) for each record in the CSV file that is semantically
+compliant with the RDF and is valid according to the XML Schema. This validation process demonstrates that the models describe the
+data. The RDF file does include some constraint definitions based on <a class="reference external" href="https://www.w3.org/TR/shacl/">Shapes Constraint Language (SHACL)</a>
+There is no built-in processing for these constraints due to the lack of maturity of this technology.
+Expect SHACL to become more useful soon.</p>
+</div>
+</div>
+<div class="section" id="data-validation">
+<h2>Data Validation<a class="headerlink" href="#data-validation" title="Permalink to this headline">¶</a></h2>
+<p>Full validation is performed via XML for both the data model and data instances. Even if you chose to not persist the XML in the
+kunteksto.conf file. Also, an <a class="reference external" href="https://en.wikipedia.org/wiki/XML_catalog">XML catalog</a> is dynamically generated for each project
+and is written to the catalogs subdirectory.</p>
+<p>Notice that the validation file <em>Demo_validation_log.csv</em> shows four valid records and one invalid record.
+The invalid record is due to a ‘NaN’ entry in a numeric column.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">The S3Model eco-system has a much more sophisticated ability to handle missing and erroneous data. The details are available in the S3Model documentation. To use this expanded exceptional value tagging generally requires the model first approach whereas Kunteksto is an after-the-fact bridge.</p>
+<p class="last">The S3Model eco-system has a much more sophisticated ability to handle missing and erroneous data.
+The details are available in the <a class="reference external" href="https://datainsights.tech/S3Model/">S3Model documentation</a>. To use this expanded exceptional value tagging generally requires
+the model first approach whereas Kunteksto is an after-the-fact bridge.</p>
 </div>
-<div class="admonition caution">
-<p class="first admonition-title">Caution</p>
-<p class="last">You can rerun this Demo with different options as many times as you wish.  However, this creates a new data model each time. You should delete the <em>Demo</em> directory under the <em>kunteksto/output/</em> directory before restarting.</p>
+<p>However, Kunteksto does perform a limited error detection and notification process based on the information available.
+Referencing the file name from the <em>Demo_validation_log</em> and then using your text editor or an XML editor,
+open that file from both the XML directory and the RDF directory.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Your validation log will look like this with different Demo-{cuid} filenames.</p>
+<div class="last highlight-text notranslate"><div class="highlight"><pre><span></span>id,status,error
+Demo-ezLjYMbbGFusJHaH9wGGjW,valid,,
+Demo-y85Ek6fCVEYWbMp8caFrpg,valid,,
+Demo-9tuc75QkP96brgysqigesa,valid,,
+Demo-5bsmn23jLrYndDnqLCVw4A,invalid,Element &#39;xdquantity-value&#39;: &#39;NaN&#39; is not a valid value of the local atomic type.,
+Demo-WoPMrVD2QFpExXrGjAG4BW,valid,,
+</pre></div>
 </div>
 </div>
+<p>In this case you would open</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>kunteksto/output/Demo/xml/Demo-5bsmn23jLrYndDnqLCVw4A.xml
+</pre></div>
+</div>
+<p>and</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>kunteksto/output/Demo/rdf/Demo-5bsmn23jLrYndDnqLCVw4A.rdf
+</pre></div>
+</div>
+<p>Around line 45 in the XML file you will see the invalid entry.</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;s3m:ms-cjhxjgjxf00061ll3xgekbx7g&gt;</span>
+  <span class="nt">&lt;label&gt;</span>The Column 3<span class="nt">&lt;/label&gt;</span>
+  <span class="c">&lt;!--ERROR MSG: Element &#39;xdquantity-value&#39;: &#39;NaN&#39; is not a valid value of the local atomic type.--&gt;</span>
+  <span class="nt">&lt;s3m:INV&gt;</span>
+    <span class="nt">&lt;ev-name&gt;</span>Invalid<span class="nt">&lt;/ev-name&gt;</span>
+  <span class="nt">&lt;/s3m:INV&gt;</span>
+  <span class="nt">&lt;magnitude-status&gt;</span>equal<span class="nt">&lt;/magnitude-status&gt;</span>
+  <span class="nt">&lt;error&gt;</span>0<span class="nt">&lt;/error&gt;</span>
+  <span class="nt">&lt;accuracy&gt;</span>0<span class="nt">&lt;/accuracy&gt;</span>
+  <span class="nt">&lt;xdquantity-value&gt;</span>NaN<span class="nt">&lt;/xdquantity-value&gt;</span>
+  <span class="nt">&lt;xdquantity-units&gt;</span>
+    <span class="nt">&lt;label&gt;</span>The Column 3 Units<span class="nt">&lt;/label&gt;</span>
+    <span class="nt">&lt;xdstring-value/&gt;</span>
+    <span class="nt">&lt;xdstring-language&gt;</span>en-US<span class="nt">&lt;/xdstring-language&gt;</span>
+  <span class="nt">&lt;/xdquantity-units&gt;</span>
+<span class="nt">&lt;/s3m:ms-cjhxjgjxf00061ll3xgekbx7g&gt;</span>
+</pre></div>
+</div>
+<p>Notice that Kunteksto has inserted a human readable comment with the error message from the schema validator. Kunteksto has also inserted the
+machine processable <a class="reference external" href="https://datainsights.tech/S3Model/rm/s3model_3_1_0_xsd_Complex_Type_s3m_INVType.html#INVType">ExceptionalValue child named **Invalid**</a>
+from the <a class="reference external" href="https://datainsights.tech/S3Model/rm/index.html">S3Model Reference Model</a>. <em>Use right-click and open in a new tab for those two links.</em></p>
+<p>This invalid status is also represented in the RDF as shown here.</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;rdfs:Class</span> <span class="na">rdf:about=</span><span class="s">&quot;Demo-5bsmn23jLrYndDnqLCVw4A/s3m:dm-cjhxjgjzv000e1ll3knmw6y54/s3m:ms-cjhxjgjzv000g1ll3uqhwvefu/s3m:ms-cjhxjgjxf00071ll3o67ko2hb/s3m:ms-cjhxjgjxf00061ll3xgekbx7g/xdquantity-value&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;rdfs:comment&gt;</span>&quot;Element &#39;xdquantity-value&#39;: &#39;NaN&#39; is not a valid value of the local atomic type.&quot;<span class="nt">&lt;/rdfs:comment&gt;</span>
+<span class="nt">&lt;/rdfs:Class&gt;</span>
+
+<span class="nt">&lt;rdfs:Class</span> <span class="na">rdf:about=</span><span class="s">&quot;Demo-5bsmn23jLrYndDnqLCVw4A&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;rdf:type</span> <span class="na">rdf:resource=</span><span class="s">&quot;https://www.s3model.com/ns/s3m/s3model/DataInstanceInvalid&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/rdfs:Class&gt;</span>
+</pre></div>
+</div>
+<p>Shown above are two <em>Subject, Predicate, Object</em> RDF triples in the canonical RDF/XML syntax.</p>
+<blockquote>
+<div><ul class="simple">
+<li>In the first triple, the full path to the invalid element is the subject and a comment is asserted containing the error message.</li>
+<li>In the second triple, the file is declared as an invalid data instance in accordance with the
+<a class="reference external" href="http://datainsights.tech/S3Model/owl/">S3Model ontology</a> <em>Opening the link in a new tab is suggested</em>.</li>
+</ul>
+</div></blockquote>
 <div class="section" id="additional-steps">
 <h3>Additional Steps<a class="headerlink" href="#additional-steps" title="Permalink to this headline">¶</a></h3>
+<div class="admonition caution">
+<p class="first admonition-title">Caution</p>
+<p class="last">You can rerun this Demo with different options as many times as you wish.  However, this creates a new data model each time.
+You should delete the <em>Demo</em> directory under the <em>kunteksto/output/</em> directory before restarting.</p>
+</div>
 <p>In real-world situations, we often generate data on a continuing basis for this same model. To demonstrate this functionality, use the Demo2.csv file. From the command line issue this command:</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>kunteksto -i example_data/Demo2.csv -m generate -db output/Demo/Demo.db
 </pre></div>
@@ -395,10 +476,11 @@ dul:isSettingFor https://www.datainsights.tech/thingies/PurpleKnob
 </div>
 <p>You will see this error message:</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>There was an error matching the data input file to the selected model database.
-Datafile: Bad_Column_name  Model: Column_1
+The Datafile contains: Bad_Column_name  The Model contains: Column_1
 </pre></div>
 </div>
-<p>also, no new data files were generated because the data format, in this case, a column name, didn’t match.</p>
+<p>This is because Demo3.csv has a column that is different in name from what is expected in the model.
+Therefore, no new data files were generated because the input file does not match the model.</p>
 </div>
 </div>
 <div class="section" id="using-this-rich-data">
@@ -408,28 +490,39 @@ Datafile: Bad_Column_name  Model: Column_1
 <p>To exploit the richness of the RDF data, you load these files into your RDF repository:</p>
 <ul class="simple">
 <li>s3model/s3model.owl</li>
-<li>s3model/s3model_3_0_0.rdf</li>
+<li>s3model/s3model_3_1_0.rdf</li>
 <li>output/Demo/dm-{uuid}.rdf</li>
 </ul>
 <p>In your XML DB or the appropriate place in your data pipeline, you will want to use the dm-{uuid}.xsd data model schema to validate your XML data. You should be using XML Catalog files, and an example is created for each project in the <em>catalogs</em> directory.</p>
 <p>Your JSON data instances can be used as desired on the filesystem or in a document DB.</p>
+</div>
+<div class="section" id="machine-learning-ai">
+<span id="mlai"></span><h2>Machine Learning &amp; AI<a class="headerlink" href="#machine-learning-ai" title="Permalink to this headline">¶</a></h2>
 <p>There is a growing effort to expand the current data science algorithms to exploit richer data formats such as RDF.
 Some references to get you started:</p>
 <ul class="simple">
+<li><a class="reference external" href="https://www.youtube.com/watch?v=feGvnBNwLwY&amp;">The Power of Machine Learning and Graphs</a> (video).</li>
+<li><a class="reference external" href="https://www.youtube.com/watch?v=PAumnCRZuMY&amp;">Knowledge Graphs for a Connected World - AI, Deep &amp; Machine Learning Meetup</a> (video).</li>
+<li><a class="reference external" href="https://youtu.be/cjxzBmpBq5Q?t=25m28s">Knowledge Graphs Webinar</a>  (video).</li>
 <li><a class="reference external" href="https://www.youtube.com/watch?v=VoEEb_oGN7w">Towards Analytics on Top of Big RDF Data</a> (video).</li>
 <li><a class="reference external" href="https://ablvienna.wordpress.com/2014/10/28/linked-data-meets-data-science/">Linked Data meets Data Science</a></li>
 <li><a class="reference external" href="http://www.kdnuggets.com/tag/rdf">RDF on KDNuggets</a></li>
 <li><a class="reference external" href="http://www.datasciencecentral.com/profiles/blog/list?tag=RDF">RDF on Data Science Central</a></li>
 </ul>
+<p>Search on YouTube or use your favorite search engine with keywords <em>Semantic Graph Analytics Machine Learning</em>
+for more up to date references. What you <strong>will not</strong> find is a tool similar to Kunteksto for converting your plain old data
+into semantic graph RDF with data validation based on a validated model. No one else tells you how difficult it is to get good,
+clean data into your graph. <strong>Garbage in, garbage out</strong>.</p>
 <div class="section" id="why-multiple-copies-of-the-same-data">
 <h3>Why multiple copies of the same data?<a class="headerlink" href="#why-multiple-copies-of-the-same-data" title="Permalink to this headline">¶</a></h3>
-<p>You can choose which types to create in the <a class="reference internal" href="configure.html#config"><span class="std std-ref">Config File Details</span></a> file. However, each one has different qualities. For example, the XML data is the most robust as far as any data quality validation is concerned. The RDF is more useful for exploration and knowledge discovery, and the JSON is simpler to use in some environments.</p>
+<p>You can choose which types to create in the <a class="reference internal" href="configure.html#config"><span class="std std-ref">Config File Details</span></a> file. However, each one has different qualities.
+For example, the XML data is the most robust as far as any data quality validation is concerned.
+The RDF is more useful for exploration and knowledge discovery, and the JSON is simpler to use in some environments.</p>
 </div>
 <div class="section" id="more-information">
 <h3>More Information<a class="headerlink" href="#more-information" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li>To gain a better grasp of the capability of Kunteksto, you may also want to perform the <a class="reference internal" href="tutorials.html#advtutor"><span class="std std-ref">Advanced Tutorials</span></a>. These tutorial demonstrate the power of S3Model using persistent storage.</li>
-</ul>
+<p>To gain a better understanding of the capability of Kunteksto, you should also perform the <a class="reference internal" href="tutorials.html#advtutor"><span class="std std-ref">Advanced Tutorials</span></a>.
+These tutorials demonstrate the power of S3Model using persistent storage.</p>
 </div>
 </div>
 </div>
@@ -455,7 +548,7 @@ Some references to get you started:</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, Data Insights, Inc..
-      Last updated on 2018-05-26 09:23.
+      Last updated on 2018-06-03 07:39.
 
     </p>
   </div> 
@@ -476,7 +569,7 @@ Some references to get you started:</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.5.1',
+            VERSION:'1.6.0',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

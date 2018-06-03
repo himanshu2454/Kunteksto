@@ -116,7 +116,10 @@ During execution, the script displays several lines of output to the terminal. S
 Viewing the RDF Repository
 --------------------------
 
-You can view the Kunteksto repository by using `this link <http://127.0.0.1:10035/#/repositories/Kunteksto>`_ in a browser. Right click and open it in a new tab. Then under **Explore the Repository** click the *View Triples* link. These triples are the S3Model ontolgy and the S3Model 3.1.0 RDF. These triples connect all of your RDF into an graph, even when they do not have other semantics linking them. The Gruff UI allows for graphically exploring repository.
+You can view the Kunteksto repository by using `this link <http://127.0.0.1:10035/#/repositories/Kunteksto>`_ in a browser. 
+Right click and open it in a new tab. Then under **Explore the Repository** click the *View Triples* link. 
+These triples are the S3Model ontology and the S3Model 3.1.0 RDF. These triples connect all of your RDF into a graph, 
+even when they do not have other semantics linking them. 
 
 You may also use the Gruff GUI Client to explore the respoitory at any time. See the `Franz, Inc. Learning Center <https://franz.com/agraph/gruff/learning-center.lhtml>`_ for more information.
 
