@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                1.5.1
+                1.6.0
               </div>
             
           
@@ -158,9 +158,10 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <p>The best source (easiest download) of this data is from <a class="reference external" href="https://www.kaggle.com/jessicali9530/honey-production">Kaggle</a></p>
-<p><a class="reference external" href="https://www.kaggle.com/jessicali9530/honey-production/data">The dataset is avalible here</a>. There is already a copy in the  <em>kunteksto/example_data</em> directory.</p>
-<p>The metadata (click on Data then on the Column Metadata tab) information may be useful in filling in the database <em>model</em> and <em>record</em> tables.</p>
+  <p>The <strong>honeyproduction.csv</strong> data set for this tutorial is in the  <em>kunteksto/example_data</em> directory.</p>
+<p>The source of this data is from the <a class="reference external" href="https://www.kaggle.com/jessicali9530/honey-production">Kaggle project</a></p>
+<p><a class="reference external" href="https://www.kaggle.com/jessicali9530/honey-production/data">The dataset is available here</a>.</p>
+<p>The metadata (click on Data then on the Column Metadata tab) information is useful when filling in the database <em>model</em> and <em>record</em> tables.</p>
 <p>You can find more metadata information about this dataset in <a class="reference external" href="https://www.kaggle.com/jessicali9530/wrangling-the-honey-production-dataset/data">Wrangling The Honey Production Dataset</a>.</p>
 <p>Following the same step by step procedures outlined in the <em>Getting Started</em> section.</p>
 <ul class="simple">
@@ -205,9 +206,13 @@ After you click the <em>Save &amp; Exit</em> button. The column editor will open
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>rdf:type http://www.w3.org/2001/XMLSchema#gYear
 </pre></div>
 </div>
-<p>In <a class="reference external" href="https://datainsights.tech/S3Model/">S3Model</a> it is possible to have all of the temporal types. The <a class="reference external" href="https://datainsights.tech/datacentrictools/">Datacentric Tools Suite</a> provides facilities to create these datatypes.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">In <a class="reference external" href="https://datainsights.tech/S3Model/">S3Model</a> it is possible to have all of the temporal types. The <a class="reference external" href="https://datainsights.tech/datacentrictools/">Datacentric Tools Suite</a> provides facilities to create these datatypes.</p>
+</div>
 <p>Once you complete editing of all of the columns, click the <em>Exit</em> button. The GUI will remain on the screen while the data generation process is running. The terminal where you started Kunteksto will scroll messages about the progress.</p>
-<p>After the processing is complete you may want to review <em>output/honeyproduction/honeyproduction_validation_log.csv</em> to see which files are invalid. The error message from the validator may be a bit cryptic but it’s what we have to work with.</p>
+<p>After the processing is complete review <em>output/honeyproduction/honeyproduction_validation_log.csv</em> to see which files are invalid.
+The error message from the validator may be a bit cryptic but it’s what we have to work with. Just like with the Demo tutorial, the errors are also included in the Semantic Graph via the RDF.</p>
 <p>The output RDF will be in the Kunteksto repository in AllegroGraph which you can explore through the AllegroGraph WebView browser tool or using <a class="reference external" href="https://franz.com/agraph/gruff/">Gruff</a> which I <strong>HIGHLY</strong> recommend. You can also explore the XML using the <a class="reference external" href="http://basex.org/basex/gui/">BaseX GUI</a>.</p>
 <p>There are many written and video tutorials on using these tools. Check the <a class="reference external" href="https://www.youtube.com/user/AllegroGraph/videos">AllegroGraph YouTube Channel</a> and the <a class="reference external" href="http://docs.basex.org/wiki/Getting_Started">BaseX Getting Started</a>.</p>
 
@@ -223,7 +228,7 @@ After you click the <em>Save &amp; Exit</em> button. The column editor will open
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, Data Insights, Inc..
-      Last updated on 2018-05-26 09:23.
+      Last updated on 2018-06-03 05:59.
 
     </p>
   </div> 
@@ -244,7 +249,7 @@ After you click the <em>Save &amp; Exit</em> button. The column editor will open
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.5.1',
+            VERSION:'1.6.0',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

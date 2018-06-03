@@ -1,10 +1,12 @@
+.. _usage:
+
 ===============
 License & Usage
 ===============
 
-**Copyright 2017, Data Insights, Inc.**
+**Copyright 2017 - 2018, Data Insights, Inc.**
 
-.. code-block:: none
+.. code-block:: text
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License (see below).
@@ -23,7 +25,7 @@ Some required components may be licensed differently. See their individual licen
 
 Specifically included file *BaseXClient.py* is licensed under:
 
-.. code-block:: none
+.. code-block:: text
 
     (C) 2012, Hiroaki Itoh. BSD License
     updated 2014 by Marc van Grootel

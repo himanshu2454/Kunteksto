@@ -5,7 +5,12 @@ Introduction and Installation
 Purpose
 =======
 
-**Kunteksto** (ˈkänˌteksto) [#f1]_ is a tool to translate simple CSV formatted data files into computable, semantically enhanced knowledge representations. As a foundation for **crowdsourced**, *automated knowledge base construction*; it provides a path for existing data sets to be used in conjunction with the emerging *datacentric, model first* approach in analysis, general artificial intelligence, and decision support systems. This approach opens the door for the change to a *datacentric* world as opposed to the *application-centric* one we have now. This new approach enables automatic interoperability avoiding the data quality issues created through data cleaning and massaging. 
+**Kunteksto** (ˈkänˌteksto) [#f1]_ is a tool to translate simple CSV formatted data files into computable, 
+semantically enhanced knowledge representations. As a foundation for **crowdsourced**, *automated knowledge base construction*; 
+it provides a path for existing data sets to be used in conjunction with the emerging *datacentric, model first* approach in analysis, 
+general artificial intelligence, and decision support systems. This approach opens the door for the change to a *datacentric* world 
+as opposed to the *application-centric* one we have now. This new approach enables automatic interoperability avoiding the data 
+quality issues created through data cleaning and massaging. See :ref:`mlai`  
 
 The importance of how this simplifies query and analysis capabilities and improves data quality is discussed in foundational `S3Model <https://datainsights.tech/S3Model>`_ documentation and references. However, detailed understanding of S3Model is not required to understand and use the power of Kunteksto. Additional information on the datacentric movement can be found below [#f2]_
 

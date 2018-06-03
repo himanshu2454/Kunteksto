@@ -4,9 +4,11 @@ Kunteksto
 
 **Turning data into information!**
 
-*Copyright 2017 Data Insights, Inc. - All Rights Reserved.*
+*Copyright 2017 - 2018 Data Insights, Inc. - All Rights Reserved.*
 
-Kunteksto == Context in `Esperanto <https://en.wikipedia.org/wiki/Esperanto>`_
+See :ref:`usage` 
+
+*Kunteksto* means *Context* in `Esperanto <https://en.wikipedia.org/wiki/Esperanto>`_
 
 
 Contents:

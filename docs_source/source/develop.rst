@@ -10,7 +10,7 @@ Kunteksto source code and project management is on `GitHub <https://github.com/D
 
 .. note:: 
 
-    As of 2017-08-01, this is still a Private repository. We expect to open this repo to the public in the future as interest is shown in the project. If you can help with organization and project management and would like to volunteer then please `contact us <https://github.com/twcook>`_ 
+    If you can help with organization and project management and would like to volunteer then please `contact us <https://github.com/twcook>`_ 
 
 
 Code Quality Guidelines

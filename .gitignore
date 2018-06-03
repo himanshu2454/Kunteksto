@@ -8,18 +8,13 @@ __pycache__/
 
 # Kunteksto 
 *.db
-output/rdf/*
-output/json/*
-output/xml/*
-output/*.rdf
-output/*.xsd
+output/*
 catalogs/
 *_validation_log.csv
+dev_notes/*
 
 *.odt
 *.~lock*
-
-misc/
 
 .cache/
 
@@ -27,6 +22,7 @@ misc/
 docs_source/build/*
 docs/_sources/*
 docs/.buildinfo
+docs/.doctrees/
 
 # Setuptools distribution folder.
 /dist/

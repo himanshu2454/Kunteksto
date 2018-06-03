@@ -1,11 +1,11 @@
 
+The **honeyproduction.csv** data set for this tutorial is in the  *kunteksto/example_data* directory.
 
-The best source (easiest download) of this data is from `Kaggle <https://www.kaggle.com/jessicali9530/honey-production>`_
+The source of this data is from the `Kaggle project <https://www.kaggle.com/jessicali9530/honey-production>`_
 
+`The dataset is available here <https://www.kaggle.com/jessicali9530/honey-production/data>`_. 
 
-`The dataset is avalible here <https://www.kaggle.com/jessicali9530/honey-production/data>`_. There is already a copy in the  *kunteksto/example_data* directory.
-
-The metadata (click on Data then on the Column Metadata tab) information may be useful in filling in the database *model* and *record* tables. 
+The metadata (click on Data then on the Column Metadata tab) information is useful when filling in the database *model* and *record* tables. 
 
 You can find more metadata information about this dataset in `Wrangling The Honey Production Dataset <https://www.kaggle.com/jessicali9530/wrangling-the-honey-production-dataset/data>`_. 
 
@@ -80,12 +80,15 @@ Columns like *The year* are detected as integers. However, this is really a temp
 
     rdf:type http://www.w3.org/2001/XMLSchema#gYear
 
-In `S3Model <https://datainsights.tech/S3Model/>`_ it is possible to have all of the temporal types. The `Datacentric Tools Suite <https://datainsights.tech/datacentrictools/>`_ provides facilities to create these datatypes. 
+
+.. note::
+
+    In `S3Model <https://datainsights.tech/S3Model/>`_ it is possible to have all of the temporal types. The `Datacentric Tools Suite <https://datainsights.tech/datacentrictools/>`_ provides facilities to create these datatypes. 
 
 Once you complete editing of all of the columns, click the *Exit* button. The GUI will remain on the screen while the data generation process is running. The terminal where you started Kunteksto will scroll messages about the progress. 
 
-After the processing is complete you may want to review *output/honeyproduction/honeyproduction_validation_log.csv* to see which files are invalid. The error message from the validator may be a bit cryptic but it's what we have to work with. 
-
+After the processing is complete review *output/honeyproduction/honeyproduction_validation_log.csv* to see which files are invalid. 
+The error message from the validator may be a bit cryptic but it's what we have to work with. Just like with the Demo tutorial, the errors are also included in the Semantic Graph via the RDF.
 
 The output RDF will be in the Kunteksto repository in AllegroGraph which you can explore through the AllegroGraph WebView browser tool or using `Gruff <https://franz.com/agraph/gruff/>`_ which I **HIGHLY** recommend. You can also explore the XML using the `BaseX GUI <http://basex.org/basex/gui/>`_. 
 
