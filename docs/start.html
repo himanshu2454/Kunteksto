@@ -384,9 +384,10 @@ Expect SHACL to become more useful soon.</p>
 </div>
 <div class="section" id="data-validation">
 <h2>Data Validation<a class="headerlink" href="#data-validation" title="Permalink to this headline">¶</a></h2>
-<p>Full validation is performed via XML for both the data model and data instances. Even if you chose to not persist the XML in the
-kunteksto.conf file. Also, an <a class="reference external" href="https://en.wikipedia.org/wiki/XML_catalog">XML catalog</a> is dynamically generated for each project
-and is written to the catalogs subdirectory.</p>
+<p>Full validation is performed via XML for both the data model and data instances. Even if you chose to not persist the XML by
+setting <strong>xml: False</strong> in the kunteksto.conf file.
+Also, an <a class="reference external" href="https://en.wikipedia.org/wiki/XML_catalog">XML catalog</a> is dynamically generated for each project and is written to
+the <em>kunteksto/catalogs</em> directory.</p>
 <p>Notice that the validation file <em>Demo_validation_log.csv</em> shows four valid records and one invalid record.
 The invalid record is due to a ‘NaN’ entry in a numeric column.</p>
 <div class="admonition note">
@@ -548,7 +549,7 @@ These tutorials demonstrate the power of S3Model using persistent storage.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, Data Insights, Inc..
-      Last updated on 2018-06-03 07:39.
+      Last updated on 2018-06-03 07:54.
 
     </p>
   </div> 

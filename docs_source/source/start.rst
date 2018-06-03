@@ -271,9 +271,10 @@ Expect SHACL to become more useful soon.
 Data Validation
 ===============
 
-Full validation is performed via XML for both the data model and data instances. Even if you chose to not persist the XML in the 
-kunteksto.conf file. Also, an `XML catalog <https://en.wikipedia.org/wiki/XML_catalog>`_ is dynamically generated for each project 
-and is written to the catalogs subdirectory.
+Full validation is performed via XML for both the data model and data instances. Even if you chose to not persist the XML by 
+setting **xml: False** in the kunteksto.conf file. 
+Also, an `XML catalog <https://en.wikipedia.org/wiki/XML_catalog>`_ is dynamically generated for each project and is written to 
+the *kunteksto/catalogs* directory.
 
 Notice that the validation file *Demo_validation_log.csv* shows four valid records and one invalid record. 
 The invalid record is due to a 'NaN' entry in a numeric column. 
