@@ -1,9 +1,9 @@
 
-The **honeyproduction.csv** data set for this tutorial is in the  *kunteksto/example_data* directory.
-
 The source of this data is from the `Kaggle project <https://www.kaggle.com/jessicali9530/honey-production>`_
 
 `The dataset is available here <https://www.kaggle.com/jessicali9530/honey-production/data>`_. 
+
+Download **honeyproduction.csv** data set for this tutorial and place it in the  *kunteksto/example_data* directory.
 
 The metadata (click on Data then on the Column Metadata tab) information is useful when filling in the database *model* and *record* tables. 
 
