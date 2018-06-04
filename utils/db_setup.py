@@ -1,6 +1,8 @@
 # Setup AllegroGraph and BaseX for the tutorial
 import os
+import sys
 import configparser
+
 try:
     from BaseXClient import BaseXClient
 except:
@@ -11,11 +13,12 @@ except:
     print("Could not find the AllegroGraph client.")
 
 dirpath = os.getcwd()
-foldername = os.path.basename(dirpath)
-print("\nThe current directory name is : " + foldername)
+curdir = os.path.basename(dirpath)
 
-if foldername != 'kunteksto':
-    print("ERROR: You are not in the kunteksto directory.\n")
+print("\nThe current directory name is : " + curdir)
+
+if curdir != 'kunteksto':
+    print("ERROR: You are not in the kunteksto directory. Change to the 'kunteksto' directory and run 'utils/db_setup.py'\n")
     raise SystemExit
     
 config = configparser.ConfigParser()
@@ -34,8 +37,8 @@ if config['ALLEGROGRAPH']['status'].upper() == "ACTIVE":
         with ag_connect(config['ALLEGROGRAPH']['repo'], host=os.environ.get('AGRAPH_HOST'), port=os.environ.get('AGRAPH_PORT'),  user=os.environ.get('AGRAPH_USER'), password=os.environ.get('AGRAPH_PASSWORD')) as conn:
             conn.clear(contexts='ALL_CONTEXTS')
             print('Initial Kunteksto RDF Repository Size: ', conn.size(), '\n')
-            conn.addFile(dirpath + '/s3model/s3model.owl', serverSide=True)    
-            conn.addFile(dirpath + '/s3model/s3model_3_1_0.rdf', serverSide=True)    
+            conn.addFile(os.path.join(dirpath,'s3model','s3model.owl'), serverSide=True)    
+            conn.addFile(os.path.join(dirpath, 's3model','s3model_3_1_0.rdf'), serverSide=True)    
             print('Current Kunteksto RDF Repository Size: ', conn.size(), '\n')
             print('AllegroGraph connections are okay.\n\n')
     except:

@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                1.6.1
+                1.6.2
               </div>
             
           
@@ -384,43 +384,50 @@ Expect SHACL to become more useful soon.</p>
 </div>
 <div class="section" id="data-validation">
 <h2>Data Validation<a class="headerlink" href="#data-validation" title="Permalink to this headline">¶</a></h2>
-<p>Full validation is performed via XML for both the data model and data instances. Even if you chose to not persist the XML by
-setting <strong>xml: False</strong> in the kunteksto.conf file.
-Also, an <a class="reference external" href="https://en.wikipedia.org/wiki/XML_catalog">XML catalog</a> is dynamically generated for each project and is written to
-the <em>kunteksto/catalogs</em> directory. The environment variable <strong>XML_CATALOG_FILES</strong> is set to be used by the <a class="reference external" href="http://lxml.de/">lxml</a> validator.</p>
-<p>Notice that the validation file <em>Demo_validation_log.csv</em> shows four valid records and one invalid record.
+<p>Full validation occurs via XML for both the data model and data instances. Setting <strong>xml: False</strong> in the kunteksto.conf file does
+not prevent this validation; it only prevents persistence of the XML files.</p>
+<p>In the XML eco-system, a catalog file is required to reference a local copy of a schema used for validation.
+A catalog file is dynamically generated for each project and is written to the <em>kunteksto/catalogs</em> directory.
+The environment variable <strong>XML_CATALOG_FILES</strong> is set by Kunteksto to be used by the <a class="reference external" href="http://lxml.de/">lxml</a> validator to
+find the generated <em>Data Model</em> schema.</p>
+<p>Read more about <a class="reference external" href="https://en.wikipedia.org/wiki/XML_catalog">XML catalogs here</a>.</p>
+<p>Notice that the validation file <em>kunteksto/output/Demo/Demo_validation_log.csv</em> shows four data records marked as being valid and one data record marked as invalid.
 The invalid record is due to a ‘NaN’ entry in a numeric column.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">The S3Model eco-system has a much more sophisticated ability to handle missing and erroneous data.
-The details are available in the <a class="reference external" href="https://datainsights.tech/S3Model/">S3Model documentation</a>. To use this expanded exceptional value tagging generally requires
-the model first approach whereas Kunteksto is an after-the-fact bridge.</p>
+The details are available in the <a class="reference external" href="https://datainsights.tech/S3Model/">S3Model documentation</a>. To use this expanded exceptional
+value tagging generally requires the model first approach whereas Kunteksto is an after-the-fact bridge.</p>
 </div>
-<p>However, Kunteksto does perform a limited error detection and notification process based on the information available.
-Referencing the file name from the <em>Demo_validation_log</em> and then using your text editor or an XML editor,
-open that file from both the XML directory and the RDF directory.</p>
+<p>However, Kunteksto does perform limited error detection and notification process based on the information available.
+Referencing the data file name from the <em>kunteksto/output/Demo/Demo_validation_log.csv</em> file and then using your text editor or an XML editor,
+open that file from each of the XML directory, the RDF directory and the JSON directory.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p>Your validation log will look like this with different Demo-{cuid} filenames.</p>
 <div class="last highlight-text notranslate"><div class="highlight"><pre><span></span>id,status,error
-Demo-ezLjYMbbGFusJHaH9wGGjW,valid,,
-Demo-y85Ek6fCVEYWbMp8caFrpg,valid,,
-Demo-9tuc75QkP96brgysqigesa,valid,,
-Demo-5bsmn23jLrYndDnqLCVw4A,invalid,Element &#39;xdquantity-value&#39;: &#39;NaN&#39; is not a valid value of the local atomic type.,
-Demo-WoPMrVD2QFpExXrGjAG4BW,valid,,
+Demo-CMbmzjE5xCFjSG4yrVhbL7,valid,,
+Demo-AuPKLN97aGQZHUA6K6NZvn,valid,,
+Demo-NfHYtqK5ZKg5NQNK5pwxxj,valid,,
+Demo-WSmPQb9BNixJGLsCTNCVF2,invalid,Element &#39;xdquantity-value&#39;: &#39;NaN&#39; is not a valid value of the local atomic type.,
+Demo-NSeunBttQwjXF36UZDs5AM,valid,,
 </pre></div>
 </div>
 </div>
-<p>In this case you would open</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>kunteksto/output/Demo/xml/Demo-5bsmn23jLrYndDnqLCVw4A.xml
+<p>In this case you would open the XML file:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>kunteksto/output/Demo/xml/Demo-WSmPQb9BNixJGLsCTNCVF2.xml
 </pre></div>
 </div>
-<p>and</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>kunteksto/output/Demo/rdf/Demo-5bsmn23jLrYndDnqLCVw4A.rdf
+<p>and the RDF file:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>kunteksto/output/Demo/rdf/Demo-WSmPQb9BNixJGLsCTNCVF2.rdf
 </pre></div>
 </div>
-<p>Around line 45 in the XML file you will see the invalid entry.</p>
-<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;s3m:ms-cjhxjgjxf00061ll3xgekbx7g&gt;</span>
+<p>and the JSON file:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>kunteksto/output/Demo/json/Demo-WSmPQb9BNixJGLsCTNCVF2.json
+</pre></div>
+</div>
+<p>Around line 45 in the XML file you will see the invalid entry:</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;s3m:ms-cji07wngr0006i7l3ey0pdbx7&gt;</span>
   <span class="nt">&lt;label&gt;</span>The Column 3<span class="nt">&lt;/label&gt;</span>
   <span class="c">&lt;!--ERROR MSG: Element &#39;xdquantity-value&#39;: &#39;NaN&#39; is not a valid value of the local atomic type.--&gt;</span>
   <span class="nt">&lt;s3m:INV&gt;</span>
@@ -435,18 +442,19 @@ Demo-WoPMrVD2QFpExXrGjAG4BW,valid,,
     <span class="nt">&lt;xdstring-value/&gt;</span>
     <span class="nt">&lt;xdstring-language&gt;</span>en-US<span class="nt">&lt;/xdstring-language&gt;</span>
   <span class="nt">&lt;/xdquantity-units&gt;</span>
-<span class="nt">&lt;/s3m:ms-cjhxjgjxf00061ll3xgekbx7g&gt;</span>
+<span class="nt">&lt;/s3m:ms-cji07wngr0006i7l3ey0pdbx7&gt;</span>
 </pre></div>
 </div>
-<p>Notice that Kunteksto has inserted a human readable comment with the error message from the schema validator. Kunteksto has also inserted the
-machine processable <a class="reference external" href="https://datainsights.tech/S3Model/rm/s3model_3_1_0_xsd_Complex_Type_s3m_INVType.html#INVType">ExceptionalValue child named **Invalid**</a>
-from the <a class="reference external" href="https://datainsights.tech/S3Model/rm/index.html">S3Model Reference Model</a>. <em>Use right-click and open in a new tab for those two links.</em></p>
-<p>This invalid status is also represented in the RDF as shown here.</p>
-<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;rdfs:Class</span> <span class="na">rdf:about=</span><span class="s">&quot;Demo-5bsmn23jLrYndDnqLCVw4A/s3m:dm-cjhxjgjzv000e1ll3knmw6y54/s3m:ms-cjhxjgjzv000g1ll3uqhwvefu/s3m:ms-cjhxjgjxf00071ll3o67ko2hb/s3m:ms-cjhxjgjxf00061ll3xgekbx7g/xdquantity-value&quot;</span><span class="nt">&gt;</span>
+<p>Notice that Kunteksto has inserted a human readable comment with the error message from the schema validator.</p>
+<p>Kunteksto has also inserted the machine processable <a class="reference external" href="https://datainsights.tech/S3Model/rm/s3model_3_1_0_xsd_Complex_Type_s3m_INVType.html#INVType">ExceptionalValue child named **Invalid**</a>
+from the <a class="reference external" href="https://datainsights.tech/S3Model/rm/index.html">S3Model Reference Model</a>.</p>
+<p><em>To review the details of the s3m:INV element, use right-click and open those two links in a new tab.</em></p>
+<p>This invalid status is also represented in the RDF as shown here:</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;rdfs:Class</span> <span class="na">rdf:about=</span><span class="s">&quot;Demo-WSmPQb9BNixJGLsCTNCVF2/s3m:dm-cji07wnil000ei7l3xpbvzsul/s3m:ms-cji07wnil000gi7l3b3qxbi6g/s3m:ms-cji07wngr0007i7l3b2icvkm0/s3m:ms-cji07wngr0006i7l3ey0pdbx7/xdquantity-value&quot;</span><span class="nt">&gt;</span>
   <span class="nt">&lt;rdfs:comment&gt;</span>&quot;Element &#39;xdquantity-value&#39;: &#39;NaN&#39; is not a valid value of the local atomic type.&quot;<span class="nt">&lt;/rdfs:comment&gt;</span>
 <span class="nt">&lt;/rdfs:Class&gt;</span>
 
-<span class="nt">&lt;rdfs:Class</span> <span class="na">rdf:about=</span><span class="s">&quot;Demo-5bsmn23jLrYndDnqLCVw4A&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;rdfs:Class</span> <span class="na">rdf:about=</span><span class="s">&quot;Demo-WSmPQb9BNixJGLsCTNCVF2&quot;</span><span class="nt">&gt;</span>
   <span class="nt">&lt;rdf:type</span> <span class="na">rdf:resource=</span><span class="s">&quot;https://www.s3model.com/ns/s3m/s3model/DataInstanceInvalid&quot;</span><span class="nt">/&gt;</span>
 <span class="nt">&lt;/rdfs:Class&gt;</span>
 </pre></div>
@@ -459,6 +467,27 @@ from the <a class="reference external" href="https://datainsights.tech/S3Model/r
 <a class="reference external" href="http://datainsights.tech/S3Model/owl/">S3Model ontology</a> <em>Opening the link in a new tab is suggested</em>.</li>
 </ul>
 </div></blockquote>
+<p>It is important to note that the semantics from the data model schema are extracted into a RDF/XML file also located in the
+<em>kunteksto/output/Demo</em> directory. In the <a class="reference internal" href="tutorials.html#advtutor"><span class="std std-ref">Advanced Tutorials</span></a> you will see how these semantics interact with the Reference Model
+semantics and the S3Model ontology in a semantic graph database.</p>
+<p>This invalid status is also represented in the JSON file as shown here:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&quot;s3m:ms-cji07wngr0006i7l3ey0pdbx7&quot;: {
+    &quot;label&quot;: &quot;The Column 3&quot;,
+    &quot;s3m:INV&quot;: {
+        &quot;ev-name&quot;: &quot;Invalid&quot;
+    },
+    &quot;magnitude-status&quot;: &quot;equal&quot;,
+    &quot;error&quot;: &quot;0&quot;,
+    &quot;accuracy&quot;: &quot;0&quot;,
+    &quot;xdquantity-value&quot;: &quot;NaN&quot;,
+    &quot;xdquantity-units&quot;: {
+        &quot;label&quot;: &quot;The Column 3 Units&quot;,
+        &quot;xdstring-value&quot;: null,
+        &quot;xdstring-language&quot;: &quot;en-US&quot;
+    }
+</pre></div>
+</div>
+<p>The downstream processing tools can then use this invalid status as needed; depending on the data analysis/usage situation.</p>
 <div class="section" id="additional-steps">
 <h3>Additional Steps<a class="headerlink" href="#additional-steps" title="Permalink to this headline">¶</a></h3>
 <div class="admonition caution">
@@ -511,9 +540,10 @@ Some references to get you started:</p>
 <li><a class="reference external" href="http://www.datasciencecentral.com/profiles/blog/list?tag=RDF">RDF on Data Science Central</a></li>
 </ul>
 <p>Search on YouTube or use your favorite search engine with keywords <em>Semantic Graph Analytics Machine Learning</em>
-for more up to date references. What you <strong>will not</strong> find is a tool similar to Kunteksto for converting your plain old data
-into semantic graph RDF with data validation based on a validated model. No one else tells you how difficult it is to get good,
-clean data into your graph. <strong>Garbage in, garbage out</strong>.</p>
+for more up to date references.</p>
+<p>You can also find many tools for converting your CSV data into RDF. What you <strong>will not</strong> find is a tool similar to Kunteksto for
+converting your plain old data into semantic graph RDF <strong>with data validation based on a validated model</strong>.
+No one else tells you how difficult it is to get good, <em>clean data</em> into your graph. Remember that <strong>Garbage in == garbage out</strong>.</p>
 <div class="section" id="why-multiple-copies-of-the-same-data">
 <h3>Why multiple copies of the same data?<a class="headerlink" href="#why-multiple-copies-of-the-same-data" title="Permalink to this headline">¶</a></h3>
 <p>You can choose which types to create in the <a class="reference internal" href="configure.html#config"><span class="std std-ref">Config File Details</span></a> file. However, each one has different qualities.
@@ -549,7 +579,7 @@ These tutorials demonstrate the power of S3Model using persistent storage.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, Data Insights, Inc..
-      Last updated on 2018-06-03 15:06.
+      Last updated on 2018-06-04 10:07.
 
     </p>
   </div> 
@@ -570,7 +600,7 @@ These tutorials demonstrate the power of S3Model using persistent storage.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.6.1',
+            VERSION:'1.6.2',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
