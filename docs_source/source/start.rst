@@ -470,9 +470,11 @@ Some references to get you started:
 - `RDF on Data Science Central <http://www.datasciencecentral.com/profiles/blog/list?tag=RDF>`_
 
 Search on YouTube or use your favorite search engine with keywords *Semantic Graph Analytics Machine Learning* 
-for more up to date references. What you **will not** find is a tool similar to Kunteksto for converting your plain old data 
-into semantic graph RDF with data validation based on a validated model. No one else tells you how difficult it is to get good, 
-clean data into your graph. **Garbage in, garbage out**. 
+for more up to date references. 
+
+You can also find many tools for converting your CSV data into RDF. What you **will not** find is a tool similar to Kunteksto for 
+converting your plain old data into semantic graph RDF **with data validation based on a validated model**. 
+No one else tells you how difficult it is to get good, *clean data* into your graph. Remember that **Garbage in == garbage out**. 
 
 
 Why multiple copies of the same data?
