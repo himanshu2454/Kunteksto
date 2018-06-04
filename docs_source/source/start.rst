@@ -271,24 +271,29 @@ Expect SHACL to become more useful soon.
 Data Validation
 ===============
 
-Full validation is performed via XML for both the data model and data instances. Even if you chose to not persist the XML by 
-setting **xml: False** in the kunteksto.conf file. 
-Also, an `XML catalog <https://en.wikipedia.org/wiki/XML_catalog>`_ is dynamically generated for each project and is written to 
-the *kunteksto/catalogs* directory. The environment variable **XML_CATALOG_FILES** is set to be used by the `lxml <http://lxml.de/>`_ validator. 
+Full validation occurs via XML for both the data model and data instances. Setting **xml: False** in the kunteksto.conf file does 
+not prevent this validation; it only prevents persistence of the XML files. 
 
-Notice that the validation file *Demo_validation_log.csv* shows four valid records and one invalid record. 
+In the XML eco-system, a catalog file is required to reference a local copy of a schema used for validation. 
+A catalog file is dynamically generated for each project and is written to the *kunteksto/catalogs* directory. 
+The environment variable **XML_CATALOG_FILES** is set by Kunteksto to be used by the `lxml <http://lxml.de/>`_ validator to 
+find the generated *Data Model* schema. 
+
+Read more about `XML catalogs here <https://en.wikipedia.org/wiki/XML_catalog>`_. 
+
+Notice that the validation file *kunteksto/output/Demo/Demo_validation_log.csv* shows four data records marked as being valid and one data record marked as invalid. 
 The invalid record is due to a 'NaN' entry in a numeric column. 
 
 .. note::
 
     The S3Model eco-system has a much more sophisticated ability to handle missing and erroneous data. 
-    The details are available in the `S3Model documentation <https://datainsights.tech/S3Model/>`_. To use this expanded exceptional value tagging generally requires 
-    the model first approach whereas Kunteksto is an after-the-fact bridge.
+    The details are available in the `S3Model documentation <https://datainsights.tech/S3Model/>`_. To use this expanded exceptional 
+    value tagging generally requires the model first approach whereas Kunteksto is an after-the-fact bridge.
 
 
-However, Kunteksto does perform a limited error detection and notification process based on the information available.  
-Referencing the file name from the *Demo_validation_log* and then using your text editor or an XML editor, 
-open that file from both the XML directory and the RDF directory.
+However, Kunteksto does perform limited error detection and notification process based on the information available.  
+Referencing the data file name from the *kunteksto/output/Demo/Demo_validation_log.csv* file and then using your text editor or an XML editor, 
+open that file from each of the XML directory, the RDF directory and the JSON directory.
 
 .. note::
 
@@ -297,31 +302,38 @@ open that file from both the XML directory and the RDF directory.
     .. code-block:: text
 
         id,status,error
-        Demo-ezLjYMbbGFusJHaH9wGGjW,valid,,
-        Demo-y85Ek6fCVEYWbMp8caFrpg,valid,,
-        Demo-9tuc75QkP96brgysqigesa,valid,,
-        Demo-5bsmn23jLrYndDnqLCVw4A,invalid,Element 'xdquantity-value': 'NaN' is not a valid value of the local atomic type.,
-        Demo-WoPMrVD2QFpExXrGjAG4BW,valid,,
+        Demo-CMbmzjE5xCFjSG4yrVhbL7,valid,,
+        Demo-AuPKLN97aGQZHUA6K6NZvn,valid,,
+        Demo-NfHYtqK5ZKg5NQNK5pwxxj,valid,,
+        Demo-WSmPQb9BNixJGLsCTNCVF2,invalid,Element 'xdquantity-value': 'NaN' is not a valid value of the local atomic type.,
+        Demo-NSeunBttQwjXF36UZDs5AM,valid,,
 
 
-In this case you would open 
-
-.. code-block:: sh
-
-  kunteksto/output/Demo/xml/Demo-5bsmn23jLrYndDnqLCVw4A.xml 
-
-and
+In this case you would open the XML file:
 
 .. code-block:: sh
 
-  kunteksto/output/Demo/rdf/Demo-5bsmn23jLrYndDnqLCVw4A.rdf 
+  kunteksto/output/Demo/xml/Demo-WSmPQb9BNixJGLsCTNCVF2.xml 
+
+and the RDF file:
+
+.. code-block:: sh
+
+  kunteksto/output/Demo/rdf/Demo-WSmPQb9BNixJGLsCTNCVF2.rdf 
 
 
-Around line 45 in the XML file you will see the invalid entry.
+and the JSON file:
+
+.. code-block:: sh
+
+  kunteksto/output/Demo/json/Demo-WSmPQb9BNixJGLsCTNCVF2.json
+
+
+Around line 45 in the XML file you will see the invalid entry:
 
 .. code-block:: xml
 
-      <s3m:ms-cjhxjgjxf00061ll3xgekbx7g>
+      <s3m:ms-cji07wngr0006i7l3ey0pdbx7>
         <label>The Column 3</label>
         <!--ERROR MSG: Element 'xdquantity-value': 'NaN' is not a valid value of the local atomic type.-->
         <s3m:INV>
@@ -336,25 +348,28 @@ Around line 45 in the XML file you will see the invalid entry.
           <xdstring-value/>
           <xdstring-language>en-US</xdstring-language>
         </xdquantity-units>
-      </s3m:ms-cjhxjgjxf00061ll3xgekbx7g>
+      </s3m:ms-cji07wngr0006i7l3ey0pdbx7>
 
 
-Notice that Kunteksto has inserted a human readable comment with the error message from the schema validator. Kunteksto has also inserted the 
-machine processable `ExceptionalValue child named **Invalid** <https://datainsights.tech/S3Model/rm/s3model_3_1_0_xsd_Complex_Type_s3m_INVType.html#INVType>`_ 
-from the `S3Model Reference Model <https://datainsights.tech/S3Model/rm/index.html>`_. *Use right-click and open in a new tab for those two links.*
+Notice that Kunteksto has inserted a human readable comment with the error message from the schema validator. 
 
-This invalid status is also represented in the RDF as shown here.
+Kunteksto has also inserted the machine processable `ExceptionalValue child named **Invalid** <https://datainsights.tech/S3Model/rm/s3model_3_1_0_xsd_Complex_Type_s3m_INVType.html#INVType>`_ 
+from the `S3Model Reference Model <https://datainsights.tech/S3Model/rm/index.html>`_. 
+
+*To review the details of the s3m:INV element, use right-click and open those two links in a new tab.*
+
+This invalid status is also represented in the RDF as shown here:
 
 .. code-block:: xml
 
 
-    <rdfs:Class rdf:about="Demo-5bsmn23jLrYndDnqLCVw4A/s3m:dm-cjhxjgjzv000e1ll3knmw6y54/s3m:ms-cjhxjgjzv000g1ll3uqhwvefu/s3m:ms-cjhxjgjxf00071ll3o67ko2hb/s3m:ms-cjhxjgjxf00061ll3xgekbx7g/xdquantity-value">
-      <rdfs:comment>"Element 'xdquantity-value': 'NaN' is not a valid value of the local atomic type."</rdfs:comment>
-    </rdfs:Class>
+  <rdfs:Class rdf:about="Demo-WSmPQb9BNixJGLsCTNCVF2/s3m:dm-cji07wnil000ei7l3xpbvzsul/s3m:ms-cji07wnil000gi7l3b3qxbi6g/s3m:ms-cji07wngr0007i7l3b2icvkm0/s3m:ms-cji07wngr0006i7l3ey0pdbx7/xdquantity-value">
+    <rdfs:comment>"Element 'xdquantity-value': 'NaN' is not a valid value of the local atomic type."</rdfs:comment>
+  </rdfs:Class>
 
-    <rdfs:Class rdf:about="Demo-5bsmn23jLrYndDnqLCVw4A">
-      <rdf:type rdf:resource="https://www.s3model.com/ns/s3m/s3model/DataInstanceInvalid"/>
-    </rdfs:Class>
+  <rdfs:Class rdf:about="Demo-WSmPQb9BNixJGLsCTNCVF2">
+    <rdf:type rdf:resource="https://www.s3model.com/ns/s3m/s3model/DataInstanceInvalid"/>
+  </rdfs:Class>
 
 
 Shown above are two *Subject, Predicate, Object* RDF triples in the canonical RDF/XML syntax.
@@ -363,6 +378,31 @@ Shown above are two *Subject, Predicate, Object* RDF triples in the canonical RD
   - In the second triple, the file is declared as an invalid data instance in accordance with the 
     `S3Model ontology <http://datainsights.tech/S3Model/owl/>`_ *Opening the link in a new tab is suggested*. 
 
+It is important to note that the semantics from the data model schema are extracted into a RDF/XML file also located in the 
+*kunteksto/output/Demo* directory. In the :ref:`advtutor` you will see how these semantics interact with the Reference Model 
+semantics and the S3Model ontology in a semantic graph database.
+
+This invalid status is also represented in the JSON file as shown here:
+
+.. code-block:: text
+
+    "s3m:ms-cji07wngr0006i7l3ey0pdbx7": {
+        "label": "The Column 3",
+        "s3m:INV": {
+            "ev-name": "Invalid"
+        },
+        "magnitude-status": "equal",
+        "error": "0",
+        "accuracy": "0",
+        "xdquantity-value": "NaN",
+        "xdquantity-units": {
+            "label": "The Column 3 Units",
+            "xdstring-value": null,
+            "xdstring-language": "en-US"
+        }
+
+
+The downstream processing tools can then use this invalid status as needed; depending on the data analysis/usage situation.
 
 Additional Steps
 ----------------
