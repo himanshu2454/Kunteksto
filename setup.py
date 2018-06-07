@@ -51,6 +51,7 @@ Kunteksto can automatically persist your results data on the file system or in a
         'agraph-python',
         'basexclient',
         'click',
+        'requests',
         'lxml',
         'shortuuid',
         'sphinx',
