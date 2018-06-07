@@ -23,7 +23,6 @@ Contents:
    future
    develop
    license
-   
 
 Indices and tables
 ==================
