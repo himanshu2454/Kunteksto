@@ -14,6 +14,8 @@ import configparser
 from urllib.parse import quote
 from xml.sax.saxutils import escape
 
+import requests
+from requests.auth import HTTPDigestAuth
 from cuid import cuid
 from collections import OrderedDict
 import json
@@ -1217,9 +1219,19 @@ def make_data(schema, db_file, infile, delim, outdir, connRDF, connXML, connJSON
     """
     Create XML and JSON data files and an RDF graph based on the model.
     """
+    
+    # if MarkLogic is active then setup some variables instead of repeating them for each type
+    if config['MARKLOGIC']['status'] == 'ACTIVE':                        
+        dbname = config['MARKLOGIC']['dbname']
+        hostip = config['MARKLOGIC']['hostip']
+        port = config['MARKLOGIC']['port']
+        user = config['MARKLOGIC']['user']
+        pw = config['MARKLOGIC']['password']
+    
     base = os.path.basename(infile)
     filePrefix = os.path.splitext(base)[0]
     schemaFile = os.path.basename(schema)
+    prj = base.split('.')[0]
     
     try:
         schema_doc = etree.parse(schema)
@@ -1267,7 +1279,7 @@ def make_data(schema, db_file, infile, delim, outdir, connRDF, connXML, connJSON
         vlog.write('id,status,error\n')
         vlog.close()
         # for data in reader:
-        with click.progressbar(reader, label="Writing " + str(csv_len) + " data files: ", length=csv_len) as bar:
+        with click.progressbar(reader, label="Creating a total of " + str(csv_len) + " data files: ", length=csv_len) as bar:
             for data in bar:
                 vlog = open(outdir + os.path.sep + filePrefix + '_validation_log.csv', 'a')  # each new file, open the validation log in append mode
                 vlogStr = ""
@@ -1306,7 +1318,7 @@ def make_data(schema, db_file, infile, delim, outdir, connRDF, connXML, connJSON
                 xmlStr += '</s3m:dm-' + model[5].strip() + '>\n'
     
                 # validate the XML data file and enter the appropriate RDF statement as well as an entry in the validation log.
-                print("Validating: " + file_id)
+                print("\nValidating: " + file_id)
                 try:
                     tree = etree.parse(StringIO(xmlStr))  # turn the string into a tree
                     modelSchema.assertValid(tree)  # now validate the tree against the schema 
@@ -1345,33 +1357,49 @@ def make_data(schema, db_file, infile, delim, outdir, connRDF, connXML, connJSON
                 # add the prolog back to the top
                 xmlStr = xmlProlog + xmlStr
 
+                # Persistence Choices
+                print("\nPersisting: " + file_id)
+                
                 if config['KUNTEKSTO']['xml'].lower() == 'true':
-                    if connXML:
+                    if connXML: # BasexDB
                         try:
                             connXML.add(file_id + '.xml', xmlStr)
                         except Exception as e:
                             vlog = open(outdir + os.path.sep + filePrefix + '_validation_log.csv', 'a')                   
                             vlog.write(file_id + ',BaseXDB Error,' + str(e.args) + '\n')
                             vlog.close()
-                    else:
+                    
+                    elif config['MARKLOGIC']['status'] == 'ACTIVE' and config['MARKLOGIC']['loadxml'].lower() == 'true': 
+                        headers = {"Content-Type": "application/xml", 'user-agent': 'Kunteksto'}
+                        url = 'http://' + hostip + ':' + port + '/v1/documents?uri=/' + prj + '/xml/' + file_id 
+                        r = requests.put(url, auth=HTTPDigestAuth(user, pw), headers=headers, data=xmlStr)                                
+                        
+                    else:  # defaults to writing to the filesystem
                         xmlFile = open(xmldir + file_id + '.xml', 'w')
                         xmlFile.write(xmlStr)
                         xmlFile.close()
     
                 if config['KUNTEKSTO']['rdf'].lower() == 'true':    
-                    if connRDF:
+                    if connRDF: # AllegroGraphDB
                         try:
                             connRDF.addData(rdfStr, rdf_format=RDFFormat.RDFXML, base_uri=None, context=None)
                         except Exception as e:
                             vlog = open(outdir + os.path.sep + filePrefix + '_validation_log.csv', 'a')                   
                             vlog.write(file_id + ',AllegroDB Error,' + str(e.args) + '\n')
-                            vlog.close()                    
+                            vlog.close() 
+                            
+                    elif config['MARKLOGIC']['status'] == 'ACTIVE' and config['MARKLOGIC']['loadrdf'].lower() == 'true':
+                        headers = {"Content-Type": "application/xml", 'user-agent': 'Kunteksto'}
+                        url = 'http://' + hostip + ':' + port + '/v1/documents?uri=/' + prj + '/rdf/' + file_id 
+                        r = requests.put(url, auth=HTTPDigestAuth(user, pw), headers=headers, data=rdfStr)                                
+                            
                     else:
                         rdfFile = open(rdfdir + file_id + '.rdf', 'w')
                         rdfFile.write(rdfStr)
                         rdfFile.close()
 
                 if config['KUNTEKSTO']['json'].lower() == 'true':
+                    
                     try:
                         d = xmltodict.parse(xmlStr, xml_attribs=True, process_namespaces=True, namespaces=namespaces)
                         jsonStr = json.dumps(d, indent=4)
@@ -1380,14 +1408,21 @@ def make_data(schema, db_file, infile, delim, outdir, connRDF, connXML, connJSON
                         vlog.write(file_id + ',JSON Parse Error,' + str(e.args) + '\n')
                         vlog.close()                                            
     
-                    if connJSON:
-                        try:
-                            from bson.json_util import loads
-                            connJSON[filePrefix].insert_one(loads(jsonStr))
-                        except Exception as e:
-                            vlog = open(outdir + os.path.sep + filePrefix + '_validation_log.csv', 'a')                   
-                            vlog.write(file_id + ',MongoDB Error,' + str(e.args) + '\n')
-                            vlog.close()                                            
+                    if connJSON: # MongoDB
+                        print(jsonStr)
+                        #try:
+                            #from bson.json_util import loads
+                            #connJSON[filePrefix].insert_one(loads(jsonStr))
+                        #except Exception as e:
+                            #vlog = open(outdir + os.path.sep + filePrefix + '_validation_log.csv', 'a')                   
+                            #vlog.write(file_id + ',MongoDB Error,' + str(e.args) + '\n')
+                            #vlog.close()      
+                            
+                    elif config['MARKLOGIC']['status'] == 'ACTIVE' and config['MARKLOGIC']['loadjson'].lower() == 'true':
+                        headers = {"Content-Type": "application/json", 'user-agent': 'Kunteksto'}
+                        url = 'http://' + hostip + ':' + port + '/v1/documents?uri=/' + prj + '/json/' + file_id 
+                        r = requests.put(url, auth=HTTPDigestAuth(user, pw), headers=headers, data=jsonStr)                                
+                            
                     else:
                         jsonFile = open(jsondir + file_id + '.json', 'w')
                         jsonFile.write(jsonStr)

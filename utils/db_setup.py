@@ -2,6 +2,8 @@
 import os
 import sys
 import configparser
+import requests
+from requests.auth import HTTPDigestAuth
 
 try:
     from BaseXClient import BaseXClient
@@ -70,3 +72,86 @@ if config['BASEX']['status'].upper() == "ACTIVE":
             print('BaseX connections are okay.\n\n')
 else:
     print("BaseX option is not active in kunteksto.conf.\n\n")
+
+
+if not config['MARKLOGIC']['status'].upper() == "ACTIVE":
+    print("\nThe MarkLogic option is INACTIVE. Nothing to do.\n\n")
+    sys.exit(0)
+
+xmloption = True if config['MARKLOGIC']['loadxml'].upper() == "TRUE" else False
+rdfoption = True if config['MARKLOGIC']['loadrdf'].upper() == "TRUE" else False
+jsonoption = True if config['MARKLOGIC']['loadjson'].upper() == "TRUE" else False
+
+if not xmloption and not rdfoption and not jsonoption:
+    print("\nNone of the MarkLogic options are active. Nothing to do.\n\n")
+    sys.exit(0)
+
+print("\nPreparing to setup MarkLogic 9.\n")
+
+dbname = config['MARKLOGIC']['dbname']
+hostip = config['MARKLOGIC']['hostip']
+port = config['MARKLOGIC']['port']
+user = config['MARKLOGIC']['user']
+pw = config['MARKLOGIC']['password']
+
+# Attempt to create the DB
+headers = {"Content-Type": "application/json", 'user-agent': 'Kunteksto'}
+payload = {"database-name":dbname}
+
+r = requests.post('http://' + hostip + ':8002/manage/v2/databases', auth=HTTPDigestAuth(user, pw), headers=headers, json=payload)
+
+if r.status_code != 201:
+    print("\nCannot create the database " + dbname + " on http://" + hostip + ":8002/manage/v2/databases" )
+    print("\nCheck your settings and your ML9 system. Process aborted!")
+    sys.exit(-1)
+else:
+    print("Created Database " + dbname)
+    
+# Attempt to create the Forests
+numforests = int(config['MARKLOGIC']['forests'])
+hostname = config['MARKLOGIC']['hostname']
+for fid in range(0, numforests):
+    payload = {"forest-name": dbname + '-' + str(fid), "host": hostname, "database": dbname}
+    r = requests.post('http://' + hostip + ':8002/manage/v2/forests', auth=HTTPDigestAuth(user, pw), headers=headers, json=payload)    
+    if r.status_code != 201:
+        print(r.status_code)
+        print("Cannot create the forest " + dbname + '-' + str(fid) + " for database " + dbname + " on host " + hostname)
+        print("\nCheck your settings and your ML9 system. Process aborted!")
+        sys.exit(-1)
+    else:
+        print("Created Forest " + dbname + '-' + str(fid))
+
+# Set up REST API 
+payload = {
+  "rest-api": {
+    "name": "kunteksto-app-server-" + port,
+    "database": dbname,
+    "modules-database": "kunteksto-modules",
+    "port": port,
+    "xdbc-enabled": "true",
+    "forests-per-host": numforests,
+    "error-format": "json"
+  }
+}
+
+r = requests.post('http://' + hostip + ':8002/LATEST/rest-apis', auth=HTTPDigestAuth(user, pw), headers=headers, json=payload)    
+if r.status_code != 201:
+    print("\nCannot create the REST API for " + dbname + " on http://" + hostip + ":" + port )
+    print("\nCheck your settings and your ML9 system or maybe it already exists.")
+else:
+    print("Created REST API for " + dbname + " at http://" + hostip + ":" + port)
+
+# Write the RM RDF and ontology to ML9
+with open(os.path.join('s3model','s3model.owl'), 'r') as owlfile:
+    owlStr=owlfile.read()    
+    headers = {"Content-Type": "application/xml", 'user-agent': 'Kunteksto'}
+    url = 'http://' + hostip + ':' + port + '/v1/documents?uri=/s3model/s3model.owl'
+    r = requests.put(url, auth=HTTPDigestAuth(user, pw), headers=headers, data=owlStr)                                
+    
+with open(os.path.join('s3model','s3model_3_1_0.rdf'), 'r') as rdffile:
+    rdfStr=rdffile.read()    
+    headers = {"Content-Type": "application/xml", 'user-agent': 'Kunteksto'}
+    url = 'http://' + hostip + ':' + port + '/v1/documents?uri=/s3model/s3model_3_1_0.rdf'
+    r = requests.put(url, auth=HTTPDigestAuth(user, pw), headers=headers, data=rdfStr)                                
+
+print("\nDatabase Setup is finished.\n\n")
