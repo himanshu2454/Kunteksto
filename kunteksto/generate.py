@@ -1215,7 +1215,7 @@ def injectEV(xmlStr, code, msg, path):
     return(xmlStr)
 
 
-def make_data(schema, db_file, infile, delim, outdir, connRDF, connXML, connJSON, config):
+def make_data(schema, db_file, infile, delim, outdir, connRDF, connXML, config):
     """
     Create XML and JSON data files and an RDF graph based on the model.
     """
@@ -1407,18 +1407,8 @@ def make_data(schema, db_file, infile, delim, outdir, connRDF, connXML, connJSON
                         vlog = open(outdir + os.path.sep + filePrefix + '_validation_log.csv', 'a')                   
                         vlog.write(file_id + ',JSON Parse Error,' + str(e.args) + '\n')
                         vlog.close()                                            
-    
-                    if connJSON: # MongoDB
-                        print(jsonStr)
-                        #try:
-                            #from bson.json_util import loads
-                            #connJSON[filePrefix].insert_one(loads(jsonStr))
-                        #except Exception as e:
-                            #vlog = open(outdir + os.path.sep + filePrefix + '_validation_log.csv', 'a')                   
-                            #vlog.write(file_id + ',MongoDB Error,' + str(e.args) + '\n')
-                            #vlog.close()      
-                            
-                    elif config['MARKLOGIC']['status'] == 'ACTIVE' and config['MARKLOGIC']['loadjson'].lower() == 'true':
+                                
+                    if config['MARKLOGIC']['status'] == 'ACTIVE' and config['MARKLOGIC']['loadjson'].lower() == 'true':
                         headers = {"Content-Type": "application/json", 'user-agent': 'Kunteksto'}
                         url = 'http://' + hostip + ':' + port + '/v1/documents?uri=/' + prj + '/json/' + file_id 
                         r = requests.put(url, auth=HTTPDigestAuth(user, pw), headers=headers, data=jsonStr)                                

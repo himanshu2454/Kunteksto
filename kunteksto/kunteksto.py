@@ -136,23 +136,9 @@ def datagen(modelName, outDB, infile, delim, outdir, config):
         else:
             connXML = None
 
-    # open a connection to the JSON DB if one is defined and JSON is to be generated.      
-    if config['KUNTEKSTO']['json']:
-        if config['MONGODB']['status'].upper() == "ACTIVE":
-            try:
-                from pymongo import MongoClient
-                # default MongoDB has no authentication requirements.
-                client = MongoClient(config['MONGODB']['host'], int(config['MONGODB']['port']))
-                connJSON = client[config['MONGODB']['dbname']]
-            except:
-                connJSON = None
-                print('JSON Connection Error', 'Could not create connection to MongoDB.')
-        else:
-            connJSON = None
-
     # generate the data
     if modelName:
-        make_data(modelName, outDB, infile,  delim, outdir, connRDF, connXML, connJSON, config)
+        make_data(modelName, outDB, infile,  delim, outdir, connRDF, connXML, config)
 
         if connRDF:
             connRDF.close()

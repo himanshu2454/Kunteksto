@@ -27,10 +27,8 @@ Kunteksto can automatically persist your results data on the file system or in a
     
     - AllgeroGraphDB
     - BaseXDB
-    - eXistDB (coming in 1.7.0)
-    - MongoDB (coming in 1.7.0)
-    - MarkLogic (coming in 1.7.0)
-    - others? put in a request via the Github Project Issues tab
+    - MarkLogic
+    - Other databases for XML, RDF and JSON can be used by uploading from the filesystem, using their management UI. 
 
     """,
     author = 'Timothy W. Cook',
