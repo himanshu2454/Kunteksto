@@ -7,6 +7,8 @@ from subprocess import run
 import click
 import configparser
 import sqlite3
+import requests
+from requests.auth import HTTPDigestAuth
 
 from .analyze  import analyze
 from .generate  import make_model, make_data
@@ -102,6 +104,12 @@ def datagen(modelName, outDB, infile, delim, outdir, config):
     """
     # open a connection to the RDF store if one is defined and RDF is to be generated.  
     if config['KUNTEKSTO']['rdf']:
+        # load the model RDF
+        modelRDF = modelName.split('.')[0]+'.rdf'
+        with open(os.path.join(outdir,modelRDF), 'r') as rdffile:
+            rdfStr=rdffile.read()         
+            print(rdfStr)
+        
         if config['ALLEGROGRAPH']['status'].upper() == "ACTIVE":
             # Set environment variables for AllegroGraph
             os.environ['AGRAPH_HOST'] = config['ALLEGROGRAPH']['host']
@@ -111,6 +119,7 @@ def datagen(modelName, outDB, infile, delim, outdir, config):
             try:
                 from franz.openrdf.connect import ag_connect
                 connRDF = ag_connect(config['ALLEGROGRAPH']['repo'], host=os.environ.get('AGRAPH_HOST'), port=os.environ.get('AGRAPH_PORT'),  user=os.environ.get('AGRAPH_USER'), password=os.environ.get('AGRAPH_PASSWORD'))
+                connRDF.addData(rdfStr, rdf_format=RDFFormat.RDFXML, base_uri=None, context=None)
                 print('Current Kunteksto RDF Repository Size: ', connRDF.size(), '\n')
                 print('AllegroGraph connections are okay.\n\n')
             except: 
@@ -119,7 +128,16 @@ def datagen(modelName, outDB, infile, delim, outdir, config):
                 print('RDF Connection Error', 'Could not create connection to AllegroGraph.')
         else:
             connRDF = None
-
+        if config['MARKLOGIC']['status'] == 'ACTIVE' and config['MARKLOGIC']['loadrdf'].lower() == 'true':
+            dbname = config['MARKLOGIC']['dbname']
+            hostip = config['MARKLOGIC']['hostip']
+            port = config['MARKLOGIC']['port']
+            user = config['MARKLOGIC']['user']
+            pw = config['MARKLOGIC']['password']            
+            headers = {"Content-Type": "application/xml", 'user-agent': 'Kunteksto'}
+            url = 'http://' + hostip + ':' + port + '/v1/documents?uri=/'+ modelRDF
+            r = requests.put(url, auth=HTTPDigestAuth(user, pw), headers=headers, data=rdfStr)                                
+            
     # open a connection to the XML DB if one is defined and XML is to be generated.
     if config['KUNTEKSTO']['xml']:
         if config['BASEX']['status'].upper() == "ACTIVE":
@@ -136,23 +154,9 @@ def datagen(modelName, outDB, infile, delim, outdir, config):
         else:
             connXML = None
 
-    # open a connection to the JSON DB if one is defined and JSON is to be generated.      
-    if config['KUNTEKSTO']['json']:
-        if config['MONGODB']['status'].upper() == "ACTIVE":
-            try:
-                from pymongo import MongoClient
-                # default MongoDB has no authentication requirements.
-                client = MongoClient(config['MONGODB']['host'], int(config['MONGODB']['port']))
-                connJSON = client[config['MONGODB']['dbname']]
-            except:
-                connJSON = None
-                print('JSON Connection Error', 'Could not create connection to MongoDB.')
-        else:
-            connJSON = None
-
     # generate the data
     if modelName:
-        make_data(modelName, outDB, infile,  delim, outdir, connRDF, connXML, connJSON, config)
+        make_data(modelName, outDB, infile,  delim, outdir, connRDF, connXML, config)
 
         if connRDF:
             connRDF.close()
