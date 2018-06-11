@@ -64,7 +64,7 @@
             
             
               <div class="version">
-                1.6.3
+                1.7.0
               </div>
             
           
@@ -94,11 +94,13 @@
 <li class="toctree-l1"><a class="reference internal" href="configure.html">Configuration</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Advanced Tutorials</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#prerequisites">Prerequisites</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#marklogic-9">MarkLogic 9</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#id1">BaseX</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#id2">AllegroGraph</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#configuration">Configuration</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#database-checks">Database Checks</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#viewing-the-rdf-repository">Viewing the RDF Repository</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#viewing-the-allegrograph-rdf-repository">Viewing the AllegroGraph RDF Repository</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#using-your-data-in-marklogic">Using Your Data in MarkLogic</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#us-honey-production">US Honey Production</a></li>
@@ -175,12 +177,23 @@
   <div class="section" id="advanced-tutorials">
 <span id="advtutor"></span><h1>Advanced Tutorials<a class="headerlink" href="#advanced-tutorials" title="Permalink to this headline">¶</a></h1>
 <p>Below are additional tutorials to perform after the <strong>Getting Started</strong> <a class="reference internal" href="start.html#tutor"><span class="std std-ref">Tutorial/Demo</span></a>.</p>
-<p>These tutorials require the installation of the <a class="reference external" href="https://franz.com/agraph/downloads/?ui=new">AllegroGraph</a> database and the <a class="reference external" href="http://basex.org">BaseX</a> database.</p>
-<p>If you are not familiar with semantic graph datases please see the <a class="reference external" href="https://allegrograph.com/support/documentation/current/agraph-introduction.html">AllegroGraph Documentation</a></p>
+<p>It is suggested that you install one or more of the following databases for these tutorials.</p>
+<p><a class="reference external" href="https://franz.com/agraph/downloads/?ui=new">AllegroGraph</a> database for creating your semantic graph.</p>
+<p><a class="reference external" href="http://basex.org">BaseX</a> database for storing your XML documents.</p>
+<p><cite>MarkLogic 9 &lt;&gt;</cite> database can store all three types of content; XML, RDF and JSON and has many additional features.</p>
+<p>If you are not familiar with semantic graph databases please see the following links:</p>
 <blockquote>
-<div>Optionally, you may install <a class="reference external" href="https://www.mongodb.com/">MongoDB</a> to persist the generated JSON files.</div></blockquote>
+<div><ul class="simple">
+<li><a class="reference external" href="https://allegrograph.com/support/documentation/current/agraph-introduction.html">AllegroGraph Documentation</a></li>
+<li><a class="reference external" href="https://docs.marklogic.com/guide/getting-started/semantics">MarkLogic Getting Started w/Semantics</a></li>
+</ul>
+</div></blockquote>
 <div class="section" id="prerequisites">
 <h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="marklogic-9">
+<h3>MarkLogic 9<a class="headerlink" href="#marklogic-9" title="Permalink to this headline">¶</a></h3>
+<p>See the <a class="reference external" href="https://docs.marklogic.com/guide/installation/intro">Installation instructions</a> for details.</p>
+</div>
 <div class="section" id="id1">
 <h3>BaseX<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 <p>BaseX requires Java 8 for your platform.</p>
@@ -232,7 +245,28 @@ user: admin
 password: admin
 </pre></div>
 </div>
-<p>Unless you are using MongoDB for JSON persistence you will likely want to turn off JSON generation.</p>
+<p>For MarkLogic:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[MARKLOGIC]
+status: ACTIVE
+loadxml: True
+loadrdf: True
+loadjson: True
+hostip: 192.168.25.120
+hostname: localhost.localdomain
+port: 8020
+dbname: Kunteksto
+forests: 2
+user: admin
+password: admin
+</pre></div>
+</div>
+<p>Most users will run MarkLogic on another networked machine or using VirtualBox with a CentOS installation. Use the IP Address
+of that machine or VirtualBox for the <em>hostip</em> value.</p>
+<p>The <em>port</em> is the location that Kunteksto will use to create your REST API for the DB.</p>
+<p>For the tutorials just leave the number of forests at 2.</p>
+<p>The host name can be found by going to <a class="reference external" href="http:/">http:/</a>/&lt;hostip&gt;:8001/default.xqy then look in the box in the lower-right labeled <strong>Hosts</strong>.
+You probably only have one and it is labeled <em>Default</em> use this value.</p>
+<p>Unless you are using MarkLogic for JSON persistence you will likely want to turn off JSON generation.</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>; Default data formats to create. Values are True or False.
 ; These can be changed in the UI before generating data.
 xml: True
@@ -247,20 +281,36 @@ json: False
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>python utils/db_setup.py
 </pre></div>
 </div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
 <p>This python script tests the database connections and installs the S3Model ontology and 3.1.0 Reference Model RDF.</p>
-<p>During execution, the script displays several lines of output to the terminal. Specifically look for <em>AllegroGraph connections are okay.</em> and <em>BaseX connections are okay.</em> or any lines that start with <strong>ERROR:</strong>.</p>
+<p class="last"><strong>It clears any previously stored data in the databases and reinstalls the required files.</strong></p>
+</div>
+<p>During execution, the script displays several lines of output to the terminal.
+If you are using AllegroGraph and BaseX then look for <em>AllegroGraph connections are okay.</em> and <em>BaseX connections are okay.</em> or any lines that start with <strong>ERROR:</strong>.</p>
+<p>The MarkLogic checks will display several lines of information as well. As long as the script ends with the message
+<em>Database Setup is finished.</em>  then everything went ok.</p>
 <div class="admonition caution">
 <p class="first admonition-title">Caution</p>
-<p class="last">If you see the <em>okay</em> output lines and no <strong>ERROR:</strong> lines, then all went well. Otherwise, you must troubleshoot these issues before continuing.</p>
+<p class="last">If you see the <em>okay</em> output lines and no <strong>ERROR:</strong> lines, then all went well.
+Otherwise, you must troubleshoot these issues before continuing.</p>
 </div>
 </div>
-<div class="section" id="viewing-the-rdf-repository">
-<h3>Viewing the RDF Repository<a class="headerlink" href="#viewing-the-rdf-repository" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="viewing-the-allegrograph-rdf-repository">
+<h3>Viewing the AllegroGraph RDF Repository<a class="headerlink" href="#viewing-the-allegrograph-rdf-repository" title="Permalink to this headline">¶</a></h3>
 <p>You can view the Kunteksto repository by using <a class="reference external" href="http://127.0.0.1:10035/#/repositories/Kunteksto">this link</a> in a browser.
 Right click and open it in a new tab. Then under <strong>Explore the Repository</strong> click the <em>View Triples</em> link.
 These triples are the S3Model ontology and the S3Model 3.1.0 RDF. These triples connect all of your RDF into a graph,
 even when they do not have other semantics linking them.</p>
 <p>You may also use the Gruff GUI Client to explore the respoitory at any time. See the <a class="reference external" href="https://franz.com/agraph/gruff/learning-center.lhtml">Franz, Inc. Learning Center</a> for more information.</p>
+</div>
+<div class="section" id="using-your-data-in-marklogic">
+<h3>Using Your Data in MarkLogic<a class="headerlink" href="#using-your-data-in-marklogic" title="Permalink to this headline">¶</a></h3>
+<p>The <a class="reference external" href="https://developer.marklogic.com/">MarkLogic Developer Network</a> is extensive. They provide an enormous amount of
+high quality training as well a number of open source tools to assit with data exploration and application design.</p>
+<p>Now you have high quality data in a knowledge graph. <a class="reference external" href="https://www.youtube.com/watch?v=ndmHYcQU2d4">BI Tools and MarkLogic NoSQL</a>
+demonstrates in less than 7 minutes how to use external tools to use your data.</p>
+<p><strong>The Tutorials begin here.</strong></p>
 </div>
 </div>
 <div class="section" id="us-honey-production">
@@ -397,7 +447,7 @@ For example, changing the <em>The weight kg</em> column from String to Decimal w
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, Data Insights, Inc..
-      Last updated on 2018-06-07 10:39.
+      Last updated on 2018-06-08 15:58.
 
     </p>
   </div> 
@@ -418,7 +468,7 @@ For example, changing the <em>The weight kg</em> column from String to Decimal w
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.6.3',
+            VERSION:'1.7.0',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

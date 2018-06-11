@@ -1318,7 +1318,6 @@ def make_data(schema, db_file, infile, delim, outdir, connRDF, connXML, config):
                 xmlStr += '</s3m:dm-' + model[5].strip() + '>\n'
     
                 # validate the XML data file and enter the appropriate RDF statement as well as an entry in the validation log.
-                print("\nValidating: " + file_id)
                 try:
                     tree = etree.parse(StringIO(xmlStr))  # turn the string into a tree
                     modelSchema.assertValid(tree)  # now validate the tree against the schema 
@@ -1357,9 +1356,7 @@ def make_data(schema, db_file, infile, delim, outdir, connRDF, connXML, config):
                 # add the prolog back to the top
                 xmlStr = xmlProlog + xmlStr
 
-                # Persistence Choices
-                print("\nPersisting: " + file_id)
-                
+                # Persistence Choices               
                 if config['KUNTEKSTO']['xml'].lower() == 'true':
                     if connXML: # BasexDB
                         try:
