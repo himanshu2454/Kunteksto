@@ -1,0 +1,23 @@
+Distribute_via_PyPI.txt
+Instructions valid as of: 2017-08-03
+
+Create a proper setup.py file in the root directory. 
+
+Source files should go into a package under the root.
+
+Additional files and directories can go directly beneath the root. Especially if they are going to be needed during execution. 
+
+Even though the source is under the site-packages directory, the root is considered the curdir at runtime. 
+
+PyPi doesn't require any registration/testing, you deploy straight to public distribution. 
+
+The best workflow I found so far is to build locally and then install using the pip install -e . command.  This will install the latest wheel build from the dist directory. 
+
+1. edit code and docs as required.
+2. commit and tag with current version.
+3. wheel build: python setup.py bdist_wheel
+4. source build: python setup.py sdist --formats=gztar
+5. clean out any old files from the dist folder
+6. then, to install locally and do development/testing: pip install -e .
+7. upload to pypi: twine upload dist/*                                                                                                
+8. Follow the online install instructions and prove you can install the package with pip as a regular user. 
