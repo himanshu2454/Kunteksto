@@ -42,6 +42,7 @@ class EntryWindow(tk.Frame):
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(0, weight=1)
 
+        print(self.database)
         with sqlite3.connect(self.database) as conn:
             c = conn.cursor()
             c.execute('SELECT min(rowid) FROM model')
