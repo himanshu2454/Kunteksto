@@ -17,7 +17,7 @@ from .modeledit import edit_model
 from .recordedit import edit_record
 
 @click.command()
-@click.option('--mode', '-m', type=click.Choice(['all', 'editdb', 'generate']), help="See the documentation. If you don't know then use: all", prompt="Enter a valid mode")
+@click.option('--mode', '-m', type=click.Choice(['all', 'editdb', 'gendata', 'genmodel']), help="See the documentation. If you don't know then use: all", prompt="Enter a valid mode")
 @click.option('--infile', '-i', help='Full path and filename of the input CSV file.', prompt="Enter a valid CSV file")
 @click.option('--dbfile', '-db', help='Full path and filename of the existing model database file.', prompt=False)
 @click.option('--outdir', '-o', help='Full path to the output directory for writing the database and other files. Overrides the config file default value.')
@@ -71,7 +71,25 @@ def main(mode, infile, outdir, delim, analyzelevel, dbfile):
             
         
             
-    elif mode == 'generate':
+    elif mode == 'genmodel':
+        if not dbfile:
+            click.echo("You must supply a full path and name of an existing model database.")
+            exit(code=1)
+            
+        dname, fname = os.path.split(dbfile)
+        prjname = fname[:fname.index('.')]
+        dbName =  prjname + '.db'
+        get_catalog(outdir, prjname)        
+        conn = sqlite3.connect(dbfile)
+        c = conn.cursor()
+        c.execute("SELECT * FROM model")
+        row = c.fetchone()
+        dmID = row[5].strip()
+        outdir = outdir + os.path.sep + prjname        
+        modelName = outdir + '/dm-' + dmID + '.xsd'
+        make_model(dbfile, outdir)
+
+    elif mode == 'gendata':
         if not dbfile:
             click.echo("You must supply a full path and name of an existing model database.")
             exit(code=1)
