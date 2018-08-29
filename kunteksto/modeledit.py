@@ -23,7 +23,6 @@ def edit_model(outDB):
 
 
 class EntryWindow(tk.Frame):
-
     """
     Provides a simple data edit window for the model table in given database.
     """

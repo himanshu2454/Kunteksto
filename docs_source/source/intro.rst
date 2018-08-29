@@ -74,11 +74,13 @@ Anaconda is the **preferred environment** for a tool like Kunteksto because it i
 
     source activate <path/to/directory> 
 
-- Windows users will need to manually install the pycurl library using this command
+- Windows users **may** need to manually install the pycurl library using this command:
 
 .. code-block:: sh
 
     conda install pycurl
+
+trying will not damage anything but it may fail or just report that pycurl is the current version.
 
 - install Kunteksto
 

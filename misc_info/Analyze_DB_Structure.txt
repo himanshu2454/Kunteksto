@@ -1,0 +1,33 @@
+analyze.py -- DB Structure and index numbers for the lists in the code.
+
+
+model table: 
+0 - title = CHAR(250)
+1 - description = TEXT
+2 - copyright = CHAR(250)
+3 - author = CHAR(250)
+4 - definition_url = CHAR(500)
+5 - dmid = CHAR(40)
+6 - entryid = CHAR(40)
+7 - dataid = CHAR(40)
+
+record table:
+ 0 - header = char(100)
+ 1 - label = char(250)
+ 2 - datatype = char(10)
+ 3 - min_len = char(100) - test for int
+ 4 - max_len = char(100) - test for int
+ 5 - choices = TEXT
+ 6 - regex = CHAR(250)
+ 7 - min_inc_val = char(100) - test for float
+ 8 - max_inc_val = char(100) - test for float
+ 9 - description = TEXT
+10 - definition_url = CHAR(500)
+11 - pred_obj_list = TEXT
+12 - def_txt_value = TEXT
+13 - def_num_value = char(100) - test for float
+14 - units = CHAR(50)
+15 - mcid = CHAR(40)
+16 - adid = CHAR(40)
+17 - min_exc_val = char(100) - test for float
+18 - max_exc_val = char(100) - test for float

@@ -134,4 +134,8 @@ There is currently one repository supported for each filetype. We plan to suppor
 
 
     [SYSTEM]
-    version: 1.2.5
+    version: 1.7.1  
+    rmversion: 3.1.0
+
+The *version* is the current version of Kunteksto.
+The *rmversion* is the version of the S3Model Reference Model that is used for generated data models and RDF. 
