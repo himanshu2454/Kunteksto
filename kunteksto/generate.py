@@ -27,6 +27,18 @@ import click
 from lxml import etree
 from lxml import sax
     
+xml_escape_table = {
+    '"': "&quot;",
+    "'": "&apos;"
+}
+
+xml_unescape_table = {v:k for k, v in xml_escape_table.items()}
+
+def xml_escape(text):
+    return escape(text, xml_escape_table)
+
+def xml_unescape(text):
+    return unescape(text, xml_unescape_table)    
 
 # RDF storage imports
 try:
@@ -82,16 +94,16 @@ def xsd_metadata(md):
     
     mds = '<!-- Metadata -->\n  <xs:annotation><xs:appinfo><rdf:RDF><rdfs:Class\n'
     mds += '    rdf:about="dm-' + md[0] + '">\n'
-    mds += '    <dc:title>' + md[1].strip() + '</dc:title>\n'
-    mds += '    <dc:creator>' + md[2] + '</dc:creator>\n'
+    mds += '    <dc:title>' + xml_escape(md[1].strip()) + '</dc:title>\n'
+    mds += '    <dc:creator>' + xml_escape(md[2]) + '</dc:creator>\n'
     mds += '    <dc:contributor></dc:contributor>\n'
     mds += '    <dc:subject>S3M</dc:subject>\n'
-    mds += '    <dc:rights>' + md[4] + '</dc:rights>\n'
+    mds += '    <dc:rights>' + xml_escape(md[4]) + '</dc:rights>\n'
     mds += '    <dc:relation>None</dc:relation>\n'
     mds += '    <dc:coverage>Global</dc:coverage>\n'
     mds += '    <dc:type>S3M Data Model</dc:type>\n'
     mds += '    <dc:identifier>' + md[0].replace('dm-', '') + '</dc:identifier>\n'
-    mds += '    <dc:description>' + md[3] + '</dc:description>\n'
+    mds += '    <dc:description>' + xml_escape(md[3]) + '</dc:description>\n'
     mds += '    <dc:publisher>Data Insights, Inc. via Kunteksto</dc:publisher>\n'
     mds += '    <dc:date>' + datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S") + \
         '</dc:date>\n'
@@ -169,7 +181,7 @@ def xdcount(data):
     xdstr += padding.rjust(indent) + '<xs:complexType name="mc-' + mcID + '">\n'
     xdstr += padding.rjust(indent + 2) + '<xs:annotation>\n'
     xdstr += padding.rjust(indent + 4) + '<xs:documentation>\n'
-    xdstr += padding.rjust(indent + 6) + data[9].strip() + '\n'
+    xdstr += padding.rjust(indent + 6) + xml_escape(data[9].strip()) + '\n'
     xdstr += padding.rjust(indent + 4) + '</xs:documentation>\n'
     xdstr += padding.rjust(indent + 4) + '<xs:appinfo>\n'   
     # add the RDF
@@ -292,7 +304,7 @@ def xdquantity(data):
     xdstr += padding.rjust(indent) + '<xs:complexType name="mc-' + mcID + '">\n'
     xdstr += padding.rjust(indent + 2) + '<xs:annotation>\n'
     xdstr += padding.rjust(indent + 4) + '<xs:documentation>\n'
-    xdstr += padding.rjust(indent + 6) + data[9].strip() + '\n'
+    xdstr += padding.rjust(indent + 6) + xml_escape(data[9].strip()) + '\n'
     xdstr += padding.rjust(indent + 4) + '</xs:documentation>\n'
     xdstr += padding.rjust(indent + 4) + '<xs:appinfo>\n'
     # add the RDF
@@ -414,7 +426,7 @@ def xdfloat(data):
     xdstr += padding.rjust(indent) + '<xs:complexType name="mc-' + mcID + '">\n'
     xdstr += padding.rjust(indent + 2) + '<xs:annotation>\n'
     xdstr += padding.rjust(indent + 4) + '<xs:documentation>\n'
-    xdstr += padding.rjust(indent + 6) + data[9].strip() + '\n'
+    xdstr += padding.rjust(indent + 6) + xml_escape(data[9].strip()) + '\n'
     xdstr += padding.rjust(indent + 4) + '</xs:documentation>\n'
     xdstr += padding.rjust(indent + 4) + '<xs:appinfo>\n'
     # add the RDF
@@ -541,7 +553,7 @@ def xdstring(data):
     xdstr += padding.rjust(indent) + '<xs:complexType name="mc-' + mcID + '">\n'
     xdstr += padding.rjust(indent + 2) + '<xs:annotation>\n'
     xdstr += padding.rjust(indent + 4) + '<xs:documentation>\n'
-    xdstr += padding.rjust(indent + 6) + data[9].strip() + '\n'
+    xdstr += padding.rjust(indent + 6) + xml_escape(data[9].strip()) + '\n'
     xdstr += padding.rjust(indent + 4) + '</xs:documentation>\n'
     xdstr += padding.rjust(indent + 4) + '<xs:appinfo>\n'
 
@@ -581,7 +593,7 @@ def xdstring(data):
             if data[3]:
                 xdstr += padding.rjust(indent + 12) + '<xs:minLength value="' + str(int(data[3])).strip() + '"/>\n'
                                                                                     
-            if data[4] is not None:
+            if data[4] is not None and data[4] is not "":
                 xdstr += padding.rjust(indent + 12) + '<xs:maxLength value="' + str(int(data[4])).strip() + '"/>\n'
                 
             if data[6]:
@@ -666,7 +678,7 @@ def xdtemporal(data):
     xdstr += padding.rjust(indent) + '<xs:complexType name="mc-' + mcID + '">\n'
     xdstr += padding.rjust(indent + 2) + '<xs:annotation>\n'
     xdstr += padding.rjust(indent + 4) + '<xs:documentation>\n'
-    xdstr += padding.rjust(indent + 6) + data[9].strip() + '\n'
+    xdstr += padding.rjust(indent + 6) + xml_escape(data[9].strip()) + '\n'
     xdstr += padding.rjust(indent + 4) + '</xs:documentation>\n'
     
     xdstr += padding.rjust(indent + 4) + '<xs:appinfo>\n'
@@ -727,7 +739,7 @@ def units(mcID, data):
     xdstr = padding.rjust(indent) + '<xs:complexType name="mc-' + mcID + '">\n'
     xdstr += padding.rjust(indent + 2) + '<xs:annotation>\n'
     xdstr += padding.rjust(indent + 4) + '<xs:documentation>\n'
-    xdstr += padding.rjust(indent + 6) + 'Unit constraint for: ' + data[9].strip() + '\n'
+    xdstr += padding.rjust(indent + 6) + 'Unit constraint for: ' + xml_escape(data[9].strip()) + '\n'
     xdstr += padding.rjust(indent + 4) + '</xs:documentation>\n'
     xdstr += padding.rjust(indent + 4) + '<xs:appinfo>\n'
     xdstr += padding.rjust(indent + 6) + '<rdfs:Class rdf:about="mc-' + mcID + '">\n'
@@ -836,7 +848,7 @@ def xsd_dm(data):
     dmstr += padding.rjust(indent) + '<xs:complexType name="mc-' + data[5].strip() + '">\n'
     dmstr += padding.rjust(indent + 2) + '<xs:annotation>\n'
     dmstr += padding.rjust(indent + 4) + '<xs:documentation>\n'
-    dmstr += padding.rjust(indent + 6) + data[1].strip() + '\n'
+    dmstr += padding.rjust(indent + 6) + xml_escape(data[1].strip()) + '\n'
     dmstr += padding.rjust(indent + 4) + '</xs:documentation>\n'
     dmstr += padding.rjust(indent + 4) + '<xs:appinfo>\n'
     dmstr += padding.rjust(indent + 6) + '<rdfs:Class rdf:about="mc-' + data[5].strip() + '">\n'
@@ -996,7 +1008,7 @@ def make_model(db_file, outdir):
     try:
         xmlschema_doc = etree.parse(model)
     except:
-        print('Model Error', "There was an error in generating the schema. Please re-edit the database and look for errors. You probably undefined namespaces or improperly formatted predicate-object pair.")
+        print('Model Error', "There was an error in generating the schema. Please re-edit the database and look for errors.\n You probably have undefined namespaces or improperly formatted predicate-object pair.")
         return None
 
     xsd_rdf(model, outdir, dmID, db_file)
@@ -1009,7 +1021,7 @@ def xml_hdr(model, schema, schemaFile):
     xstr += 'xmlns:s3m="https://www.s3model.com/ns/s3m/"\n'
     xstr += 'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"\n'
     xstr += 'xsi:schemaLocation="https://www.s3model.com/ns/s3m/ https://dmgen.s3model.com/dmlib/' + schemaFile + '">\n'
-    xstr += '    <label>' + model[0].strip() + '</label>\n'
+    xstr += '    <label>' + xml_escape(model[0].strip()) + '</label>\n'
     xstr += '    <dm-language>en-US</dm-language>\n'
     xstr += '    <dm-encoding>utf-8</dm-encoding>\n'
     xstr += '    <current-state>new</current-state>\n'    
@@ -1027,8 +1039,8 @@ def xml_count(row, data):
     xstr += '        <accuracy>0</accuracy>\n'
     xstr += '        <xdcount-value>' + data[row[0].strip()] + '</xdcount-value>\n'
     xstr += '        <xdcount-units>\n'
-    xstr += '          <label>' + row[1].strip() + ' Units</label>\n'
-    xstr += '          <xdstring-value>' + row[14].strip() + '</xdstring-value>\n'
+    xstr += '          <label>' + xml_escape(row[1].strip()) + ' Units</label>\n'
+    xstr += '          <xdstring-value>' + xml_escape(row[14].strip()) + '</xdstring-value>\n'
     xstr += '          <xdstring-language>en-US</xdstring-language>\n'
     xstr += '        </xdcount-units>\n'
     xstr += '      </s3m:ms-' + row[15].strip() + '>\n'
@@ -1038,7 +1050,7 @@ def xml_count(row, data):
 
 def rdf_count(row, data):
     rstr = '      <rdfs:Class rdf:about="s3m:ms-' + row[15].strip() + '">\n'
-    rstr += '        <rdfs:label>' + row[1].strip() + '</rdfs:label>\n'
+    rstr += '        <rdfs:label>' + xml_escape(row[1].strip()) + '</rdfs:label>\n'
     rstr += '        <rdfs:value rdf:datatype="xs:integer">' + data[row[0].strip()] + '</rdfs:value>\n'
     rstr += '      </rdfs:Class>\n'
     return(rstr)
@@ -1047,14 +1059,14 @@ def rdf_count(row, data):
 def xml_quantity(row, data):
     xstr = '      <s3m:ms-' + row[16].strip() + '>\n'
     xstr += '      <s3m:ms-' + row[15].strip() + '>\n'
-    xstr += '        <label>' + row[1].strip() + '</label>\n'
+    xstr += '        <label>' + xml_escape(row[1].strip()) + '</label>\n'
     xstr += '        <magnitude-status>equal</magnitude-status>\n'
     xstr += '        <error>0</error>\n'
     xstr += '        <accuracy>0</accuracy>\n'
     xstr += '        <xdquantity-value>' + data[row[0].strip()] + '</xdquantity-value>\n'
     xstr += '        <xdquantity-units>\n'
-    xstr += '          <label>' + row[1].strip() + ' Units</label>\n'
-    xstr += '          <xdstring-value>' + row[14].strip() + '</xdstring-value>\n'
+    xstr += '          <label>' + xml_escape(row[1].strip()) + ' Units</label>\n'
+    xstr += '          <xdstring-value>' + xml_escape(row[14].strip()) + '</xdstring-value>\n'
     xstr += '          <xdstring-language>en-US</xdstring-language>\n'
     xstr += '        </xdquantity-units>\n'
     xstr += '      </s3m:ms-' + row[15].strip() + '>\n'
@@ -1064,7 +1076,7 @@ def xml_quantity(row, data):
 
 def rdf_quantity(row, data):
     rstr = '      <rdfs:Class rdf:about="s3m:ms-' + row[15].strip() + '">\n'
-    rstr += '        <rdfs:label>' + row[1].strip() + '</rdfs:label>\n'
+    rstr += '        <rdfs:label>' + xml_escape(row[1].strip()) + '</rdfs:label>\n'
     rstr += '        <rdfs:value rdf:datatype="xs:decimal">' + data[row[0].strip()] + '</rdfs:value>\n'
     rstr += '      </rdfs:Class>\n'
     return(rstr)
@@ -1079,8 +1091,8 @@ def xml_float(row, data):
     xstr += '        <accuracy>0</accuracy>\n'
     xstr += '        <xdfloat-value>' + data[row[0].strip()] + '</xdfloat-value>\n'
     xstr += '        <xdfloat-units>\n'
-    xstr += '          <label>' + row[1].strip() + ' Units</label>\n'
-    xstr += '          <xdstring-value>' + row[14].strip() + '</xdstring-value>\n'
+    xstr += '          <label>' + xml_escape(row[1].strip()) + ' Units</label>\n'
+    xstr += '          <xdstring-value>' + xml_escape(row[14].strip()) + '</xdstring-value>\n'
     xstr += '          <xdstring-language>en-US</xdstring-language>\n'
     xstr += '        </xdfloat-units>\n'
     xstr += '      </s3m:ms-' + row[15].strip() + '>\n'
@@ -1090,14 +1102,14 @@ def xml_float(row, data):
 
 def rdf_quantity(row, data):
     rstr = '      <rdfs:Class rdf:about="s3m:ms-' + row[15].strip() + '">\n'
-    rstr += '        <rdfs:label>' + row[1].strip() + '</rdfs:label>\n'
+    rstr += '        <rdfs:label>' + xml_escape(row[1].strip()) + '</rdfs:label>\n'
     rstr += '        <rdfs:value rdf:datatype="xs:decimal">' + data[row[0].strip()] + '</rdfs:value>\n'
     rstr += '      </rdfs:Class>\n'
     return(rstr)
 
 def rdf_float(row, data):
     rstr = '      <rdfs:Class rdf:about="s3m:ms-' + row[15].strip() + '">\n'
-    rstr += '        <rdfs:label>' + row[1].strip() + '</rdfs:label>\n'
+    rstr += '        <rdfs:label>' + xml_escape(row[1].strip()) + '</rdfs:label>\n'
     rstr += '        <rdfs:value rdf:datatype="xs:float">' + data[row[0].strip()] + '</rdfs:value>\n'
     rstr += '      </rdfs:Class>\n'
     return(rstr)
@@ -1106,7 +1118,7 @@ def rdf_float(row, data):
 def xml_temporal(row, data):
     xstr = '      <s3m:ms-' + row[16].strip() + '>\n'
     xstr += '      <s3m:ms-' + row[15].strip() + '>\n'
-    xstr += '        <label>' + row[1].strip() + '</label>\n'
+    xstr += '        <label>' + xml_escape(row[1].strip()) + '</label>\n'
     if row[2].lower() == 'date':
         xstr += '        <xdtemporal-date>' + data[row[0].strip()] + '</xdtemporal-date>\n'
     if row[2].lower() == 'time':
@@ -1120,7 +1132,7 @@ def xml_temporal(row, data):
 
 def rdf_temporal(row, data):
     rstr = '      <rdfs:Class rdf:about="s3m:ms-' + row[15].strip() + '">\n'
-    rstr += '        <rdfs:label>' + row[1].strip() + '</rdfs:label>\n'
+    rstr += '        <rdfs:label>' + xml_escape(row[1].strip()) + '</rdfs:label>\n'
     if row[2].lower() == 'date':
         rstr += '        <rdfs:value rdf:datatype="xs:date">' + data[row[0].strip()] + '</rdfs:value>\n'
     if row[2].lower() == 'time':
@@ -1134,8 +1146,8 @@ def rdf_temporal(row, data):
 def xml_string(row, data):
     xstr = '      <s3m:ms-' + row[16].strip() + '>\n'
     xstr += '      <s3m:ms-' + row[15].strip() + '>\n'
-    xstr += '        <label>' + row[1].strip() + '</label>\n'
-    xstr += '        <xdstring-value>' + data[row[0].strip()] + '</xdstring-value>\n'
+    xstr += '        <label>' + xml_escape(row[1].strip()) + '</label>\n'
+    xstr += '        <xdstring-value>' + xml_escape(data[row[0].strip()]) + '</xdstring-value>\n'
     xstr += '        <xdstring-language>en-US</xdstring-language>\n'
     xstr += '      </s3m:ms-' + row[15].strip() + '>\n'
     xstr += '      </s3m:ms-' + row[16].strip() + '>\n'
@@ -1144,7 +1156,7 @@ def xml_string(row, data):
 
 def rdf_string(row, data):
     rstr = '      <rdfs:Class rdf:about="s3m:ms-' + row[15].strip() + '">\n'
-    rstr += '        <rdfs:label>' + row[1].strip() + '</rdfs:label>\n'
+    rstr += '        <rdfs:label>' + xml_escape(row[1].strip()) + '</rdfs:label>\n'
     rstr += '        <rdfs:value rdf:datatype="xs:string">' + data[row[0].strip()] + '</rdfs:value>\n'
     rstr += '      </rdfs:Class>\n'
     return(rstr)

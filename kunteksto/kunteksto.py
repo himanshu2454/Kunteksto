@@ -29,8 +29,8 @@ def main(mode, infile, outdir, delim, analyzelevel, dbfile):
     # Setup config info based on the current working directory
     config = configparser.ConfigParser()
     config.read('kunteksto.conf')
-    print("Kunteksto version: " + config['SYSTEM']['version'] + " using S3Model RM: " + config['SYSTEM']['rmversion'] + "\n\n")
-                
+    print("\n\nKunteksto version: " + config['SYSTEM']['version'] + " using S3Model RM: " + config['SYSTEM']['rmversion'] + "\n\n")
+
     # override the delimiter and/or analyzelevel if provided
     if not delim:
         delim = config['KUNTEKSTO']['delim']
@@ -110,7 +110,7 @@ def main(mode, infile, outdir, delim, analyzelevel, dbfile):
     elif mode == 'editdb':
         dname, fname = os.path.split(infile)
         dbName = fname[:fname.index('.')] + '.db'
-        db_file = outdir + os.path.sep + dbName
+        db_file = dbfile
         edit_model(db_file)
         edit_record(db_file)
                 

@@ -23,7 +23,6 @@ def edit_model(outDB):
 
 
 class EntryWindow(tk.Frame):
-
     """
     Provides a simple data edit window for the model table in given database.
     """
@@ -42,7 +41,6 @@ class EntryWindow(tk.Frame):
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(0, weight=1)
 
-        print(self.database)
         with sqlite3.connect(self.database) as conn:
             c = conn.cursor()
             c.execute('SELECT min(rowid) FROM model')
