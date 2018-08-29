@@ -214,22 +214,22 @@ def xdcount(data):
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="magnitude-status" type="s3m:MagnitudeStatus"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="error"  type="xs:integer" default="0"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="accuracy" type="xs:integer" default="0"/>\n'
-    if not is_valid_decimal(data[7]) and not is_valid_decimal(data[8]) and not is_valid_decimal(data[17]) and not is_valid_decimal(data [18]) and not is_valid_decimal(data[13]):
+    if not data[7].isdigit() and not data[8].isdigit() and not data[17].isdigit() and not data [18].isdigit() and not data[13].isdigit():
         xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdcount-value" type="xs:integer"/>\n'
-    if is_valid_decimal(data[13]):
+    if data[13].isdigit():
         xdstr += padding.rjust(indent + 8) +  '<xs:element maxOccurs="1" minOccurs="1"  name="xdcount-value" type="xs:integer" default="' + str(int(data[13])) + '"/>\n'       
     else:
         xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdcount-value">\n'
         xdstr += padding.rjust(indent + 10) + '<xs:simpleType>\n'
         xdstr += padding.rjust(indent + 10) + '<xs:restriction base="xs:integer">\n'
-        if is_valid_decimal(data[7]):
+        if data[7].isdigit():
             xdstr += padding.rjust(indent + 12) + '<xs:minInclusive value="' + str(int(data[7])) + '"/>\n'
-        elif is_valid_decimal(data[17]):
+        elif data[17].isdigit():
             xdstr += padding.rjust(indent + 12) + '<xs:minExclusive value="' + str(int(data[17])) + '"/>\n'
             
-        if is_valid_decimal(data[8]):
+        if data[8].isdigit():
             xdstr += padding.rjust(indent + 12) + '<xs:maxInclusive value="' + str(int(data[8])) + '"/>\n'
-        elif is_valid_decimal(data[18]):
+        elif data[18].isdigit():
             xdstr += padding.rjust(indent + 12) + '<xs:maxExclusive value="' + str(int(data[18])) + '"/>\n'
             
         xdstr += padding.rjust(indent + 10) + '</xs:restriction>\n'
