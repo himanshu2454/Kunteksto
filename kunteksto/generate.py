@@ -27,6 +27,16 @@ import click
 from lxml import etree
 from lxml import sax
     
+    
+def is_valid_decimal(s):
+    try:
+        float(s)
+    except ValueError:
+        return False
+    else:
+        return True
+    
+    
 xml_escape_table = {
     '"': "&quot;",
     "'": "&apos;"
@@ -139,13 +149,13 @@ def xdcount_rdf(data):
     rdfStr += padding.rjust(indent + 10) +'<sh:maxCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:maxCount>\n'
     rdfStr += padding.rjust(indent + 10) +'<sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>\n'
     
-    if data[7]:
+    if is_valid_decimal(data[7]):
         rdfStr += padding.rjust(indent + 10) +'<sh:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">' + data[7].strip() + '</sh:minInclusive>\n'
-    elif data[17]:
+    elif is_valid_decimal(data[17]):
         rdfStr += padding.rjust(indent + 10) +'<sh:minExclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">' + data[17].strip() + '</sh:minExclusive>\n'
-    if data[8]:
+    if is_valid_decimal(data[8]):
         rdfStr += padding.rjust(indent + 10) +'<sh:maxInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">' + data[8].strip() + '</sh:maxInclusive>\n'    
-    elif data[18]:
+    elif is_valid_decimal(data[18]):
         rdfStr += padding.rjust(indent + 10) +'<sh:maxExclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">' + data[18].strip() + '</sh:maxExclusive>\n'    
     rdfStr += padding.rjust(indent + 8) +'</rdf:Description>\n'
     rdfStr += padding.rjust(indent + 6) +'</sh:property>\n'
@@ -203,22 +213,22 @@ def xdcount(data):
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="magnitude-status" type="s3m:MagnitudeStatus"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="error"  type="xs:integer" default="0"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="accuracy" type="xs:integer" default="0"/>\n'
-    if not data[7] and not data[8] and not data[17] and not data [18] and not data[13]:
+    if not is_valid_decimal(data[7]) and not is_valid_decimal(data[8]) and not is_valid_decimal(data[17]) and not is_valid_decimal(data [18]) and not is_valid_decimal(data[13]):
         xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdcount-value" type="xs:integer"/>\n'
-    if data[13]:
+    if is_valid_decimal(data[13]):
         xdstr += padding.rjust(indent + 8) +  '<xs:element maxOccurs="1" minOccurs="1"  name="xdcount-value" type="xs:integer" default="' + str(int(data[13])) + '"/>\n'       
     else:
         xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdcount-value">\n'
         xdstr += padding.rjust(indent + 10) + '<xs:simpleType>\n'
         xdstr += padding.rjust(indent + 10) + '<xs:restriction base="xs:integer">\n'
-        if data[7]:
+        if is_valid_decimal(data[7]):
             xdstr += padding.rjust(indent + 12) + '<xs:minInclusive value="' + str(int(data[7])) + '"/>\n'
-        elif data[17]:
+        elif is_valid_decimal(data[17]):
             xdstr += padding.rjust(indent + 12) + '<xs:minExclusive value="' + str(int(data[17])) + '"/>\n'
             
-        if data[8]:
+        if is_valid_decimal(data[8]):
             xdstr += padding.rjust(indent + 12) + '<xs:maxInclusive value="' + str(int(data[8])) + '"/>\n'
-        elif data[18]:
+        elif is_valid_decimal(data[18]):
             xdstr += padding.rjust(indent + 12) + '<xs:maxExclusive value="' + str(int(data[18])) + '"/>\n'
             
         xdstr += padding.rjust(indent + 10) + '</xs:restriction>\n'
@@ -260,14 +270,14 @@ def xdquantity_rdf(data):
     rdfStr += padding.rjust(indent + 10) +'<sh:maxCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:maxCount>\n'
     rdfStr += padding.rjust(indent + 10) +'<sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>\n'
     
-    if data[7]:
+    if is_valid_decimal(data[7]):
         rdfStr += padding.rjust(indent + 10) +'<sh:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">' + data[7].strip() + '</sh:minInclusive>\n'
-    elif data[17]:
+    elif is_valid_decimal(data[17]):
         rdfStr += padding.rjust(indent + 10) +'<sh:minExclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">' + data[17].strip() + '</sh:minExclusive>\n'
         
-    if data[8]:
+    if is_valid_decimal(data[8]):
         rdfStr += padding.rjust(indent + 10) +'<sh:maxInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">' + data[8].strip() + '</sh:maxInclusive>\n'    
-    elif data[18]:
+    elif is_valid_decimal(data[18]):
         rdfStr += padding.rjust(indent + 10) +'<sh:maxExclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">' + data[18].strip() + '</sh:maxExclusive>\n'    
    
     rdfStr += padding.rjust(indent + 8) +'</rdf:Description>\n'
@@ -326,21 +336,21 @@ def xdquantity(data):
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="magnitude-status" type="s3m:MagnitudeStatus"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="error"  type="xs:integer" default="0"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="accuracy" type="xs:integer" default="0"/>\n'
-    if not data[7] and not data[8] and not data[17] and not data[18] and not data[13]:
+    if not is_valid_decimal(data[7]) and not is_valid_decimal(data[8]) and not is_valid_decimal(data[17]) and not is_valid_decimal(data[18]) and not is_valid_decimal(data[13]):
         xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdquantity-value" type="xs:decimal"/>\n'
-    if data[13]:
+    if is_valid_decimal(data[13]):
         xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdquantity-value" type="xs:decimal" default="' + data[13].strip() + '"/>\n'
     else:
         xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdquantity-value">\n'
         xdstr += padding.rjust(indent + 10) + '<xs:simpleType>\n'
         xdstr += padding.rjust(indent + 10) + '<xs:restriction base="xs:decimal">\n'
-        if data[7]:
+        if is_valid_decimal(data[7]):
             xdstr += padding.rjust(indent + 12) + '<xs:minInclusive value="' + data[7].strip() + '"/>\n'
-        elif data[17]:
+        elif is_valid_decimal(data[17]):
             xdstr += padding.rjust(indent + 12) + '<xs:minExclusive value="' + data[17].strip() + '"/>\n'
-        if data[8]:
+        if is_valid_decimal(data[8]):
             xdstr += padding.rjust(indent + 12) + '<xs:maxInclusive value="' + data[8].strip() + '"/>\n'
-        elif data[18]:
+        elif is_valid_decimal(data[18]):
             xdstr += padding.rjust(indent + 12) + '<xs:maxExclusive value="' + data[18].strip() + '"/>\n'
                 
         xdstr += padding.rjust(indent + 10) + '</xs:restriction>\n'
@@ -382,14 +392,14 @@ def xdfloat_rdf(data):
     rdfStr += padding.rjust(indent + 10) +'<sh:maxCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:maxCount>\n'
     rdfStr += padding.rjust(indent + 10) +'<sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>\n'
     
-    if data[7]:
+    if is_valid_decimal(data[7]):
         rdfStr += padding.rjust(indent + 10) +'<sh:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#float">' + data[7].strip() + '</sh:minInclusive>\n'
-    elif data[17]:
+    elif is_valid_decimal(data[17]):
         rdfStr += padding.rjust(indent + 10) +'<sh:minExclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#float">' + data[17].strip() + '</sh:minExclusive>\n'
         
-    if data[8]:
+    if is_valid_decimal(data[8]):
         rdfStr += padding.rjust(indent + 10) +'<sh:maxInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#float">' + data[8].strip() + '</sh:maxInclusive>\n'    
-    elif data[18]:
+    elif is_valid_decimal(data[18]):
         rdfStr += padding.rjust(indent + 10) +'<sh:maxExclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#float">' + data[18].strip() + '</sh:maxExclusive>\n'    
    
     rdfStr += padding.rjust(indent + 8) +'</rdf:Description>\n'
@@ -448,21 +458,21 @@ def xdfloat(data):
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="magnitude-status" type="s3m:MagnitudeStatus"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="error"  type="xs:integer" default="0"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="accuracy" type="xs:integer" default="0"/>\n'
-    if not data[7] and not data[8] and not data[17] and not data[18] and not data[13]:
+    if not is_valid_decimal(data[7]) and not is_valid_decimal(data[8]) and not is_valid_decimal(data[17]) and not is_valid_decimal(data[18]) and not is_valid_decimal(data[13]):
         xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdfloat-value" type="xs:float"/>\n'
-    if data[13]:
+    if is_valid_decimal(data[13]):
         xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdfloat-value" type="xs:float" default="' + data[13].strip() + '"/>\n'
     else:
         xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdfloat-value">\n'
         xdstr += padding.rjust(indent + 10) + '<xs:simpleType>\n'
         xdstr += padding.rjust(indent + 10) + '<xs:restriction base="xs:float">\n'
-        if data[7]:
+        if is_valid_decimal(data[7]):
             xdstr += padding.rjust(indent + 12) + '<xs:minInclusive value="' + data[7].strip() + '"/>\n'
-        elif data[17]:
+        elif is_valid_decimal(data[17]):
             xdstr += padding.rjust(indent + 12) + '<xs:minExclusive value="' + data[17].strip() + '"/>\n'
-        if data[8]:
+        if is_valid_decimal(data[8]):
             xdstr += padding.rjust(indent + 12) + '<xs:maxInclusive value="' + data[8].strip() + '"/>\n'
-        elif data[18]:
+        elif is_valid_decimal(data[18]):
             xdstr += padding.rjust(indent + 12) + '<xs:maxExclusive value="' + data[18].strip() + '"/>\n'
                 
         xdstr += padding.rjust(indent + 10) + '</xs:restriction>\n'
@@ -505,10 +515,10 @@ def xdstring_rdf(data):
     rdfStr += padding.rjust(indent + 10) +'<sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>\n'
     if data[12]:
         rdfStr += padding.rjust(indent + 10) + '<sh:defaultValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string">' + data[12].strip() + '</sh:defaultValue>\n'
-    if data[3]:
+    if is_valid_decimal(data[3]):
         rdfStr += padding.rjust(indent + 10) +'<sh:minLength rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">' + data[3].strip() + '</sh:minLength>\n'
         
-    if data[4]:
+    if is_valid_decimal(data[4]):
         rdfStr += padding.rjust(indent + 10) +'<sh:maxLength rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">' + data[4].strip() + '</sh:maxLength>\n'
         
     if data[6]:
@@ -575,10 +585,10 @@ def xdstring(data):
     xdstr += padding.rjust(indent + 8) + '<!-- latitude -->\n'
     xdstr += padding.rjust(indent + 8) + '<!-- longitude -->\n'
 
-    if not data[3] and not data[4] and not data[5] and not data[6] and not data[12]:
+    if not is_valid_decimal(data[3]) and not is_valid_decimal(data[4]) and not data[5] and not data[6] and not data[12]:
         xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdstring-value" type="xs:string"/>\n'
 
-    elif data[12] and not data[3] and not data[4] and not data[5] and not data[6]:
+    elif data[12] and not is_valid_decimal(data[3]) and not is_valid_decimal(data[4]) and not data[5] and not data[6]:
         xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdstring-value" type="xs:string" default="' + data[12].strip() + '"/>\n'
 
     else:
@@ -590,10 +600,10 @@ def xdstring(data):
             for e in enums:
                 xdstr += padding.rjust(indent + 12) + '<xs:enumeration value="' + e.strip() + '"/>\n'
         else:
-            if data[3]:
+            if is_valid_decimal(data[3]):
                 xdstr += padding.rjust(indent + 12) + '<xs:minLength value="' + str(int(data[3])).strip() + '"/>\n'
                                                                                     
-            if data[4] is not None and data[4] is not "":
+            if is_valid_decimal(data[4]):
                 xdstr += padding.rjust(indent + 12) + '<xs:maxLength value="' + str(int(data[4])).strip() + '"/>\n'
                 
             if data[6]:
