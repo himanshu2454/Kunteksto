@@ -137,7 +137,8 @@ def xdcount_rdf(data):
     rdfStr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
     rdfStr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + quote(data[10].strip()) + '"/>\n'
     if data[11]:  # are there additional predicate-object definitions?
-        for po in data[11].splitlines():
+        text = os.linesep.join([s for s in data[11].splitlines() if s]) # remove empty lines
+        for po in text.splitlines():
             pred = po.split()[0]
             obj = po[len(pred):].strip()
             rdfStr += padding.rjust(indent + 8) + '<' + pred.strip() + ' rdf:resource="' + quote(obj.strip()) + '"/>\n'
@@ -258,7 +259,8 @@ def xdquantity_rdf(data):
     rdfStr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
     rdfStr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + quote(data[10].strip()) + '"/>\n'
     if data[11]:  # are there additional predicate-object definitions?
-        for po in data[11].splitlines():
+        text = os.linesep.join([s for s in data[11].splitlines() if s]) # remove empty lines
+        for po in text.splitlines():
             pred = po.split()[0]
             obj = po[len(pred):].strip()
             rdfStr += padding.rjust(indent + 8) + '<' + pred.strip() + ' rdf:resource="' + quote(obj.strip()) + '"/>\n'
@@ -380,7 +382,8 @@ def xdfloat_rdf(data):
     rdfStr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
     rdfStr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + quote(data[10].strip()) + '"/>\n'
     if data[11]:  # are there additional predicate-object definitions?
-        for po in data[11].splitlines():
+        text = os.linesep.join([s for s in data[11].splitlines() if s]) # remove empty lines
+        for po in text.splitlines():
             pred = po.split()[0]
             obj = po[len(pred):].strip()
             rdfStr += padding.rjust(indent + 8) + '<' + pred.strip() + ' rdf:resource="' + quote(obj.strip()) + '"/>\n'
@@ -502,7 +505,8 @@ def xdstring_rdf(data):
     rdfStr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
     rdfStr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + quote(data[10].strip()) + '"/>\n'
     if data[11]:  # are there additional predicate-object definitions?
-        for po in data[11].splitlines():
+        text = os.linesep.join([s for s in data[11].splitlines() if s]) # remove empty lines
+        for po in text.splitlines():
             pred = po.split()[0]
             obj = po[len(pred):].strip()
             rdfStr += padding.rjust(indent + 8) + '<' + pred.strip() + ' rdf:resource="' + quote(obj.strip()) + '"/>\n'
@@ -635,7 +639,8 @@ def xdtemporal_rdf(data):
     rdfStr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
     rdfStr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + quote(data[10].strip()) + '"/>\n'
     if data[11]:  # are there additional predicate-object definitions?
-        for po in data[11].splitlines():
+        text = os.linesep.join([s for s in data[11].splitlines() if s]) # remove empty lines
+        for po in text.splitlines():
             pred = po.split()[0]
             obj = po[len(pred):].strip()
             rdfStr += padding.rjust(indent + 8) + '<' + pred.strip() + ' rdf:resource="' + quote(obj.strip()) + '"/>\n'
@@ -1347,7 +1352,7 @@ def make_data(schema, db_file, infile, delim, outdir, connRDF, connXML, config):
                     rdfStr += '  <rdfs:Class rdf:about="' + file_id + '">\n'
                     rdfStr += '    <rdf:type rdf:resource="https://www.s3model.com/ns/s3m/s3model/DataInstanceValid"/>\n'
                     rdfStr += '  </rdfs:Class>\n'
-                    vlogStr = file_id + ',valid,,\n'
+                    vlogStr = file_id + ',valid,\n'
                 except etree.DocumentInvalid:
                     log = modelSchema.error_log
                     used_lines = []
@@ -1362,13 +1367,13 @@ def make_data(schema, db_file, infile, delim, outdir, connRDF, connXML, config):
                     rdfStr += '  <rdfs:Class rdf:about="' + file_id + '">\n'
                     rdfStr += '    <rdf:type rdf:resource="https://www.s3model.com/ns/s3m/s3model/DataInstanceInvalid"/>\n'
                     rdfStr += '  </rdfs:Class>\n'
-                    vlogStr = file_id + ',invalid,' + err.message + ',\n'
+                    vlogStr = file_id + ',invalid,' + err.message + '\n'
                 except etree.LxmlError as e:
                     print('\nPlease check the validation log for errors in parsing the file.\n\n')
                     rdfStr += '  <rdfs:Class rdf:about="' + file_id + '">\n'
                     rdfStr += '    <rdf:type rdf:resource="https://www.s3model.com/ns/s3m/s3model/DataInstanceError"/>\n'
                     rdfStr += '  </rdfs:Class>\n'
-                    vlogStr = file_id + ',error,' + str(e.args) + ',\n'
+                    vlogStr = file_id + ',error,' + str(e.args) + '\n'
                 finally:
                     vlog.write(vlogStr)
                     vlog.close()
