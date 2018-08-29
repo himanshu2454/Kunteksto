@@ -214,27 +214,29 @@ def xdcount(data):
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="magnitude-status" type="s3m:MagnitudeStatus"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="error"  type="xs:integer" default="0"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="accuracy" type="xs:integer" default="0"/>\n'
-    if not data[7].isdigit() and not data[8].isdigit() and not data[17].isdigit() and not data [18].isdigit() and not data[13].isdigit():
-        xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdcount-value" type="xs:integer"/>\n'
-    if data[13].isdigit():
-        xdstr += padding.rjust(indent + 8) +  '<xs:element maxOccurs="1" minOccurs="1"  name="xdcount-value" type="xs:integer" default="' + str(int(data[13])) + '"/>\n'       
+    if data[7].strip().isdigit() or data[8].strip().isdigit() or data[17].strip().isdigit() or data [18].strip().isdigit() or data[13].strip().isdigit():
+        if data[13].strip().isdigit():
+            xdstr += padding.rjust(indent + 8) +  '<xs:element maxOccurs="1" minOccurs="1"  name="xdcount-value" type="xs:integer" default="' + str(int(data[13])) + '"/>\n'       
+        else:
+            xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdcount-value">\n'
+            xdstr += padding.rjust(indent + 10) + '<xs:simpleType>\n'
+            xdstr += padding.rjust(indent + 10) + '<xs:restriction base="xs:integer">\n'
+            if data[7].strip().isdigit():
+                xdstr += padding.rjust(indent + 12) + '<xs:minInclusive value="' + str(int(data[7])) + '"/>\n'
+            elif data[17].strip().isdigit():
+                xdstr += padding.rjust(indent + 12) + '<xs:minExclusive value="' + str(int(data[17])) + '"/>\n'
+                
+            if data[8].strip().isdigit():
+                xdstr += padding.rjust(indent + 12) + '<xs:maxInclusive value="' + str(int(data[8])) + '"/>\n'
+            elif data[18].strip().isdigit():
+                xdstr += padding.rjust(indent + 12) + '<xs:maxExclusive value="' + str(int(data[18])) + '"/>\n'
+                
+            xdstr += padding.rjust(indent + 10) + '</xs:restriction>\n'
+            xdstr += padding.rjust(indent + 10) + '</xs:simpleType>\n'
+            xdstr += padding.rjust(indent + 8) + '</xs:element>\n'
     else:
-        xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdcount-value">\n'
-        xdstr += padding.rjust(indent + 10) + '<xs:simpleType>\n'
-        xdstr += padding.rjust(indent + 10) + '<xs:restriction base="xs:integer">\n'
-        if data[7].isdigit():
-            xdstr += padding.rjust(indent + 12) + '<xs:minInclusive value="' + str(int(data[7])) + '"/>\n'
-        elif data[17].isdigit():
-            xdstr += padding.rjust(indent + 12) + '<xs:minExclusive value="' + str(int(data[17])) + '"/>\n'
-            
-        if data[8].isdigit():
-            xdstr += padding.rjust(indent + 12) + '<xs:maxInclusive value="' + str(int(data[8])) + '"/>\n'
-        elif data[18].isdigit():
-            xdstr += padding.rjust(indent + 12) + '<xs:maxExclusive value="' + str(int(data[18])) + '"/>\n'
-            
-        xdstr += padding.rjust(indent + 10) + '</xs:restriction>\n'
-        xdstr += padding.rjust(indent + 10) + '</xs:simpleType>\n'
-        xdstr += padding.rjust(indent + 8) + '</xs:element>\n'
+        xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdcount-value" type="xs:integer"/>\n'
+        
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="xdcount-units" type="s3m:mc-' + unitsID + '"/>\n'
     xdstr += padding.rjust(indent + 6) + '</xs:sequence>\n'
     xdstr += padding.rjust(indent + 4) + '</xs:restriction>\n'
@@ -338,26 +340,28 @@ def xdquantity(data):
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="magnitude-status" type="s3m:MagnitudeStatus"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="error"  type="xs:integer" default="0"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="accuracy" type="xs:integer" default="0"/>\n'
-    if not is_valid_decimal(data[7]) and not is_valid_decimal(data[8]) and not is_valid_decimal(data[17]) and not is_valid_decimal(data[18]) and not is_valid_decimal(data[13]):
-        xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdquantity-value" type="xs:decimal"/>\n'
-    if is_valid_decimal(data[13]):
-        xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdquantity-value" type="xs:decimal" default="' + data[13].strip() + '"/>\n'
+    if is_valid_decimal(data[7]) or is_valid_decimal(data[8]) or is_valid_decimal(data[17]) or is_valid_decimal(data[18]) or is_valid_decimal(data[13]):
+        if is_valid_decimal(data[13]):
+            xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdquantity-value" type="xs:decimal" default="' + data[13].strip() + '"/>\n'
+        else:
+            xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdquantity-value">\n'
+            xdstr += padding.rjust(indent + 10) + '<xs:simpleType>\n'
+            xdstr += padding.rjust(indent + 10) + '<xs:restriction base="xs:decimal">\n'
+            if is_valid_decimal(data[7]):
+                xdstr += padding.rjust(indent + 12) + '<xs:minInclusive value="' + data[7].strip() + '"/>\n'
+            elif is_valid_decimal(data[17]):
+                xdstr += padding.rjust(indent + 12) + '<xs:minExclusive value="' + data[17].strip() + '"/>\n'
+            if is_valid_decimal(data[8]):
+                xdstr += padding.rjust(indent + 12) + '<xs:maxInclusive value="' + data[8].strip() + '"/>\n'
+            elif is_valid_decimal(data[18]):
+                xdstr += padding.rjust(indent + 12) + '<xs:maxExclusive value="' + data[18].strip() + '"/>\n'
+                    
+            xdstr += padding.rjust(indent + 10) + '</xs:restriction>\n'
+            xdstr += padding.rjust(indent + 10) + '</xs:simpleType>\n'
+            xdstr += padding.rjust(indent + 8) + '</xs:element>\n'
     else:
-        xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdquantity-value">\n'
-        xdstr += padding.rjust(indent + 10) + '<xs:simpleType>\n'
-        xdstr += padding.rjust(indent + 10) + '<xs:restriction base="xs:decimal">\n'
-        if is_valid_decimal(data[7]):
-            xdstr += padding.rjust(indent + 12) + '<xs:minInclusive value="' + data[7].strip() + '"/>\n'
-        elif is_valid_decimal(data[17]):
-            xdstr += padding.rjust(indent + 12) + '<xs:minExclusive value="' + data[17].strip() + '"/>\n'
-        if is_valid_decimal(data[8]):
-            xdstr += padding.rjust(indent + 12) + '<xs:maxInclusive value="' + data[8].strip() + '"/>\n'
-        elif is_valid_decimal(data[18]):
-            xdstr += padding.rjust(indent + 12) + '<xs:maxExclusive value="' + data[18].strip() + '"/>\n'
-                
-        xdstr += padding.rjust(indent + 10) + '</xs:restriction>\n'
-        xdstr += padding.rjust(indent + 10) + '</xs:simpleType>\n'
-        xdstr += padding.rjust(indent + 8) + '</xs:element>\n'
+        xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdquantity-value" type="xs:decimal"/>\n'
+        
     xdstr += padding.rjust(indent + 8) +     '<xs:element maxOccurs="1" minOccurs="1" name="xdquantity-units" type="s3m:mc-' + unitsID + '"/>\n'
     xdstr += padding.rjust(indent + 6) + '</xs:sequence>\n'
     xdstr += padding.rjust(indent + 4) + '</xs:restriction>\n'
@@ -461,26 +465,28 @@ def xdfloat(data):
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="magnitude-status" type="s3m:MagnitudeStatus"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="error"  type="xs:integer" default="0"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="accuracy" type="xs:integer" default="0"/>\n'
-    if not is_valid_decimal(data[7]) and not is_valid_decimal(data[8]) and not is_valid_decimal(data[17]) and not is_valid_decimal(data[18]) and not is_valid_decimal(data[13]):
-        xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdfloat-value" type="xs:float"/>\n'
-    if is_valid_decimal(data[13]):
-        xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdfloat-value" type="xs:float" default="' + data[13].strip() + '"/>\n'
+    if is_valid_decimal(data[7]) or is_valid_decimal(data[8]) or is_valid_decimal(data[17]) or is_valid_decimal(data[18]) or is_valid_decimal(data[13]):
+        if is_valid_decimal(data[13]):
+            xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdfloat-value" type="xs:float" default="' + data[13].strip() + '"/>\n'
+        else:
+            xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdfloat-value">\n'
+            xdstr += padding.rjust(indent + 10) + '<xs:simpleType>\n'
+            xdstr += padding.rjust(indent + 10) + '<xs:restriction base="xs:float">\n'
+            if is_valid_decimal(data[7]):
+                xdstr += padding.rjust(indent + 12) + '<xs:minInclusive value="' + data[7].strip() + '"/>\n'
+            elif is_valid_decimal(data[17]):
+                xdstr += padding.rjust(indent + 12) + '<xs:minExclusive value="' + data[17].strip() + '"/>\n'
+            if is_valid_decimal(data[8]):
+                xdstr += padding.rjust(indent + 12) + '<xs:maxInclusive value="' + data[8].strip() + '"/>\n'
+            elif is_valid_decimal(data[18]):
+                xdstr += padding.rjust(indent + 12) + '<xs:maxExclusive value="' + data[18].strip() + '"/>\n'
+                    
+            xdstr += padding.rjust(indent + 10) + '</xs:restriction>\n'
+            xdstr += padding.rjust(indent + 10) + '</xs:simpleType>\n'
+            xdstr += padding.rjust(indent + 8) + '</xs:element>\n'
     else:
-        xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdfloat-value">\n'
-        xdstr += padding.rjust(indent + 10) + '<xs:simpleType>\n'
-        xdstr += padding.rjust(indent + 10) + '<xs:restriction base="xs:float">\n'
-        if is_valid_decimal(data[7]):
-            xdstr += padding.rjust(indent + 12) + '<xs:minInclusive value="' + data[7].strip() + '"/>\n'
-        elif is_valid_decimal(data[17]):
-            xdstr += padding.rjust(indent + 12) + '<xs:minExclusive value="' + data[17].strip() + '"/>\n'
-        if is_valid_decimal(data[8]):
-            xdstr += padding.rjust(indent + 12) + '<xs:maxInclusive value="' + data[8].strip() + '"/>\n'
-        elif is_valid_decimal(data[18]):
-            xdstr += padding.rjust(indent + 12) + '<xs:maxExclusive value="' + data[18].strip() + '"/>\n'
-                
-        xdstr += padding.rjust(indent + 10) + '</xs:restriction>\n'
-        xdstr += padding.rjust(indent + 10) + '</xs:simpleType>\n'
-        xdstr += padding.rjust(indent + 8) + '</xs:element>\n'
+        xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdfloat-value" type="xs:float"/>\n'
+        
     xdstr += padding.rjust(indent + 8) +     '<xs:element maxOccurs="1" minOccurs="0" name="xdfloat-units" type="s3m:mc-' + unitsID + '"/>\n'
     xdstr += padding.rjust(indent + 6) + '</xs:sequence>\n'
     xdstr += padding.rjust(indent + 4) + '</xs:restriction>\n'
