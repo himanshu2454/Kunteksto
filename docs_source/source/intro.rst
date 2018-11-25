@@ -121,9 +121,6 @@ Files
 - kunteksto.conf
     This file is the required configuration file for Kunteksto.
 
-- catalog.xml
-    This is an XML catalog file that directs the XML processor where to find the schema files for validation.
-
 Directories
 -----------
 
