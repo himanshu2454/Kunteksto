@@ -1,7 +1,7 @@
 name: kunteksto
 channels:
-  - franzinc
   - conda-forge
+  - franzinc
   - defaults
 dependencies:
   - ipyleaflet=0.8.1=py36_0
@@ -107,6 +107,17 @@ dependencies:
   - zlib=1.2.11=h7b6447c_3
   - agraph-python=100.1.1=py36_0
   - pip:
+    - alabaster==0.7.12
+    - babel==2.6.0
     - basexclient==8.4.4
+    - docutils==0.14
+    - imagesize==1.1.0
+    - packaging==18.0
+    - pyparsing==2.3.0
+    - pytz==2018.7
+    - snowballstemmer==1.2.1
+    - sphinx==1.8.2
+    - sphinx-rtd-theme==0.4.2
+    - sphinxcontrib-websupport==1.1.0
 prefix: /home/tim/anaconda3/envs/kunteksto
 
