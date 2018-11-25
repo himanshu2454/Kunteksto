@@ -264,7 +264,7 @@ You can see all of the Kunteksto command line options using the –help flag.</p
 </ul>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p class="last">If you navigate away from a record without saving it, those changes are lost.</p>
+<p class="last">If you navigate away from a record without saving it, those changes are lost. Use the <em>Previous</em> button and re-enter the information.</p>
 </div>
 <ul class="simple">
 <li>Though some fields are pre-filled, it is only a guess and may not be accurate.</li>
@@ -290,7 +290,8 @@ You can see all of the Kunteksto command line options using the –help flag.</p
 <div><div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <p class="last">The decimal separator throughout Kunteksto is a period, do not use a comma. Do not use a thousands separators.
-Also, if you mix min/max inclusive or exclusive in an illogical manner, the system takes the inclusive value and ignore the exclusive value.</p>
+Also, if you mix min/max inclusive or exclusive in an illogical manner, the system takes the inclusive value and will
+ignore the exclusive value.</p>
 </div>
 </div></blockquote>
 </li>
@@ -391,7 +392,10 @@ The environment variable <strong>XML_CATALOG_FILES</strong> is set by Kunteksto 
 find the generated <em>Data Model</em> schema.</p>
 <p>Read more about <a class="reference external" href="https://en.wikipedia.org/wiki/XML_catalog">XML catalogs here</a>.</p>
 <p>Notice that the validation file <em>kunteksto/output/Demo/Demo_validation_log.csv</em> shows four data records marked as being valid and one data record marked as invalid.
-The invalid record is due to a ‘NaN’ entry in a numeric column.</p>
+The invalid record is due to a ‘NaN’ entry in a decimal column.</p>
+<p>In addition to the entry in the log file. Kunteksto also inserts an <em>ExceptionalValue</em> element in the XML file.
+The filename is listed in the validation log. Check that file and you will see an <em>Invalid</em> entry along with an XML comment
+containing an error message. Note that the JSON converter strips the error message but the Invalid exceptional value element is still present.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">The S3Model eco-system has a much more sophisticated ability to handle missing and erroneous data.
@@ -400,7 +404,7 @@ value tagging generally requires the model first approach whereas Kunteksto is a
 </div>
 <p>However, Kunteksto does perform limited error detection and notification process based on the information available.
 Referencing the data file name from the <em>kunteksto/output/Demo/Demo_validation_log.csv</em> file and then using your text editor or an XML editor,
-open that file from each of the XML directory, the RDF directory and the JSON directory.</p>
+open that file from each of the XML directory, the RDF directory and the JSON directory. Below are the details for viewing this error message.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p>Your validation log will look like this with different Demo-{cuid} filenames.</p>
@@ -579,7 +583,7 @@ These tutorials demonstrate the power of S3Model using persistent storage.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, Data Insights, Inc.
-      Last updated on 2018-11-25 07:14.
+      Last updated on 2018-11-25 08:10.
 
     </p>
   </div> 

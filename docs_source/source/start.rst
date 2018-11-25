@@ -134,7 +134,7 @@ Notice that some of this information can be obtained from the PDF. For other ite
 
 .. warning::
 
-    If you navigate away from a record without saving it, those changes are lost.
+    If you navigate away from a record without saving it, those changes are lost. Use the *Previous* button and re-enter the information.
 
 - Though some fields are pre-filled, it is only a guess and may not be accurate.
 
@@ -165,7 +165,8 @@ Edit these columns (see :ref:`semantics`) :
 
         .. warning::
             The decimal separator throughout Kunteksto is a period, do not use a comma. Do not use a thousands separators.
-            Also, if you mix min/max inclusive or exclusive in an illogical manner, the system takes the inclusive value and ignore the exclusive value.
+            Also, if you mix min/max inclusive or exclusive in an illogical manner, the system takes the inclusive value and will 
+            ignore the exclusive value.
     
     - *Minimum Inclusive Value* enter the minimum inclusive value restriction for **Integer or Decimal** columns.
     
@@ -282,7 +283,11 @@ find the generated *Data Model* schema.
 Read more about `XML catalogs here <https://en.wikipedia.org/wiki/XML_catalog>`_. 
 
 Notice that the validation file *kunteksto/output/Demo/Demo_validation_log.csv* shows four data records marked as being valid and one data record marked as invalid. 
-The invalid record is due to a 'NaN' entry in a numeric column. 
+The invalid record is due to a 'NaN' entry in a decimal column. 
+
+In addition to the entry in the log file. Kunteksto also inserts an *ExceptionalValue* element in the XML file. 
+The filename is listed in the validation log. Check that file and you will see an *Invalid* entry along with an XML comment
+containing an error message. Note that the JSON converter strips the error message but the Invalid exceptional value element is still present.
 
 .. note::
 
@@ -293,7 +298,7 @@ The invalid record is due to a 'NaN' entry in a numeric column.
 
 However, Kunteksto does perform limited error detection and notification process based on the information available.  
 Referencing the data file name from the *kunteksto/output/Demo/Demo_validation_log.csv* file and then using your text editor or an XML editor, 
-open that file from each of the XML directory, the RDF directory and the JSON directory.
+open that file from each of the XML directory, the RDF directory and the JSON directory. Below are the details for viewing this error message.
 
 .. note::
 
