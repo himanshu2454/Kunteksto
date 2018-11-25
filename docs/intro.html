@@ -93,12 +93,8 @@
 <li class="toctree-l3"><a class="reference internal" href="#target-audience">Target Audience</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#requirements">Requirements</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#cross-platform-on-anaconda">Cross-Platform on Anaconda</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#windows">Windows</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#mac-osx">Mac OSX</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#linux">Linux</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#update-to-a-new-version">Update to a New Version</a></li>
@@ -185,27 +181,20 @@
 <h2>Purpose<a class="headerlink" href="#purpose" title="Permalink to this headline">¶</a></h2>
 <p><strong>Kunteksto</strong> (ˈkänˌteksto) <a class="footnote-reference" href="#f1" id="id1">[1]</a> is a tool to translate simple CSV formatted data files into computable,
 semantically enhanced knowledge representations. As a foundation for <strong>crowdsourced</strong>, <em>automated knowledge base construction</em>;
-it provides a path for existing data sets to be used in conjunction with the emerging <em>datacentric, model first</em> approach in analysis,
-general artificial intelligence, and decision support systems. This approach opens the door for the change to a <em>datacentric</em> world
-as opposed to the <em>application-centric</em> one we have now. This new approach enables automatic interoperability avoiding the data
-quality issues created through data cleaning and massaging. See <a class="reference internal" href="start.html#mlai"><span class="std std-ref">Machine Learning &amp; AI</span></a></p>
-<p>The importance of how this simplifies query and analysis capabilities and improves data quality is discussed in foundational <a class="reference external" href="https://datainsights.tech/S3Model">S3Model</a> documentation and references. However, detailed understanding of S3Model is not required to understand and use the power of Kunteksto. Additional information on the datacentric movement can be found below <a class="footnote-reference" href="#f2" id="id2">[2]</a></p>
+it provides a path for existing data sets to be used in conjunction with the emerging <em>graph data, model first</em> approach in analysis,
+general artificial intelligence (AGI), and decision support systems. This approach opens the door for the change to a <em>data-centric</em>
+world as opposed to the <em>application-centric</em> one we have now. This new approach enables automatic interoperability avoiding the data
+quality issues created through data migration, cleaning and massaging. See <a class="reference internal" href="start.html#mlai"><span class="std std-ref">Machine Learning &amp; AI</span></a></p>
+<p>The importance of how this simplifies query and analysis capabilities and improves data quality is discussed in foundational
+<a class="reference external" href="https://datainsights.tech/S3Model">S3Model</a> documentation and references. However, detailed understanding of S3Model is not
+required to understand and use the power of Kunteksto. Additional information on the datacentric movement can be found below <a class="footnote-reference" href="#f2" id="id2">[2]</a></p>
 <div class="section" id="target-audience">
 <h3>Target Audience<a class="headerlink" href="#target-audience" title="Permalink to this headline">¶</a></h3>
-<p>Kunteksto design is based on the ability for <em>domain experts</em> from any field, with very little programming ability to quickly annotate data extracts to improve the usability of the data.  Data engineers and data scientists can also benefit from Kunteksto in the same ways as domain experts. It just takes a bit more research to discover the semantics that the original domain experts usually have at hand.</p>
+<p>Kunteksto design is based on the ability for <em>domain experts</em> from any field, with very little programming ability to quickly
+annotate data extracts to improve the usability of the data.  Data engineers and data scientists can also benefit from Kunteksto
+in the same ways as domain experts. It just takes a bit more research to discover the semantics that the original domain experts
+usually have at hand.</p>
 </div>
-</div>
-<div class="section" id="requirements">
-<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li>Python 3.6 or later. See: <a class="reference external" href="https://www.python.org/downloads/">Downloads</a></li>
-<li><dl class="first docutils">
-<dt><a class="reference external" href="https://www.sqlite.org/index.html">SQLiteDB</a> is used by Kunteksto and we recommend the <a class="reference external" href="http://sqlitebrowser.org/">SQLiteDB Browser</a></dt>
-<dd>to allow external editing of the database. See the <a class="reference external" href="https://www.guru99.com/download-install-sqlite.html">tutorials</a> on using SQLiteDB.</dd>
-</dl>
-</li>
-<li>Python and SQLiteDB are both installed with Anaconda.</li>
-</ul>
 </div>
 <div class="section" id="installation">
 <span id="install"></span><h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
@@ -259,40 +248,6 @@ this is a good choice.</p>
 </div>
 <p>These quick steps create a virtual environment in the subdirectory <em>kunteksto</em>. Once the environment is created, conda displays how to activate the environment. When activated then Kunteksto is installed in the subdirectory along with the environment.</p>
 <p>The last step is to do the <a class="reference internal" href="start.html#tutor"><span class="std std-ref">Tutorial/Demo</span></a></p>
-</div>
-<div class="section" id="windows">
-<h3>Windows<a class="headerlink" href="#windows" title="Permalink to this headline">¶</a></h3>
-<p>Details are coming soon. Preferably use the Anaconda instructions above.</p>
-</div>
-<div class="section" id="mac-osx">
-<h3>Mac OSX<a class="headerlink" href="#mac-osx" title="Permalink to this headline">¶</a></h3>
-<p>Follow the <a class="reference external" href="http://lxml.de/installation.html">instructions for your platform</a> for lxml installation.</p>
-<p>Details are coming soon. Preferably use the Anaconda instructions above.</p>
-</div>
-<div class="section" id="linux">
-<h3>Linux<a class="headerlink" href="#linux" title="Permalink to this headline">¶</a></h3>
-<p>Install Python 3.6.x See: <a class="reference external" href="https://www.python.org/downloads/">Downloads</a></p>
-<p>Follow the <a class="reference external" href="http://lxml.de/installation.html">instructions for your platform</a> for lxml installation.</p>
-<p>Now that that is settled, the rest is easy.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p><strong>Option 1:</strong></p>
-<p class="last">Use the Anaconda instructions above.</p>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p><strong>Option 2:</strong></p>
-<p>Just create a virtual environment for Python 3.6 or later, using your favorite tools such as conda or virtualenv.</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda create -p kunteksto <span class="nv">python</span><span class="o">=</span><span class="m">3</span>
-</pre></div>
-</div>
-<p>Activate your virtual environment and navigate to the <em>kunteksto</em> directory. Then install kunteksto using pip.</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pip install kunteksto
-</pre></div>
-</div>
-<p>After several minutes of installing all the cool stuff, you are ready to begin the tutorial.</p>
-<p class="last">Go to the <a class="reference internal" href="start.html#tutor"><span class="std std-ref">Tutorial/Demo</span></a></p>
-</div>
 </div>
 </div>
 <div class="section" id="update-to-a-new-version">
@@ -349,10 +304,14 @@ this is a good choice.</p>
 <dt>s3model</dt>
 <dd>Support files required for operation.<ul class="last">
 <li>s3model.owl - the core S3Model ontology.</li>
-<li>s3model_3_0_0.xsd - the reference model schema version 3.0.0</li>
-<li>s3model_3_0_0.rdf - the extracted semantics from the reference model schema version 3.0.0</li>
-<li>s3model_3_0_0.xsl - a stylesheet providing visualization in a browser of the reference model schema version 3.0.0</li>
-<li>dm-description.xsl - a stylesheet that provides for visualization in a browser of any S3Model data model. Just place it in the same directory with the dm-{uuid}.xsd file and open the schema in a browser.</li>
+<li>s3model_3_1_0.xsd - the reference model schema version 3.1.0</li>
+<li>s3model_3_1_0.rdf - the extracted semantics from the reference model schema version 3.1.0</li>
+<li>s3model_3_1_0.xsl - a stylesheet providing visualization in a browser of the reference model schema version 3.1.0</li>
+<li><dl class="first docutils">
+<dt>dm-description.xsl - a stylesheet that provides for visualization in a browser of any S3Model data model.</dt>
+<dd>Just place it in the same directory with the dm-{uuid}.xsd file and open the schema in a browser.</dd>
+</dl>
+</li>
 </ul>
 </dd>
 </dl>
@@ -404,7 +363,7 @@ this is a good choice.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, Data Insights, Inc.
-      Last updated on 2018-11-25 07:14.
+      Last updated on 2018-11-25 07:24.
 
     </p>
   </div> 
