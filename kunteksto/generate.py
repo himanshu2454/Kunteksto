@@ -1365,7 +1365,8 @@ def make_data(schema, db_file, infile, delim, outdir, connRDF, connXML, config):
                     for err in log:
                         if err.line not in used_lines:
                             used_lines.append(err.line)
-                            print('\nPlease check the validation log for invalid values.\n\n')
+                            print('\nPlease check the validation log for invalid values.')
+                            print(str(outdir + os.path.sep + filePrefix) + '_validation_log.csv\n\n')
                             xmlStr = injectEV(xmlStr, err.type, err.message, err.path)
                             rdfStr += '  <rdfs:Class rdf:about="' + file_id + err.path + '">\n'
                             rdfStr += '    <rdfs:comment>' + repr(err.message) + '</rdfs:comment>\n'
@@ -1375,7 +1376,8 @@ def make_data(schema, db_file, infile, delim, outdir, connRDF, connXML, config):
                     rdfStr += '  </rdfs:Class>\n'
                     vlogStr = file_id + ',invalid,' + err.message + '\n'
                 except etree.LxmlError as e:
-                    print('\nPlease check the validation log for errors in parsing the file.\n\n')
+                    print('\nPlease check the validation log for errors in parsing the file.')
+                    print(str(outdir + os.path.sep + filePrefix) + '_validation_log.csv\n\n')
                     rdfStr += '  <rdfs:Class rdf:about="' + file_id + '">\n'
                     rdfStr += '    <rdf:type rdf:resource="https://www.s3model.com/ns/s3m/s3model/DataInstanceError"/>\n'
                     rdfStr += '  </rdfs:Class>\n'

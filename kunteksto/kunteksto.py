@@ -126,7 +126,6 @@ def datagen(modelName, outDB, infile, delim, outdir, config):
         modelRDF = modelName.split('.')[0]+'.rdf'
         with open(os.path.join(outdir,modelRDF), 'r') as rdffile:
             rdfStr=rdffile.read()         
-            print(rdfStr)
         
         if config['ALLEGROGRAPH']['status'].upper() == "ACTIVE":
             # Set environment variables for AllegroGraph

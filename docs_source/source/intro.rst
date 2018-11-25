@@ -7,25 +7,21 @@ Purpose
 
 **Kunteksto** (ˈkänˌteksto) [#f1]_ is a tool to translate simple CSV formatted data files into computable, 
 semantically enhanced knowledge representations. As a foundation for **crowdsourced**, *automated knowledge base construction*; 
-it provides a path for existing data sets to be used in conjunction with the emerging *datacentric, model first* approach in analysis, 
-general artificial intelligence, and decision support systems. This approach opens the door for the change to a *datacentric* world 
-as opposed to the *application-centric* one we have now. This new approach enables automatic interoperability avoiding the data 
-quality issues created through data cleaning and massaging. See :ref:`mlai`  
+it provides a path for existing data sets to be used in conjunction with the emerging *graph data, model first* approach in analysis, 
+general artificial intelligence (AGI), and decision support systems. This approach opens the door for the change to a *data-centric* 
+world as opposed to the *application-centric* one we have now. This new approach enables automatic interoperability avoiding the data 
+quality issues created through data migration, cleaning and massaging. See :ref:`mlai`  
 
-The importance of how this simplifies query and analysis capabilities and improves data quality is discussed in foundational `S3Model <https://datainsights.tech/S3Model>`_ documentation and references. However, detailed understanding of S3Model is not required to understand and use the power of Kunteksto. Additional information on the datacentric movement can be found below [#f2]_
+The importance of how this simplifies query and analysis capabilities and improves data quality is discussed in foundational 
+`S3Model <https://datainsights.tech/S3Model>`_ documentation and references. However, detailed understanding of S3Model is not 
+required to understand and use the power of Kunteksto. Additional information on the datacentric movement can be found below [#f2]_
 
 Target Audience
 ---------------
-Kunteksto design is based on the ability for *domain experts* from any field, with very little programming ability to quickly annotate data extracts to improve the usability of the data.  Data engineers and data scientists can also benefit from Kunteksto in the same ways as domain experts. It just takes a bit more research to discover the semantics that the original domain experts usually have at hand.
-
-Requirements
-============
-
-- Python 3.6 or later. See: `Downloads <https://www.python.org/downloads/>`_  
-- `SQLiteDB <https://www.sqlite.org/index.html>`_ is used by Kunteksto and we recommend the `SQLiteDB Browser <http://sqlitebrowser.org/>`_
-   to allow external editing of the database. See the `tutorials <https://www.guru99.com/download-install-sqlite.html>`_ on using SQLiteDB.
-   
-- Python and SQLiteDB are both installed with Anaconda. 
+Kunteksto design is based on the ability for *domain experts* from any field, with very little programming ability to quickly 
+annotate data extracts to improve the usability of the data.  Data engineers and data scientists can also benefit from Kunteksto 
+in the same ways as domain experts. It just takes a bit more research to discover the semantics that the original domain experts 
+usually have at hand.
 
 .. _install:
 
@@ -37,7 +33,7 @@ Cross-Platform on Anaconda
 
 Anaconda is the **preferred environment** for a tool like Kunteksto because it integrates easily with systems for domain experts, data engineers, and data scientists.
 
-- `Download and install <https://www.continuum.io/downloads>`_ Anaconda Python 3.6+ for your platform.
+- `Download and install <https://www.continuum.io/downloads>`_ Anaconda Python 3.7+ for your platform.
 - More detailed Anaconda instructions are `here <https://docs.continuum.io/anaconda/install/>`_  if you prefer.
 
 .. note::
@@ -93,57 +89,6 @@ These quick steps create a virtual environment in the subdirectory *kunteksto*. 
 The last step is to do the :ref:`tutor`
 
 
-
-Windows
--------
-
-Details are coming soon. Preferably use the Anaconda instructions above. 
-
-
-Mac OSX
--------
-Follow the `instructions for your platform <http://lxml.de/installation.html>`_ for lxml installation. 
-
-Details are coming soon. Preferably use the Anaconda instructions above. 
-
-
-Linux
------
-
-Install Python 3.6.x See: `Downloads <https://www.python.org/downloads/>`_ 
-
-Follow the `instructions for your platform <http://lxml.de/installation.html>`_ for lxml installation. 
-
-Now that that is settled, the rest is easy.  
-
-.. note::
-
-    **Option 1:**
-
-    Use the Anaconda instructions above. 
-
-.. note::
-
-    **Option 2:**
-
-    Just create a virtual environment for Python 3.6 or later, using your favorite tools such as conda or virtualenv. 
-
-    .. code-block:: sh
-
-        conda create -p kunteksto python=3
-
-    Activate your virtual environment and navigate to the *kunteksto* directory. Then install kunteksto using pip.
-
-    .. code-block:: sh
-     
-        pip install kunteksto
-
-    After several minutes of installing all the cool stuff, you are ready to begin the tutorial. 
-
-
-    Go to the :ref:`tutor` 
-
-
 Update to a New Version
 =======================
 
@@ -170,12 +115,11 @@ Files
 - README.md
     A brief explanation of Kunteksto's purpose and links to background information.
 
-- kunteksto.conf
-    This file is the required configuration file for Kunteksto.
-
 - LICENSE.txt
     A copy of the copyright notice and license.
 
+- kunteksto.conf
+    This file is the required configuration file for Kunteksto.
 
 Directories
 -----------
@@ -193,11 +137,11 @@ Directories
     Support files required for operation.
 
     - s3model.owl - the core S3Model ontology.
-    - s3model_3_0_0.xsd - the reference model schema version 3.0.0
-    - s3model_3_0_0.rdf - the extracted semantics from the reference model schema version 3.0.0
-    - s3model_3_0_0.xsl - a stylesheet providing visualization in a browser of the reference model schema version 3.0.0
-    - dm-description.xsl - a stylesheet that provides for visualization in a browser of any S3Model data model. Just place it in the same directory with the dm-{uuid}.xsd file and open the schema in a browser. 
-
+    - s3model_3_1_0.xsd - the reference model schema version 3.1.0
+    - s3model_3_1_0.rdf - the extracted semantics from the reference model schema version 3.1.0
+    - s3model_3_1_0.xsl - a stylesheet providing visualization in a browser of the reference model schema version 3.1.0
+    - dm-description.xsl - a stylesheet that provides for visualization in a browser of any S3Model data model. 
+        Just place it in the same directory with the dm-{uuid}.xsd file and open the schema in a browser. 
 
 
 .. rubric:: Footnotes
