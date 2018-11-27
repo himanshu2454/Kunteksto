@@ -73,15 +73,17 @@ For this tutorial, you start Kunteksto in prompt mode. These mandatory items wil
     kunteksto
 
 
-- At the **Enter a valid mode:** prompt, type *all*
+- At the *Enter a valid mode:* prompt, type **all**
 
-- At the **Enter a valid CSV file:** prompt, type *example_data/Demo.csv* 
+- At the *Enter a valid CSV file:* prompt, type **example_data/Demo.csv** 
 
-- Kunteksto analyzes the input file and creates a results database of this CSV file named *output/Demo/Demo.db*  
+
+Kunteksto analyzes the input file and creates a results database of this CSV file named *output/Demo/Demo.db*  
+
 
 - The Model Metadata window opens.
 
-- This image depicts the view of the Model Metadata and below that are descriptions of each of the fields to be edited. Kunteksto prefills the fields with fake data so that you are not staring at blank input boxes. 
+The image below depicts the view of the Model Metadata and below that are descriptions of each of the fields to be edited. Kunteksto prefills the fields with fake data so that you are not staring at blank input boxes. You will modify these fields to relect the actual data that you are processing.
 
 
 .. image:: _images/edit_model.png
@@ -130,11 +132,11 @@ Notice that some of this information can be obtained from the PDF. For other ite
 
 
 
-- Each record has some fields that allow you to describe more about your data. You can cycle through the records with the *Next* and *Previous* buttons. When you make changes, use the *Save* button to record those changes. Once the changes are written to the database, a **Saved** dialog box appears. 
+- Each record has some fields that allow you to describe more about your data. You can cycle through the records with the *Next* and *Previous* buttons. When you make changes to a record, use the *Save* button to record those changes. Once the changes are written to the database, a **Saved** dialog box appears. 
 
 .. warning::
 
-    If you navigate away from a record without saving it, those changes are lost. Use the *Previous* button and re-enter the information.
+    **If you navigate away from a record without saving it, those changes are lost.** Use the *Previous* button and re-enter the information.
 
 - Though some fields are pre-filled, it is only a guess and may not be accurate.
 
