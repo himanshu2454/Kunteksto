@@ -36,13 +36,13 @@ def is_valid_decimal(s):
     else:
         return True
     
-    
+# add single and double quotes to xml.sax.saxutils.escape
 xml_escape_table = {
     '"': "&quot;",
     "'": "&apos;"
 }
 
-xml_unescape_table = {v:k for k, v in xml_escape_table.items()}
+xml_unescape_table = {v: k for k, v in xml_escape_table.items()}
 
 def xml_escape(text):
     return escape(text, xml_escape_table)
@@ -608,7 +608,7 @@ def xdstring(data):
         if data[5]:
             enums = data[5].split('|')
             for e in enums:
-                xdstr += padding.rjust(indent + 12) + '<xs:enumeration value="' + e.strip() + '"/>\n'
+                xdstr += padding.rjust(indent + 12) + '<xs:enumeration value="' + xml_escape(e.strip()) + '"/>\n'
         else:
             if is_valid_decimal(data[3]):
                 xdstr += padding.rjust(indent + 12) + '<xs:minLength value="' + str(int(data[3])).strip() + '"/>\n'
@@ -1029,8 +1029,9 @@ def make_model(db_file, outdir):
     try:
         xmlschema_doc = etree.parse(model)
     except:
-        print('Model Error', "There was an error in generating the schema. Please re-edit the database and look for errors.\n You probably have undefined namespaces or improperly formatted predicate-object pair.")
-        return None
+        print('Model Error', "There was an error in generating the schema. Please re-edit the database and look for errors.\n You probably have undefined namespaces or improperly formatted predicate-object pair.\n")
+        print('Try: kunteksto -m editdb -db ' + db_file + '\n\n')
+        sys.exit(1)
 
     xsd_rdf(model, outdir, dmID, db_file)
 
@@ -1178,7 +1179,7 @@ def xml_string(row, data):
 def rdf_string(row, data):
     rstr = '      <rdfs:Class rdf:about="s3m:ms-' + row[15].strip() + '">\n'
     rstr += '        <rdfs:label>' + xml_escape(row[1].strip()) + '</rdfs:label>\n'
-    rstr += '        <rdfs:value rdf:datatype="xs:string">' + data[row[0].strip()] + '</rdfs:value>\n'
+    rstr += '        <rdfs:value rdf:datatype="xs:string">' + xml_escape(data[row[0].strip()]) + '</rdfs:value>\n'
     rstr += '      </rdfs:Class>\n'
     return(rstr)
 
@@ -1342,8 +1343,8 @@ def make_data(schema, db_file, infile, delim, outdir, connRDF, connXML, config):
                         xmlStr += xml_temporal(row, data)
                         rdfStr += rdf_temporal(row, data)
                     elif row[2].lower() == 'string':
-                        xmlStr += xml_string(row, data)
-                        rdfStr += rdf_string(row, data)
+                        xmlStr += xml_string(row, xml_escape(data))
+                        rdfStr += rdf_string(row, xml_escape(data))
                     else:
                         raise ValueError("Invalid datatype")
     
