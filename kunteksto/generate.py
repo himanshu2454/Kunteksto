@@ -59,7 +59,7 @@ except:
 # Additional namespace abbreviations
 NSDEF = {}
 config = configparser.ConfigParser()
-config.read('kunteksto.conf')
+config.read('../kunteksto.conf')
 
 for abbrev in config['NAMESPACES']:
     NSDEF[abbrev] = config['NAMESPACES'][abbrev].strip()

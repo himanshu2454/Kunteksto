@@ -1,0 +1,20 @@
+<html>
+    <head>
+        <link rel="shortcut icon" href="images/datainsights.ico">
+		<title>Kunteksto</title>
+		<meta charset="utf-8" />
+
+    </head>
+    <body bgcolor='ivory'>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <ul class=flashes>
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+    {% endwith %}
+    {% block body %}{% endblock %}
+    </body>
+</html>

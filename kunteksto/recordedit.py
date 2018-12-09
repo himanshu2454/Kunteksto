@@ -147,13 +147,13 @@ class EntryWindow(tk.Frame):
         
         # Add buttons to navigate database.(
         previous_button = tk.Button(self, text='Previous', width=8, command=self.prev_rec)
-        previous_button.grid(row= 25, column=0, sticky=E, pady=10, padx=1)
+        previous_button.grid(row=25, column=2, sticky=E, pady=10, padx=1)
         next_button = tk.Button(self, text='Next', width=8, command=self.next_rec)
-        next_button.grid(row= 25, column=40, sticky=E, pady=10, padx=1)
-        save_button = tk.Button(self, text='Save', width=8, command=self.save_rec)
-        save_button.grid(row= 27, column=0, sticky=E, pady=10, padx=1)
+        next_button.grid(row=25, column=38, sticky=E, pady=10, padx=1)
+        # save_button = tk.Button(self, text='Save', width=8, command=self.save_rec)
+        # save_button.grid(row= 27, column=0, sticky=E, pady=10, padx=1)
         exit_button = tk.Button(self, text='Exit', width=8, command=self.quit)
-        exit_button.grid(row= 27, column=40, sticky=E, pady=10, padx=1)
+        exit_button.grid(row=27, column=18, sticky=E, pady=10, padx=1)
         
     def update_values(self):
         self.header = self.records[self.recndx][0]
@@ -178,6 +178,7 @@ class EntryWindow(tk.Frame):
         
 
     def prev_rec(self):
+        self.save_rec()
         if self.recndx > 0:
             self.recndx -= 1
         elif self.recndx == 0:
@@ -186,6 +187,7 @@ class EntryWindow(tk.Frame):
         self.update_values()
 
     def next_rec(self):
+        self.save_rec()
         if self.recndx < self.numrecs - 1:
             self.recndx += 1
         elif self.recndx == self.numrecs - 1:
@@ -237,5 +239,11 @@ class EntryWindow(tk.Frame):
             self.records[self.recndx][14] = self.units.get()
             self.records[self.recndx][7] = self.min_exc_val.get()
             self.records[self.recndx][8] = self.max_exc_val.get()
-            
-            messagebox.showinfo(self.database, "Record Saved")
+
+
+        top = Toplevel()
+        top.title('Saved')
+        Message(top, text="Record was saved.", padx=20, pady=20).pack()
+        top.after(2000, top.destroy)
+
+            # messagebox.showinfo(self.database, "Record Saved")

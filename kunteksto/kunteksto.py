@@ -3,190 +3,170 @@ Main entry point for the Kunteksto application.
 """
 import sys
 import os
-from subprocess import run
+import functools
+
 import click
 import configparser
-import sqlite3
-import requests
-from requests.auth import HTTPDigestAuth
+from flask import Flask, url_for
+from flask_sqlalchemy import SQLAlchemy
 
-from .analyze  import analyze
-from .generate  import make_model, make_data
-from .catalogmgr import  get_catalog
-from .modeledit import edit_model
-from .recordedit import edit_record
+from flask import Blueprint, flash, g, redirect, render_template, request, session, url_for
 
-@click.command()
-@click.option('--mode', '-m', type=click.Choice(['all', 'editdb', 'gendata', 'genmodel']), help="See the documentation. If you don't know then use: all", prompt="Enter a valid mode")
-@click.option('--infile', '-i', help='Full path and filename of the input CSV file.', prompt="Enter a valid CSV file")
-@click.option('--dbfile', '-db', help='Full path and filename of the existing model database file.', prompt=False)
-@click.option('--outdir', '-o', help='Full path to the output directory for writing the database and other files. Overrides the config file default value.')
-@click.option('--delim', '-d', type=click.Choice([',', ';', ':', '|', '$']), help=' Overrides the config file default value.')
-@click.option('--analyzelevel', '-a', type=click.Choice(['simple', 'full']), help=' Overrides the config file default value.')
-def main(mode, infile, outdir, delim, analyzelevel, dbfile):
-    """Kunteksto (ˈkänˌteksto) adds validation and semantics to your data."""
+from flask_admin import Admin, form
+from flask_admin.form import rules
+from flask_admin.contrib import sqla
+from flask_admin.contrib.sqla import ModelView
+from flask.cli import with_appcontext
 
-    # Setup config info based on the current working directory
-    config = configparser.ConfigParser()
-    config.read('kunteksto.conf')
-    print("\n\nKunteksto version: " + config['SYSTEM']['version'] + " using S3Model RM: " + config['SYSTEM']['rmversion'] + "\n\n")
+from wtforms import fields, widgets
+from sqlalchemy.event import listens_for
+from jinja2 import Markup
 
-    # override the delimiter and/or analyzelevel if provided
-    if not delim:
-        delim = config['KUNTEKSTO']['delim']
-    if not analyzelevel:
-        analyzelevel = config['KUNTEKSTO']['analyzelevel']
+from .analyze import analyze
+
+# Setup config info based on the current working directory
+config = configparser.ConfigParser()
+config.read('../kunteksto.conf')
+print("\n\nKunteksto version: " + config['SYSTEM']['version'] + " using S3Model RM: " + config['SYSTEM']['rmversion'] + "\n\n")
+
+
+app = Flask(__name__)
+
+# set optional bootswatch theme https://bootswatch.com/3/yeti/
+app.config['FLASK_ADMIN_SWATCH'] = config['KUNTEKSTO']['theme']
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///kunteksto.db'
+db = SQLAlchemy(app)
+
+# Create directory for file fields to use
+file_path = os.path.join(os.path.dirname(__file__), 'csvfiles')
+try:
+    os.mkdir(file_path)
+except OSError:
+    pass
+
+
+# Create models
+class File(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.Unicode(64))
+    path = db.Column(db.Unicode(128))
+
+    def __unicode__(self):
+        return self.name
+
+
+class Datamodel(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    file_id = db.Column(db.Integer, db.ForeignKey('file.id'))
+    title = db.Column('Title', db.String(250), unique=True, nullable=False)
+    description = db.Column('Description', db.Text, unique=False, nullable=False)
+    copyright = db.Column('Copyright', db.String(250), unique=False, nullable=True)
+    author = db.Column('Author', db.String(250), unique=False, nullable=False)
+    definition_url = db.Column('Defining URL', db.String(500), unique=False, nullable=False)
+    dmid = db.Column('Data Model ID', db.String(40), unique=True, nullable=False)
+    dataid = db.Column('Data Cluster ID', db.String(40), unique=True, nullable=False)
+    components = db.relationship('Component', backref='datamodel', lazy=True)
     
-    if outdir is None:
-        if config['KUNTEKSTO']['outdir'].lower() in ['output', 'none']:
-            config['KUNTEKSTO']['outdir'] = 'output'
-            outdir = os.getcwd() + os.path.sep + config['KUNTEKSTO']['outdir']
-        else:
-            print("You must supply a writable output directory.")
-            exit(code=1)
+    def __repr__(self):
+        return '<Data Model: %r>' % self.title
+    
 
-    if not infile:
-        print("You must supply a readable CSV input file.")
-        exit(code=1)
+class Component(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    model_id = db.Column(db.Integer, db.ForeignKey('datamodel.id'))
+    model = db.relationship("Datamodel", back_populates="components")
+    header = db.Column('CSV Column Header', db.String(100), unique=False, nullable=False)
+    label = db.Column('Label Value', db.String(250), unique=False, nullable=False)
+    datatype = db.Column('Datatype', db.String(10), unique=False, nullable=False)
+    min_len = db.Column('Minimum Length', db.Integer, nullable=True)
+    max_len = db.Column('Maximum Length', db.Integer, nullable=True)
+    choices = db.Column('String Enumerations', db.Text, unique=False, nullable=True)
+    regex = db.Column('Regular Expression', db.String(100), unique=False, nullable=True)
+    min_incl = db.Column('Minimum Value (Inclusive)', db.String(100), unique=False, nullable=True)
+    max_incl = db.Column('Maximum Value (Inclusive)', db.String(100), unique=False, nullable=True)
+    min_excl = db.Column('Minimum Value (Exclusive)', db.String(100), unique=False, nullable=True)
+    max_excl = db.Column('Maximum Value (Exclusive)', db.String(100), unique=False, nullable=True)
+    description = db.Column('Description', db.Text, unique=False, nullable=False)
+    definition_url = db.Column('Defining URL', db.String(500), unique=False, nullable=False)
+    pred_obj = db.Column('List of predicate/object pairs', db.Text, unique=False, nullable=True)
+    def_text = db.Column('Default Text', db.Text, unique=False, nullable=True)
+    def_num = db.Column('Default Number', db.String(100), unique=False, nullable=True)
+    units = db.Column('Units', db.String(50), unique=False, nullable=True)
+    mcid = db.Column('Component ID', db.String(40), unique=True, nullable=False)
+    adid = db.Column('Adapter ID', db.String(40), unique=True, nullable=False)
 
-    if not mode:
-        click.echo("You must supply a mode.")
-        exit(code=1)
-        
-    elif mode == 'all':
-        dname, fname = os.path.split(infile)
-        outdir += os.path.sep + fname[:fname.index('.')] 
-        prjname = fname[:fname.index('.')]
-        get_catalog(outdir, prjname) # Set the environment variable XML_CATALOG_FILES for lxml
-        if not dbfile:
-            outDB = analyze(infile, delim, analyzelevel, outdir)
-            edit_model(outDB)
-            edit_record(outDB)
-            modelName = make_model(outDB, outdir)
-            datagen(modelName, outDB, infile, delim, outdir, config)
-        else:
-            outDB = dbfile
-            modelName = make_model(outDB, outdir)
-            datagen(modelName, outDB, infile, delim, outdir, config)
-            
-        
-            
-    elif mode == 'genmodel':
-        if not dbfile:
-            click.echo("You must supply a full path and name of an existing model database.")
-            exit(code=1)
-            
-        dname, fname = os.path.split(dbfile)
-        prjname = fname[:fname.index('.')]
-        dbName =  prjname + '.db'
-        get_catalog(outdir, prjname)        
-        conn = sqlite3.connect(dbfile)
-        c = conn.cursor()
-        c.execute("SELECT * FROM model")
-        row = c.fetchone()
-        dmID = row[5].strip()
-        outdir = outdir + os.path.sep + prjname        
-        modelName = outdir + '/dm-' + dmID + '.xsd'
-        make_model(dbfile, outdir)
+    def __repr__(self):
+        return '<Component: %r>' % self.label
 
-    elif mode == 'gendata':
-        if not dbfile:
-            click.echo("You must supply a full path and name of an existing model database.")
-            exit(code=1)
-            
-        dname, fname = os.path.split(dbfile)
-        prjname = fname[:fname.index('.')]
-        dbName =  prjname + '.db'
-        get_catalog(outdir, prjname)        
-        conn = sqlite3.connect(dbfile)
-        c = conn.cursor()
-        c.execute("SELECT * FROM model")
-        row = c.fetchone()
-        dmID = row[5].strip()
-        outdir = outdir + os.path.sep + prjname        
-        modelName = outdir + '/dm-' + dmID + '.xsd'
-        datagen(modelName, dbfile, infile, delim, outdir, config)
-        
-    elif mode == 'editdb':
-        dname, fname = os.path.split(infile)
-        dbName = fname[:fname.index('.')] + '.db'
-        db_file = dbfile
-        edit_model(db_file)
-        edit_record(db_file)
-                
-    return(True)
 
-def datagen(modelName, outDB, infile, delim, outdir, config):
+
+admin = Admin(app, name='Kunteksto', template_mode='bootstrap3')
+
+# Add administrative views here
+
+admin.add_view(ModelView(Datamodel, db.session))
+admin.add_view(ModelView(Component, db.session))
+
+
+# Create DB
+db.create_all()
+
+# Commandline options
+
+
+@click.command('genmodel')
+@click.argument('model_id')
+def genmodel(model_id):
     """
-    Generate XML, JSON and RDF data from the CSV. 
+    Generate a model based on model_id from the commandline.
     """
-    # open a connection to the RDF store if one is defined and RDF is to be generated.  
-    if config['KUNTEKSTO']['rdf']:
-        # load the model RDF
-        modelRDF = modelName.split('.')[0]+'.rdf'
-        with open(os.path.join(outdir,modelRDF), 'r') as rdffile:
-            rdfStr=rdffile.read()         
-        
-        if config['ALLEGROGRAPH']['status'].upper() == "ACTIVE":
-            # Set environment variables for AllegroGraph
-            os.environ['AGRAPH_HOST'] = config['ALLEGROGRAPH']['host']
-            os.environ['AGRAPH_PORT'] = config['ALLEGROGRAPH']['port']
-            os.environ['AGRAPH_USER'] = config['ALLEGROGRAPH']['user']
-            os.environ['AGRAPH_PASSWORD'] = config['ALLEGROGRAPH']['password']            
-            try:
-                from franz.openrdf.connect import ag_connect
-                connRDF = ag_connect(config['ALLEGROGRAPH']['repo'], host=os.environ.get('AGRAPH_HOST'), port=os.environ.get('AGRAPH_PORT'),  user=os.environ.get('AGRAPH_USER'), password=os.environ.get('AGRAPH_PASSWORD'))
-                connRDF.addData(rdfStr, rdf_format=RDFFormat.RDFXML, base_uri=None, context=None)
-                print('Current Kunteksto RDF Repository Size: ', connRDF.size(), '\n')
-                print('AllegroGraph connections are okay.\n\n')
-            except: 
-                connRDF = None
-                print("Unexpected error: ", sys.exc_info()[0])
-                print('RDF Connection Error', 'Could not create connection to AllegroGraph.')
-        else:
-            connRDF = None
-        if config['MARKLOGIC']['status'] == 'ACTIVE' and config['MARKLOGIC']['loadrdf'].lower() == 'true':
-            dbname = config['MARKLOGIC']['dbname']
-            hostip = config['MARKLOGIC']['hostip']
-            port = config['MARKLOGIC']['port']
-            user = config['MARKLOGIC']['user']
-            pw = config['MARKLOGIC']['password']            
-            headers = {"Content-Type": "application/xml", 'user-agent': 'Kunteksto'}
-            url = 'http://' + hostip + ':' + port + '/v1/documents?uri=/'+ modelRDF
-            r = requests.put(url, auth=HTTPDigestAuth(user, pw), headers=headers, data=rdfStr)                                
-            
-    # open a connection to the XML DB if one is defined and XML is to be generated.
-    if config['KUNTEKSTO']['xml']:
-        if config['BASEX']['status'].upper() == "ACTIVE":
-            from BaseXClient import BaseXClient
-            try:
-                from BaseXClient import BaseXClient
-                connXML = BaseXClient.Session(config['BASEX']['host'], int(config['BASEX']['port']), config['BASEX']['user'], config['BASEX']['password'])
-                connXML.execute("create db " + config['BASEX']['dbname'])
-                print("BaseX ", connXML.info())
-            except: 
-                connXML = None
-                print("Unexpected error: ", sys.exc_info()[0])
-                print('XML Connection Error', 'Could not create connection to BaseX.')
-        else:
-            connXML = None
+    click.echo('Generate the model: ' + model_id)
 
-    # generate the data
-    if modelName:
-        make_data(modelName, outDB, infile,  delim, outdir, connRDF, connXML, config)
-
-        if connRDF:
-            connRDF.close()
-        if connXML:
-            connXML.close()
-        print('\n\nData Generation: ', 'Completed.')
-
-    else:
-        print('\n\nProcedure Error: ', 'Missing model DB or no selected output directory.')
-
-    return(True)
+@click.command('gendata')
+@click.argument('model_id')
+@click.option('--infile', '-i', help='Full path and filename of the input CSV file.', prompt="Enter a valid CSV file")
+def gendata(model_id, infile):
+    """
+    Generate data from a CSV file (infile) based on a model (model_id) from the commandline.
+    """
+    click.echo('Generate data from ' + infile + ' based on the model: ' + model_id)
 
 
-if __name__ == '__main__':
-    print('\n Kunteksto started ...\n\n')
-    main()
+app.cli.add_command(genmodel)
+app.cli.add_command(gendata)
+
+# Routing
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/upload_csv', methods=('GET', 'POST'))
+def upload_csv():
+    """
+    Upload a new CSV file for analysis.
+    """
+
+    delim = config['KUNTEKSTO']['delim']
+    analyzelevel = config['KUNTEKSTO']['analyzelevel']
+    outdir = config['KUNTEKSTO']['outdir']
+    
+    if request.method == 'POST':
+        infile = request.form['csvfile']
+        db = get_db()
+        error = None
+
+        if not infile:
+            error = 'A CSV file is required.'
+
+        if error is None:
+            analyze(infile, delim, analyzelevel, outdir)
+
+        flash(error)
+
+    return render_template('admin/index.html')
+
+
+
+if __name__ == "__main__":
+    app.run()

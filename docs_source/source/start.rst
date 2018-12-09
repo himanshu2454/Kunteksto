@@ -134,10 +134,6 @@ Notice that some of this information can be obtained from the PDF. For other ite
 
 - Each record has some fields that allow you to describe more about your data. You can cycle through the records with the *Next* and *Previous* buttons. When you make changes to a record, use the *Save* button to record those changes. Once the changes are written to the database, a **Saved** dialog box appears. 
 
-.. warning::
-
-    **If you navigate away from a record without saving it, those changes are lost.** Use the *Previous* button and re-enter the information.
-
 - Though some fields are pre-filled, it is only a guess and may not be accurate.
 
 - It is up to you to be as accurate as possible in describing your data to improve quality and usability. Some fields are not used with all data types. See the description of each field below.
