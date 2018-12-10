@@ -5,7 +5,7 @@
 
     <p>Kunteksto is our open source tool to allow subject matter experts and data creators to communicate the meaning of the data they share, as well as to transfer validation capabilities to secondary data users in a way that is machine computable and transparent to those users.</p>
 
-    <p>It allows users to take standard CSV files and add context using any combination of <a href="http://lov.okfn.org/dataset/lov/" target="_blank">Linked Open Vocabularies</a>, domain specific vocabularies e.g. <a ref="https://bioportal.bioontology.org/" target="_blank">Bio-medical ontologies</a> and local ontologies to their data to improve analysis and richness of information for use in Advanced Analytics and Artificial General Intelligence (AGI) applications.</p>
+    <p>It allows users to take standard CSV files and add context using any combination of <a href="http://lov.okfn.org/dataset/lov/" target="_blank">Linked Open Vocabularies</a>, domain specific vocabularies e.g. <a href="https://bioportal.bioontology.org/" target="_blank">Bio-medical ontologies</a> and local ontologies to their data to improve analysis and richness of information for use in Advanced Analytics and Artificial General Intelligence (AGI) applications.</p>
 
     <p>After conversion the data is then exported to the filesystem or sent directly to a datastore as any combination of XML, RDF and JSON.</p>
 
@@ -13,4 +13,7 @@
 <hr/>
 Go to the <a href="http://localhost:7659/admin">Administration</a> page to create and edit models.
 {% endblock %}
- 
+{% block tail %}
+<hr/>
+<p align='center'>Copyright; 2018 Data Insights, Inc.</p>
+{% endblock %}
