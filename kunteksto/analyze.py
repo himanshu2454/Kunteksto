@@ -49,6 +49,8 @@ import argparse
 from subprocess import run
 import click
 
+from kunteksto import db
+
 def checkType(h, dataDict):
     """ test each data item from a column. if one is not a type, turn off that type. 
     If the type is an int or a float then the min/max is set as inclusive. Exclusive is never set."""

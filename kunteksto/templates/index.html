@@ -11,7 +11,16 @@
 
     <p>See the Kunteksto <a href="https://datainsights.tech/Kunteksto/index.html" target="_blank">documentation</a> for more information.</p>
 <hr/>
-Go to the <a href="http://localhost:7659/admin">Administration</a> page to create and edit models.
+<p align='center'>To being analysis of a new CSV file use the <b>Browse</b> to select it. Then click the <b>Analyze</b> button</p>
+<div align='center'>
+<form>
+  <input type="file" name="csvFile"/>
+  <button type="button">Analyze</button>
+</form>
+</div>
+<p align='center'>The analysis process can take from a few seconds to several minutes. The model metadata page will open when analysis is complete.</p>
+<hr/>
+Go to the <a href="http://localhost:7659/admin">Administration</a> page to edit models.
 {% endblock %}
 {% block tail %}
 <hr/>
