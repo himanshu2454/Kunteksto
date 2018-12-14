@@ -26,8 +26,8 @@ The future of deep learning https://blog.keras.io/the-future-of-deep-learning.ht
 - Install Anaconda (Python 3.7+)
 - Open a terminal.
 - Clone the repository.
-- Create the virtual environment: $ conda env create -p Kunteksto -f Kunteksto/environment.yml
-- Activate the environment.
+- Create the virtual environment: $ conda env create -f Kunteksto/environment.yml
+- Activate the environment according to the instructions displayed in the terminal.
 - Change to the Kunteksto directory: $ cd Kunteksto/kunteksto
 - Run the Flask dev server: $ flask run
 - In a browser got to: http://127.0.0.1:7659/ 
