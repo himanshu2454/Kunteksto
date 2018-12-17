@@ -49,7 +49,6 @@ import argparse
 from subprocess import run
 import click
 
-from kunteksto import db
 
 def checkType(h, dataDict):
     """ test each data item from a column. if one is not a type, turn off that type. 
@@ -117,31 +116,12 @@ def checkType(h, dataDict):
 
     return(dt, maxincval, minincval, h)
 
-def analyze(csvInput, delim, level, out_dir):
+def process(csvInput, delim, level, out_dir):
     """
     Load and analyze the CSV file.
-    Create a database used to describe the data.
     """
 
-    dname, fname = os.path.split(csvInput)
-    prjname = fname[:fname.index('.')]
-    os.makedirs(out_dir, exist_ok=True)    
-    dbName =  prjname + '.db'
-    db_file = out_dir + os.path.sep + dbName
-    
-    # if this database already exists then delete it
-    try:
-        os.remove(db_file)
-    except OSError:
-        pass
 
-    # create the database with the two tables.
-    conn = sqlite3.connect(db_file)
-    c = conn.cursor()
-    c.execute("""CREATE TABLE "model" ("title" CHAR(250), "description" TEXT, "copyright" CHAR(250), "author" CHAR(250), "definition_url" CHAR(500), "dmid" CHAR(40), "entryid" CHAR(40), "dataid" CHAR(40))""")
-    c.execute("""CREATE TABLE "record"  (header  char(100), label char(250), datatype char(10), min_len char(100), max_len char(100), "choices" TEXT, "regex" CHAR(250), "min_inc_val" char(100), "max_inc_val" char(100), "description" TEXT, "definition_url" CHAR(500), "pred_obj_list" TEXT, "def_txt_value" TEXT, "def_num_value" char(100), "units" CHAR(50), "mcid" CHAR(40), "adid" CHAR(40), "min_exc_val" char(100), "max_exc_val" char(100))""")
-    c.execute("""CREATE INDEX header_idx on record (header)""")
-    
     # create the initial data for the record table.
     data = []
     with open(csvInput) as csvfile:
@@ -150,7 +130,7 @@ def analyze(csvInput, delim, level, out_dir):
             mcID = str(cuid())  # model component
             adID = str(cuid())   # adapter
             label = 'The ' + h.replace('_', ' ')
-            data.append((h, label, 'String', '', '', '', '', '', '', '', '', '', '', '', '', mcID, adID,'',''))
+            data.append((h, label, 'String', '', '', '', '', '', '', '', '', '', '', '', '', mcID, adID, '', ''))
 
     c = conn.cursor()
     c.executemany(

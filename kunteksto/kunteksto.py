@@ -22,7 +22,7 @@ from wtforms import fields, widgets
 from sqlalchemy.event import listens_for
 from jinja2 import Markup
 
-from .analyze import analyze
+from .analyze import process
 
 # Setup config info based on the current working directory
 config = configparser.ConfigParser()
@@ -47,18 +47,9 @@ except OSError:
 
 
 # Create models
-class File(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.Unicode(64))
-    path = db.Column(db.Unicode(128))
-
-    def __unicode__(self):
-        return self.name
-
-
 class Datamodel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    file_id = db.Column(db.Integer, db.ForeignKey('file.id'))
+    project = db.Column('Project', db.String(50), unique=True, nullable=False)
     title = db.Column('Title', db.String(250), unique=True, nullable=False)
     description = db.Column('Description', db.Text, unique=False, nullable=False)
     copyright = db.Column('Copyright', db.String(250), unique=False, nullable=True)
@@ -100,7 +91,6 @@ class Component(db.Model):
         return '<Component: %r>' % self.label
 
 
-
 admin = Admin(app, name='Kunteksto', template_mode='bootstrap3')
 
 # Add administrative views here
@@ -113,26 +103,37 @@ admin.add_view(ModelView(Component, db.session))
 db.create_all()
 
 # Commandline options
+@click.command('analyze')
+@click.argument('project')
+@click.option('--infile', '-i', help='Full path and filename of the input CSV file.', prompt="Enter a valid CSV file")
+def analyze(project, infile):
+    """
+    Analyze a CSV file (infile) to create a model from the commandline.
+    You must include a unique PROJECT.
+    """
+    click.echo('Analyze ' + infile + ' for the project: ' + model_id)
 
 
 @click.command('genmodel')
-@click.argument('model_id')
-def genmodel(model_id):
+@click.argument('project')
+def genmodel(project):
     """
-    Generate a model based on model_id from the commandline.
+    Generate a model based on PROJECT from the commandline. Note that this creates a new model. 
+    You should remove any previous models based on this PROJECT. 
     """
-    click.echo('Generate the model: ' + model_id)
+    click.echo('Generate a model for: ' + project)
 
 @click.command('gendata')
-@click.argument('model_id')
+@click.argument('project')
 @click.option('--infile', '-i', help='Full path and filename of the input CSV file.', prompt="Enter a valid CSV file")
-def gendata(model_id, infile):
+def gendata(project, infile):
     """
-    Generate data from a CSV file (infile) based on a model (model_id) from the commandline.
+    Generate data from a CSV file (infile) based on a model (project) from the commandline.
     """
-    click.echo('Generate data from ' + infile + ' based on the model: ' + model_id)
+    click.echo('Generate data from ' + infile + ' based on the model: ' + project)
 
 
+app.cli.add_command(analyze)
 app.cli.add_command(genmodel)
 app.cli.add_command(gendata)
 

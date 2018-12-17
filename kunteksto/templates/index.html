@@ -11,14 +11,31 @@
 
     <p>See the Kunteksto <a href="https://datainsights.tech/Kunteksto/index.html" target="_blank">documentation</a> for more information.</p>
 <hr/>
-<p align='center'>To being analysis of a new CSV file use the <b>Browse</b> to select it. Then click the <b>Analyze</b> button</p>
-<div align='center'>
-<form>
-  <input type="file" name="csvFile"/>
-  <button type="button">Analyze</button>
-</form>
+<h3 align='center'>Operations</h3>
+<p align='center'><b>Four steps to awesome data</b></p>
+<p>Open a second terminal, change to the kunteksto direcory and <a href="https://datainsights.tech/Kunteksto/start.html#tutorial-steps" target="_blank">activate the virtual environment</a>. Follow the steps below.</p>
+<div>
+  <h3>1. Analyze</h3>
+  To being analysis of a new CSV file use the analyze option on the commandline:
+  <p><code> $flask analyze [projectname] [file.csv]</code></p>
+  <p>
+    <ul>
+      <li>[projectname] is a one word (50 characters max.) name for project that can be reused later to process data based on this same model.</li>
+      <li>[file.csv] is the full path and filename to the source data.</li>
+    </ul>
+  </p>
 </div>
-<p align='center'>The analysis process can take from a few seconds to several minutes. The model metadata page will open when analysis is complete.</p>
+<p>The analysis process can take from a few seconds to several minutes.</p>
+<div>
+  <h3>2. Edit the database</h3>
+  <p>You will use the <a href='http://127.0.0.1:7659/admin' target="_blank">administration interface</a> to edit the Datamodel and Component tables.</p>
+</div>
+<div>
+  <h3>3. Generate a model</h3>
+</div>
+<div>
+  <h3>4. Generate data</h3>
+</div>
 <hr/>
 Go to the <a href="http://localhost:7659/admin">Administration</a> page to edit models.
 {% endblock %}
