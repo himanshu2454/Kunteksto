@@ -6,22 +6,6 @@ __pycache__/
 # C extensions
 *.so
 
-bin/
-compiler_compat/
-conda-meta/
-doc/
-etc/
-include/
-lib/
-libexec/
-mkspecs/
-phrasebooks/
-qml/
-share/
-ssl/
-translations/
-var/
-x86_64-conda_cos6-linux-gnu/
 
 
 # Kunteksto 
