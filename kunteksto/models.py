@@ -1,4 +1,6 @@
-
+"""
+Models for Kunteksto.
+"""
 from flask_sqlalchemy import SQLAlchemy
 from . import app
 
@@ -6,6 +8,9 @@ db = SQLAlchemy(app)
 
 # Create models
 class Datamodel(db.Model):
+    """
+    The Datamodel model provides a location to store the model information and metadata about the model.
+    """
     id = db.Column(db.Integer, primary_key=True)
     project = db.Column('Project', db.String(50), unique=True, nullable=False)
     title = db.Column('Title', db.String(250), unique=True, nullable=False)
@@ -19,12 +24,14 @@ class Datamodel(db.Model):
 
     def __repr__(self):
         return '<Data Model: %r>' % self.title
-    
+
 
 class Component(db.Model):
+    """
+    The Component model provides a location to store the datatype and metadata information about each column in the CSV.
+    """
     id = db.Column(db.Integer, primary_key=True)
     model_id = db.Column(db.Integer, db.ForeignKey('datamodel.id'))
-    model = db.relationship("Datamodel", back_populates="components")
     header = db.Column('CSV Column Header', db.String(100), unique=False, nullable=False)
     label = db.Column('Label Value', db.String(250), unique=False, nullable=False)
     datatype = db.Column('Datatype', db.String(10), unique=False, nullable=False)
@@ -44,12 +51,13 @@ class Component(db.Model):
     units = db.Column('Units', db.String(50), unique=False, nullable=True)
     mcid = db.Column('Component ID', db.String(40), unique=True, nullable=False)
     adid = db.Column('Adapter ID', db.String(40), unique=True, nullable=False)
+    model = db.relationship("Datamodel", back_populates="components")
 
     def __repr__(self):
         return '<Component: %r>' % self.label
 
 
-    
-    # Create DB
-    db.create_all()
-    
+
+# Create DB
+db.create_all()
+db.session.commit()

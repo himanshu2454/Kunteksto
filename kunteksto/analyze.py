@@ -1,55 +1,24 @@
 """
 analyze.py
 
-This is the database layout. See the documentation for details on each field.
-
-model table: 
-0 - title = CHAR(250)
-1 - description = TEXT
-2 - copyright = CHAR(250)
-3 - author = CHAR(250)
-4 - definition_url = CHAR(500)
-5 - dmid = CHAR(40)
-6 - entryid = CHAR(40)
-7 - dataid = CHAR(40)
-
-record table:
- 0 - header = char(100)
- 1 - label = char(250)
- 2 - datatype = char(10)
- 3 - min_len = char(100)
- 4 - max_len = char(100)
- 5 - choices = TEXT
- 6 - regex = CHAR(250)
- 7 - min_inc_val = char(100)
- 8 - max_inc_val = char(100)
- 9 - description = TEXT
-10 - definition_url = CHAR(500)
-11 - pred_obj_list = TEXT
-12 - def_txt_value = TEXT
-13 - def_num_value = char(100)
-14 - units = CHAR(50)
-15 - mcid = CHAR(40)
-16 - adid = CHAR(40)
-17 - min_exc_val = char(100)
-18 - max_exc_val = char(100)
-
+Analyze the CSV and create the Datamodel entry as well as a Component entry for each CSV column. 
 """
 import sys
 import os
 import time
 import csv
-import sqlite3
 
+import click
 from cuid import cuid
 from collections import OrderedDict
 import iso8601
 import configparser
 import argparse
 from subprocess import run
-import click
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 
-from .models import db
+from .models import db, Datamodel, Component
 
 def checkType(h, dataDict):
     """ test each data item from a column. if one is not a type, turn off that type. 
@@ -61,7 +30,7 @@ def checkType(h, dataDict):
     is_str = False
     maxincval = None
     minincval = None
-    
+
     for x in dlist:
         try:
             int(x)
@@ -69,7 +38,7 @@ def checkType(h, dataDict):
         except:
             is_integer = False
             break
-    
+
     for x in dlist:
         try:
             if not is_integer:
@@ -78,7 +47,7 @@ def checkType(h, dataDict):
         except:
             is_float = False
             break
-    
+
     for x in dlist:
         try:
             if not is_integer and not is_float:
@@ -87,7 +56,7 @@ def checkType(h, dataDict):
         except:
             is_date = False
             break
-    
+
     for x in dlist:
         try:
             if not is_integer and not is_float and not is_date:
@@ -96,7 +65,7 @@ def checkType(h, dataDict):
         except:
             is_str = False
             break
-    
+
     if is_integer:
         intlist = [int(x) for x in dlist]
         maxincval = max(intlist)
@@ -105,7 +74,7 @@ def checkType(h, dataDict):
         flist = [float(x) for x in dlist]
         maxincval = max(flist)
         minincval = min(flist)
-    
+
     if is_integer:
         dt = "Integer"
     elif is_float:
@@ -119,63 +88,68 @@ def checkType(h, dataDict):
 
 def process(project, csvInput, delim, level, out_dir):
     """
-    Analyze the CSV file.
+    Process the CSV file.
     """
+    
+    # Database connection
+    engine = create_engine('sqlite:///kunteksto.db', echo=True)
+    # Create a Session
+    Session = sessionmaker(bind=engine)
+    session = Session()
 
 
-    # create the initial data for the record table.
-    data = []
+    # create the initial data for the Datamodel table
+    dmID = str(cuid())   # data model
+    dataID = str(cuid())   # data cluster
+
+    model = Datamodel(project=project, title='S3M Data Model for ' + project, description='', copyright='Copyright 2018, Data Insights, Inc.', 
+                      author='Data Insights, Inc.', definition_url='http://www.some_url.com', dmid=dmID, dataid=dataID)
+    db.session.add(model)
+    db.session.commit()
+
+
+    # create the initial data for the Component table.
     with open(csvInput) as csvfile:
         reader = csv.DictReader(csvfile, delimiter=delim)
         for h in reader.fieldnames:
-            mcID = str(cuid())  # model component
-            adID = str(cuid())   # adapter
-            label = 'The ' + h.replace('_', ' ')
-            data.append((h, label, 'String', '', '', '', '', '', '', '', '', '', '', '', '', mcID, adID, '', ''))
+            mcID = str(cuid())  # model component ID
+            adID = str(cuid())   # adapter ID
+            label = 'The ' + h.replace('_', ' ') # arbitrairly add a word to show that the label different from the CSV header name
+            
+            data = Component(model_id=model.id, header=h, label=label, datatype='String', min_len=None, max_len=None, choices='', regex='', min_incl='', max_incl='', min_excl='', max_excl='',
+                             description='', definition_url='', pred_obj='', def_text='', def_num='', units='', mcid=mcID, adid=adID)
+            session.add(data)
+            session.commit()
 
-    c = conn.cursor()
-    c.executemany(
-        "INSERT INTO record VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", data)
-    conn.commit()
 
-    # create the initial data for the model table
-    dmID = str(cuid())   # data model
-    entryID = str(cuid())   # entry
-    dataID = str(cuid())   # data cluster
+    #if level == 'Full':
+        #conn = sqlite3.connect(db_file)
+        ## indepth analysis of columns for datatypes and ranges.
+        #with open(csvInput) as csvfile:
+            #reader = csv.DictReader(csvfile, delimiter=delim)
+            #hdrs = reader.fieldnames
+            #dataDict = OrderedDict()
+            #for h in reader.fieldnames:
+                #dataDict[h] = []
 
-    data = [('S3M Data Model', 'S3M Data Model for ' + csvInput, 'Copyright 2018, Data Insights, Inc.',
-             'Data Insights, Inc.', 'http://www.some_url.com', dmID, entryID, dataID)]
-    c.executemany("insert into model values (?,?,?,?,?,?,?,?)", data)
-    conn.commit()
-    conn.close()
+            #for row in reader:
+                #for h in reader.fieldnames:
+                    #dataDict[h].append(row[h])
 
-    if level == 'Full':
-        conn = sqlite3.connect(db_file)
-        # indepth analysis of columns for datatypes and ranges.
-        with open(csvInput) as csvfile:
-            reader = csv.DictReader(csvfile, delimiter=delim)
-            hdrs = reader.fieldnames
-            dataDict = OrderedDict()
-            for h in reader.fieldnames:
-                dataDict[h] = []
+        #hdrs = dataDict.keys()
 
-            for row in reader:
-                for h in reader.fieldnames:
-                    dataDict[h].append(row[h])
+            ## check for the column types and min/max values, show progress bar
+        #with click.progressbar(hdrs, label="Checking types and min/max values: ") as bar:
+            #for h in bar:
+                #vals = checkType(h, dataDict)
 
-        hdrs = dataDict.keys()
-
-         # check for the column types and min/max values, show progress bar
-        with click.progressbar(hdrs, label="Checking types and min/max values: ") as bar:
-            for h in bar:
-                vals = checkType(h, dataDict)
-                    
-                # edit the database record for the correct type
-                c = conn.cursor()
-                c.execute("""UPDATE record SET datatype = ?, max_inc_val = ?, min_inc_val = ? WHERE header = ? """, vals)
-                conn.commit()
-    
-            conn.close()
-
-    return(db_file)
+                ## edit the database record for the correct type
+                #c = conn.cursor()
+                #c.execute("""UPDATE record SET datatype = ?, max_inc_val = ?, min_inc_val = ? WHERE header = ? """, vals)
+                #conn.commit()
+                
+    # close out the session            
+    session.commit()
+    print("\n\n Analysis complete.\n\n")
+    return 
 

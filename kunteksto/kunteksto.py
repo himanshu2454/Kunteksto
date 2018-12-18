@@ -22,10 +22,12 @@ from wtforms import fields, widgets
 from sqlalchemy.event import listens_for
 from jinja2 import Markup
 
-from . import app
+from . import app, config
 from .analyze import process
 
 from .models import Datamodel, Component, db
+
+
 
 # Add Admin setup and administrative views here
 admin = Admin(app, name='Kunteksto', template_mode='bootstrap3')
@@ -47,7 +49,7 @@ def analyze(project, infile):
     You must include a unique PROJECT.
     """
     click.echo('Analyze ' + infile + ' for the project: ' + project)
-    
+
     process(project, infile, config['KUNTEKSTO']['delim'], config['KUNTEKSTO']['analyzelevel'], config['KUNTEKSTO']['outdir'])
 
 @click.command('genmodel')
