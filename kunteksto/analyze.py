@@ -49,6 +49,7 @@ import argparse
 from subprocess import run
 import click
 
+from kunteksto import db
 
 def checkType(h, dataDict):
     """ test each data item from a column. if one is not a type, turn off that type. 
@@ -116,9 +117,9 @@ def checkType(h, dataDict):
 
     return(dt, maxincval, minincval, h)
 
-def process(csvInput, delim, level, out_dir):
+def process(project, csvInput, delim, level, out_dir):
     """
-    Load and analyze the CSV file.
+    Analyze the CSV file.
     """
 
 
