@@ -1,5 +1,8 @@
 
+from flask_sqlalchemy import SQLAlchemy
+from . import app
 
+db = SQLAlchemy(app)
 
 # Create models
 class Datamodel(db.Model):
@@ -46,9 +49,7 @@ class Component(db.Model):
         return '<Component: %r>' % self.label
 
 
-admin = Admin(app, name='Kunteksto', template_mode='bootstrap3')
-
-# Add administrative views here
-
-admin.add_view(ModelView(Datamodel, db.session))
-admin.add_view(ModelView(Component, db.session))
+    
+    # Create DB
+    db.create_all()
+    

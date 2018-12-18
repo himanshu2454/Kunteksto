@@ -1,3 +1,4 @@
+FLASK_APP=kunteksto
 FLASK_ENV=development
 SESSION_COOKIE_NAME=kunteksto
 FLASK_RUN_PORT=7659

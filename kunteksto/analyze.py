@@ -49,7 +49,7 @@ import argparse
 from subprocess import run
 import click
 
-from kunteksto import db
+from .models import db
 
 def checkType(h, dataDict):
     """ test each data item from a column. if one is not a type, turn off that type. 
