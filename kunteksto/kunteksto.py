@@ -38,6 +38,8 @@ class DatamodelModelView(ModelView):
     can_export = True
     column_list = ('project', 'title', 'author', 'dmid', 'id')
     form_excluded_columns = ['dmid', 'dataid', 'components']
+    def on_form_prefill(self, form, id):
+        form.project.render_kw = {'readonly': True}  # make the project readonly
     
 class ComponentModelView(ModelView):
     can_create = False
@@ -45,7 +47,9 @@ class ComponentModelView(ModelView):
     can_export = True
     column_list = ('header', 'label', 'datatype', 'mcid', 'model_id')
     form_excluded_columns = ['mcid', 'adid', 'model_id', 'model_link']
-    
+
+    def on_form_prefill(self, form, id):
+        form.header.render_kw = {'readonly': True}  # make the header readonly
 
 admin.add_view(DatamodelModelView(Datamodel, db.session))
 admin.add_view(ComponentModelView(Component, db.session))
