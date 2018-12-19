@@ -12,10 +12,12 @@ from flask_sqlalchemy import SQLAlchemy
 
 from flask import Blueprint, flash, g, redirect, render_template, request, session, url_for
 
+from flask_admin.form.rules import Field
 from flask_admin import Admin, form
 from flask_admin.form import rules
 from flask_admin.contrib import sqla
 from flask_admin.contrib.sqla import ModelView
+from flask_admin.form import SecureForm
 from flask.cli import with_appcontext
 
 from wtforms import fields, widgets
@@ -28,11 +30,12 @@ from .analyze import process
 from .models import Datamodel, Component, db
 
 
-
 # Add Admin setup and administrative views here
 admin = Admin(app, name='Kunteksto', template_mode='bootstrap3')
 
+
 class DatamodelModelView(ModelView):
+    form_base_class = SecureForm
     can_create = False
     edit_modal = True
     can_export = True
@@ -40,13 +43,18 @@ class DatamodelModelView(ModelView):
     form_excluded_columns = ['dmid', 'dataid', 'components']
     def on_form_prefill(self, form, id):
         form.project.render_kw = {'readonly': True}  # make the project readonly
-    
+
 class ComponentModelView(ModelView):
+    form_base_class = SecureForm
     can_create = False
-    edit_modal = True
+    #edit_modal = True
     can_export = True
     column_list = ('header', 'label', 'datatype', 'mcid', 'model_id')
-    form_excluded_columns = ['mcid', 'adid', 'model_id', 'model_link']
+    form_excluded_columns = ['mcid', 'adid', 'datamodel', 'model_link']
+    form_widget_args = {
+        'description': {'rows': 10, 'style': 'color: black'},
+        'pred_obj': {'rows': 10, 'style': 'color: black'},
+    }
 
     def on_form_prefill(self, form, id):
         form.header.render_kw = {'readonly': True}  # make the header readonly

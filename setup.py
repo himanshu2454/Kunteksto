@@ -49,6 +49,7 @@ See the Homepage Link for more details.
         'flask',
         'flask-admin',
         'flask-sqlalchemy',
+        'flask-babelex',
         'python-dotenv'
       ],
     entry_points='''

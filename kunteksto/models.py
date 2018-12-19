@@ -46,7 +46,7 @@ class Component(db.Model):
     description = db.Column('Description', db.Text, unique=False, nullable=False)
     definition_url = db.Column('Defining URL', db.String(500), unique=False, nullable=False)
     pred_obj = db.Column('List of predicate/object pairs', db.Text, unique=False, nullable=True)
-    def_text = db.Column('Default Text', db.Text, unique=False, nullable=True)
+    def_text = db.Column('Default Text', db.String(500), unique=False, nullable=True)
     def_num = db.Column('Default Number', db.String(100), unique=False, nullable=True)
     units = db.Column('Units', db.String(50), unique=False, nullable=True)
     mcid = db.Column('Component ID', db.String(40), unique=True, nullable=False)
