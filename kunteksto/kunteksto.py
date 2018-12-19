@@ -32,8 +32,23 @@ from .models import Datamodel, Component, db
 # Add Admin setup and administrative views here
 admin = Admin(app, name='Kunteksto', template_mode='bootstrap3')
 
-admin.add_view(ModelView(Datamodel, db.session))
-admin.add_view(ModelView(Component, db.session))
+class DatamodelModelView(ModelView):
+    can_create = False
+    edit_modal = True
+    can_export = True
+    column_list = ('project', 'title', 'author', 'dmid', 'id')
+    form_excluded_columns = ['dmid', 'dataid', 'components']
+    
+class ComponentModelView(ModelView):
+    can_create = False
+    edit_modal = True
+    can_export = True
+    column_list = ('header', 'label', 'datatype', 'mcid', 'model_id')
+    form_excluded_columns = ['mcid', 'adid', 'model_id', 'model_link']
+    
+
+admin.add_view(DatamodelModelView(Datamodel, db.session))
+admin.add_view(ComponentModelView(Component, db.session))
 
 
 

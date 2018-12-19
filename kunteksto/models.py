@@ -51,7 +51,7 @@ class Component(db.Model):
     units = db.Column('Units', db.String(50), unique=False, nullable=True)
     mcid = db.Column('Component ID', db.String(40), unique=True, nullable=False)
     adid = db.Column('Adapter ID', db.String(40), unique=True, nullable=False)
-    model = db.relationship("Datamodel", back_populates="components")
+    model_link = db.relationship("Datamodel", back_populates="components")
 
     def __repr__(self):
         return '<Component: %r>' % self.label
