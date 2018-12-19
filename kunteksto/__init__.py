@@ -21,6 +21,7 @@ babel = Babel(app)
 app.config['FLASK_ADMIN_SWATCH'] = config['KUNTEKSTO']['theme']
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///kunteksto.db'
+app.config['SQLALCHEMY_ECHO'] = False
 app.config['SECRET_KEY'] = os.environ['SECRET_KEY']
 
 @babel.localeselector

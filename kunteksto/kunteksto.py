@@ -47,7 +47,7 @@ class DatamodelModelView(ModelView):
 class ComponentModelView(ModelView):
     form_base_class = SecureForm
     can_create = False
-    #edit_modal = True
+    edit_modal = True
     can_export = True
     column_list = ('header', 'label', 'datatype', 'mcid', 'model_id')
     form_excluded_columns = ['mcid', 'adid', 'datamodel', 'model_link']

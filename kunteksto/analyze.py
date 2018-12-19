@@ -7,7 +7,9 @@ import sys
 import os
 import time
 import csv
+import logging
 
+import sqlite3
 import click
 from cuid import cuid
 from collections import OrderedDict
@@ -19,6 +21,11 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 from .models import db, Datamodel, Component
+
+# turn off logging to stdout
+sqla_logger = logging.getLogger('sqlalchemy')
+sqla_logger.propagate = False
+sqla_logger.addHandler(logging.FileHandler('sqla.log'))
 
 def checkType(h, dataDict):
     """ test each data item from a column. if one is not a type, turn off that type. 
@@ -92,23 +99,31 @@ def process(project, csvInput, delim, level, out_dir):
     """
     
     # Database connection
-    engine = create_engine('sqlite:///kunteksto.db', echo=True)
+    engine = create_engine('sqlite:///kunteksto.db', echo=False)
     # Create a Session
     Session = sessionmaker(bind=engine)
     session = Session()
 
 
     # create the initial data for the Datamodel table
+    print("\nCreating model.\n")
     dmID = str(cuid())   # data model
     dataID = str(cuid())   # data cluster
 
     model = Datamodel(project=project, title='S3M Data Model for ' + project, description='', copyright='Copyright 2018, Data Insights, Inc.', 
                       author='Data Insights, Inc.', definition_url='http://www.some_url.com', dmid=dmID, dataid=dataID)
-    db.session.add(model)
-    db.session.commit()
+    try:
+        session.add(model)
+        session.flush()
+    except Exception as err:
+        print('\n\nAdding Model Failed:\n\nError: ' + str(err))
+        print('\n\n')
+        exit(1)
 
 
     # create the initial data for the Component table.
+    model_pk = model.id
+    print("\nCreating components.\n")
     with open(csvInput) as csvfile:
         reader = csv.DictReader(csvfile, delimiter=delim)
         for h in reader.fieldnames:
@@ -116,38 +131,52 @@ def process(project, csvInput, delim, level, out_dir):
             adID = str(cuid())   # adapter ID
             label = 'The ' + h.replace('_', ' ') # arbitrairly add a word to show that the label different from the CSV header name
             
-            data = Component(model_id=model.id, header=h, label=label, datatype='String', min_len=None, max_len=None, choices='', regex='', min_incl='', max_incl='', min_excl='', max_excl='',
+            data = Component(model_id=model_pk, header=h, label=label, datatype='String', min_len=None, max_len=None, choices='', regex='', min_incl='', max_incl='', min_excl='', max_excl='',
                              description='', definition_url='', pred_obj='', def_text='', def_num='', units='', mcid=mcID, adid=adID)
-            session.add(data)
-            session.commit()
+            try:
+                session.add(data)
+                session.flush()
+            except Exception as err:
+                print('\n\nAdding Component Failed:\n\nError: ' + str(err))
+                print('\n\n')
+                exit(1)
+    session.commit()            
 
+    records = Component.query.filter_by(model_id=model_pk)
 
-    #if level == 'Full':
-        #conn = sqlite3.connect(db_file)
-        ## indepth analysis of columns for datatypes and ranges.
-        #with open(csvInput) as csvfile:
-            #reader = csv.DictReader(csvfile, delimiter=delim)
-            #hdrs = reader.fieldnames
-            #dataDict = OrderedDict()
-            #for h in reader.fieldnames:
-                #dataDict[h] = []
+    if level == 'Full':
+        print("\nAnalyzing columns for min/max values and datatype.\n")
+        # indepth analysis of columns for datatypes and ranges.
+        with open(csvInput) as csvfile:
+            reader = csv.DictReader(csvfile, delimiter=delim)
+            hdrs = reader.fieldnames
+            dataDict = OrderedDict()
+            for h in reader.fieldnames:
+                dataDict[h] = []
 
-            #for row in reader:
-                #for h in reader.fieldnames:
-                    #dataDict[h].append(row[h])
+            for row in reader:
+                for h in reader.fieldnames:
+                    dataDict[h].append(row[h])
 
-        #hdrs = dataDict.keys()
+        hdrs = dataDict.keys()
 
-            ## check for the column types and min/max values, show progress bar
-        #with click.progressbar(hdrs, label="Checking types and min/max values: ") as bar:
-            #for h in bar:
-                #vals = checkType(h, dataDict)
+            # check for the column types and min/max values, show progress bar
+        with click.progressbar(hdrs, label="Checking types and min/max values: ") as bar:
+            for h in bar:
+                vals = checkType(h, dataDict)
 
-                ## edit the database record for the correct type
-                #c = conn.cursor()
-                #c.execute("""UPDATE record SET datatype = ?, max_inc_val = ?, min_inc_val = ? WHERE header = ? """, vals)
-                #conn.commit()
-                
+                # edit the database record for the correct type
+                try:
+                    rec = records.filter_by(header=h).first()
+                    print('Record: ', rec.header)
+                    print('Updates: ', vals)
+                    rec.datatype = vals[0] 
+                    rec.max_inc = vals[1]
+                    rec.min_inc = vals[2]
+                    session.flush()
+                except Exception as err:
+                    print('Updating ' + h + ' Failed:\nError: ' + str(err))
+                    
     # close out the session            
     session.commit()
     print("\n\n Analysis complete.\n\n")
