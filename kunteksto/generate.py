@@ -26,7 +26,11 @@ import click
 
 from lxml import etree
 from lxml import sax
-    
+
+from sqlalchemy import create_engine, update
+from sqlalchemy.orm import sessionmaker
+
+from .models import db, Session, Datamodel, Component
     
 def is_valid_decimal(s):
     try:

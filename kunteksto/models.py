@@ -2,6 +2,9 @@
 Models for Kunteksto.
 """
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+
 from . import app
 
 db = SQLAlchemy(app)
@@ -20,6 +23,7 @@ class Datamodel(db.Model):
     definition_url = db.Column('Defining URL', db.String(500), unique=False, nullable=False)
     dmid = db.Column('Data Model ID', db.String(40), unique=True, nullable=False)
     dataid = db.Column('Data Cluster ID', db.String(40), unique=True, nullable=False)
+    schema = db.Column('XML Schema', db.Text, unique=False, nullable=True)
     components = db.relationship('Component', backref='datamodel', lazy=True)
 
     def __repr__(self):
@@ -61,3 +65,8 @@ class Component(db.Model):
 # Create DB
 db.create_all()
 db.session.commit()
+# Database connection
+engine = create_engine('sqlite:///kunteksto.db', echo=False)
+# Create a Session
+Session = sessionmaker(bind=engine)
+session = Session()

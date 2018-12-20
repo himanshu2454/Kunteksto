@@ -17,10 +17,10 @@ import iso8601
 import configparser
 import argparse
 from subprocess import run
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, update
 from sqlalchemy.orm import sessionmaker
 
-from .models import db, Datamodel, Component
+from .models import db, Session, Datamodel, Component
 
 # turn off logging to stdout
 sqla_logger = logging.getLogger('sqlalchemy')
@@ -97,14 +97,7 @@ def process(project, csvInput, delim, level, out_dir):
     """
     Process the CSV file.
     """
-    
-    # Database connection
-    engine = create_engine('sqlite:///kunteksto.db', echo=False)
-    # Create a Session
-    Session = sessionmaker(bind=engine)
     session = Session()
-
-
     # create the initial data for the Datamodel table
     print("\nCreating model.\n")
     dmID = str(cuid())   # data model
@@ -136,13 +129,12 @@ def process(project, csvInput, delim, level, out_dir):
             try:
                 session.add(data)
                 session.flush()
+                print('Added ID: ', data.id)
             except Exception as err:
                 print('\n\nAdding Component Failed:\n\nError: ' + str(err))
                 print('\n\n')
                 exit(1)
-    session.commit()            
 
-    records = Component.query.filter_by(model_id=model_pk)
 
     if level == 'Full':
         print("\nAnalyzing columns for min/max values and datatype.\n")
@@ -167,18 +159,20 @@ def process(project, csvInput, delim, level, out_dir):
 
                 # edit the database record for the correct type
                 try:
-                    rec = records.filter_by(header=h).first()
-                    print('Record: ', rec.header)
+                    rec = session.query(Component).filter_by(model_id=model_pk).filter_by(header=h).first()
+                    print('Record: ', rec.header, rec.datatype, '\n', rec)
                     print('Updates: ', vals)
-                    rec.datatype = vals[0] 
+                    #rec.update({'datatype': vals[0], 'max_inc': vals[1], 'min_inc': vals[2]})
+                    rec.datatype = vals[0]
                     rec.max_inc = vals[1]
                     rec.min_inc = vals[2]
                     session.flush()
                 except Exception as err:
                     print('Updating ' + h + ' Failed:\nError: ' + str(err))
-                    
-    # close out the session            
+
+    # close out the session
     session.commit()
+
     print("\n\n Analysis complete.\n\n")
     return 
 
