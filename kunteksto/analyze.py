@@ -93,13 +93,13 @@ def checkType(h, dataDict):
 
     return(dt, maxincval, minincval, h)
 
-def process(project, csvInput, delim, level, out_dir):
+def process(project, csvInput, delim, level):
     """
     Process the CSV file.
     """
     session = Session()
     # create the initial data for the Datamodel table
-    print("\nCreating model.\n")
+    print("\nCreating model data.\n")
     dmID = str(cuid())   # data model
     dataID = str(cuid())   # data cluster
 
@@ -116,7 +116,7 @@ def process(project, csvInput, delim, level, out_dir):
 
     # create the initial data for the Component table.
     model_pk = model.id
-    print("\nCreating components.\n")
+    print("\nCreating component data.\n")
     with open(csvInput) as csvfile:
         reader = csv.DictReader(csvfile, delimiter=delim)
         for h in reader.fieldnames:

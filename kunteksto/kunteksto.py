@@ -25,10 +25,10 @@ from sqlalchemy.event import listens_for
 from jinja2 import Markup
 
 from . import app, config
-from .analyze import process
-
 from .models import Datamodel, Component, db
 
+from .analyze import process
+from .generate import make_data, make_model
 
 # Add Admin setup and administrative views here
 admin = Admin(app, name='Kunteksto', template_mode='bootstrap3')
@@ -77,7 +77,7 @@ def analyze(project, infile):
     """
     click.echo('Analyze ' + infile + ' for the project: ' + project)
 
-    process(project, infile, config['KUNTEKSTO']['delim'], config['KUNTEKSTO']['analyzelevel'], config['KUNTEKSTO']['outdir'])
+    process(project, infile, config['KUNTEKSTO']['delim'], config['KUNTEKSTO']['analyzelevel'])
 
 @click.command('genmodel')
 @click.argument('project')
@@ -86,7 +86,8 @@ def genmodel(project):
     Generate a model based on PROJECT from the commandline. Note that this creates a new model. 
     You should remove any previous models based on this PROJECT. 
     """
-    click.echo('Generate a model for: ' + project)
+    click.echo('Generating a model for: ' + project)
+    make_model(project)
 
 @click.command('gendata')
 @click.argument('project')
