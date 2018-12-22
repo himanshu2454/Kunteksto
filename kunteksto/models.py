@@ -13,6 +13,13 @@ db = SQLAlchemy(app)
 class Datamodel(db.Model):
     """
     The Datamodel model provides a location to store the model information and metadata about the model.
+    
+    
+    [NAMESPACES]
+    any additional namespaces must be defined with their abbreviations. 
+    {abbrev}:{namespace URI}
+    Example:  dul: http://www.ontologydesignpatterns.org/ont/dul/DUL.owl# 
+
     """
     id = db.Column(db.Integer, primary_key=True)
     project = db.Column('Project', db.String(50), unique=True, nullable=False)
@@ -21,6 +28,7 @@ class Datamodel(db.Model):
     copyright = db.Column('Copyright', db.String(250), unique=False, nullable=True)
     author = db.Column('Author', db.String(250), unique=False, nullable=False)
     definition_url = db.Column('Defining URL', db.String(500), unique=False, nullable=False)
+    namespaces = db.Column('Additional Namespaces', db.Text, unique=False, nullable=True)
     dmid = db.Column('Data Model ID', db.String(40), unique=True, nullable=False)
     dataid = db.Column('Data Cluster ID', db.String(40), unique=True, nullable=False)
     schema = db.Column('XML Schema', db.Text, unique=False, nullable=True)

@@ -1018,15 +1018,12 @@ def make_model(project):
     xsd_str += xsd_dm(rec)
     xsd_str += xsd_data(rec, 0, session)
     xsd_str += '\n</xs:schema>\n'
-
-    # write the xsd file
-    # xsd.write(xsd_str)
-    # xsd.close()
+    
     rec.schema = xsd_str
     session.commit()
     
     try:
-        xmlschema_doc = etree.parse(xsd_str)
+        xmlschema_doc = etree.fromstring(xsd_str)
     except:
         print('Model Error', "There was an error in generating the schema. Please re-edit the database and look for errors.\n You probably have undefined namespaces or improperly formatted predicate-object pair.\n")
         print('Try: kunteksto -m editdb -db ' + db_file + '\n\n')
