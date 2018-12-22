@@ -157,15 +157,13 @@ def process(project, csvInput, delim, level):
             for h in bar:
                 vals = checkType(h, dataDict)
 
-                # edit the database record for the correct type
+                # edit the database record for the correct column datatype
                 try:
-                    rec = session.query(Component).filter_by(model_id=model_pk).filter_by(header=h).first()
-                    print('Record: ', rec.header, rec.datatype, '\n', rec)
-                    print('Updates: ', vals)
-                    #rec.update({'datatype': vals[0], 'max_inc': vals[1], 'min_inc': vals[2]})
-                    rec.datatype = vals[0]
-                    rec.max_inc = vals[1]
-                    rec.min_inc = vals[2]
+                    col = session.query(Component).filter_by(model_id=model_pk).filter_by(header=h).first()
+                    print('Column: ', col.header, ' --> ', vals[0])
+                    col.datatype = vals[0]
+                    col.max_inc = vals[1]
+                    col.min_inc = vals[2]
                     session.flush()
                 except Exception as err:
                     print('Updating ' + h + ' Failed:\nError: ' + str(err))

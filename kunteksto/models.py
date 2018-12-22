@@ -24,6 +24,8 @@ class Datamodel(db.Model):
     dmid = db.Column('Data Model ID', db.String(40), unique=True, nullable=False)
     dataid = db.Column('Data Cluster ID', db.String(40), unique=True, nullable=False)
     schema = db.Column('XML Schema', db.Text, unique=False, nullable=True)
+    rdf = db.Column('RDF', db.Text, unique=False, nullable=True)
+    catalog = db.Column('XML Catalog', db.Text, unique=False, nullable=True)
     components = db.relationship('Component', backref='datamodel', lazy=True)
 
     def __repr__(self):
