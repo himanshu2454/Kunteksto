@@ -25,7 +25,7 @@ from sqlalchemy.event import listens_for
 from jinja2 import Markup
 
 from . import app, config
-from .models import Datamodel, Component, db
+from .models import XMLstore, JSONstore, RDFstore, Datamodel, Component, db
 
 from .analyze import process
 from .generate import make_data, make_model
@@ -33,6 +33,29 @@ from .generate import make_data, make_model
 # Add Admin setup and administrative views here
 admin = Admin(app, name='Kunteksto', template_mode='bootstrap3')
 
+class XMLstoreModelView(ModelView):
+    form_base_class = SecureForm
+    can_create = True
+    edit_modal = True
+    can_export = True
+    column_list = ('name', 'dbname', 'host', 'id')
+    column_labels = {'name':"Name", 'host':"Host", 'port':"Port", 'dbname':"Database", 'user':"User", 'pw':"Password"}
+
+class JSONstoreModelView(ModelView):
+    form_base_class = SecureForm
+    can_create = True
+    edit_modal = True
+    can_export = True
+    column_list = ('name', 'dbname', 'host', 'id')
+    column_labels = {'name':"Name", 'host':"Host", 'port':"Port", 'dbname':"Database", 'user':"User", 'pw':"Password"}
+
+class RDFstoreModelView(ModelView):
+    form_base_class = SecureForm
+    can_create = True
+    edit_modal = True
+    can_export = True
+    column_list = ('name', 'dbname', 'host', 'id')
+    column_labels = {'name':"Name", 'host':"Host", 'port':"Port", 'dbname':"Database", 'user':"User", 'pw':"Password"}
 
 class DatamodelModelView(ModelView):
     form_base_class = SecureForm
@@ -59,8 +82,11 @@ class ComponentModelView(ModelView):
     def on_form_prefill(self, form, id):
         form.header.render_kw = {'readonly': True}  # make the header readonly
 
-admin.add_view(DatamodelModelView(Datamodel, db.session))
-admin.add_view(ComponentModelView(Component, db.session))
+admin.add_view(DatamodelModelView(Datamodel, db.session, 'Data Models'))
+admin.add_view(ComponentModelView(Component, db.session, 'Components'))
+admin.add_view(XMLstoreModelView(XMLstore, db.session, 'XML'))
+admin.add_view(JSONstoreModelView(JSONstore, db.session, 'JSON'))
+admin.add_view(RDFstoreModelView(RDFstore, db.session, 'RDF'))
 
 
 

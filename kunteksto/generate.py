@@ -1025,8 +1025,7 @@ def make_model(project):
     try:
         xmlschema_doc = etree.fromstring(xsd_str)
     except:
-        print('Model Error', "There was an error in generating the schema. Please re-edit the database and look for errors.\n You probably have undefined namespaces or improperly formatted predicate-object pair.\n")
-        print('Try: kunteksto -m editdb -db ' + db_file + '\n\n')
+        print('Model Error', "There was an error in generating the schema. \nPlease re-edit the database and look for errors.\n You probably have undefined namespaces or improperly formatted predicate-object pair.\n")
         sys.exit(1)
 
     xsd_rdf(model, OUTDIR, dmID, db_file)
