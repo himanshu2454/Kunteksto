@@ -25,7 +25,7 @@ from sqlalchemy.event import listens_for
 from jinja2 import Markup
 
 from . import app, config
-from .models import XMLstore, JSONstore, RDFstore, Datamodel, Component, db
+from .models import XMLstore, JSONstore, RDFstore, Datamodel, Component, Validation, db
 
 from .analyze import process
 from .generate import make_data, make_model
@@ -39,7 +39,7 @@ class XMLstoreModelView(ModelView):
     edit_modal = True
     can_export = True
     column_list = ('name', 'dbname', 'host', 'id')
-    column_labels = {'name':"Name", 'host':"Host", 'port':"Port", 'dbname':"Database", 'user':"User", 'pw':"Password"}
+    column_labels = {'name':"Name", 'host':"Host", 'port':"Port", 'hostip':'Host IP', 'forests':'Forests', 'dbname':"Database", 'user':"User", 'pw':"Password"}
 
 class JSONstoreModelView(ModelView):
     form_base_class = SecureForm
@@ -47,7 +47,7 @@ class JSONstoreModelView(ModelView):
     edit_modal = True
     can_export = True
     column_list = ('name', 'dbname', 'host', 'id')
-    column_labels = {'name':"Name", 'host':"Host", 'port':"Port", 'dbname':"Database", 'user':"User", 'pw':"Password"}
+    column_labels = {'name':"Name", 'host':"Host", 'port':"Port", 'hostip':'Host IP', 'forests':'Forests', 'dbname':"Database", 'user':"User", 'pw':"Password"}
 
 class RDFstoreModelView(ModelView):
     form_base_class = SecureForm
@@ -55,7 +55,7 @@ class RDFstoreModelView(ModelView):
     edit_modal = True
     can_export = True
     column_list = ('name', 'dbname', 'host', 'id')
-    column_labels = {'name':"Name", 'host':"Host", 'port':"Port", 'dbname':"Database", 'user':"User", 'pw':"Password"}
+    column_labels = {'name':"Name", 'host':"Host", 'port':"Port", 'hostip':'Host IP', 'forests':'Forests', 'dbname':"Database", 'user':"User", 'pw':"Password"}
 
 class DatamodelModelView(ModelView):
     form_base_class = SecureForm
@@ -64,8 +64,15 @@ class DatamodelModelView(ModelView):
     can_export = True
     column_list = ('project', 'title', 'author', 'dmid', 'id')
     form_excluded_columns = ['dmid', 'dataid', 'components']
+    column_labels = {'rdf':"RDF", 'xmlstore':"XML Storage", 'rdfstore':"RDF Storage", 'jsonstore':'JSON Storage'}
+    column_descriptions = {'namespaces':'Additional Namespaces', 'schema':'Generated XML schema for model.', 'rdf':'Generated RDF', 'xmlstore':'XML instance storage location.', \
+                           'jsonstore':'JSON instance storage location.', 'rdfstore':'RDF instance storage location.', 'catalog':'Generated XML Catalog'}    
     def on_form_prefill(self, form, id):
-        form.project.render_kw = {'readonly': True}  # make the project readonly
+        form.project.render_kw = {'readonly': True}  # make the field readonly
+        form.schema.render_kw = {'readonly': True}  # make the field readonly
+        form.catalog.render_kw = {'readonly': True}  # make the field readonly
+        form.rdf.render_kw = {'readonly': True}  # make the field readonly
+        form.validations.render_kw = {'readonly': True}  # make the field readonly
 
 class ComponentModelView(ModelView):
     form_base_class = SecureForm
@@ -76,14 +83,36 @@ class ComponentModelView(ModelView):
     form_excluded_columns = ['mcid', 'adid', 'datamodel', 'model_link']
     form_widget_args = {
         'description': {'rows': 10, 'style': 'color: black'},
-        'pred_obj': {'rows': 10, 'style': 'color: black'},
+        'pred_obj': {'rows': 5, 'style': 'color: black'},
     }
-
+    column_labels = {'min_len':"Minimum Length", 'max_len':"Maximum Length", 'regex':"Regualr Expression", 'min_incl':'Minimum Value (Inclusive)', 'max_incl':'Maximum Value (Inclusive)', \
+                     'min_excl':'Minimum Value (Exclusive)', 'max_excl':'Maximum Value (Exclusive)', 'pred_obj':'Predicate/\nObject Pairs', 'def_text':'Default Text', \
+                     'def_num':'Default Numeric'}
+    column_descriptions = {'min_len':'Used for strings/text.', 'max_len':'Used for strings/text.', 'regex':'Use the XML Schema subset of RegEx.', 'min_incl':'Use for numerics.', \
+                           'max_incl':'Use for numerics.','min_excl':'Use for numerics.','max_excl':'Use for numerics.','pred_obj':'One per line. Must have a space between the predicate and object.', \
+                           'units':'Use a standardized units abbreviation.', 'choices':'Enumeration of valid values. One per line.'}    
+    form_choices = {'datatype': [
+           ('Integer', 'Integer'),
+           ('Decimal', 'Decimal'),
+           ('Float', 'Float'),
+           ('String', 'String'),
+           ('Date', 'Date'),
+       ]}
+    
     def on_form_prefill(self, form, id):
         form.header.render_kw = {'readonly': True}  # make the header readonly
 
+class ValidationModelView(ModelView):
+    form_base_class = SecureForm
+    can_create = False
+    can_edit = False
+    can_export = True
+    column_list = ('model_link', 'timestamp')
+
 admin.add_view(DatamodelModelView(Datamodel, db.session, 'Data Models'))
 admin.add_view(ComponentModelView(Component, db.session, 'Components'))
+admin.add_view(ValidationModelView(Validation, db.session, 'Validation'))
+
 admin.add_view(XMLstoreModelView(XMLstore, db.session, 'XML'))
 admin.add_view(JSONstoreModelView(JSONstore, db.session, 'JSON'))
 admin.add_view(RDFstoreModelView(RDFstore, db.session, 'RDF'))
@@ -103,7 +132,7 @@ def analyze(project, infile):
     """
     click.echo('Analyze ' + infile + ' for the project: ' + project)
 
-    process(project, infile, config['KUNTEKSTO']['delim'], config['KUNTEKSTO']['analyzelevel'])
+    process(project, infile, config['KUNTEKSTO']['delim'], 'Full')  # TODO: accept command line options for delimiter and level
 
 @click.command('genmodel')
 @click.argument('project')

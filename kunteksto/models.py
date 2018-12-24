@@ -102,6 +102,7 @@ class Datamodel(db.Model):
     rdf = db.Column('RDF', db.Text, unique=False, nullable=True)
     catalog = db.Column('XML Catalog', db.Text, unique=False, nullable=True)
     components = db.relationship('Component', backref='datamodel', lazy=True)
+    validations = db.relationship('Validation', backref='datamodel', lazy=True)
 
     def __repr__(self):
         return '<Data Model: %r>' % self.title.strip()
@@ -139,6 +140,18 @@ class Component(db.Model):
     def __repr__(self):
         return '<Component: %r>' % self.label.strip()
 
+class Validation(db.Model):
+    """
+    A validation log is created each time data is generated.
+    The log column is a CSV file:
+    """
+    __tablename__ = 'validation'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    model_id = db.Column(db.Integer, db.ForeignKey('datamodel.id'))
+    timestamp = db.Column(db.DateTime)
+    log =  db.Column('CSV Log', db.Text, unique=False, nullable=False)
+    model_link = db.relationship("Datamodel", back_populates="validations")
 
 
 # Create DB
@@ -176,7 +189,7 @@ except:
     pass
 
 try:
-    ds = RDFstore(name='ALLEGROGRAPH (example)', host='localhost', port='10035', dbname='Kunteksto', user='admin', pw='admin')
+    ds = RDFstore(name='AllegroGraph (example)', host='localhost', port='10035', dbname='Kunteksto', user='admin', pw='admin')
     db.session.add(ds)
     db.session.commit()
 except:

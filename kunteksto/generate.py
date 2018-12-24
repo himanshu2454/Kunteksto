@@ -33,7 +33,7 @@ from . import config
 from .models import db, Session, Datamodel, Component
     
 RMVERSION = config['SYSTEM']['rmversion'].replace('.', '_')
-OUTDIR = os.getcwd() + os.path.sep + config['KUNTEKSTO']['outdir']
+# OUTDIR = os.getcwd() + os.path.sep + config['KUNTEKSTO']['outdir']
 
 
 def is_valid_decimal(s):
@@ -66,14 +66,8 @@ try:
 except:
     pass
 
-# Additional namespace abbreviations
-NSDEF = {}
 
-for abbrev in config['NAMESPACES']:
-    NSDEF[abbrev] = config['NAMESPACES'][abbrev].strip()
-
-
-def xsd_header():
+def xsd_header(rec):
     """
     Build the header string for the XSD
     """
@@ -96,8 +90,9 @@ def xsd_header():
     hstr += '  xmlns:sioc="http://rdfs.org/sioc/ns#"\n'
     hstr += '  xmlns:sh="http://www.w3.org/ns/shacl#"\n'
     hstr += '  xmlns:s3m="https://www.s3model.com/ns/s3m/"\n'
-    for abbrev in NSDEF.keys():
-        hstr += '  xmlns:' + abbrev + '="' + NSDEF[abbrev] + '"\n'
+    if rec.namespaces is not None:
+        for ns in rec.namespaces.splitlines():
+            hstr += '  xmlns:' + ns + '\n'
         
     hstr += '  targetNamespace="https://www.s3model.com/ns/s3m/"\n'
     hstr += '  xml:lang="en-US">\n\n'
@@ -1013,7 +1008,7 @@ def make_model(project):
     print("\nGenerating Datamodel : /dm-" + dmID + '.xsd\n')
     #xsd = open(model, 'w')
 
-    xsd_str = xsd_header()
+    xsd_str = xsd_header(rec)
     xsd_str += xsd_metadata(rec)
     xsd_str += xsd_dm(rec)
     xsd_str += xsd_data(rec, 0, session)
