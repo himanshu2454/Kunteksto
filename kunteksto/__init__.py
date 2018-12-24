@@ -14,6 +14,8 @@ config = configparser.ConfigParser()
 config.read('../kunteksto.conf')
 print("\n\nKunteksto version: " + config['SYSTEM']['version'] + " using S3Model RM: " + config['SYSTEM']['rmversion'] + "\n\n")
 
+os.environ['XML_CATALOG_FILES'] = '../catalogs/Kunteksto_catalog.xml'
+
 app = Flask(__name__)
 babel = Babel(app)
 

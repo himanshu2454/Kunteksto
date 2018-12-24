@@ -33,9 +33,13 @@ from . import config
 from .models import db, Session, Datamodel, Component
     
 RMVERSION = config['SYSTEM']['rmversion'].replace('.', '_')
-# OUTDIR = os.getcwd() + os.path.sep + config['KUNTEKSTO']['outdir']
 
-
+with open('../s3model/s3model_' + RMVERSION + '.xsd', 'r') as rmfile:
+    rm_str = rmfile.read()
+    rm_str = rm_str.replace('<?xml version="1.0" encoding="UTF-8"?>','')
+    RM_SCHEMA = etree.XMLSchema(etree.XML(rm_str))
+    RM_PARSER = etree.XMLParser(schema=RM_SCHEMA)
+    
 def is_valid_decimal(s):
     try:
         float(s)
@@ -72,7 +76,6 @@ def xsd_header(rec):
     Build the header string for the XSD
     """
     hstr = ''
-    hstr = '<?xml version="1.0" encoding="UTF-8"?>\n'
     hstr += '<?xml-stylesheet type="text/xsl" href="dm-description.xsl"?>\n'
     hstr += '<xs:schema\n'
     hstr += '  xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning"\n'
@@ -827,8 +830,6 @@ def xsd_data(rec, indent, session):
     # the dictionary uses the mc-{cuid} as the key. The items are the complete mc code.
     mcDict = OrderedDict()
     components = session.query(Component).filter_by(model_id=rec.id).all()
-    print(type(components))
-    print(components)
     
     for row in components:
         if row.datatype.lower() == 'integer':
@@ -905,7 +906,7 @@ def xsd_dm(rec):
     return(dmstr)
 
 
-def xsd_rdf(xsdfile, outdir, dm_id, db_file):
+def xsd_rdf(rec, session):
     """
         Generate the RDF from the semantics embedded in the XSD.
         """
@@ -927,20 +928,24 @@ def xsd_rdf(xsdfile, outdir, dm_id, db_file):
               'vc': 'http://www.w3.org/2007/XMLSchema-versioning',
               's3m': 'https://www.s3model.com/ns/s3m/'}
 
-    for abbrev in NSDEF.keys():
-        ns_dict[abbrev] = NSDEF[abbrev]
+    print("\nGenerating RDF for Datamodel : dm-" + rec.dmid + '.xsd\n')
 
-    parser = etree.XMLParser(ns_clean=True, recover=True)
+    if rec.namespaces is not None:
+        for ns in rec.namespaces.splitlines():
+            ns_dict[ns.split('=')[0]]=ns.split('=')[1]
+
+    # parser = etree.XMLParser(ns_clean=True, recover=True)
     cls_def = etree.XPath("//xs:annotation/xs:appinfo/rdfs:Class", namespaces=ns_dict)
     sh_def = etree.XPath("//xs:annotation/xs:appinfo/sh:property", namespaces=ns_dict)
 
     md = etree.XPath("//rdf:RDF/rdfs:Class", namespaces=ns_dict)
 
-    rdf_file = os.open(OUTDIR + '/dm-' + str(dm_id) + '.rdf', os.O_RDWR | os.O_CREAT)
-
     rdfstr = """<?xml version="1.0" encoding="UTF-8"?>\n<rdf:RDF xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#' \nxmlns:s3m='https://www.s3model.com/ns/s3m/'>\n"""
 
-    tree = etree.parse(xsdfile, parser)
+    # have to remove the encoding declaration and stylesheet pointer
+    xsd_str = rec.schema.replace('<?xml version="1.0" encoding="UTF-8"?>','')
+    xsd_str = xsd_str.replace('<?xml-stylesheet type="text/xsl" href="dm-description.xsl"?>','')
+    tree = etree.parse(StringIO(xsd_str))
     root = tree.getroot()
 
     rdf = cls_def(root)
@@ -955,45 +960,42 @@ def xsd_rdf(xsdfile, outdir, dm_id, db_file):
     for r in rdf:
         rdfstr += '    ' + etree.tostring(r).decode('utf-8') + '\n'
 
-    # create triples for all of the elements to complexTypes
-    conn = sqlite3.connect(db_file)
-    c = conn.cursor()
-    c.execute("SELECT * FROM record")
-    rows = c.fetchall()
-    conn.close()
-
-    for row in rows:
-        rdfstr += '<rdfs:Class xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"  xmlns:s3m="https://www.s3model.com/ns/s3m/" rdf:about="s3m:ms-' + row[15].strip() + '">\n'
-        rdfstr += '  <s3m:isRMSOf rdf:resource="s3m:mc-' + row[15].strip() + '"/>\n'
+    # create triples for all of the Components of this Model
+    cols = session.query(Component).filter_by(model_id=rec.id).all()
+    for col in cols:
+        rdfstr += '<rdfs:Class xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"  xmlns:s3m="https://www.s3model.com/ns/s3m/" rdf:about="s3m:ms-' + col.mcid.strip() + '">\n'
+        rdfstr += '  <s3m:isRMSOf rdf:resource="s3m:mc-' + col.mcid.strip() + '"/>\n'
         rdfstr += '</rdfs:Class>\n'
 
     rdfstr += '</rdf:RDF>\n'
     
-    os.write(rdf_file, rdfstr.encode("utf-8"))
-    os.close(rdf_file)
+    rec.rdf = rdfstr
+    session.commit()
+    exit(1)
     
-    if config['ALLEGROGRAPH']['status'].upper() == "ACTIVE":
-        # Set environment variables for AllegroGraph
-        os.environ['AGRAPH_HOST'] = config['ALLEGROGRAPH']['host']
-        os.environ['AGRAPH_PORT'] = config['ALLEGROGRAPH']['port']
-        os.environ['AGRAPH_USER'] = config['ALLEGROGRAPH']['user']
-        os.environ['AGRAPH_PASSWORD'] = config['ALLEGROGRAPH']['password']            
-        try:
-            from franz.openrdf.connect import ag_connect
-            connRDF = ag_connect(config['ALLEGROGRAPH']['repo'], host=os.environ.get('AGRAPH_HOST'), port=os.environ.get('AGRAPH_PORT'),  user=os.environ.get('AGRAPH_USER'), password=os.environ.get('AGRAPH_PASSWORD'))
-            print('Current Kunteksto RDF Repository Size: ', connRDF.size(), '\n')
-            print('AllegroGraph connections are okay.\n\n')
-        except: 
-            connRDF = None
-            print("Unexpected error: ", sys.exc_info()[0])
-            print('RDF Connection Error', 'Could not create connection to AllegroGraph.')
+    
+    #if config['ALLEGROGRAPH']['status'].upper() == "ACTIVE":
+        ## Set environment variables for AllegroGraph
+        #os.environ['AGRAPH_HOST'] = config['ALLEGROGRAPH']['host']
+        #os.environ['AGRAPH_PORT'] = config['ALLEGROGRAPH']['port']
+        #os.environ['AGRAPH_USER'] = config['ALLEGROGRAPH']['user']
+        #os.environ['AGRAPH_PASSWORD'] = config['ALLEGROGRAPH']['password']            
+        #try:
+            #from franz.openrdf.connect import ag_connect
+            #connRDF = ag_connect(config['ALLEGROGRAPH']['repo'], host=os.environ.get('AGRAPH_HOST'), port=os.environ.get('AGRAPH_PORT'),  user=os.environ.get('AGRAPH_USER'), password=os.environ.get('AGRAPH_PASSWORD'))
+            #print('Current Kunteksto RDF Repository Size: ', connRDF.size(), '\n')
+            #print('AllegroGraph connections are okay.\n\n')
+        #except: 
+            #connRDF = None
+            #print("Unexpected error: ", sys.exc_info()[0])
+            #print('RDF Connection Error', 'Could not create connection to AllegroGraph.')
 
-        if connRDF:
-            try:
-                connRDF.addData(rdfstr, rdf_format=RDFFormat.RDFXML, base_uri=None, context=None)
-            except Exception as e:
-                print('\n\nAllegroGraphDB Error: Could not load the Model RDF for ' + xsdfile + '\n' + str(e.args) + '\n')
-                sys.exit(1)                    
+        #if connRDF:
+            #try:
+                #connRDF.addData(rdfstr, rdf_format=RDFFormat.RDFXML, base_uri=None, context=None)
+            #except Exception as e:
+                #print('\n\nAllegroGraphDB Error: Could not load the Model RDF for ' + xsdfile + '\n' + str(e.args) + '\n')
+                #sys.exit(1)                    
 
 def make_model(project):
     """
@@ -1004,8 +1006,7 @@ def make_model(project):
 
     dmID = rec.dmid
 
-    model = OUTDIR + '/dm-' + dmID + '.xsd'
-    print("\nGenerating Datamodel : /dm-" + dmID + '.xsd\n')
+    print("\nGenerating Datamodel : dm-" + dmID + '.xsd\n')
     #xsd = open(model, 'w')
 
     xsd_str = xsd_header(rec)
@@ -1014,18 +1015,25 @@ def make_model(project):
     xsd_str += xsd_data(rec, 0, session)
     xsd_str += '\n</xs:schema>\n'
     
+    # persist a copy so we can troubleshoot for erros when needed.
     rec.schema = xsd_str
     session.commit()
     
     try:
         xmlschema_doc = etree.fromstring(xsd_str)
-    except:
-        print('Model Error', "There was an error in generating the schema. \nPlease re-edit the database and look for errors.\n You probably have undefined namespaces or improperly formatted predicate-object pair.\n")
+    except Exception as e:
+        # print('\nModel Error', "There was an error in generating the schema. \nPlease re-edit the database and look for errors.\n You probably have undefined namespaces or improperly formatted predicate-object pair.\n")
+        print('\n\n', e)
         sys.exit(1)
+    
+    # Must add the encoding declation after checking the schema.
+    xsd_str = '<?xml version="1.0" encoding="UTF-8"?>\n' + xsd_str
+    rec.schema = xsd_str
+    session.commit()
+    
+    xsd_rdf(rec, session)
 
-    xsd_rdf(model, OUTDIR, dmID, db_file)
-
-    return model
+    return
 
 
 def xml_hdr(model, schema, schemaFile):
