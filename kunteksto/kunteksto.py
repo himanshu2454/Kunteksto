@@ -125,9 +125,11 @@ class ComponentModelView(ModelView):
 class ValidationModelView(ModelView):
     form_base_class = SecureForm
     can_create = False
-    can_edit = False
+    can_edit = True
     can_export = True
     column_list = ('model_link', 'timestamp')
+    column_descriptions = {'log':'A CSV log. Copy/paste this into a spreadsheet like Excel or Libre Calc.'}
+
 
 admin.add_view(DatamodelModelView(Datamodel, db.session, 'Data Models'))
 admin.add_view(ComponentModelView(Component, db.session, 'Components'))

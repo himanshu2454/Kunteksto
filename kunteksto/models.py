@@ -107,7 +107,7 @@ class Datamodel(db.Model):
     validations = db.relationship('Validation', backref='datamodel', lazy=True)
 
     def __repr__(self):
-        return '<Data Model: %r>' % self.title.strip()
+        return 'Data Model for:' + self.title.strip()
 
 
 class Component(db.Model):
@@ -140,7 +140,7 @@ class Component(db.Model):
     model_link = db.relationship("Datamodel", back_populates="components")
 
     def __repr__(self):
-        return '<Component: %r>' % self.label.strip()
+        return 'Component: ' + self.label.strip()
 
 class Validation(db.Model):
     """

@@ -9,6 +9,8 @@ from io import StringIO, BytesIO
 import time
 import datetime
 import csv
+from pathlib import Path
+
 import sqlite3
 from urllib.parse import quote
 from xml.sax.saxutils import escape
@@ -1250,14 +1252,26 @@ def make_data(project, infile):
     
     # begin a validation log
     vlsession = Session()
-    vlog = Validation(model_id=rec.id, log='')
+    vlog = Validation(model_id=rec.id, log='id,status,error\n')
     vlsession.add(vlog)
     vlsession.flush()
     
     xmldb = rec.xmlstore
     jsondb = rec.jsonstore
     rdfdb = rec.rdfstore
-        
+    
+    # if filesystem persistence is defined insure the paths + project name exist
+    if xmldb.dbtype == 'fs':
+        path = Path(os.path.join(xmldb.host.strip(), rec.project.strip()))
+        path.mkdir(parents=True)
+
+    if rdfdb.dbtype == 'fs':
+        path = Path(os.path.join(rdfdb.host.strip(), rec.project.strip()))
+        path.mkdir(parents=True)
+            
+    if jsondb.dbtype == 'fs':
+        path = Path(os.path.join(jsondb.host.strip(), rec.project.strip()))
+        path.mkdir(parents=True)
             
     try:
         xsd_str = rec.schema.replace('<?xml version="1.0" encoding="UTF-8"?>','')
@@ -1291,7 +1305,6 @@ def make_data(project, infile):
                 print("\n\nThere was an error matching the data input file to the selected model database.")
                 print('The Datafile contains a header label, ' + hdrs[i] + ' that does not match the Component headers. \n\n')
                 exit(code=1)
-        vlogStr = 'id,status,error\n'  
         
         # for data in reader:
         with click.progressbar(reader, label="Creating a total of " + str(csv_len) + " data files: ", length=csv_len) as bar:
@@ -1345,8 +1358,7 @@ def make_data(project, infile):
                     for err in log:
                         if err.line not in used_lines:
                             used_lines.append(err.line)
-                            print('\nPlease check the validation log for invalid values.')
-                            print(str(OUTDIR + os.path.sep + filePrefix) + '_validation_log.csv\n\n')
+                            print('\nPlease check the validation log for invalid values.\n')
                             xmlStr = injectEV(xmlStr, err.type, err.message, err.path)
                             rdfStr += '  <rdfs:Class rdf:about="' + file_id + err.path + '">\n'
                             rdfStr += '    <rdfs:comment>' + repr(err.message) + '</rdfs:comment>\n'
@@ -1356,14 +1368,14 @@ def make_data(project, infile):
                     rdfStr += '  </rdfs:Class>\n'
                     vlogStr = file_id + ',invalid,' + err.message + '\n'
                 except etree.LxmlError as e:
-                    print('\nPlease check the validation log for errors in parsing the file.')
+                    print('\nPlease check the validation log for errors in parsing the file.\n')
                     rdfStr += '  <rdfs:Class rdf:about="' + file_id + '">\n'
                     rdfStr += '    <rdf:type rdf:resource="https://www.s3model.com/ns/s3m/s3model/DataInstanceError"/>\n'
                     rdfStr += '  </rdfs:Class>\n'
                     vlogStr = file_id + ',error,' + str(e.args) + '\n'
                 finally:
                     vlog.log = vlog.log + vlogStr 
-                    vlsession.commit()
+                    vlsession.flush()
                     
                 rdfStr += '</rdf:RDF>\n'
                 
@@ -1377,7 +1389,7 @@ def make_data(project, infile):
                             connXML.add(file_id + '.xml', xmlStr)
                         except Exception as e:
                             vlog.log = vlog.log + (file_id + ',BaseXDB Error,' + str(e.args) + '\n')
-                            vlsession.commit()
+                            vlsession.flush()
                     
                     elif xmldb.dbtype == 'ml': # Marklogic 
                         headers = {"Content-Type": "application/xml", 'user-agent': 'Kunteksto'}
@@ -1385,9 +1397,8 @@ def make_data(project, infile):
                         r = requests.put(url, auth=HTTPDigestAuth(user, pw), headers=headers, rec=xmlStr)                                
                         
                     elif xmldb.dbtype == 'fs': # Filesystem
-                        xmlFile = open(xmldb.host.strip() + file_id + '.xml', 'w')
-                        xmlFile.write(xmlStr)
-                        xmlFile.close()
+                        with open(os.path.join(xmldb.host.strip(), rec.project.strip(), file_id + '.xml'), 'w') as xmlFile:
+                            xmlFile.write(xmlStr)
                     else:
                         print("\nNo XML persistence option for specified.\n")
     
@@ -1397,7 +1408,7 @@ def make_data(project, infile):
                             connRDF.addData(rdfStr, rdf_format=RDFFormat.RDFXML, base_uri=None, context=None)
                         except Exception as e:
                             vlog.log = vlog.log + (file_id + ',AllegroDB Error,' + str(e.args) + '\n')
-                            vlsession.commit() 
+                            vlsession.flush() 
                             
                     elif rdfdb.dbtype == 'ml': 
                         headers = {"Content-Type": "application/xml", 'user-agent': 'Kunteksto'}
@@ -1405,9 +1416,8 @@ def make_data(project, infile):
                         r = requests.put(url, auth=HTTPDigestAuth(user, pw), headers=headers, rec=rdfStr)                                
                             
                     elif rdfdb.dbtype == 'fs': 
-                        rdfFile = open(rdfdb.host.strip() + file_id + '.rdf', 'w')
-                        rdfFile.write(rdfStr)
-                        rdfFile.close()
+                        with open(os.path.join(rdfdb.host.strip(), rec.project.strip(), file_id + '.rdf'), 'w') as rdfFile:
+                            rdfFile.write(rdfStr)
                     else:
                         print("\nNo RDF persistence option for specified.\n")
 
@@ -1417,7 +1427,7 @@ def make_data(project, infile):
                         jsonStr = json.dumps(d, indent=4)
                     except Exception as e:
                         vlog.log = vlog.log + (file_id + ',JSON Parse Error,' + str(e.args) + '\n')
-                        vlsession.commit()                                            
+                        vlsession.flush()                                            
                                 
                     if jsondb.dbtype == 'ml':
                         headers = {"Content-Type": "application/json", 'user-agent': 'Kunteksto'}
@@ -1425,11 +1435,10 @@ def make_data(project, infile):
                         r = requests.put(url, auth=HTTPDigestAuth(user, pw), headers=headers, rec=jsonStr)
                             
                     elif jsondb.dbtype == 'fs':
-                        jsonFile = open(jsondb.host.strip() + file_id + '.json', 'w')
-                        jsonFile.write(jsonStr)
-                        jsonFile.close()
+                        with open(os.path.join(jsondb.host.strip(), rec.project.strip(), file_id + '.json'), 'w') as jsonFile:
+                            jsonFile.write(jsonStr)
                     else:
                         print("\nNo JSON persistence option for specified.\n")
-                    
+    vlsession.commit()
     return True
 
