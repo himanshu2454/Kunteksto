@@ -7,6 +7,7 @@ import functools
 
 import click
 import configparser
+import sqlite3
 from flask import Flask, url_for
 from flask_sqlalchemy import SQLAlchemy
 
@@ -21,7 +22,7 @@ from flask_admin.form import SecureForm
 from flask.cli import with_appcontext
 
 from wtforms import fields, widgets
-from sqlalchemy.event import listens_for
+from sqlalchemy import event
 from jinja2 import Markup
 
 from . import app, config
@@ -30,7 +31,7 @@ from .models import XMLstore, JSONstore, RDFstore, Datamodel, Component, Validat
 from .analyze import process
 from .generate import make_data, make_model
 
-# Add Admin setup and administrative views here
+# Add Flask Admin setup and administrative views here
 admin = Admin(app, name='Kunteksto', template_mode='bootstrap3')
 
 class XMLstoreModelView(ModelView):
@@ -40,6 +41,12 @@ class XMLstoreModelView(ModelView):
     can_export = True
     column_list = ('name', 'dbname', 'host', 'id')
     column_labels = {'name':"Name", 'host':"Host", 'port':"Port", 'hostip':'Host IP', 'forests':'Forests', 'dbname':"Database", 'user':"User", 'pw':"Password"}
+    form_choices = {'dbtype': [
+           ('fs', 'Filesystem'),
+           ('ml', 'Marklogic'),
+           ('ag', 'Allegrograph'),
+           ('bx', 'BaseX'),
+       ]}
 
 class JSONstoreModelView(ModelView):
     form_base_class = SecureForm
@@ -48,6 +55,12 @@ class JSONstoreModelView(ModelView):
     can_export = True
     column_list = ('name', 'dbname', 'host', 'id')
     column_labels = {'name':"Name", 'host':"Host", 'port':"Port", 'hostip':'Host IP', 'forests':'Forests', 'dbname':"Database", 'user':"User", 'pw':"Password"}
+    form_choices = {'dbtype': [
+           ('fs', 'Filesystem'),
+           ('ml', 'Marklogic'),
+           ('ag', 'Allegrograph'),
+           ('bx', 'BaseX'),
+       ]}
 
 class RDFstoreModelView(ModelView):
     form_base_class = SecureForm
@@ -56,6 +69,12 @@ class RDFstoreModelView(ModelView):
     can_export = True
     column_list = ('name', 'dbname', 'host', 'id')
     column_labels = {'name':"Name", 'host':"Host", 'port':"Port", 'hostip':'Host IP', 'forests':'Forests', 'dbname':"Database", 'user':"User", 'pw':"Password"}
+    form_choices = {'dbtype': [
+           ('fs', 'Filesystem'),
+           ('ml', 'Marklogic'),
+           ('ag', 'Allegrograph'),
+           ('bx', 'BaseX'),
+       ]}
 
 class DatamodelModelView(ModelView):
     form_base_class = SecureForm
@@ -70,7 +89,6 @@ class DatamodelModelView(ModelView):
     def on_form_prefill(self, form, id):
         form.project.render_kw = {'readonly': True}  # make the field readonly
         form.schema.render_kw = {'readonly': True}  # make the field readonly
-        form.catalog.render_kw = {'readonly': True}  # make the field readonly
         form.rdf.render_kw = {'readonly': True}  # make the field readonly
         form.validations.render_kw = {'readonly': True}  # make the field readonly
 
@@ -97,6 +115,8 @@ class ComponentModelView(ModelView):
            ('Float', 'Float'),
            ('String', 'String'),
            ('Date', 'Date'),
+           ('Time', 'Time'),
+           ('Datetime', 'Datetime'),
        ]}
     
     def on_form_prefill(self, form, id):
@@ -152,12 +172,93 @@ def gendata(project, infile):
     Generate data from a CSV file (infile) based on a model (project) from the commandline.
     """
     click.echo('Generate data from ' + infile + ' based on the model: ' + project)
+    make_data(project, infile)
+
+@click.command('repoinit')
+def repoinit():
+    """
+    Generate example repository entries.
+    """
+    click.echo('Creating example repositories:')
+    create_xmlstores()
+    create_rdfstores()
+    create_jsonstores()
 
 
 app.cli.add_command(analyze)
 app.cli.add_command(genmodel)
 app.cli.add_command(gendata)
+app.cli.add_command(repoinit)
 
+
+
+# Add default Datastore records when the tables are first created
+def create_xmlstores():
+    print('XML Repos')
+    try:
+        outdir = os.path.abspath(os.path.join(os.getcwd(), os.pardir, 'output', 'xml'))
+        ds = XMLstore(dbtype='fs', name='Filesystem (XML example)', host=outdir, port='N/A', dbname='XML')
+        db.session.add(ds)
+        db.session.commit()
+    except sqlite3.IntegrityError as e:
+        print(e)
+        
+    try:
+        ds = XMLstore(dbtype='ml', name='Marklogic (XML example)', host='localhost.localdomain', port='10035', dbname='Kunteksto', hostip='192.168.25.120', forests=2, user='admin', pw='admin')
+        db.session.add(ds)
+        db.session.commit()
+    except sqlite3.IntegrityError as e:
+        print(e)
+
+    try:
+        ds = XMLstore(dbtype='bx', name='BaseX (XML example)', host='localhost', port='1984', dbname='Kunteksto', user='admin', pw='admin')
+        db.session.add(ds)
+        db.session.commit()
+    except sqlite3.IntegrityError as e:
+        print(e)
+
+
+def create_rdfstores():
+    print('RDF Repos')
+    try:
+        outdir = os.path.abspath(os.path.join(os.getcwd(), os.pardir, 'output', 'rdf'))
+        ds = RDFstore(dbtype='fs', name='Filesystem (RDF example)', host=outdir, port='N/A', dbname='RDF')
+        db.session.add(ds)
+        db.session.commit()
+    except sqlite3.IntegrityError as e:
+        print(e)
+    
+    try:
+        ds = RDFstore(dbtype='ag', name='AllegroGraph (RDF example)', host='localhost', port='10035', dbname='Kunteksto', user='admin', pw='admin')
+        db.session.add(ds)
+        db.session.commit()
+    except sqlite3.IntegrityError as e:
+        print(e)
+    
+    try:
+        ds = RDFstore(dbtype='ml', name='Marklogic (RDF example)', host='localhost.localdomain', port='10035', dbname='Kunteksto', hostip='192.168.25.120', forests=2, user='admin', pw='admin')
+        db.session.add(ds)
+        db.session.commit()
+    except sqlite3.IntegrityError as e:
+        print(e)
+
+
+def create_jsonstores():
+    print('JSON Repos')    
+    try:
+        outdir = os.path.abspath(os.path.join(os.getcwd(), os.pardir, 'output', 'json'))
+        ds = JSONstore(dbtype='fs', name='Filesystem (JSON example)', host=outdir, port='N/A', dbname='JSON')
+        db.session.add(ds)
+        db.session.commit()
+    except sqlite3.IntegrityError as e:
+        print(e)
+    
+    try:
+        ds = JSONstore(dbtype='ml', name='Marklogic (JSON example)', host='localhost.localdomain', port='10035', dbname='Kunteksto', hostip='192.168.25.120', forests=2, user='admin', pw='admin')
+        db.session.add(ds)
+        db.session.commit()
+    except sqlite3.IntegrityError as e:
+        print(e)
 
 
 # Routing

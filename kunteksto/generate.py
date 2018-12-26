@@ -30,9 +30,10 @@ from sqlalchemy import create_engine, update
 from sqlalchemy.orm import sessionmaker
 
 from . import config
-from .models import db, Session, Datamodel, Component
+from .models import db, Session, Datamodel, Component, Validation
     
 RMVERSION = config['SYSTEM']['rmversion'].replace('.', '_')
+DELIM = config['KUNTEKSTO']['delim']
 
 with open('../s3model/s3model_' + RMVERSION + '.xsd', 'r') as rmfile:
     rm_str = rmfile.read()
@@ -139,7 +140,7 @@ def xdcount_rdf(data):
     indent = 2
     padding = ('').rjust(indent)
     rdfStr += padding.rjust(indent + 6) + '<rdfs:Class rdf:about="mc-' + mcID + '">\n'
-    rdfStr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_1_0.xsd#XdCountType"/>\n'
+    rdfStr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_' + RMVERSION + '.xsd#XdCountType"/>\n'
     rdfStr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
     rdfStr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + quote(data.definition_url.strip()) + '"/>\n'
     if data.pred_obj:  # are there additional predicate-object definitions?
@@ -263,7 +264,7 @@ def xdquantity_rdf(data):
     indent = 2
     padding = ('').rjust(indent)
     rdfStr += padding.rjust(indent + 6) + '<rdfs:Class rdf:about="mc-' + mcID + '">\n'
-    rdfStr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_1_0.xsd#XdQuantityType"/>\n'
+    rdfStr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_' + RMVERSION + '.xsd#XdQuantityType"/>\n'
     rdfStr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
     rdfStr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + quote(data.definition_url.strip()) + '"/>\n'
     if data.pred_obj:  # are there additional predicate-object definitions?
@@ -388,7 +389,7 @@ def xdfloat_rdf(data):
     indent = 2
     padding = ('').rjust(indent)
     rdfStr += padding.rjust(indent + 6) + '<rdfs:Class rdf:about="mc-' + mcID + '">\n'
-    rdfStr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_1_0.xsd#XdFloatType"/>\n'
+    rdfStr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_' + RMVERSION + '.xsd#XdFloatType"/>\n'
     rdfStr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
     rdfStr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + quote(data.definition_url.strip()) + '"/>\n'
     if data.pred_obj:  # are there additional predicate-object definitions?
@@ -513,7 +514,7 @@ def xdstring_rdf(data):
     indent = 2
     padding = ('').rjust(indent)
     rdfStr += padding.rjust(indent + 6) + '<rdfs:Class rdf:about="mc-' + mcID + '">\n'
-    rdfStr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_1_0.xsd#XdStringType"/>\n'
+    rdfStr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_' + RMVERSION + '.xsd#XdStringType"/>\n'
     rdfStr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
     rdfStr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + quote(data.definition_url.strip()) + '"/>\n'
     if data.pred_obj:  # are there additional predicate-object definitions?
@@ -647,7 +648,7 @@ def xdtemporal_rdf(data):
     indent = 2
     padding = ('').rjust(indent)
     rdfStr += padding.rjust(indent + 6) + '<rdfs:Class rdf:about="mc-' + mcID + '">\n'
-    rdfStr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_1_0.xsd#XdTemporalType"/>\n'
+    rdfStr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_' + RMVERSION + '.xsd#XdTemporalType"/>\n'
     rdfStr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
     rdfStr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + quote(data.definition_url.strip()) + '"/>\n'
     if data.pred_obj:  # are there additional predicate-object definitions?
@@ -770,7 +771,7 @@ def units(mcID, data):
     xdstr += padding.rjust(indent + 4) + '</xs:documentation>\n'
     xdstr += padding.rjust(indent + 4) + '<xs:appinfo>\n'
     xdstr += padding.rjust(indent + 6) + '<rdfs:Class rdf:about="mc-' + mcID + '">\n'
-    xdstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_1_0.xsd#XdStringType"/>\n'
+    xdstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_' + RMVERSION + '.xsd#XdStringType"/>\n'
     xdstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
     xdstr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + quote(data.definition_url.strip()) + '"/>\n'
     if data.pred_obj:  # are there additional predicate-object definitions?
@@ -815,7 +816,7 @@ def xsd_data(rec, indent, session):
     dstr += padding.rjust(indent + 4) + '</xs:documentation>\n'
     dstr += padding.rjust(indent + 4) + '<xs:appinfo>\n'
     dstr += padding.rjust(indent + 6) + '<rdfs:Class rdf:about="mc-' + rec.dataid + '">\n'
-    dstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_1_0.xsd#ClusterType"/>\n'
+    dstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_' + RMVERSION + '.xsd#ClusterType"/>\n'
     dstr += padding.rjust(indent + 8) + '<rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model/RMC"/>\n'
     dstr += padding.rjust(indent + 8) + '<rdfs:isDefinedBy rdf:resource="' + rec.definition_url + '"/>\n'
     dstr += padding.rjust(indent + 6) + '</rdfs:Class>\n'
@@ -1036,148 +1037,140 @@ def make_model(project):
     return
 
 
-def xml_hdr(model, schema, schemaFile):
-    xstr = '<s3m:dm-' + model[5].strip() + '\n'
+def xml_hdr(rec):
+    xstr = '<s3m:dm-' + rec.dmid.strip() + '\n'
     xstr += 'xmlns:s3m="https://www.s3model.com/ns/s3m/"\n'
     xstr += 'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"\n'
-    xstr += 'xsi:schemaLocation="https://www.s3model.com/ns/s3m/ https://dmgen.s3model.com/dmlib/' + schemaFile + '">\n'
-    xstr += '    <label>' + xml_escape(model[0].strip()) + '</label>\n'
+    xstr += 'xsi:schemaLocation="https://www.s3model.com/ns/s3m/ https://s3model.com/dmlib/dm-' + rec.dmid.strip() + '.xsd">\n'
+    xstr += '    <label>' + xml_escape(rec.title.strip()) + '</label>\n'
     xstr += '    <dm-language>en-US</dm-language>\n'
     xstr += '    <dm-encoding>utf-8</dm-encoding>\n'
     xstr += '    <current-state>new</current-state>\n'    
-    xstr += '    <s3m:ms-' + model[7].strip() + '>\n'
+    xstr += '    <s3m:ms-' + rec.dataid.strip() + '>\n'
     xstr += '      <label>Data Items</label>\n'
     return(xstr)
 
 
-def xml_count(row, data):
-    xstr = '      <s3m:ms-' + row[16].strip() + '>\n'
-    xstr += '      <s3m:ms-' + row[15].strip() + '>\n'
-    xstr += '        <label>' + row[1].strip() + '</label>\n'
+def xml_count(col, data):
+    xstr = '      <s3m:ms-' + col.adid.strip() + '>\n'
+    xstr += '      <s3m:ms-' + col.mcid.strip() + '>\n'
+    xstr += '        <label>' + col.label.strip() + '</label>\n'
     xstr += '        <magnitude-status>equal</magnitude-status>\n'
     xstr += '        <error>0</error>\n'
     xstr += '        <accuracy>0</accuracy>\n'
-    xstr += '        <xdcount-value>' + data[row[0].strip()] + '</xdcount-value>\n'
+    xstr += '        <xdcount-value>' + data[col.header.strip()] + '</xdcount-value>\n'
     xstr += '        <xdcount-units>\n'
-    xstr += '          <label>' + xml_escape(row[1].strip()) + ' Units</label>\n'
-    xstr += '          <xdstring-value>' + xml_escape(row[14].strip()) + '</xdstring-value>\n'
+    xstr += '          <label>' + xml_escape(col.label.strip()) + ' Units</label>\n'
+    xstr += '          <xdstring-value>' + xml_escape(col.units.strip()) + '</xdstring-value>\n'
     xstr += '          <xdstring-language>en-US</xdstring-language>\n'
     xstr += '        </xdcount-units>\n'
-    xstr += '      </s3m:ms-' + row[15].strip() + '>\n'
-    xstr += '      </s3m:ms-' + row[16].strip() + '>\n'
+    xstr += '      </s3m:ms-' + col.mcid.strip() + '>\n'
+    xstr += '      </s3m:ms-' + col.adid.strip() + '>\n'
     return(xstr)
 
 
-def rdf_count(row, data):
-    rstr = '      <rdfs:Class rdf:about="s3m:ms-' + row[15].strip() + '">\n'
-    rstr += '        <rdfs:label>' + xml_escape(row[1].strip()) + '</rdfs:label>\n'
-    rstr += '        <rdfs:value rdf:datatype="xs:integer">' + data[row[0].strip()] + '</rdfs:value>\n'
+def rdf_count(col, data):
+    rstr = '      <rdfs:Class rdf:about="s3m:ms-' + col.mcid.strip() + '">\n'
+    rstr += '        <rdfs:label>' + xml_escape(col.label.strip()) + '</rdfs:label>\n'
+    rstr += '        <rdfs:value rdf:datatype="xs:integer">' + data[col.header.strip()] + '</rdfs:value>\n'
     rstr += '      </rdfs:Class>\n'
     return(rstr)
 
 
-def xml_quantity(row, data):
-    xstr = '      <s3m:ms-' + row[16].strip() + '>\n'
-    xstr += '      <s3m:ms-' + row[15].strip() + '>\n'
-    xstr += '        <label>' + xml_escape(row[1].strip()) + '</label>\n'
+def xml_quantity(col, data):
+    xstr = '      <s3m:ms-' + col.adid.strip() + '>\n'
+    xstr += '      <s3m:ms-' + col.mcid.strip() + '>\n'
+    xstr += '        <label>' + xml_escape(col.label.strip()) + '</label>\n'
     xstr += '        <magnitude-status>equal</magnitude-status>\n'
     xstr += '        <error>0</error>\n'
     xstr += '        <accuracy>0</accuracy>\n'
-    xstr += '        <xdquantity-value>' + data[row[0].strip()] + '</xdquantity-value>\n'
+    xstr += '        <xdquantity-value>' + data[col.header.strip()] + '</xdquantity-value>\n'
     xstr += '        <xdquantity-units>\n'
-    xstr += '          <label>' + xml_escape(row[1].strip()) + ' Units</label>\n'
-    xstr += '          <xdstring-value>' + xml_escape(row[14].strip()) + '</xdstring-value>\n'
+    xstr += '          <label>' + xml_escape(col.label.strip()) + ' Units</label>\n'
+    xstr += '          <xdstring-value>' + xml_escape(col.units.strip()) + '</xdstring-value>\n'
     xstr += '          <xdstring-language>en-US</xdstring-language>\n'
     xstr += '        </xdquantity-units>\n'
-    xstr += '      </s3m:ms-' + row[15].strip() + '>\n'
-    xstr += '      </s3m:ms-' + row[16].strip() + '>\n'
+    xstr += '      </s3m:ms-' + col.mcid.strip() + '>\n'
+    xstr += '      </s3m:ms-' + col.adid.strip() + '>\n'
     return(xstr)
 
 
-def rdf_quantity(row, data):
-    rstr = '      <rdfs:Class rdf:about="s3m:ms-' + row[15].strip() + '">\n'
-    rstr += '        <rdfs:label>' + xml_escape(row[1].strip()) + '</rdfs:label>\n'
-    rstr += '        <rdfs:value rdf:datatype="xs:decimal">' + data[row[0].strip()] + '</rdfs:value>\n'
+def rdf_quantity(col, data):
+    rstr = '      <rdfs:Class rdf:about="s3m:ms-' + col.mcid.strip() + '">\n'
+    rstr += '        <rdfs:label>' + xml_escape(col.label.strip()) + '</rdfs:label>\n'
+    rstr += '        <rdfs:value rdf:datatype="xs:decimal">' + data[col.header.strip()] + '</rdfs:value>\n'
     rstr += '      </rdfs:Class>\n'
     return(rstr)
 
 
-def xml_float(row, data):
-    xstr = '      <s3m:ms-' + row[16].strip() + '>\n'
-    xstr += '      <s3m:ms-' + row[15].strip() + '>\n'
-    xstr += '        <label>' + row[1].strip() + '</label>\n'
+def xml_float(col, data):
+    xstr = '      <s3m:ms-' + col.adid.strip() + '>\n'
+    xstr += '      <s3m:ms-' + col.mcid.strip() + '>\n'
+    xstr += '        <label>' + col.label.strip() + '</label>\n'
     xstr += '        <magnitude-status>equal</magnitude-status>\n'
     xstr += '        <error>0</error>\n'
     xstr += '        <accuracy>0</accuracy>\n'
-    xstr += '        <xdfloat-value>' + data[row[0].strip()] + '</xdfloat-value>\n'
+    xstr += '        <xdfloat-value>' + data[col.header.strip()] + '</xdfloat-value>\n'
     xstr += '        <xdfloat-units>\n'
-    xstr += '          <label>' + xml_escape(row[1].strip()) + ' Units</label>\n'
-    xstr += '          <xdstring-value>' + xml_escape(row[14].strip()) + '</xdstring-value>\n'
+    xstr += '          <label>' + xml_escape(col.label.strip()) + ' Units</label>\n'
+    xstr += '          <xdstring-value>' + xml_escape(col.units.strip()) + '</xdstring-value>\n'
     xstr += '          <xdstring-language>en-US</xdstring-language>\n'
     xstr += '        </xdfloat-units>\n'
-    xstr += '      </s3m:ms-' + row[15].strip() + '>\n'
-    xstr += '      </s3m:ms-' + row[16].strip() + '>\n'
+    xstr += '      </s3m:ms-' + col.mcid.strip() + '>\n'
+    xstr += '      </s3m:ms-' + col.adid.strip() + '>\n'
+    return(xstr)
+
+def rdf_float(col, data):
+    rstr = '      <rdfs:Class rdf:about="s3m:ms-' + col.mcid.strip() + '">\n'
+    rstr += '        <rdfs:label>' + xml_escape(col.label.strip()) + '</rdfs:label>\n'
+    rstr += '        <rdfs:value rdf:datatype="xs:float">' + data[col.header.strip()] + '</rdfs:value>\n'
+    rstr += '      </rdfs:Class>\n'
+    return(rstr)
+
+
+def xml_temporal(col, data):
+    xstr = '      <s3m:ms-' + col.adid.strip() + '>\n'
+    xstr += '      <s3m:ms-' + col.mcid.strip() + '>\n'
+    xstr += '        <label>' + xml_escape(col.label.strip()) + '</label>\n'
+    if col.datatype.lower() == 'date':
+        xstr += '        <xdtemporal-date>' + data[col.header.strip()] + '</xdtemporal-date>\n'
+    if col.datatype.lower() == 'time':
+        xstr += '        <xdtemporal-time>' + data[col.header.strip()] + '</xdtemporal-time>\n'
+    if col.datatype.lower() == 'datetime':
+        xstr += '        <xdtemporal-datetime>' + data[col.header.strip()] + '</xdtemporal-datetime>\n'
+    xstr += '      </s3m:ms-' + col.mcid.strip() + '>\n'
+    xstr += '      </s3m:ms-' + col.adid.strip() + '>\n'
     return(xstr)
 
 
-def rdf_quantity(row, data):
-    rstr = '      <rdfs:Class rdf:about="s3m:ms-' + row[15].strip() + '">\n'
-    rstr += '        <rdfs:label>' + xml_escape(row[1].strip()) + '</rdfs:label>\n'
-    rstr += '        <rdfs:value rdf:datatype="xs:decimal">' + data[row[0].strip()] + '</rdfs:value>\n'
-    rstr += '      </rdfs:Class>\n'
-    return(rstr)
-
-def rdf_float(row, data):
-    rstr = '      <rdfs:Class rdf:about="s3m:ms-' + row[15].strip() + '">\n'
-    rstr += '        <rdfs:label>' + xml_escape(row[1].strip()) + '</rdfs:label>\n'
-    rstr += '        <rdfs:value rdf:datatype="xs:float">' + data[row[0].strip()] + '</rdfs:value>\n'
-    rstr += '      </rdfs:Class>\n'
-    return(rstr)
-
-
-def xml_temporal(row, data):
-    xstr = '      <s3m:ms-' + row[16].strip() + '>\n'
-    xstr += '      <s3m:ms-' + row[15].strip() + '>\n'
-    xstr += '        <label>' + xml_escape(row[1].strip()) + '</label>\n'
-    if row.datatype.lower() == 'date':
-        xstr += '        <xdtemporal-date>' + data[row[0].strip()] + '</xdtemporal-date>\n'
-    if row.datatype.lower() == 'time':
-        xstr += '        <xdtemporal-time>' + data[row[0].strip()] + '</xdtemporal-time>\n'
-    if row.datatype.lower() == 'datetime':
-        xstr += '        <xdtemporal-datetime>' + data[row[0].strip()] + '</xdtemporal-datetime>\n'
-    xstr += '      </s3m:ms-' + row[15].strip() + '>\n'
-    xstr += '      </s3m:ms-' + row[16].strip() + '>\n'
-    return(xstr)
-
-
-def rdf_temporal(row, data):
-    rstr = '      <rdfs:Class rdf:about="s3m:ms-' + row[15].strip() + '">\n'
-    rstr += '        <rdfs:label>' + xml_escape(row[1].strip()) + '</rdfs:label>\n'
-    if row.datatype.lower() == 'date':
-        rstr += '        <rdfs:value rdf:datatype="xs:date">' + data[row[0].strip()] + '</rdfs:value>\n'
-    if row.datatype.lower() == 'time':
-        rstr += '        <rdfs:value rdf:datatype="xs:time">' + data[row[0].strip()] + '</rdfs:value>\n'
-    if row.datatype.lower() == 'datetime':
-        rstr += '        <rdfs:value rdf:datatype="xs:dateTime">' + data[row[0].strip()] + '</rdfs:value>\n'
+def rdf_temporal(col, data):
+    rstr = '      <rdfs:Class rdf:about="s3m:ms-' + col.mcid.strip() + '">\n'
+    rstr += '        <rdfs:label>' + xml_escape(col.label.strip()) + '</rdfs:label>\n'
+    if col.datatype.lower() == 'date':
+        rstr += '        <rdfs:value rdf:datatype="xs:date">' + data[col.header.strip()] + '</rdfs:value>\n'
+    if col.datatype.lower() == 'time':
+        rstr += '        <rdfs:value rdf:datatype="xs:time">' + data[col.header.strip()] + '</rdfs:value>\n'
+    if col.datatype.lower() == 'datetime':
+        rstr += '        <rdfs:value rdf:datatype="xs:dateTime">' + data[col.header.strip()] + '</rdfs:value>\n'
     rstr += '      </rdfs:Class>\n'
     return(rstr)
 
 
-def xml_string(row, data):
-    xstr = '      <s3m:ms-' + row[16].strip() + '>\n'
-    xstr += '      <s3m:ms-' + row[15].strip() + '>\n'
-    xstr += '        <label>' + xml_escape(row[1].strip()) + '</label>\n'
-    xstr += '        <xdstring-value>' + xml_escape(data[row[0].strip()]) + '</xdstring-value>\n'
+def xml_string(col, data):
+    xstr = '      <s3m:ms-' + col.adid.strip() + '>\n'
+    xstr += '      <s3m:ms-' + col.mcid.strip() + '>\n'
+    xstr += '        <label>' + xml_escape(col.label.strip()) + '</label>\n'
+    xstr += '        <xdstring-value>' + xml_escape(data[col.header.strip()]) + '</xdstring-value>\n'
     xstr += '        <xdstring-language>en-US</xdstring-language>\n'
-    xstr += '      </s3m:ms-' + row[15].strip() + '>\n'
-    xstr += '      </s3m:ms-' + row[16].strip() + '>\n'
+    xstr += '      </s3m:ms-' + col.mcid.strip() + '>\n'
+    xstr += '      </s3m:ms-' + col.adid.strip() + '>\n'
     return(xstr)
 
 
-def rdf_string(row, data):
-    rstr = '      <rdfs:Class rdf:about="s3m:ms-' + row[15].strip() + '">\n'
-    rstr += '        <rdfs:label>' + xml_escape(row[1].strip()) + '</rdfs:label>\n'
-    rstr += '        <rdfs:value rdf:datatype="xs:string">' + xml_escape(data[row[0].strip()]) + '</rdfs:value>\n'
+def rdf_string(col, data):
+    rstr = '      <rdfs:Class rdf:about="s3m:ms-' + col.mcid.strip() + '">\n'
+    rstr += '        <rdfs:label>' + xml_escape(col.label.strip()) + '</rdfs:label>\n'
+    rstr += '        <rdfs:value rdf:datatype="xs:string">' + xml_escape(data[col.header.strip()]) + '</rdfs:value>\n'
     rstr += '      </rdfs:Class>\n'
     return(rstr)
 
@@ -1247,49 +1240,37 @@ def injectEV(xmlStr, code, msg, path):
     return(xmlStr)
 
 
-def make_data():
+def make_data(project, infile):
     """
-    schema, db_file, infile, delim, outdir, connRDF, connXML, config
     Create XML and JSON data files and an RDF graph based on the model.
     """
+    session = Session()
+    rec = session.query(Datamodel).filter_by(project=project).first()
+    cols = session.query(Component).filter_by(model_id=rec.id).all()
     
-    # if MarkLogic is active then setup some variables instead of repeating them for each type
-    if config['MARKLOGIC']['status'] == 'ACTIVE':                        
-        dbname = config['MARKLOGIC']['dbname']
-        hostip = config['MARKLOGIC']['hostip']
-        port = config['MARKLOGIC']['port']
-        user = config['MARKLOGIC']['user']
-        pw = config['MARKLOGIC']['password']
+    # begin a validation log
+    vlsession = Session()
+    vlog = Validation(model_id=rec.id, log='')
+    vlsession.add(vlog)
+    vlsession.flush()
     
-    base = os.path.basename(infile)
-    filePrefix = os.path.splitext(base)[0]
-    schemaFile = os.path.basename(schema)
-    prj = base.split('.')[0]
-    
+    xmldb = rec.xmlstore
+    jsondb = rec.jsonstore
+    rdfdb = rec.rdfstore
+        
+            
     try:
-        schema_doc = etree.parse(schema)
-        modelSchema = etree.XMLSchema(schema_doc)
+        xsd_str = rec.schema.replace('<?xml version="1.0" encoding="UTF-8"?>','')
+        xsd_str = xsd_str.replace('<?xml-stylesheet type="text/xsl" href="dm-description.xsl"?>','')
+        schema = etree.parse(StringIO(xsd_str))        
+        modelSchema = etree.XMLSchema(schema)
     except etree.XMLSchemaParseError as e:
-        print("\n\nCannot parse this schema. Please check the database " + db_file + " for errors.\n" + str(e.args))
+        print("\n\nCannot parse this schema. Please check the database for errors.\n" + str(e.args))
         sys.exit(1)
 
-    print('\n\nGeneration: ', "Generate data for: " + schemaFile + ' using ' + base + '\n')
-    namespaces = {"https://www.s3model.com/ns/s3m/": "s3m", "http://www.w3.org/2001/XMLSchema-instance": "xsi"}
-    xmldir = OUTDIR + '/xml/'
-    os.makedirs(xmldir, exist_ok=True)
-    rdfdir = OUTDIR + '/rdf/'
-    os.makedirs(rdfdir, exist_ok=True)
-    jsondir = OUTDIR + '/json/'
-    os.makedirs(jsondir, exist_ok=True)
+    print('\n\nGeneration: ', "Generate data for project: " + rec.project + ' using ' + infile + '\n')
 
-    # get info from the sqlite DB
-    conn = sqlite3.connect(db_file)
-    c = conn.cursor()
-    c.execute("SELECT * FROM model")
-    model = c.fetchone()
-    c.execute("SELECT * FROM record")
-    rows = c.fetchall()
-    conn.close()
+    namespaces = {"https://www.s3model.com/ns/s3m/": "s3m", "http://www.w3.org/2001/XMLSchema-instance": "xsi"}
     
     # count the lines in the file
     with open(infile) as f:
@@ -1298,58 +1279,57 @@ def make_data():
     f.close()
     
     with open(infile) as csvfile:
-        reader = csv.DictReader(csvfile, delimiter=delim)
+        reader = csv.DictReader(csvfile, delimiter=DELIM)
         
         # this test is for the 'generate' mode to insure the model matches the input CSV file. 
+        print('\nChecking that data file matches model.\n')
         hdrs = reader.fieldnames
+        
         for i in range(0,len(hdrs)):
-            if hdrs[i] != rows[i][0]:
+            col = session.query(Component).filter_by(model_id=rec.id).filter_by(header=hdrs[i]).first()
+            if col == None:
                 print("\n\nThere was an error matching the data input file to the selected model database.")
-                print('The Datafile contains: ' + hdrs[i] + '  The Model contains: ' + rows[i][0] + '\n\n')
+                print('The Datafile contains a header label, ' + hdrs[i] + ' that does not match the Component headers. \n\n')
                 exit(code=1)
-
-        vlog = open(OUTDIR + os.path.sep + filePrefix + '_validation_log.csv', 'w')   
-        vlog.write('id,status,error\n')
-        vlog.close()
+        vlogStr = 'id,status,error\n'  
+        
         # for data in reader:
         with click.progressbar(reader, label="Creating a total of " + str(csv_len) + " data files: ", length=csv_len) as bar:
             for data in bar:
-                vlog = open(OUTDIR + os.path.sep + filePrefix + '_validation_log.csv', 'a')  # each new file, open the validation log in append mode
-                vlogStr = ""
-                file_id = filePrefix + '-' + shortuuid.uuid()    
+                file_id = rec.project.strip() + '-' + shortuuid.uuid()    
                 xmlProlog = '<?xml version="1.0" encoding="UTF-8"?>\n'  # lxml doesn't want this in the file during validation, it has to be reinserted afterwards.     
                 xmlStr = ''
                 rdfStr = '<?xml version="1.0" encoding="UTF-8"?>\n<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"\nxmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"\nxmlns:s3m="https://www.s3model.com/ns/s3m/"\nxmlns:xs="http://www.w3.org/2001/XMLSchema">\n'
                 rdfStr += '<rdfs:Class rdf:about="' + file_id + '">\n'
-                rdfStr += '  <s3m:isInstanceOf rdf:resource="dm-' + model[5].strip() + '"/>\n'
+                rdfStr += '  <s3m:isInstanceOf rdf:resource="dm-' + rec.dmid.strip() + '"/>\n'
                 rdfStr += '</rdfs:Class>\n'
     
                 # get the DM tag content.
-                xmlStr += xml_hdr(model, schema, schemaFile)
+                xmlStr += xml_hdr(rec)          
     
                 # get the data element for each type with the data from the CSV.
-                for row in rows:
-                    if row.datatype.lower() == 'integer':
-                        xmlStr += xml_count(row, data)
-                        rdfStr += rdf_count(row, data)
-                    elif row.datatype.lower() == 'decimal':
-                        xmlStr += xml_quantity(row, data)
-                        rdfStr += rdf_quantity(row, data)
-                    elif row.datatype.lower() == 'float':
-                        xmlStr += xml_float(row, data)
-                        rdfStr += rdf_float(row, data)
-                    elif row.datatype.lower() in ('date', 'datetime', 'time'):
-                        xmlStr += xml_temporal(row, data)
-                        rdfStr += rdf_temporal(row, data)
-                    elif row.datatype.lower() == 'string':
-                        xmlStr += xml_string(row, xml_escape(data))
-                        rdfStr += rdf_string(row, xml_escape(data))
+                for col in cols:
+                    if col.datatype.lower() == 'integer':
+                        xmlStr += xml_count(col, data)
+                        rdfStr += rdf_count(col, data)
+                    elif col.datatype.lower() == 'decimal':
+                        xmlStr += xml_quantity(col, data)
+                        rdfStr += rdf_quantity(col, data)
+                    elif col.datatype.lower() == 'float':
+                        xmlStr += xml_float(col, data)
+                        rdfStr += rdf_float(col, data)
+                    elif col.datatype.lower() in ('date', 'datetime', 'time'):
+                        xmlStr += xml_temporal(col, data)
+                        rdfStr += rdf_temporal(col, data)
+                    elif col.datatype.lower() == 'string':
+                        xmlStr += xml_string(col, data)
+                        rdfStr += rdf_string(col, data)
                     else:
                         raise ValueError("Invalid datatype")
     
-                xmlStr += '    </s3m:ms-' + model[7].strip() + '>\n'
-                xmlStr += '</s3m:dm-' + model[5].strip() + '>\n'
-    
+                xmlStr += '    </s3m:ms-' + rec.dataid.strip() + '>\n'
+                xmlStr += '</s3m:dm-' + rec.dmid.strip() + '>\n'
+                                
                 # validate the XML data file and enter the appropriate RDF statement as well as an entry in the validation log.
                 try:
                     tree = etree.parse(StringIO(xmlStr))  # turn the string into a tree
@@ -1377,14 +1357,13 @@ def make_data():
                     vlogStr = file_id + ',invalid,' + err.message + '\n'
                 except etree.LxmlError as e:
                     print('\nPlease check the validation log for errors in parsing the file.')
-                    print(str(OUTDIR + os.path.sep + filePrefix) + '_validation_log.csv\n\n')
                     rdfStr += '  <rdfs:Class rdf:about="' + file_id + '">\n'
                     rdfStr += '    <rdf:type rdf:resource="https://www.s3model.com/ns/s3m/s3model/DataInstanceError"/>\n'
                     rdfStr += '  </rdfs:Class>\n'
                     vlogStr = file_id + ',error,' + str(e.args) + '\n'
                 finally:
-                    vlog.write(vlogStr)
-                    vlog.close()
+                    vlog.log = vlog.log + vlogStr 
+                    vlsession.commit()
                     
                 rdfStr += '</rdf:RDF>\n'
                 
@@ -1392,61 +1371,65 @@ def make_data():
                 xmlStr = xmlProlog + xmlStr
 
                 # Persistence Choices               
-                if config['KUNTEKSTO']['xml'].lower() == 'true':
-                    if connXML: # BasexDB
+                if xmldb is not None:
+                    if xmldb.dbtype == 'bx': # BasexDB
                         try:
                             connXML.add(file_id + '.xml', xmlStr)
                         except Exception as e:
-                            vlog = open(OUTDIR + os.path.sep + filePrefix + '_validation_log.csv', 'a')                   
-                            vlog.write(file_id + ',BaseXDB Error,' + str(e.args) + '\n')
-                            vlog.close()
+                            vlog.log = vlog.log + (file_id + ',BaseXDB Error,' + str(e.args) + '\n')
+                            vlsession.commit()
                     
-                    elif config['MARKLOGIC']['status'] == 'ACTIVE' and config['MARKLOGIC']['loadxml'].lower() == 'true': 
+                    elif xmldb.dbtype == 'ml': # Marklogic 
                         headers = {"Content-Type": "application/xml", 'user-agent': 'Kunteksto'}
                         url = 'http://' + hostip + ':' + port + '/v1/documents?uri=/' + prj + '/xml/' + file_id 
                         r = requests.put(url, auth=HTTPDigestAuth(user, pw), headers=headers, rec=xmlStr)                                
                         
-                    else:  # defaults to writing to the filesystem
-                        xmlFile = open(xmldir + file_id + '.xml', 'w')
+                    elif xmldb.dbtype == 'fs': # Filesystem
+                        xmlFile = open(xmldb.host.strip() + file_id + '.xml', 'w')
                         xmlFile.write(xmlStr)
                         xmlFile.close()
+                    else:
+                        print("\nNo XML persistence option for specified.\n")
     
-                if config['KUNTEKSTO']['rdf'].lower() == 'true':    
-                    if connRDF: # AllegroGraphDB
+                if rdfdb is not None:                     
+                    if rdfdb.dbtype == 'ag': 
                         try:
                             connRDF.addData(rdfStr, rdf_format=RDFFormat.RDFXML, base_uri=None, context=None)
                         except Exception as e:
-                            vlog = open(OUTDIR + os.path.sep + filePrefix + '_validation_log.csv', 'a')                   
-                            vlog.write(file_id + ',AllegroDB Error,' + str(e.args) + '\n')
-                            vlog.close() 
+                            vlog.log = vlog.log + (file_id + ',AllegroDB Error,' + str(e.args) + '\n')
+                            vlsession.commit() 
                             
-                    elif config['MARKLOGIC']['status'] == 'ACTIVE' and config['MARKLOGIC']['loadrdf'].lower() == 'true':
+                    elif rdfdb.dbtype == 'ml': 
                         headers = {"Content-Type": "application/xml", 'user-agent': 'Kunteksto'}
                         url = 'http://' + hostip + ':' + port + '/v1/documents?uri=/' + prj + '/rdf/' + file_id 
                         r = requests.put(url, auth=HTTPDigestAuth(user, pw), headers=headers, rec=rdfStr)                                
                             
-                    else:
-                        rdfFile = open(rdfdir + file_id + '.rdf', 'w')
+                    elif rdfdb.dbtype == 'fs': 
+                        rdfFile = open(rdfdb.host.strip() + file_id + '.rdf', 'w')
                         rdfFile.write(rdfStr)
                         rdfFile.close()
+                    else:
+                        print("\nNo RDF persistence option for specified.\n")
 
-                if config['KUNTEKSTO']['json'].lower() == 'true':
-                    
+                if jsondb is not None:                                         
                     try:
                         d = xmltodict.parse(xmlStr, xml_attribs=True, process_namespaces=True, namespaces=namespaces)
                         jsonStr = json.dumps(d, indent=4)
                     except Exception as e:
-                        vlog = open(OUTDIR + os.path.sep + filePrefix + '_validation_log.csv', 'a')
-                        vlog.write(file_id + ',JSON Parse Error,' + str(e.args) + '\n')
-                        vlog.close()                                            
+                        vlog.log = vlog.log + (file_id + ',JSON Parse Error,' + str(e.args) + '\n')
+                        vlsession.commit()                                            
                                 
-                    if config['MARKLOGIC']['status'] == 'ACTIVE' and config['MARKLOGIC']['loadjson'].lower() == 'true':
+                    if jsondb.dbtype == 'ml':
                         headers = {"Content-Type": "application/json", 'user-agent': 'Kunteksto'}
                         url = 'http://' + hostip + ':' + port + '/v1/documents?uri=/' + prj + '/json/' + file_id 
                         r = requests.put(url, auth=HTTPDigestAuth(user, pw), headers=headers, rec=jsonStr)
                             
-                    else:
-                        jsonFile = open(jsondir + file_id + '.json', 'w')
+                    elif jsondb.dbtype == 'fs':
+                        jsonFile = open(jsondb.host.strip() + file_id + '.json', 'w')
                         jsonFile.write(jsonStr)
                         jsonFile.close()
+                    else:
+                        print("\nNo JSON persistence option for specified.\n")
+                    
     return True
+
