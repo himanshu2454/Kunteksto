@@ -26,7 +26,7 @@ Notice that there are a few columns to demonstrate various datatypes as well as 
 
 This tutorial does not demonstrate all of the functionality of Kunteksto, but it does demonstrate the process of creating a model based on data and then enhancing that data with improved semantics.
 
-Kunteksto is a command line tool that uses a combination of command line options as well as a configuration file.
+Kunteksto is a tool that uses a combination of command line options, web browser UI as well as a configuration file. This functionality is built on the `Flask <http://flask.pocoo.org/docs/1.0/>`_ framework.
 The configuration file options are covered in :ref:`config`. The default configuration is okay for the tutorials.
 
 .. _tutorsteps:
@@ -55,22 +55,61 @@ Tutorial Steps
 
         source activate <path/to/directory> 
 
+The first step is to start the local web server.
 
-.. note::
-
-    Kunteksto can be executed in prompt mode, or several options can be provided on the command line.
-    You can see all of the Kunteksto command line options using the --help flag.
-
-    .. code-block:: sh
-
-        kunteksto --help
-
-
-For this tutorial, you start Kunteksto in prompt mode. These mandatory items will be requested:
+**Windows**
 
 .. code-block:: sh
 
-    kunteksto
+    ./kunteksto.bat
+
+**or Linux/MacOSX**
+
+.. code-block:: sh
+
+    ./kunteksto.sh
+
+
+You should se some messages similar to this:
+
+.. code-block:: sh
+
+    * Serving Flask app "kunteksto" (lazy loading)
+    * Environment: development
+    * Debug mode: on
+    * Running on http://127.0.0.1:7659/ (Press CTRL+C to quit)
+    * Restarting with stat
+
+
+    Kunteksto version: 2.0.0 using S3Model RM: 3.1.0
+
+
+    * Debugger is active!
+    * Debugger PIN: 956-048-520
+
+
+In your web browser open the link: http://127.0.0.1:7659/
+
+This will open the Home/Overview of the application. 
+
+
+.. image:: _images/kunteksto_home_page.png
+    :width: 800px
+    :align: center
+    :height: 600px
+    :alt: Kunteksto Home
+
+
+This page presents some basic information as well as operational instructions. For now you may continue with this tutorial. 
+
+Open a second terminal window/tab and navigate to the kunteksto directory. Then activate the virtual environment as you did previously in the other terminal window.
+
+As shown on the home page there are four steps. The first is to analyze the data file. 
+
+
+.. code-block:: sh
+
+  flask analyze Demo -i ../example_data/Demo.csv
 
 
 - At the *Enter a valid mode:* prompt, type **all**

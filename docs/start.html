@@ -63,7 +63,7 @@
             
             
               <div class="version">
-                1.7.2
+                2.0.0
               </div>
             
           
@@ -190,7 +190,7 @@
 <a class="reference internal image-reference" href="_images/csv_data.png"><img alt="Demo.csv" class="align-center" src="_images/csv_data.png" style="width: 500px; height: 300px;" /></a>
 <p>Notice that there are a few columns to demonstrate various datatypes as well as one column with mixed types that might look like an integer column at first glance but has a missing value.</p>
 <p>This tutorial does not demonstrate all of the functionality of Kunteksto, but it does demonstrate the process of creating a model based on data and then enhancing that data with improved semantics.</p>
-<p>Kunteksto is a command line tool that uses a combination of command line options as well as a configuration file.
+<p>Kunteksto is a tool that uses a combination of command line options, web browser UI as well as a configuration file. This functionality is built on the <a class="reference external" href="http://flask.pocoo.org/docs/1.0/">Flask</a> framework.
 The configuration file options are covered in <a class="reference internal" href="configure.html#config"><span class="std std-ref">Config File Details</span></a>. The default configuration is okay for the tutorials.</p>
 </div>
 <div class="section" id="tutorial-steps">
@@ -211,16 +211,37 @@ The configuration file options are covered in <a class="reference internal" href
 </pre></div>
 </div>
 </div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p>Kunteksto can be executed in prompt mode, or several options can be provided on the command line.
-You can see all of the Kunteksto command line options using the –help flag.</p>
-<div class="last highlight-sh notranslate"><div class="highlight"><pre><span></span>kunteksto --help
+<p>The first step is to start the local web server.</p>
+<p><strong>Windows</strong></p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>./kunteksto.bat
 </pre></div>
 </div>
+<p><strong>or Linux/MacOSX</strong></p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>./kunteksto.sh
+</pre></div>
 </div>
-<p>For this tutorial, you start Kunteksto in prompt mode. These mandatory items will be requested:</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>kunteksto
+<p>You should se some messages similar to this:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>* Serving Flask app <span class="s2">&quot;kunteksto&quot;</span> <span class="o">(</span>lazy loading<span class="o">)</span>
+* Environment: development
+* Debug mode: on
+* Running on http://127.0.0.1:7659/ <span class="o">(</span>Press CTRL+C to quit<span class="o">)</span>
+* Restarting with stat
+
+
+Kunteksto version: <span class="m">2</span>.0.0 using S3Model RM: <span class="m">3</span>.1.0
+
+
+* Debugger is active!
+* Debugger PIN: <span class="m">956</span>-048-520
+</pre></div>
+</div>
+<p>In your web browser open the link: <a class="reference external" href="http://127.0.0.1:7659/">http://127.0.0.1:7659/</a></p>
+<p>This will open the Home/Overview of the application.</p>
+<a class="reference internal image-reference" href="_images/kunteksto_home_page.png"><img alt="Kunteksto Home" class="align-center" src="_images/kunteksto_home_page.png" style="width: 800px; height: 600px;" /></a>
+<p>This page presents some basic information as well as operational instructions. For now you may continue with this tutorial.</p>
+<p>Open a second terminal window/tab and navigate to the kunteksto directory. Then activate the virtual environment as you did previously in the other terminal window.</p>
+<p>As shown on the home page there are four steps. The first is to analyze the data file.</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>flask analyze Demo -i ../example_data/Demo.csv
 </pre></div>
 </div>
 <ul class="simple">
@@ -263,12 +284,6 @@ You can see all of the Kunteksto command line options using the –help flag.</p
 </div>
 <ul class="simple">
 <li>Each record has some fields that allow you to describe more about your data. You can cycle through the records with the <em>Next</em> and <em>Previous</em> buttons. When you make changes to a record, use the <em>Save</em> button to record those changes. Once the changes are written to the database, a <strong>Saved</strong> dialog box appears.</li>
-</ul>
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last"><strong>If you navigate away from a record without saving it, those changes are lost.</strong> Use the <em>Previous</em> button and re-enter the information.</p>
-</div>
-<ul class="simple">
 <li>Though some fields are pre-filled, it is only a guess and may not be accurate.</li>
 <li>It is up to you to be as accurate as possible in describing your data to improve quality and usability. Some fields are not used with all data types. See the description of each field below.</li>
 </ul>
@@ -585,7 +600,7 @@ These tutorials demonstrate the power of S3Model using persistent storage.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, Data Insights, Inc.
-      Last updated on 2018-11-27 11:49.
+      Last updated on 2018-12-26 11:58.
 
     </p>
   </div> 

@@ -99,7 +99,9 @@ def process(project, csvInput, delim, level):
     """
     session = Session()
     # create the initial data for the Datamodel table
-    print("\nCreating model data.\n")
+    print("\nCreating model data.")
+    print("Level: ", level)
+    print("Delimiter: ", delim)
     dmID = str(cuid())   # data model
     dataID = str(cuid())   # data cluster
 
@@ -136,7 +138,7 @@ def process(project, csvInput, delim, level):
                 exit(1)
 
 
-    if level == 'Full':
+    if level.lower() == 'full':
         print("\nAnalyzing columns for min/max values and datatype.\n")
         # indepth analysis of columns for datatypes and ranges.
         with open(csvInput) as csvfile:

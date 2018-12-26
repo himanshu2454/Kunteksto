@@ -147,14 +147,20 @@ admin.add_view(RDFstoreModelView(RDFstore, db.session, 'RDF'))
 @click.command('analyze')
 @click.argument('project')
 @click.option('--infile', '-i', help='Full path and filename of the input CSV file.', prompt="Enter a valid CSV file")
-def analyze(project, infile):
+@click.option('--delim', '-d', type=click.Choice([',', ';', ':', '|', '$']), help=' Overrides the default CSV delimiter value in kunteksto.conf.')
+@click.option('--level', '-l', type=click.Choice(['simple', 'full']), help=' Overrides the default value of "full".')
+def analyze(project, infile, delim, level):
     """
     Analyze a CSV file (infile) to create a model from the commandline.
     You must include a unique PROJECT.
     """
     click.echo('Analyze ' + infile + ' for the project: ' + project)
+    if not delim:
+        delim = config['KUNTEKSTO']['delim']
+    if not level:
+        level = 'full'
 
-    process(project, infile, config['KUNTEKSTO']['delim'], 'Full')  # TODO: accept command line options for delimiter and level
+    process(project, infile, delim, level)
 
 @click.command('genmodel')
 @click.argument('project')
