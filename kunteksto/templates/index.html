@@ -1,0 +1,49 @@
+
+{% extends "layout.html" %}
+{% block body %}
+    <h1 align='center'>Welcome to the Kunteksto Overview</h1>
+
+    <p>Kunteksto is our open source tool to allow subject matter experts and data creators to communicate the meaning of the data they share, as well as to transfer validation capabilities to secondary data users in a way that is machine computable and transparent to those users.</p>
+
+    <p>It allows users to take standard CSV files and add context using any combination of <a href="http://lov.okfn.org/dataset/lov/" target="_blank">Linked Open Vocabularies</a>, domain specific vocabularies e.g. <a href="https://bioportal.bioontology.org/" target="_blank">Bio-medical ontologies</a> and local ontologies to their data to improve analysis and richness of information for use in Advanced Analytics and Artificial General Intelligence (AGI) applications.</p>
+
+    <p>After conversion the data is then exported to the filesystem or sent directly to a datastore as any combination of XML, RDF and JSON.</p>
+
+    <p>See the Kunteksto <a href="https://datainsights.tech/Kunteksto/index.html" target="_blank">documentation</a> for more information.</p>
+<hr/>
+<h3 align='center'>Operations</h3>
+<p align='center'><b>Four steps to awesome data</b></p>
+<p>Open a second terminal, change to the kunteksto direcory and <a href="https://datainsights.tech/Kunteksto/start.html#tutorial-steps" target="_blank">activate the virtual environment</a>. Follow the steps below.</p>
+<div>
+  <h3>1. Analyze</h3>
+  To being analysis of a new CSV file use the analyze option on the commandline:
+  <p><code> $flask analyze [projectname] -i [file.csv]</code></p>
+  <p>
+    <ul>
+      <li>[projectname] is a one word (50 characters max.) name for this project that can be reused later to process data based on this same model.</li>
+      <li>[file.csv] is the full path and filename to the source data.</li>
+    </ul>
+  </p>
+</div>
+<p>The analysis process can take from a few seconds to several minutes.</p>
+<div>
+  <h3>2. Edit the database</h3>
+  <p>You will use the <a href='http://127.0.0.1:7659/admin' target="_blank">administration interface</a> to edit the Datamodel and Component tables for this project. Follow the instructions in the tutorial or the online course as necessary. </p>
+</div>
+<div>
+  <h3>3. Generate a model</h3>
+  <p>You will now generate the Datamodel instance which is a XML Schema with embeded RDF. </p>
+  <p><code>$flask genmodel [projectname]</code></p>
+</div>
+<div>
+  <h3>4. Generate data</h3>
+  <p>You will now generate the data instance for each row. Data is generated depending on what repository type(s) were selected for this Model.</p>
+  <p><code>$flask gendata [projectname] -i [file.csv]</code></p>
+</div>
+<hr/>
+
+{% endblock %}
+{% block tail %}
+<hr/>
+<p align='center'>Copyright; 2019 Data Insights, Inc.</p>
+{% endblock %}

@@ -5,9 +5,7 @@ Getting Started
 First Steps
 ===========
 
-Ensure that you have the requirements and have performed the installation as described in the :ref:`install` section for your operating system. 
-
-Then proceed to the tutorial.
+Ensure that you have the requirements and have performed the installation as described in the :ref:`install` section for your operating system. Then proceed to the tutorial.
 
 .. _tutor:
 
@@ -26,7 +24,7 @@ Notice that there are a few columns to demonstrate various datatypes as well as 
 
 This tutorial does not demonstrate all of the functionality of Kunteksto, but it does demonstrate the process of creating a model based on data and then enhancing that data with improved semantics.
 
-Kunteksto is a command line tool that uses a combination of command line options as well as a configuration file.
+Kunteksto is a tool that uses a combination of command line options, web browser UI as well as a configuration file. This functionality is built on the `Flask <http://flask.pocoo.org/docs/1.0/>`_ framework.
 The configuration file options are covered in :ref:`config`. The default configuration is okay for the tutorials.
 
 .. _tutorsteps:
@@ -55,52 +53,126 @@ Tutorial Steps
 
         source activate <path/to/directory> 
 
+The first step is to start the local web server.
 
-.. note::
-
-    Kunteksto can be executed in prompt mode, or several options can be provided on the command line.
-    You can see all of the Kunteksto command line options using the --help flag.
-
-    .. code-block:: sh
-
-        kunteksto --help
-
-
-For this tutorial, you start Kunteksto in prompt mode. These mandatory items will be requested:
+**Windows**
 
 .. code-block:: sh
 
-    kunteksto
+    ./kunteksto.bat
+
+**or Linux/MacOSX**
+
+.. code-block:: sh
+
+    ./kunteksto.sh
 
 
-- At the *Enter a valid mode:* prompt, type **all**
+You should se some messages similar to this:
 
-- At the *Enter a valid CSV file:* prompt, type **example_data/Demo.csv** 
+.. code-block:: sh
 
-
-Kunteksto analyzes the input file and creates a results database of this CSV file named *output/Demo/Demo.db*  
-
-
-- The Model Metadata window opens.
-
-The image below depicts the view of the Model Metadata and below that are descriptions of each of the fields to be edited. Kunteksto prefills the fields with fake data so that you are not staring at blank input boxes. You will modify these fields to relect the actual data that you are processing.
+    * Serving Flask app "kunteksto" (lazy loading)
+    * Environment: development
+    * Debug mode: on
+    * Running on http://127.0.0.1:7659/ (Press CTRL+C to quit)
+    * Restarting with stat
 
 
-.. image:: _images/edit_model.png
-    :width: 500px
+    Kunteksto version: 2.0.0 using S3Model RM: 3.1.0
+
+
+    * Debugger is active!
+    * Debugger PIN: 956-048-520
+
+
+In your web browser open the link: http://127.0.0.1:7659/
+
+This will open the Home/Overview of the application. 
+
+
+.. image:: _images/kunteksto_home_page.png
+    :width: 800px
     :align: center
-    :height: 300px
-    :alt: Edit Model
+    :height: 600px
+    :alt: Kunteksto Home
 
 
-**Model table field descriptions:**
+This page presents some basic information as well as operational instructions. For now you may continue with this tutorial. 
 
+Open a second terminal window/tab and navigate to the kunteksto directory. Then activate the virtual environment as you did previously in the other terminal window.
+
+Before we begin using Kunteksto to improve our data, we are going to load some examples into the database.
+
+.. code-block:: sh
+
+    flask ldexamples
+
+We will discuss these examples later in the tutorial.
+
+
+As shown on the home page there are four steps. 
+
+- The first is to analyze the data file. 
+
+.. code-block:: sh
+
+  flask analyze Demo -i ../example_data/Demo.csv
+
+This command tells the Flask framework to run the analyze command with a project name of *Demo* and the input data file Demo.csv from the example_data directory. 
+
+You can also change the delimiter used in the data file as well as perform a *simple* analysis that doesn't do datatype checking. For details on using those options check the --*help*
+
+.. code-block:: sh
+
+    flask analyze --help
+
+
+
+- Edit the database.
+
+In your browser click the `administrative link <http://127.0.0.1:7659/admin>`_ shown on the homepage or add */admin* to the URL in your browser.
+
+From the menu across the top, click the *Data Models* link.
+
+.. image:: _images/DM_List.png
+    :width: 800px
+    :align: center
+    :height: 200px
+    :alt: Data Models
+
+Click on the pencil icon on the left next to the *Demo* project.
+
+The two images below depict the view of the Model Metadata form. 
+
+.. image:: _images/edit_model1.png
+    :width: 800px
+    :align: center
+    :height: 600px
+    :alt: Edit Model 1
+
+.. image:: _images/edit_model2.png
+    :width: 800px
+    :align: center
+    :height: 600px
+    :alt: Edit Model 2
+
+
+**Data Model table field descriptions:**
+
+    - *Project* is a unique name provided at analysis time. (read only)
     - *Title* is a free text title for your data concept contained in the CSV file.
     - *Description* is a free text, elaborated description of the data contained in the CSV file.
     - *Copyright* enter the name of the copyright holder of the model
     - *Author* enter the name of the author of the model
-    - *Defining URL* enter a URL (or at least a URI) to a controlled vocabulary or ontology or a webpage that describes or defines the overall concept of the data model. 
-
+    - *Definition URL* enter a URL (or at least a URI) to a controlled vocabulary or ontology or a webpage that describes or defines the overall concept of the data model. 
+    - *Namespaces* additional namespaces used in this Project that are not already defined by Kunteksto. (see below)
+    - *Schema* the XML Schema that will be generated later. (read only)
+    - *RDF* the RDF triples that will be generated later. (read only)          
+    - *Validations* validation logs created during data generation.
+    - *XML Storage* a storage location for generated XML data instances. If left blank, XML will not be persisted.
+    - *JSON Storage* a storage location for generated JSON data instances. If left blank, JSON will not be persisted.
+    - *RDF Storage* a storage location for generated RDF data instances. If left blank, RDF will not be persisted.
 
 
 .. note::
@@ -108,50 +180,52 @@ The image below depicts the view of the Model Metadata and below that are descri
    With your file manager, navigate to the *kunteksto/example_data* subdirectory and open the *Demo_info.pdf* file. This file simulates what often purports to be a data dictionary that you might receive with a dataset. Using information from this document improves the computable semantics of your data. 
 
 
-Edit these fields as desired. They describe the overall metadata for your data model. This metadata describes the where, when and why the data is useful to the model. 
+Edit these fields as desired. They describe the overall metadata for your data model. This metadata describes the where, when and why the data is useful to the model. Note that the fields marked with a red asterisk are required.
 
 Notice that some of this information can be obtained from the PDF. For other items, you have to use your knowledge of the dataset as a domain expert. In this *demo* we are going to say that we have a local ontology that describes the columns and that information is provided below in the *Adding Semantics* section below. 
+The *Description* and *Definition URL* are also in the PDF. The tutorial is purposefully vague so that you will experience the tasks of finding appropriate information for the data. 
 
-.. warning::
+Before we began the analysis step, we loaded some examples with the **ldexamples** command. These examples are storage definitions. At this point, go ahead and select the *Filesystem* option for each of the XML, JSON and RDF storage locations.  
 
-    Use the *Save & Exit* button when you are finished making changes.
+- Now we will edit each of the model components. Click on the *Components* entry in the top menu.  
 
-
-- The records editor opens next. Note that there is a record for each column of data in Demo.csv. 
-
-
-.. warning::
-
-    If there is only one record and your Label field looks like this image, then the likely problem is that an incorrect field delimiter was chosen on the command line or the default was changed in the config file. The config file should have a *comma* as the delim option, and this entry is found on or near line 9 in kunteksto.conf. 
-
-    .. image:: _images/bad_delim.png
-        :width: 400px
-        :align: center
-        :height: 100px
-        :alt: Bad Delimiter
-
-
-
-- Each record has some fields that allow you to describe more about your data. You can cycle through the records with the *Next* and *Previous* buttons. When you make changes to a record, use the *Save* button to record those changes. Once the changes are written to the database, a **Saved** dialog box appears. 
-
-.. warning::
-
-    **If you navigate away from a record without saving it, those changes are lost.** Use the *Previous* button and re-enter the information.
-
-- Though some fields are pre-filled, it is only a guess and may not be accurate.
-
-- It is up to you to be as accurate as possible in describing your data to improve quality and usability. Some fields are not used with all data types. See the description of each field below.
-
-.. image:: _images/edit_record.png
-    :width: 500px
+.. image:: _images/components_list.png
+    :width: 800px
     :align: center
-    :height: 300px
-    :alt: Edit Record
+    :height: 400px
+    :alt: Components List
+
+
+.. note::
+
+    The Model Component IDs in your Demo model will be different than those shown. 
+
+Each of the columns from the CSV file are now represented by a record in the Components table. The Header field is the actual column header from the CSV file. The Label field is a modified form of that header. You will edit this field to provide something meaningful about the data in the column. The Datatype field is Kunteksto's best guess at the correct type. It is up to you to be as accurate as possible in describing your data to improve quality and usability. Some fields are not used with all data types. Click on the pencil icon next to each record. See the description of each field below.
+
+.. image:: _images/edit_record1.png
+    :width: 800px
+    :align: center
+    :height: 700px
+    :alt: Edit Record 1
+
+.. image:: _images/edit_record2.png
+    :width: 800px
+    :align: center
+    :height: 700px
+    :alt: Edit Record 2
+
+.. image:: _images/edit_record3.png
+    :width: 800px
+    :align: center
+    :height: 700px
+    :alt: Edit Record 3
 
 
 **Record field descriptions:**
 
 Edit these columns (see :ref:`semantics`) :
+
+    - *Header* the column header from the input CSV file. (read only)
 
     - *Label* was derived from the column header text and should be edited as needed to provide a more meaningful name for the column.
     
@@ -161,13 +235,14 @@ Edit these columns (see :ref:`semantics`) :
     
     - *Maximum Length* for **String** columns enter the maximum length restriction if there is one.
     
-    - *Choices* for **String** columns you may enter a set of choices to restrict the valid values. Separate each choice with a pipe '|' character.
+    - *Choices* for **String** columns you may enter a set of choices to restrict the valid values. Separate each choice with a new line.
     
     - *Regular Expression* for **String** columns you may enter a regular expression (`XML Schema syntax <http://www.xmlschemareference.com/regularExpression.html>`_) to constrain the valid string values.
 
         .. warning::
+            
             The decimal separator throughout Kunteksto is a period, do not use a comma. Do not use a thousands separators.
-            Also, if you mix min/max inclusive or exclusive in an illogical manner, the system takes the inclusive value and will 
+            Also, if you mix the use of min/max inclusive or exclusive in an illogical manner, the system takes the inclusive value(s) and will 
             ignore the exclusive value.
     
     - *Minimum Inclusive Value* enter the minimum inclusive value restriction for **Integer or Decimal** columns.
@@ -180,19 +255,19 @@ Edit these columns (see :ref:`semantics`) :
     
     - *Description* for all columns enter a textual description that might be used for human-readable documentation.
     
-    - *Defining URL* enter a URL (or at least a URI) to a controlled vocabulary or ontology or a webpage that describes or defines the meaning of the data in this column.
+    - *Definition URL* enter a URL (or at least a URI) to a controlled vocabulary or ontology or a webpage that describes or defines the meaning of the data in this column.
     
     - *Predicates & Objects* optionally enter any additional *predicate object* pairs to be used to define this resource. Enter them one per line with the predicate and object separated by a space character. 
 
         .. warning::
-            You may use namespace abbreviations **ONLY** if they are in the list below or have been defined in the [NAMESPACES] section of the configuration file. To do otherwise generates an invalid model and be pointless.
+            You may use namespace abbreviations **ONLY** if they are in the list below or have been defined in the **Namespaces** field of the model metadata form. To do otherwise generates an invalid model and will generate errors.
         
-        
+
     - *Default Text Value* for **String** columns enter the default value for a string datatype column if there is one.
     
     - *Default Numeric Value* enter the default value for a decimal or integer datatype column, if there is one.
     
-    - *Units* **mandatory** units value for all **Decimal or Integer** datatype columns. For decimal columns, this should come from a standard units vocabulary such as `Ontology of units of Measure <https://github.com/HajoRijgersberg/OM>`_ or `The Unified Code for Units of Measure <http://unitsofmeasure.org>`_. For Integer columns where the values are *counts* you should enter the name of the item(s) to be counted. For example, if this number represents the number of widgets created today. Then enter "Widgets* here. 
+    - *Units* **mandatory** value for all **Decimal or Integer** datatype columns. For decimal columns, this should come from a standard units vocabulary such as `Ontology of units of Measure <https://github.com/HajoRijgersberg/OM>`_ or `The Unified Code for Units of Measure <http://unitsofmeasure.org>`_. For Integer columns where the values are *counts* you should enter the name of the item(s) to be counted. For example, if this number represents the number of widgets created today. Then enter "Widgets* here. 
 
 
 .. _semantics:
@@ -205,11 +280,11 @@ Adding Semantics
    If not already open; with your FileManager navigate to the *kunteksto/example_data* subdirectory and open the *Demo_info.pdf* file. This file simulates what often purports to be a data dictionary that you might receive with a dataset. You use this information to improve the computable semantics of your data. 
 
 
-Editing the fields in this database improves the semantics in your model that describes the data. This information allows your data consumers to make better decisions about what the data means. Kunteksto produces an executable model that can be used in various validation and knowledge discovery scenarios.
+Editing the fields in this listing improves the semantics in your model that describes the data. This information allows your data consumers to make better decisions about what the data means. Kunteksto produces an executable model and data components that can be used in various validation and knowledge discovery scenarios.
 
-In the **Model Metadata** you should change the fields as you wish to match your organization. The field *Defining URL* is where we point to the overarching definition of this datamodel. This URL is used as the *object* portion of a RDF triple where the *subject* is the unique datamodel ID (dm-{uuid}) and the *predicate* is **rdfs:isDefinedBy**. We see in our *Demo_info.pdf* file that it is declared to exist at https://www.datainsights.tech/Demo_info.pdf so this is our URL for this field.  
+In the **Data Model** form you should change the fields as you wish to match your organization. The field *Definition URL* is where we point to the overarching definition of this datamodel. This URL is used as the *object* portion of a RDF triple where the *subject* is the unique datamodel ID (dm-{uuid}) and the *predicate* is **rdfs:isDefinedBy**. We see in our *Demo_info.pdf* file that it is declared to exist at https://www.datainsights.tech/Demo_info.pdf so this is our URL for this field.  
 
-In the **Records Editor**, the *Defining URL* and *Predicates & Objects* are where we add semantics in RDF format. The *Defining URL* is formatted the same as for the *Defining URL* column in the Model Metadata. 
+In the **Components**, the *Definition URL* and *Predicates & Objects* are where we add semantics for the generated RDF format. The *Definition URL* is formatted the same as for the *Defining URL* column in the Model. 
 
 The *Predicates & Objects* column is slightly different in that you need to supply both the predicate and the object. 
 
@@ -233,7 +308,7 @@ The *Predicates & Objects* column is slightly different in that you need to supp
     - sh="http://www.w3.org/ns/shacl#"
     - s3m="https://www.s3model.com/ns/s3m/"
 
-For example, if you want to define an alternate label in addition to the Label field, you could use the SKOS *skos:altLabel* predicate. However, if you want to use the predicate *isSettingFor* from the `Information Objects ontology <http://www.ontologydesignpatterns.org/ont/dul/IOLite.owl>`_ then you would need to first define an abbreviation for this ontology in the [NAMESPACES] section of the configuration file. You may do this while editing the database. Just be sure to save the new configuration before closing the database editor so that your changes are saved before the model generator runs. 
+For example, if you want to define an alternate label in addition to the Label field, you could use the SKOS *skos:altLabel* predicate. However, if you want to use the predicate *isSettingFor* from the `Information Objects ontology <http://www.ontologydesignpatterns.org/ont/dul/IOLite.owl>`_ then you would need to first define an abbreviation for this ontology in the Namespaces field of the Model.
 
 .. warning::
 
@@ -242,65 +317,91 @@ For example, if you want to define an alternate label in addition to the Label f
 .. code-block:: sh
 
      skos:altLabel Blue Spot
+
      dul:isSettingFor https://www.datainsights.tech/thingies/PurpleKnob
 
 The *object* portion can contain spaces. However, the first space character defines the separation between the *predicate* and *object*. 
 
-Again, the information in the table in the PDF can help you determine additional meaning about the data if you are not a 
-domain expert in this area of *Fake System* information. If you do not already have an ontology defining the meaning of these 
-columns then you can search in places like `BARTOC <http://www.bartoc.org/>`_, 
+Again, the information in the table in the PDF can help you determine additional meaning about the data if you are not a domain expert in this area of *Fake System* information. If you do not already have an ontology defining the meaning of these columns then you can search in places like `BARTOC <http://www.bartoc.org/>`_, 
 `Linked Open Vocabularies <http://lov.okfn.org/dataset/lov>`_ and `Biontology <https://www.bioontology.org/>`_  
 or even places that aren't formal ontologies but contain reliable definitions and descriptions such as 
-`a dictionary <http://www.dictionary.com/>`_ or an `encyclopedia <https://en.wikipedia.org/wiki/Main_Page>`_.  
+`a dictionary <http://www.dictionary.com/>`_ or an `encyclopedia <https://en.wikipedia.org/wiki/Main_Page>`_. Once you have completed the data description step, **saved your changes** using the *Save* button on each Component record, then you may execute the model generation process. 
 
-- Once you have completed the data description step, **saved any changes to the configuration file** and **saved your changes** using the *Save* button on each Record, close the Record Editor with the *Exit* button. This action starts the model generation process, followed by the data generation process. 
+- In your terminal window generate the model with this command:
 
-- In the *output/Demo* directory along with the Demo.db, you find an XML Schema (\*.xsd) model file and a RDF (\*.rdf) file. These are the structural and semantic models that can be used in your analysis as well as shared with others to describe the data better. The RDF file is extracted from the XML Schema, so only the schema needs to be shared to distribute full structural and semantic information in an executable model. Data Insights, Inc. provides a utility with S3Model to extract the semantics from the schema data models. 
+.. code-block:: sh
 
-.. image:: _images/output_dir.png
-    :width: 500px
+    flask genmodel Demo
+
+The command above tells the Flask framework to execute the genmodel function with the project named *Demo*. You should see terminal output similar to this image:
+
+.. image:: _images/genmodel_output.png
+    :width: 600px
+    :align: center
+    :height: 200px
+    :alt: Genmodel Output
+
+Open the Model record for the Demo project and check the SChema and RDF fields:
+
+.. image:: _images/model_xmlschema_rdf.png
+    :width: 600px
+    :align: center
+    :height: 200px
+    :alt: XML Schema and RDF
+
+The two fields now contain the generated XML Schema and the RDF triples for the model. You can copy these and paste them into an editor if you wish to examine them. Later we will cover how to export these for sharing with secondary data users. These are the structural and semantic models that can be used in your analysis as well as shared with others to describe the data better. The RDF file is extracted from the XML Schema, so only the schema needs to be shared to distribute full structural and semantic information in an executable model. Data Insights, Inc. provides a utility with `S3Model <https://datainsights.tech/>`_ to extract the semantics from the schema data models. 
+
+- The *gendata* command causes the creation of data instances (XML, JSON, and RDF) for each record in the CSV file that is semantically compliant with the RDF and is valid according to the XML Schema. This validation process demonstrates that the models describe the data. The RDF file does include some constraint definitions based on `Shapes Constraint Language (SHACL) <https://www.w3.org/TR/shacl/>`_ There is no built-in processing for these constraints due to the lack of maturity of this technology. Expect SHACL to become more useful in the future. To create the data instances and persist them at the locations defined by the Storage options in the model, execute this command in the terminal:
+
+.. code-block:: sh
+
+    flask gendata Demo -i ../example_data/Demo.csv
+
+The output in the terminal should be similar to this image:
+
+.. image:: _images/gendata_output.png
+    :width: 600px
+    :align: center
+    :height: 250px
+    :alt: Gendata Output
+
+The storage options that we selected for the Demo project was a Filesystem storage for each of the three types(XML, JSON & RDF) of data instances. In this case the options placed the data in a Kunteksto subdirectory called *output*. One subdirectory for each type of data. Inside this directory, Kunteksto creates a Project based subdirectory. Using your FileManager navigate to the directories and notice the generated data instances:
+
+.. image:: _images/xml_data.png
+    :width: 600px
     :align: center
     :height: 300px
-    :alt: Output Directory
+    :alt: XML Data
 
+.. image:: _images/json_data.png
+    :width: 600px
+    :align: center
+    :height: 300px
+    :alt: JSON Data
 
-The *all* mode causes the creation of data instances (XML, JSON, and RDF) for each record in the CSV file that is semantically 
-compliant with the RDF and is valid according to the XML Schema. This validation process demonstrates that the models describe the 
-data. The RDF file does include some constraint definitions based on `Shapes Constraint Language (SHACL) <https://www.w3.org/TR/shacl/>`_ 
-There is no built-in processing for these constraints due to the lack of maturity of this technology. 
-Expect SHACL to become more useful soon. 
+.. image:: _images/rdf_data.png
+    :width: 600px
+    :align: center
+    :height: 300px
+    :alt: RDF Data
+
+Notice that each data instance file has the name; the project name follwed by a unique ID. The data instance has the same name across formats with only the file extension being different. 
 
 
 Data Validation
 ===============
 
-Full validation occurs via XML for both the data model and data instances. Setting **xml: False** in the kunteksto.conf file does 
-not prevent this validation; it only prevents persistence of the XML files. 
+In the output from data generation there wasa a message to review the validation log. Go to the *Validation* menu and click on the pencil icon for the generated validation record.
 
-In the XML eco-system, a catalog file is required to reference a local copy of a schema used for validation. 
-A catalog file is dynamically generated for each project and is written to the *kunteksto/catalogs* directory. 
-The environment variable **XML_CATALOG_FILES** is set by Kunteksto to be used by the `lxml <http://lxml.de/>`_ validator to 
-find the generated *Data Model* schema. 
+Full validation occurs via XML for both the data model and data instances. Failing to select a storage for XML does not prevent this validation; it only prevents persistence of the XML files. 
 
-Read more about `XML catalogs here <https://en.wikipedia.org/wiki/XML_catalog>`_. 
+.. image:: _images/validation_log.png
+    :width: 800px
+    :align: center
+    :height: 600px
+    :alt: Validation Log
 
-Notice that the validation file *kunteksto/output/Demo/Demo_validation_log.csv* shows four data records marked as being valid and one data record marked as invalid. 
-The invalid record is due to a 'NaN' entry in a decimal column. 
-
-In addition to the entry in the log file. Kunteksto also inserts an *ExceptionalValue* element in the XML file. 
-The filename is listed in the validation log. Check that file and you will see an *Invalid* entry along with an XML comment
-containing an error message. Note that the JSON converter strips the error message but the Invalid exceptional value element is still present.
-
-.. note::
-
-    The S3Model eco-system has a much more sophisticated ability to handle missing and erroneous data. 
-    The details are available in the `S3Model documentation <https://datainsights.tech/S3Model/>`_. To use this expanded exceptional 
-    value tagging generally requires the model first approach whereas Kunteksto is an after-the-fact bridge.
-
-
-However, Kunteksto does perform limited error detection and notification process based on the information available.  
-Referencing the data file name from the *kunteksto/output/Demo/Demo_validation_log.csv* file and then using your text editor or an XML editor, 
-open that file from each of the XML directory, the RDF directory and the JSON directory. Below are the details for viewing this error message.
+The Log field contains a CSV output log of the validation process. You can copy/paste this into a spreadsheet or text editor for examination.
 
 .. note::
 
@@ -316,46 +417,36 @@ open that file from each of the XML directory, the RDF directory and the JSON di
         Demo-NSeunBttQwjXF36UZDs5AM,valid,,
 
 
-In this case you would open the XML file:
+Notice that one file is flagged as invalid and the reason is given in the *error* column. The invalid record is due to a 'NaN' entry in a decimal column. 
 
-.. code-block:: sh
+.. note::
 
-  kunteksto/output/Demo/xml/Demo-WSmPQb9BNixJGLsCTNCVF2.xml 
+    In the XML eco-system, a catalog file is required to reference a local copy of a schema used for validation. A catalog file is dynamically generated for each project and is written to the *kunteksto/catalogs* directory. The environment variable **XML_CATALOG_FILES** is set by Kunteksto to be used by the `lxml <http://lxml.de/>`_ validator to find the generated *Data Model* schema. 
 
-and the RDF file:
-
-.. code-block:: sh
-
-  kunteksto/output/Demo/rdf/Demo-WSmPQb9BNixJGLsCTNCVF2.rdf 
+    Read more about `XML catalogs here <https://en.wikipedia.org/wiki/XML_catalog>`_. 
 
 
-and the JSON file:
+In addition to the entry in the log file. Kunteksto also inserts an *ExceptionalValue* element in the XML file. 
+The filename is listed in the validation log. Check that file and you will see an *Invalid* entry along with an XML comment containing an error message. Note that the JSON converter strips the error message but the Invalid exceptional value element is still present.
 
-.. code-block:: sh
+.. image:: _images/xml_invalid.png
+    :width: 800px
+    :align: center
+    :height: 400px
+    :alt: XML Invalid
 
-  kunteksto/output/Demo/json/Demo-WSmPQb9BNixJGLsCTNCVF2.json
+.. image:: _images/json_invalid.png
+    :width: 800px
+    :align: center
+    :height: 400px
+    :alt: JSON Invalid
 
 
-Around line 45 in the XML file you will see the invalid entry:
 
-.. code-block:: xml
+.. note::
 
-      <s3m:ms-cji07wngr0006i7l3ey0pdbx7>
-        <label>The Column 3</label>
-        <!--ERROR MSG: Element 'xdquantity-value': 'NaN' is not a valid value of the local atomic type.-->
-        <s3m:INV>
-          <ev-name>Invalid</ev-name>
-        </s3m:INV>
-        <magnitude-status>equal</magnitude-status>
-        <error>0</error>
-        <accuracy>0</accuracy>
-        <xdquantity-value>NaN</xdquantity-value>
-        <xdquantity-units>
-          <label>The Column 3 Units</label>
-          <xdstring-value/>
-          <xdstring-language>en-US</xdstring-language>
-        </xdquantity-units>
-      </s3m:ms-cji07wngr0006i7l3ey0pdbx7>
+    The S3Model eco-system has a much more sophisticated ability to handle missing and erroneous data. 
+    The details are available in the `S3Model documentation <https://datainsights.tech/S3Model/>`_. To use this expanded exceptional value tagging generally requires the model first approach whereas Kunteksto is an after-the-fact bridge.
 
 
 Notice that Kunteksto has inserted a human readable comment with the error message from the schema validator. 
@@ -386,79 +477,70 @@ Shown above are two *Subject, Predicate, Object* RDF triples in the canonical RD
     `S3Model ontology <http://datainsights.tech/S3Model/owl/>`_ *Opening the link in a new tab is suggested*. 
 
 It is important to note that the semantics from the data model schema are extracted into a RDF/XML file also located in the 
-*kunteksto/output/Demo* directory. In the :ref:`advtutor` you will see how these semantics interact with the Reference Model 
-semantics and the S3Model ontology in a semantic graph database.
-
-This invalid status is also represented in the JSON file as shown here:
-
-.. code-block:: text
-
-    "s3m:ms-cji07wngr0006i7l3ey0pdbx7": {
-        "label": "The Column 3",
-        "s3m:INV": {
-            "ev-name": "Invalid"
-        },
-        "magnitude-status": "equal",
-        "error": "0",
-        "accuracy": "0",
-        "xdquantity-value": "NaN",
-        "xdquantity-units": {
-            "label": "The Column 3 Units",
-            "xdstring-value": null,
-            "xdstring-language": "en-US"
-        }
-
+*kunteksto/output/rdf/Demo* directory. In the :ref:`advtutor` you will see how these semantics interact with the Reference Model semantic graph database.
 
 The downstream processing tools can then use this invalid status as needed; depending on the data analysis/usage situation.
 
 Additional Steps
 ----------------
 
-.. caution::
-    You can rerun this Demo with different options as many times as you wish.  However, this creates a new data model each time. 
-    You should delete the *Demo* directory under the *kunteksto/output/* directory before restarting. 
-
+Remove the *output* directory.
 
 In real-world situations, we often generate data on a continuing basis for this same model. To demonstrate this functionality, use the Demo2.csv file. From the command line issue this command: 
 
 .. code-block:: sh
 
-    kunteksto -i example_data/Demo2.csv -m generate -db output/Demo/Demo.db
+    flask gendata Demo -i ../example_data/Demo2.csv
 
-This command entry says to use the *Demo2.csv* file with the mode passed as *generate* and the database to reuse is the *Demo.db*. The information for the XML Schema is gathered from the information in the database, and the \*.xsd file is assumed to be in the directory with the database. A new validation log is generated *Demo2_validation_log.csv* and two files are shown as invalid. 
+This command entry says to use the *Demo2.csv* file with the **gendata** command to reuse the *Demo* project model. A new validation log is generated and two files are shown as invalid.
 
-It is important to realize that the CSV files must represent **EXACTLY** the same type of data to reuse the database and schema. If you issue this on the command line: 
+Remove the *output* directory.
+
+It is important to realize that the CSV files must represent **EXACTLY** the same type of data to reuse the project information and generated schema. If you issue this on the command line: 
 
 .. code-block:: sh
 
-    kunteksto -i example_data/Demo3.csv -m generate -db output/Demo/Demo.db
+    flask gendata Demo -i ../example_data/Demo3.csv
 
 You will see this error message:
 
 .. code-block:: sh
 
     There was an error matching the data input file to the selected model database.
-    The Datafile contains: Bad_Column_name  The Model contains: Column_1
+    The Datafile contains a header label, Bad_Column_name that does not match the Component headers. 
+
+
 
 This is because Demo3.csv has a column that is different in name from what is expected in the model. 
 Therefore, no new data files were generated because the input file does not match the model. 
+
 
 Using this rich data
 ====================
 
 Now that we have all these files, what can we do with them?
 
-In the :ref:`config` section you learn about automatically placing your data into appropriate databases/repositories for further usage. If yours is not yet supported, you can manually import from the filesystem. Of course, you can also contribute, see :ref:`develop`.
+In the :ref:`config` section you learn about automatically placing your data into appropriate databases/repositories for further usage. If yours is not yet supported, you can use the filesystem and then manually import the data. Of course, you can also contribute support for new data repositories, see :ref:`develop`.
 
 To exploit the richness of the RDF data, you load these files into your RDF repository:
 
 - s3model/s3model.owl
 - s3model/s3model_3_1_0.rdf
-- output/Demo/dm-{uuid}.rdf
 
-In your XML DB or the appropriate place in your data pipeline, you will want to use the dm-{uuid}.xsd data model schema to validate your XML data. You should be using XML Catalog files, and an example is created for each project in the *catalogs* directory. 
+As well as the generated data and the model RDF. 
 
-Your JSON data instances can be used as desired on the filesystem or in a document DB. 
+The model schema and RDF can be exported using this command:
+
+.. code-block:: sh
+
+    flask export Demo
+
+Where *Demo* is the project name you want to export. The files will be located in a subdirectory, named for the project, of the *dmlib* directory.  
+
+
+In your XML DB or the appropriate place in your data pipeline, you will want to use the dm-{uuid}.xsd data model schema to validate your XML data. You should be using XML Catalog files, and an example is created for each project in the *catalogs* directory.
+
+Your JSON data instances can be used as desired on the filesystem or in a document DB.
 
 .. _mlai:
 
@@ -466,6 +548,7 @@ Machine Learning & AI
 =====================
 
 There is a growing effort to expand the current data science algorithms to exploit richer data formats such as RDF. 
+
 Some references to get you started:
 
 - `The Power of Machine Learning and Graphs <https://www.youtube.com/watch?v=feGvnBNwLwY&>`_ (video).
@@ -477,19 +560,17 @@ Some references to get you started:
 - `RDF on Data Science Central <http://www.datasciencecentral.com/profiles/blog/list?tag=RDF>`_
 
 Search on YouTube or use your favorite search engine with keywords *Semantic Graph Analytics Machine Learning* 
-for more up to date references. 
+for more up to date references.
 
 You can also find many tools on the web for converting your CSV data into RDF. 
 
-What you **will not** find is a tool similar to Kunteksto for 
-converting your plain old data into semantic graph RDF **with data validation based on a validated model**. 
-No one else tells you how difficult it is to get good, *clean data* into your graph. Remember that **Garbage in == garbage out**. 
+What you **will not** find is a tool similar to Kunteksto for converting your plain old data into rich, semantic graph RDF **with data validation based on a validated model**. No one else tells you how difficult it is to get good, *clean data* into your graph. Remember that **Garbage in == garbage out**.
 
 
 Why multiple copies of the same data?
 -------------------------------------
 
-You can choose which types to create in the :ref:`config` file. However, each one has different qualities. 
+You can choose which types to create in the model definition. However, each one has different qualities. 
 For example, the XML data is the most robust as far as any data quality validation is concerned. 
 The RDF is more useful for exploration and knowledge discovery, and the JSON is simpler to use in some environments.
 
@@ -498,6 +579,6 @@ More Information
 ----------------
 
 To gain a better understanding of the capability of Kunteksto, you should also perform the :ref:`advtutor`. 
-These tutorials demonstrate the power of S3Model using persistent storage. 
+These tutorials demonstrate the power of S3Model using persistent storage.
 
 

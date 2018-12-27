@@ -6,6 +6,7 @@ __pycache__/
 # C extensions
 *.so
 
+
 # Kunteksto 
 *.db
 output/*
@@ -17,6 +18,7 @@ ev_test.py
 *.~lock*
 
 .cache/
+environment_36.yml
 
 # Sphinx
 docs_source/build/*

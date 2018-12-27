@@ -5,23 +5,15 @@ Introduction and Installation
 Purpose
 =======
 
-**Kunteksto** (ˈkänˌteksto) [#f1]_ is a tool to translate simple CSV formatted data files into computable, 
-semantically enhanced knowledge representations. As a foundation for **crowdsourced**, *automated knowledge base construction*; 
-it provides a path for existing data sets to be used in conjunction with the emerging *graph data, model first* approach in analysis, 
-general artificial intelligence (AGI), and decision support systems. This approach opens the door for the change to a *data-centric* 
-world as opposed to the *application-centric* one we have now. This new approach enables automatic interoperability avoiding the data 
-quality issues created through data migration, cleaning and massaging. See :ref:`mlai`  
+**Kunteksto** (ˈkänˌteksto) [#f1]_ is a tool to translate simple CSV formatted data files into computable, semantically enhanced knowledge representations. As a foundation for **crowdsourced**, *automated knowledge base construction*; it provides a path for existing data sets to be used in conjunction with the emerging *graph data, model first* approach in analysis, general artificial intelligence (AGI), and decision support systems. This approach opens the door for the change to a more data-centric approach as opposed to the current application-centric approach. This new path enables automatic, machine processable interoperability avoiding the data quality issues created through data migration, data cleaning and data massaging. See :ref:`mlai`
 
 The importance of how this simplifies query and analysis capabilities and improves data quality is discussed in foundational 
 `S3Model <https://datainsights.tech/S3Model>`_ documentation and references. However, detailed understanding of S3Model is not 
-required to understand and use the power of Kunteksto. Additional information on the datacentric movement can be found below [#f2]_
+required to understand and use the power of Kunteksto. 
 
 Target Audience
 ---------------
-Kunteksto design is based on the ability for *domain experts* from any field, with very little programming ability to quickly 
-annotate data extracts to improve the usability of the data.  Data engineers and data scientists can also benefit from Kunteksto 
-in the same ways as domain experts. It just takes a bit more research to discover the semantics that the original domain experts 
-usually have at hand.
+The Kunteksto design philosophy is based on the ability for *domain experts* from any field, with very little programming ability to quickly annotate data extracts to improve the usability of the data. Data engineers and data scientists can also benefit from Kunteksto in the same ways as domain experts. 
 
 .. _install:
 
@@ -45,13 +37,13 @@ Anaconda is the **preferred environment** for a tool like Kunteksto because it i
 
 .. code-block:: sh
 
-    conda create -p kunteksto python=3 pycurl ujson
+    conda create -p Kunteksto python=3 pycurl ujson
 
 - Change to the directory
 
 .. code-block:: sh
     
-    cd kunteksto
+    cd Kunteksto
 
 .. _activate: Activate
 
@@ -84,9 +76,18 @@ trying will not damage anything but it may fail or just report that pycurl is th
 
     pip install kunteksto
 
-These quick steps create a virtual environment in the subdirectory *kunteksto*. Once the environment is created, conda displays how to activate the environment. When activated then Kunteksto is installed in the subdirectory along with the environment. 
+These quick steps create a virtual environment in the subdirectory *Kunteksto*. Notice this directory has a capital **K**. 
 
-The last step is to do the :ref:`tutor`
+Once the environment is created, conda displays how to activate the environment. When you have activated the environment you then install the *Kunteksto* application in the environment. After installation the will be a new subdirectory called **kunteksto** (small **k**). This is called the Kunteksto directory throughout this tutorial. 
+
+Change to the Kunteksto directory:
+
+.. code-block:: sh
+    
+    cd kunteksto
+
+
+The next step is to do the :ref:`tutor`
 
 
 Update to a New Version
@@ -99,8 +100,6 @@ When you want to upgrade to a new version of Kunteksto you can use the line belo
     pip install  kunteksto --upgrade --no-cache-dir
 
 
-Be certain that you remove any project based catalog files from the *kunteksto/catalogs* directory. For example the *Demo_catalog.xml* file.
- 
 
 What are all the files for?
 ===========================
@@ -127,9 +126,6 @@ Directories
 - example_data
     This directory contains information and sample data files for the tutorials. There is also an example of the completed Demo database, model, and data in the archive Demo_with_semantics.zip. 
 
-- output
-    The default location of all generated output from Kunteksto. This directory can be changed either via the configuration file or the command line. 
-
 - catalogs
     This directory is where Kunteksto places XML catalog files used in the data validation process.
 
@@ -140,18 +136,9 @@ Directories
     - s3model_3_1_0.xsd - the reference model schema version 3.1.0
     - s3model_3_1_0.rdf - the extracted semantics from the reference model schema version 3.1.0
     - s3model_3_1_0.xsl - a stylesheet providing visualization in a browser of the reference model schema version 3.1.0
-    - dm-description.xsl - a stylesheet that provides for visualization in a browser of any S3Model data model. 
-        Just place it in the same directory with the dm-{uuid}.xsd file and open the schema in a browser. 
+    - dm-description.xsl - a stylesheet that provides for visualization in a browser of any S3Model data model.  
 
 
 .. rubric:: Footnotes
 
 .. [#f1] S3Model is called the Esperanto of information management. Kunteksto is the Esperanto translation of the word *Context*. See `Wikipedia <https://simple.wikipedia.org/wiki/Esperanto>`_ for more information about the Esperanto language.
-
-.. [#f2] 
-    -  `The Estes Park Group <http://estesparkgroup.org/>`_ 
-    -  `The Data-centric Manifesto <http://datacentricmanifesto.org/>`_  
-    -  `Data-centric companies will devour competitors <https://goo.gl/xDcpZM>`_ 
-    -  `The Data-Centric Revolution: Gaining Traction <https://goo.gl/zdRLm9>`_ 
-    -  `The limits of deep learning <https://blog.keras.io/the-limitations-of-deep-learning.html>`_ 
-    -  `The future of deep learning <https://blog.keras.io/the-future-of-deep-learning.html>`_

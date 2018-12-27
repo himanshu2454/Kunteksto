@@ -63,7 +63,7 @@
             
             
               <div class="version">
-                1.7.2
+                2.0.0
               </div>
             
           
@@ -179,21 +179,13 @@
 <h1>Introduction and Installation<a class="headerlink" href="#introduction-and-installation" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="purpose">
 <h2>Purpose<a class="headerlink" href="#purpose" title="Permalink to this headline">¶</a></h2>
-<p><strong>Kunteksto</strong> (ˈkänˌteksto) <a class="footnote-reference" href="#f1" id="id1">[1]</a> is a tool to translate simple CSV formatted data files into computable,
-semantically enhanced knowledge representations. As a foundation for <strong>crowdsourced</strong>, <em>automated knowledge base construction</em>;
-it provides a path for existing data sets to be used in conjunction with the emerging <em>graph data, model first</em> approach in analysis,
-general artificial intelligence (AGI), and decision support systems. This approach opens the door for the change to a <em>data-centric</em>
-world as opposed to the <em>application-centric</em> one we have now. This new approach enables automatic interoperability avoiding the data
-quality issues created through data migration, cleaning and massaging. See <a class="reference internal" href="start.html#mlai"><span class="std std-ref">Machine Learning &amp; AI</span></a></p>
+<p><strong>Kunteksto</strong> (ˈkänˌteksto) <a class="footnote-reference" href="#f1" id="id1">[1]</a> is a tool to translate simple CSV formatted data files into computable, semantically enhanced knowledge representations. As a foundation for <strong>crowdsourced</strong>, <em>automated knowledge base construction</em>; it provides a path for existing data sets to be used in conjunction with the emerging <em>graph data, model first</em> approach in analysis, general artificial intelligence (AGI), and decision support systems. This approach opens the door for the change to a more data-centric approach as opposed to the current application-centric approach. This new path enables automatic, machine processable interoperability avoiding the data quality issues created through data migration, data cleaning and data massaging. See <a class="reference internal" href="start.html#mlai"><span class="std std-ref">Machine Learning &amp; AI</span></a></p>
 <p>The importance of how this simplifies query and analysis capabilities and improves data quality is discussed in foundational
 <a class="reference external" href="https://datainsights.tech/S3Model">S3Model</a> documentation and references. However, detailed understanding of S3Model is not
-required to understand and use the power of Kunteksto. Additional information on the datacentric movement can be found below <a class="footnote-reference" href="#f2" id="id2">[2]</a></p>
+required to understand and use the power of Kunteksto.</p>
 <div class="section" id="target-audience">
 <h3>Target Audience<a class="headerlink" href="#target-audience" title="Permalink to this headline">¶</a></h3>
-<p>Kunteksto design is based on the ability for <em>domain experts</em> from any field, with very little programming ability to quickly
-annotate data extracts to improve the usability of the data.  Data engineers and data scientists can also benefit from Kunteksto
-in the same ways as domain experts. It just takes a bit more research to discover the semantics that the original domain experts
-usually have at hand.</p>
+<p>The Kunteksto design philosophy is based on the ability for <em>domain experts</em> from any field, with very little programming ability to quickly annotate data extracts to improve the usability of the data. Data engineers and data scientists can also benefit from Kunteksto in the same ways as domain experts.</p>
 </div>
 </div>
 <div class="section" id="installation">
@@ -213,13 +205,13 @@ this is a good choice.</p>
 <ul class="simple">
 <li>Open a terminal window and create a conda environment. On Windows it is best to open an <em>Anaconda Prompt</em> terminal from the Anaconda menu:</li>
 </ul>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda create -p kunteksto <span class="nv">python</span><span class="o">=</span><span class="m">3</span> pycurl ujson
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda create -p Kunteksto <span class="nv">python</span><span class="o">=</span><span class="m">3</span> pycurl ujson
 </pre></div>
 </div>
 <ul class="simple">
 <li>Change to the directory</li>
 </ul>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> kunteksto
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> Kunteksto
 </pre></div>
 </div>
 <ul class="simple">
@@ -246,8 +238,13 @@ this is a good choice.</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pip install kunteksto
 </pre></div>
 </div>
-<p>These quick steps create a virtual environment in the subdirectory <em>kunteksto</em>. Once the environment is created, conda displays how to activate the environment. When activated then Kunteksto is installed in the subdirectory along with the environment.</p>
-<p>The last step is to do the <a class="reference internal" href="start.html#tutor"><span class="std std-ref">Tutorial/Demo</span></a></p>
+<p>These quick steps create a virtual environment in the subdirectory <em>Kunteksto</em>. Notice this directory has a capital <strong>K</strong>.</p>
+<p>Once the environment is created, conda displays how to activate the environment. When you have activated the environment you then install the <em>Kunteksto</em> application in the environment. After installation the will be a new subdirectory called <strong>kunteksto</strong> (small <strong>k</strong>). This is called the Kunteksto directory throughout this tutorial.</p>
+<p>Change to the Kunteksto directory:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> kunteksto
+</pre></div>
+</div>
+<p>The next step is to do the <a class="reference internal" href="start.html#tutor"><span class="std std-ref">Tutorial/Demo</span></a></p>
 </div>
 </div>
 <div class="section" id="update-to-a-new-version">
@@ -256,7 +253,6 @@ this is a good choice.</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pip install  kunteksto --upgrade --no-cache-dir
 </pre></div>
 </div>
-<p>Be certain that you remove any project based catalog files from the <em>kunteksto/catalogs</em> directory. For example the <em>Demo_catalog.xml</em> file.</p>
 </div>
 <div class="section" id="what-are-all-the-files-for">
 <h2>What are all the files for?<a class="headerlink" href="#what-are-all-the-files-for" title="Permalink to this headline">¶</a></h2>
@@ -291,11 +287,6 @@ this is a good choice.</p>
 </dl>
 </li>
 <li><dl class="first docutils">
-<dt>output</dt>
-<dd>The default location of all generated output from Kunteksto. This directory can be changed either via the configuration file or the command line.</dd>
-</dl>
-</li>
-<li><dl class="first docutils">
 <dt>catalogs</dt>
 <dd>This directory is where Kunteksto places XML catalog files used in the data validation process.</dd>
 </dl>
@@ -307,11 +298,7 @@ this is a good choice.</p>
 <li>s3model_3_1_0.xsd - the reference model schema version 3.1.0</li>
 <li>s3model_3_1_0.rdf - the extracted semantics from the reference model schema version 3.1.0</li>
 <li>s3model_3_1_0.xsl - a stylesheet providing visualization in a browser of the reference model schema version 3.1.0</li>
-<li><dl class="first docutils">
-<dt>dm-description.xsl - a stylesheet that provides for visualization in a browser of any S3Model data model.</dt>
-<dd>Just place it in the same directory with the dm-{uuid}.xsd file and open the schema in a browser.</dd>
-</dl>
-</li>
+<li>dm-description.xsl - a stylesheet that provides for visualization in a browser of any S3Model data model.</li>
 </ul>
 </dd>
 </dl>
@@ -322,20 +309,6 @@ this is a good choice.</p>
 <colgroup><col class="label" /><col /></colgroup>
 <tbody valign="top">
 <tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>S3Model is called the Esperanto of information management. Kunteksto is the Esperanto translation of the word <em>Context</em>. See <a class="reference external" href="https://simple.wikipedia.org/wiki/Esperanto">Wikipedia</a> for more information about the Esperanto language.</td></tr>
-</tbody>
-</table>
-<table class="docutils footnote" frame="void" id="f2" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id2">[2]</a></td><td><ul class="first last simple">
-<li><a class="reference external" href="http://estesparkgroup.org/">The Estes Park Group</a></li>
-<li><a class="reference external" href="http://datacentricmanifesto.org/">The Data-centric Manifesto</a></li>
-<li><a class="reference external" href="https://goo.gl/xDcpZM">Data-centric companies will devour competitors</a></li>
-<li><a class="reference external" href="https://goo.gl/zdRLm9">The Data-Centric Revolution: Gaining Traction</a></li>
-<li><a class="reference external" href="https://blog.keras.io/the-limitations-of-deep-learning.html">The limits of deep learning</a></li>
-<li><a class="reference external" href="https://blog.keras.io/the-future-of-deep-learning.html">The future of deep learning</a></li>
-</ul>
-</td></tr>
 </tbody>
 </table>
 </div>
@@ -362,8 +335,8 @@ this is a good choice.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, Data Insights, Inc.
-      Last updated on 2018-11-25 08:36.
+        &copy; Copyright 2019, Data Insights, Inc.
+      Last updated on 2018-12-27 17:14.
 
     </p>
   </div> 
