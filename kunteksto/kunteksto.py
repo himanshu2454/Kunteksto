@@ -95,6 +95,7 @@ class DatamodelModelView(ModelView):
 class ComponentModelView(ModelView):
     form_base_class = SecureForm
     can_create = False
+    can_delete = False
     edit_modal = True
     can_export = True
     column_list = ('header', 'label', 'datatype', 'mcid', 'model_id')
@@ -103,9 +104,9 @@ class ComponentModelView(ModelView):
         'description': {'rows': 10, 'style': 'color: black'},
         'pred_obj': {'rows': 5, 'style': 'color: black'},
     }
-    column_labels = {'min_len':"Minimum Length", 'max_len':"Maximum Length", 'regex':"Regualr Expression", 'min_incl':'Minimum Value (Inclusive)', 'max_incl':'Maximum Value (Inclusive)', \
-                     'min_excl':'Minimum Value (Exclusive)', 'max_excl':'Maximum Value (Exclusive)', 'pred_obj':'Predicate/\nObject Pairs', 'def_text':'Default Text', \
-                     'def_num':'Default Numeric'}
+    column_labels = {'min_len': "Minimum Length", 'max_len': "Maximum Length", 'regex': "Regualr Expression", 'min_incl': 'Minimum Value (Inclusive)', 'max_incl': 'Maximum Value (Inclusive)',
+                     'min_excl': 'Minimum Value (Exclusive)', 'max_excl': 'Maximum Value (Exclusive)', 'pred_obj': 'Predicate/\nObject Pairs', 'def_text': 'Default Text',
+                     'def_num': 'Default Numeric', 'mcid': 'Model Component ID'}
     column_descriptions = {'min_len':'Used for strings/text.', 'max_len':'Used for strings/text.', 'regex':'Use the XML Schema subset of RegEx.', 'min_incl':'Use for numerics.', \
                            'max_incl':'Use for numerics.','min_excl':'Use for numerics.','max_excl':'Use for numerics.','pred_obj':'One per line. Must have a space between the predicate and object.', \
                            'units':'Use a standardized units abbreviation.', 'choices':'Enumeration of valid values. One per line.'}    
