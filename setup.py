@@ -25,7 +25,7 @@ setup(
     keywords=['context rdf xml machine learning data-centric semantic interoperability semantics'],
     tests_require=['pytest', ],
     setup_requires=['pytest-runner', ],
-    python_requires='>=3.6',
+    python_requires='>=3.7',
     packages=['kunteksto'],
     package_dir={'kunteksto': 'kunteksto'},
     package_data={'docs': ['docs/*'], 'kunteksto': ['flask.env', 'kunteksto.sh', 'kunteksto.bat']},
