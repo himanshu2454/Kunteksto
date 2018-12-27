@@ -104,6 +104,15 @@ This page presents some basic information as well as operational instructions. F
 
 Open a second terminal window/tab and navigate to the kunteksto directory. Then activate the virtual environment as you did previously in the other terminal window.
 
+Before we begin using Kunteksto to improve our data, we are going to load some examples into the database.
+
+.. code-block:: sh
+
+    flask ldexamples
+
+We will discuss these examples later in the tutorial.
+
+
 As shown on the home page there are four steps. The first is to analyze the data file. 
 
 
