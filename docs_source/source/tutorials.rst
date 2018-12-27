@@ -5,7 +5,7 @@
 Advanced Tutorials
 ==================
 
-The advanced tutorials are part of a full training course on S3Model.
+The advanced tutorials are now part of a full training course on S3Model.
 
 The courses available are:
 

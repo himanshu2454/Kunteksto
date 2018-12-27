@@ -1442,3 +1442,26 @@ def make_data(project, infile):
     vlsession.commit()
     return True
 
+def export_model(project):
+    """
+    Export the XML Schema and RDF graph based on the model.
+    """
+    session = Session()
+    try:
+        rec = session.query(Datamodel).filter_by(project=project).first()
+    except sqlite3.Error as e:
+        print("Failed to find the model for " + project)
+        print('\n\n', e)
+        exit(1)
+
+    dmlibpath = Path(os.path.join(os.getcwd(), os.pardir, 'dmlib', rec.project.strip()))
+    dmlibpath.mkdir(parents=True)
+
+    with open(os.path.join(dmlibpath, 'dm-' + rec.dmid + '.xsd'), 'w') as xsd:
+        xsd.write(rec.schema.strip())
+
+    with open(os.path.join(dmlibpath, 'dm-' + rec.dmid + '.rdf'), 'w') as rdf:
+        rdf.write(rec.rdf.strip())
+
+    print(rec.project, " was exported to the dmlib subdirectory.\n\n")
+    return

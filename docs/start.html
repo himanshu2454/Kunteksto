@@ -181,8 +181,7 @@
 <h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="first-steps">
 <h2>First Steps<a class="headerlink" href="#first-steps" title="Permalink to this headline">¶</a></h2>
-<p>Ensure that you have the requirements and have performed the installation as described in the <a class="reference internal" href="intro.html#install"><span class="std std-ref">Installation</span></a> section for your operating system.</p>
-<p>Then proceed to the tutorial.</p>
+<p>Ensure that you have the requirements and have performed the installation as described in the <a class="reference internal" href="intro.html#install"><span class="std std-ref">Installation</span></a> section for your operating system. Then proceed to the tutorial.</p>
 </div>
 <div class="section" id="tutorial-demo">
 <span id="tutor"></span><h2>Tutorial/Demo<a class="headerlink" href="#tutorial-demo" title="Permalink to this headline">¶</a></h2>
@@ -491,18 +490,20 @@ from the <a class="reference external" href="https://datainsights.tech/S3Model/r
 <p>The downstream processing tools can then use this invalid status as needed; depending on the data analysis/usage situation.</p>
 <div class="section" id="additional-steps">
 <h3>Additional Steps<a class="headerlink" href="#additional-steps" title="Permalink to this headline">¶</a></h3>
+<p>Remove the <em>output</em> directory.</p>
 <p>In real-world situations, we often generate data on a continuing basis for this same model. To demonstrate this functionality, use the Demo2.csv file. From the command line issue this command:</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>flask gendata Demo -i ../example_data/Demo2.csv
 </pre></div>
 </div>
-<p>This command entry says to use the <em>Demo2.csv</em> file with the <strong>gendata</strong> command to reuse is the <em>Demo</em> project model. A new validation log is generated and two files are shown as invalid.</p>
-<p>It is important to realize that the CSV files must represent <strong>EXACTLY</strong> the same type of data to reuse the project inforamtion and generated schema. If you issue this on the command line:</p>
+<p>This command entry says to use the <em>Demo2.csv</em> file with the <strong>gendata</strong> command to reuse the <em>Demo</em> project model. A new validation log is generated and two files are shown as invalid.</p>
+<p>Remove the <em>output</em> directory.</p>
+<p>It is important to realize that the CSV files must represent <strong>EXACTLY</strong> the same type of data to reuse the project information and generated schema. If you issue this on the command line:</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>flask gendata Demo -i ../example_data/Demo3.csv
 </pre></div>
 </div>
 <p>You will see this error message:</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>There was an error matching the data input file to the selected model database.
-The Datafile contains: Bad_Column_name  The Model contains: Column_1
+The Datafile contains a header label, Bad_Column_name that does not match the Component headers.
 </pre></div>
 </div>
 <p>This is because Demo3.csv has a column that is different in name from what is expected in the model.
@@ -512,20 +513,25 @@ Therefore, no new data files were generated because the input file does not matc
 <div class="section" id="using-this-rich-data">
 <h2>Using this rich data<a class="headerlink" href="#using-this-rich-data" title="Permalink to this headline">¶</a></h2>
 <p>Now that we have all these files, what can we do with them?</p>
-<p>In the <a class="reference internal" href="configure.html#config"><span class="std std-ref">Config File Details</span></a> section you learn about automatically placing your data into appropriate databases/repositories for further usage. If yours is not yet supported, you can manually import from the filesystem. Of course, you can also contribute, see <a class="reference internal" href="develop.html#develop"><span class="std std-ref">Developing Kunteksto</span></a>.</p>
+<p>In the <a class="reference internal" href="configure.html#config"><span class="std std-ref">Config File Details</span></a> section you learn about automatically placing your data into appropriate databases/repositories for further usage. If yours is not yet supported, you can use the filesystem and then manually import the data. Of course, you can also contribute support for new data repositories, see <a class="reference internal" href="develop.html#develop"><span class="std std-ref">Developing Kunteksto</span></a>.</p>
 <p>To exploit the richness of the RDF data, you load these files into your RDF repository:</p>
 <ul class="simple">
 <li>s3model/s3model.owl</li>
 <li>s3model/s3model_3_1_0.rdf</li>
-<li>output/Demo/dm-{uuid}.rdf</li>
 </ul>
+<p>As well as the generated data and the model RDF.</p>
+<p>The model schema and RDF can be exported using this command:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>flask <span class="nb">export</span> Demo
+</pre></div>
+</div>
+<p>Where <em>Demo</em> is the project name you want to export. The files will be located in a subdirectory, named for the project, of the <em>dmlib</em> directory.</p>
 <p>In your XML DB or the appropriate place in your data pipeline, you will want to use the dm-{uuid}.xsd data model schema to validate your XML data. You should be using XML Catalog files, and an example is created for each project in the <em>catalogs</em> directory.</p>
 <p>Your JSON data instances can be used as desired on the filesystem or in a document DB.</p>
 </div>
 <div class="section" id="machine-learning-ai">
 <span id="mlai"></span><h2>Machine Learning &amp; AI<a class="headerlink" href="#machine-learning-ai" title="Permalink to this headline">¶</a></h2>
-<p>There is a growing effort to expand the current data science algorithms to exploit richer data formats such as RDF.
-Some references to get you started:</p>
+<p>There is a growing effort to expand the current data science algorithms to exploit richer data formats such as RDF.</p>
+<p>Some references to get you started:</p>
 <ul class="simple">
 <li><a class="reference external" href="https://www.youtube.com/watch?v=feGvnBNwLwY&amp;">The Power of Machine Learning and Graphs</a> (video).</li>
 <li><a class="reference external" href="https://www.youtube.com/watch?v=PAumnCRZuMY&amp;">Knowledge Graphs for a Connected World - AI, Deep &amp; Machine Learning Meetup</a> (video).</li>
@@ -538,12 +544,10 @@ Some references to get you started:</p>
 <p>Search on YouTube or use your favorite search engine with keywords <em>Semantic Graph Analytics Machine Learning</em>
 for more up to date references.</p>
 <p>You can also find many tools on the web for converting your CSV data into RDF.</p>
-<p>What you <strong>will not</strong> find is a tool similar to Kunteksto for
-converting your plain old data into semantic graph RDF <strong>with data validation based on a validated model</strong>.
-No one else tells you how difficult it is to get good, <em>clean data</em> into your graph. Remember that <strong>Garbage in == garbage out</strong>.</p>
+<p>What you <strong>will not</strong> find is a tool similar to Kunteksto for converting your plain old data into rich, semantic graph RDF <strong>with data validation based on a validated model</strong>. No one else tells you how difficult it is to get good, <em>clean data</em> into your graph. Remember that <strong>Garbage in == garbage out</strong>.</p>
 <div class="section" id="why-multiple-copies-of-the-same-data">
 <h3>Why multiple copies of the same data?<a class="headerlink" href="#why-multiple-copies-of-the-same-data" title="Permalink to this headline">¶</a></h3>
-<p>You can choose which types to create in the <a class="reference internal" href="configure.html#config"><span class="std std-ref">Config File Details</span></a> file. However, each one has different qualities.
+<p>You can choose which types to create in the model definition. However, each one has different qualities.
 For example, the XML data is the most robust as far as any data quality validation is concerned.
 The RDF is more useful for exploration and knowledge discovery, and the JSON is simpler to use in some environments.</p>
 </div>
@@ -575,8 +579,8 @@ These tutorials demonstrate the power of S3Model using persistent storage.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, Data Insights, Inc.
-      Last updated on 2018-12-27 12:10.
+        &copy; Copyright 2019, Data Insights, Inc.
+      Last updated on 2018-12-27 17:56.
 
     </p>
   </div> 

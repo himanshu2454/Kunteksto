@@ -5,9 +5,7 @@ Getting Started
 First Steps
 ===========
 
-Ensure that you have the requirements and have performed the installation as described in the :ref:`install` section for your operating system. 
-
-Then proceed to the tutorial.
+Ensure that you have the requirements and have performed the installation as described in the :ref:`install` section for your operating system. Then proceed to the tutorial.
 
 .. _tutor:
 
@@ -486,15 +484,19 @@ The downstream processing tools can then use this invalid status as needed; depe
 Additional Steps
 ----------------
 
+Remove the *output* directory.
+
 In real-world situations, we often generate data on a continuing basis for this same model. To demonstrate this functionality, use the Demo2.csv file. From the command line issue this command: 
 
 .. code-block:: sh
 
     flask gendata Demo -i ../example_data/Demo2.csv
 
-This command entry says to use the *Demo2.csv* file with the **gendata** command to reuse is the *Demo* project model. A new validation log is generated and two files are shown as invalid. 
+This command entry says to use the *Demo2.csv* file with the **gendata** command to reuse the *Demo* project model. A new validation log is generated and two files are shown as invalid.
 
-It is important to realize that the CSV files must represent **EXACTLY** the same type of data to reuse the project inforamtion and generated schema. If you issue this on the command line: 
+Remove the *output* directory.
+
+It is important to realize that the CSV files must represent **EXACTLY** the same type of data to reuse the project information and generated schema. If you issue this on the command line: 
 
 .. code-block:: sh
 
@@ -505,27 +507,40 @@ You will see this error message:
 .. code-block:: sh
 
     There was an error matching the data input file to the selected model database.
-    The Datafile contains: Bad_Column_name  The Model contains: Column_1
+    The Datafile contains a header label, Bad_Column_name that does not match the Component headers. 
+
+
 
 This is because Demo3.csv has a column that is different in name from what is expected in the model. 
 Therefore, no new data files were generated because the input file does not match the model. 
+
 
 Using this rich data
 ====================
 
 Now that we have all these files, what can we do with them?
 
-In the :ref:`config` section you learn about automatically placing your data into appropriate databases/repositories for further usage. If yours is not yet supported, you can manually import from the filesystem. Of course, you can also contribute, see :ref:`develop`.
+In the :ref:`config` section you learn about automatically placing your data into appropriate databases/repositories for further usage. If yours is not yet supported, you can use the filesystem and then manually import the data. Of course, you can also contribute support for new data repositories, see :ref:`develop`.
 
 To exploit the richness of the RDF data, you load these files into your RDF repository:
 
 - s3model/s3model.owl
 - s3model/s3model_3_1_0.rdf
-- output/Demo/dm-{uuid}.rdf
 
-In your XML DB or the appropriate place in your data pipeline, you will want to use the dm-{uuid}.xsd data model schema to validate your XML data. You should be using XML Catalog files, and an example is created for each project in the *catalogs* directory. 
+As well as the generated data and the model RDF. 
 
-Your JSON data instances can be used as desired on the filesystem or in a document DB. 
+The model schema and RDF can be exported using this command:
+
+.. code-block:: sh
+
+    flask export Demo
+
+Where *Demo* is the project name you want to export. The files will be located in a subdirectory, named for the project, of the *dmlib* directory.  
+
+
+In your XML DB or the appropriate place in your data pipeline, you will want to use the dm-{uuid}.xsd data model schema to validate your XML data. You should be using XML Catalog files, and an example is created for each project in the *catalogs* directory.
+
+Your JSON data instances can be used as desired on the filesystem or in a document DB.
 
 .. _mlai:
 
@@ -533,6 +548,7 @@ Machine Learning & AI
 =====================
 
 There is a growing effort to expand the current data science algorithms to exploit richer data formats such as RDF. 
+
 Some references to get you started:
 
 - `The Power of Machine Learning and Graphs <https://www.youtube.com/watch?v=feGvnBNwLwY&>`_ (video).
@@ -544,19 +560,17 @@ Some references to get you started:
 - `RDF on Data Science Central <http://www.datasciencecentral.com/profiles/blog/list?tag=RDF>`_
 
 Search on YouTube or use your favorite search engine with keywords *Semantic Graph Analytics Machine Learning* 
-for more up to date references. 
+for more up to date references.
 
 You can also find many tools on the web for converting your CSV data into RDF. 
 
-What you **will not** find is a tool similar to Kunteksto for 
-converting your plain old data into semantic graph RDF **with data validation based on a validated model**. 
-No one else tells you how difficult it is to get good, *clean data* into your graph. Remember that **Garbage in == garbage out**. 
+What you **will not** find is a tool similar to Kunteksto for converting your plain old data into rich, semantic graph RDF **with data validation based on a validated model**. No one else tells you how difficult it is to get good, *clean data* into your graph. Remember that **Garbage in == garbage out**.
 
 
 Why multiple copies of the same data?
 -------------------------------------
 
-You can choose which types to create in the :ref:`config` file. However, each one has different qualities. 
+You can choose which types to create in the model definition. However, each one has different qualities. 
 For example, the XML data is the most robust as far as any data quality validation is concerned. 
 The RDF is more useful for exploration and knowledge discovery, and the JSON is simpler to use in some environments.
 
@@ -565,6 +579,6 @@ More Information
 ----------------
 
 To gain a better understanding of the capability of Kunteksto, you should also perform the :ref:`advtutor`. 
-These tutorials demonstrate the power of S3Model using persistent storage. 
+These tutorials demonstrate the power of S3Model using persistent storage.
 
 

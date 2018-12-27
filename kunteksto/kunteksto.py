@@ -29,7 +29,7 @@ from . import app, config
 from .models import XMLstore, JSONstore, RDFstore, Datamodel, Component, Validation, db
 
 from .analyze import process
-from .generate import make_data, make_model
+from .generate import make_data, make_model, export_model
 
 # Add Flask Admin setup and administrative views here
 admin = Admin(app, name='Kunteksto', template_mode='bootstrap3')
@@ -183,6 +183,15 @@ def gendata(project, infile):
     click.echo('Generate data from ' + infile + ' based on the model: ' + project)
     make_data(project, infile)
 
+@click.command('export')
+@click.argument('project')
+def export(project):
+    """
+    Export a model XML Schema and RDF for the project.
+    """
+    click.echo('Exporting model to: Kunteksto/dmlib/' + project)
+    export_model(project)
+
 @click.command('ldexamples')
 def ldexamples():
     """
@@ -197,6 +206,7 @@ def ldexamples():
 app.cli.add_command(analyze)
 app.cli.add_command(genmodel)
 app.cli.add_command(gendata)
+app.cli.add_command(export)
 app.cli.add_command(ldexamples)
 
 
