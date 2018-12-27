@@ -6,17 +6,18 @@ config = configparser.ConfigParser()
 config.read('kunteksto.conf')
 VERSION = config['SYSTEM']['version']
 
+# read the contents of your README file
+from os import path
+this_directory = path.abspath(path.dirname(__file__))
+with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
+    long_description = f.read()
+
 setup(
     name='kunteksto',
     version=VERSION,
     description='The tool to translate your CSV data files into RDF, XML and JSON with full semantics and syntactic validation.',
-    long_description="""**Kunteksto** (ˈkänˌteksto) is a tool to help domain experts, data scientists, data creators and data users translate CSV data files 
-into the semantically enhanced formats that provide computable metadata. 
-    
-This process speeds up data cleaning and provides a path for data sharing Linked Open Vocabularies.
-    
-See the Homepage Link for more details.
-    """,
+    long_description=long_description,
+    long_description_content_type='text/markdown',
     author='Timothy W. Cook',
     author_email='tim@datainsights.tech',
     url='https://datainsights.tech/',
@@ -49,6 +50,7 @@ See the Homepage Link for more details.
         'flask-admin',
         'flask-sqlalchemy',
         'flask-babelex',
+        'sqlalchemy-utils',
         'python-dotenv'
       ],
     entry_points='''
