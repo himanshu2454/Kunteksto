@@ -335,56 +335,75 @@ or even places that aren't formal ontologies but contain reliable definitions an
 
     flask genmodel Demo
 
-The command above tells the Flask framework to execute the genmodel function with the project named *Demo*.
+The command above tells the Flask framework to execute the genmodel function with the project named *Demo*. You should see terminal output similar to this image:
 
+.. image:: _images/genmodel_output.png
+    :width: 600px
+    :align: center
+    :height: 200px
+    :alt: Genmodel Output
 
+Open the Model record for the Demo project and check the SChema and RDF fields:
 
-- In the *output/Demo* directory along with the Demo.db, you find an XML Schema (\*.xsd) model file and a RDF (\*.rdf) file. These are the structural and semantic models that can be used in your analysis as well as shared with others to describe the data better. The RDF file is extracted from the XML Schema, so only the schema needs to be shared to distribute full structural and semantic information in an executable model. Data Insights, Inc. provides a utility with S3Model to extract the semantics from the schema data models. 
+.. image:: _images/model_xmlschema_rdf.png
+    :width: 600px
+    :align: center
+    :height: 200px
+    :alt: XML Schema and RDF
 
-.. image:: _images/output_dir.png
-    :width: 500px
+The two fields now contain the generated XML Schema and the RDF triples for the model. You can copy these and paste them into an editor if you wish to examine them. Later we will cover how to export these for sharing with secondary data users. These are the structural and semantic models that can be used in your analysis as well as shared with others to describe the data better. The RDF file is extracted from the XML Schema, so only the schema needs to be shared to distribute full structural and semantic information in an executable model. Data Insights, Inc. provides a utility with `S3Model <https://datainsights.tech/>`_ to extract the semantics from the schema data models. 
+
+- The *gendata* command causes the creation of data instances (XML, JSON, and RDF) for each record in the CSV file that is semantically compliant with the RDF and is valid according to the XML Schema. This validation process demonstrates that the models describe the data. The RDF file does include some constraint definitions based on `Shapes Constraint Language (SHACL) <https://www.w3.org/TR/shacl/>`_ There is no built-in processing for these constraints due to the lack of maturity of this technology. Expect SHACL to become more useful in the future. To create the data instances and persist them at the locations defined by the Storage options in the model, execute this command in the terminal:
+
+.. code-block:: sh
+
+    flask gendata Demo -i ../example_data/Demo.csv
+
+The output in the terminal should be similar to this image:
+
+.. image:: _images/gendata_output.png
+    :width: 600px
+    :align: center
+    :height: 250px
+    :alt: Gendata Output
+
+The storage options that we selected for the Demo project was a Filesystem storage for each of the three types(XML, JSON & RDF) of data instances. In this case the options placed the data in a Kunteksto subdirectory called *output*. One subdirectory for each type of data. Inside this directory, Kunteksto creates a Project based subdirectory. Using your FileManager navigate to the directories and notice the generated data instances:
+
+.. image:: _images/xml_data.png
+    :width: 600px
     :align: center
     :height: 300px
-    :alt: Output Directory
+    :alt: XML Data
 
+.. image:: _images/json_data.png
+    :width: 600px
+    :align: center
+    :height: 300px
+    :alt: JSON Data
 
-The *all* mode causes the creation of data instances (XML, JSON, and RDF) for each record in the CSV file that is semantically 
-compliant with the RDF and is valid according to the XML Schema. This validation process demonstrates that the models describe the 
-data. The RDF file does include some constraint definitions based on `Shapes Constraint Language (SHACL) <https://www.w3.org/TR/shacl/>`_ 
-There is no built-in processing for these constraints due to the lack of maturity of this technology. 
-Expect SHACL to become more useful soon. 
+.. image:: _images/rdf_data.png
+    :width: 600px
+    :align: center
+    :height: 300px
+    :alt: RDF Data
+
+Notice that each data instance file has the name; the project name follwed by a unique ID. The data instance has the same name across formats with only the file extension being different. 
 
 
 Data Validation
 ===============
 
-Full validation occurs via XML for both the data model and data instances. Setting **xml: False** in the kunteksto.conf file does 
-not prevent this validation; it only prevents persistence of the XML files. 
+In the output from data generation there wasa a message to review the validation log. Go to the *Validation* menu and click on the pencil icon for the generated validation record.
 
-In the XML eco-system, a catalog file is required to reference a local copy of a schema used for validation. 
-A catalog file is dynamically generated for each project and is written to the *kunteksto/catalogs* directory. 
-The environment variable **XML_CATALOG_FILES** is set by Kunteksto to be used by the `lxml <http://lxml.de/>`_ validator to 
-find the generated *Data Model* schema. 
+Full validation occurs via XML for both the data model and data instances. Failing to select a storage for XML does not prevent this validation; it only prevents persistence of the XML files. 
 
-Read more about `XML catalogs here <https://en.wikipedia.org/wiki/XML_catalog>`_. 
+.. image:: _images/validation_log.png
+    :width: 800px
+    :align: center
+    :height: 600px
+    :alt: Validation Log
 
-Notice that the validation file *kunteksto/output/Demo/Demo_validation_log.csv* shows four data records marked as being valid and one data record marked as invalid. 
-The invalid record is due to a 'NaN' entry in a decimal column. 
-
-In addition to the entry in the log file. Kunteksto also inserts an *ExceptionalValue* element in the XML file. 
-The filename is listed in the validation log. Check that file and you will see an *Invalid* entry along with an XML comment
-containing an error message. Note that the JSON converter strips the error message but the Invalid exceptional value element is still present.
-
-.. note::
-
-    The S3Model eco-system has a much more sophisticated ability to handle missing and erroneous data. 
-    The details are available in the `S3Model documentation <https://datainsights.tech/S3Model/>`_. To use this expanded exceptional 
-    value tagging generally requires the model first approach whereas Kunteksto is an after-the-fact bridge.
-
-
-However, Kunteksto does perform limited error detection and notification process based on the information available.  
-Referencing the data file name from the *kunteksto/output/Demo/Demo_validation_log.csv* file and then using your text editor or an XML editor, 
-open that file from each of the XML directory, the RDF directory and the JSON directory. Below are the details for viewing this error message.
+The Log field contains a CSV output log of the validation process. You can copy/paste this into a spreadsheet or text editor for examination.
 
 .. note::
 
@@ -400,46 +419,36 @@ open that file from each of the XML directory, the RDF directory and the JSON di
         Demo-NSeunBttQwjXF36UZDs5AM,valid,,
 
 
-In this case you would open the XML file:
+Notice that one file is flagged as invalid and the reason is given in the *error* column. The invalid record is due to a 'NaN' entry in a decimal column. 
 
-.. code-block:: sh
+.. note::
 
-  kunteksto/output/Demo/xml/Demo-WSmPQb9BNixJGLsCTNCVF2.xml 
+    In the XML eco-system, a catalog file is required to reference a local copy of a schema used for validation. A catalog file is dynamically generated for each project and is written to the *kunteksto/catalogs* directory. The environment variable **XML_CATALOG_FILES** is set by Kunteksto to be used by the `lxml <http://lxml.de/>`_ validator to find the generated *Data Model* schema. 
 
-and the RDF file:
-
-.. code-block:: sh
-
-  kunteksto/output/Demo/rdf/Demo-WSmPQb9BNixJGLsCTNCVF2.rdf 
+    Read more about `XML catalogs here <https://en.wikipedia.org/wiki/XML_catalog>`_. 
 
 
-and the JSON file:
+In addition to the entry in the log file. Kunteksto also inserts an *ExceptionalValue* element in the XML file. 
+The filename is listed in the validation log. Check that file and you will see an *Invalid* entry along with an XML comment containing an error message. Note that the JSON converter strips the error message but the Invalid exceptional value element is still present.
 
-.. code-block:: sh
+.. image:: _images/xml_invalid.png
+    :width: 800px
+    :align: center
+    :height: 400px
+    :alt: XML Invalid
 
-  kunteksto/output/Demo/json/Demo-WSmPQb9BNixJGLsCTNCVF2.json
+.. image:: _images/json_invalid.png
+    :width: 800px
+    :align: center
+    :height: 400px
+    :alt: JSON Invalid
 
 
-Around line 45 in the XML file you will see the invalid entry:
 
-.. code-block:: xml
+.. note::
 
-      <s3m:ms-cji07wngr0006i7l3ey0pdbx7>
-        <label>The Column 3</label>
-        <!--ERROR MSG: Element 'xdquantity-value': 'NaN' is not a valid value of the local atomic type.-->
-        <s3m:INV>
-          <ev-name>Invalid</ev-name>
-        </s3m:INV>
-        <magnitude-status>equal</magnitude-status>
-        <error>0</error>
-        <accuracy>0</accuracy>
-        <xdquantity-value>NaN</xdquantity-value>
-        <xdquantity-units>
-          <label>The Column 3 Units</label>
-          <xdstring-value/>
-          <xdstring-language>en-US</xdstring-language>
-        </xdquantity-units>
-      </s3m:ms-cji07wngr0006i7l3ey0pdbx7>
+    The S3Model eco-system has a much more sophisticated ability to handle missing and erroneous data. 
+    The details are available in the `S3Model documentation <https://datainsights.tech/S3Model/>`_. To use this expanded exceptional value tagging generally requires the model first approach whereas Kunteksto is an after-the-fact bridge.
 
 
 Notice that Kunteksto has inserted a human readable comment with the error message from the schema validator. 
@@ -470,52 +479,26 @@ Shown above are two *Subject, Predicate, Object* RDF triples in the canonical RD
     `S3Model ontology <http://datainsights.tech/S3Model/owl/>`_ *Opening the link in a new tab is suggested*. 
 
 It is important to note that the semantics from the data model schema are extracted into a RDF/XML file also located in the 
-*kunteksto/output/Demo* directory. In the :ref:`advtutor` you will see how these semantics interact with the Reference Model 
-semantics and the S3Model ontology in a semantic graph database.
-
-This invalid status is also represented in the JSON file as shown here:
-
-.. code-block:: text
-
-    "s3m:ms-cji07wngr0006i7l3ey0pdbx7": {
-        "label": "The Column 3",
-        "s3m:INV": {
-            "ev-name": "Invalid"
-        },
-        "magnitude-status": "equal",
-        "error": "0",
-        "accuracy": "0",
-        "xdquantity-value": "NaN",
-        "xdquantity-units": {
-            "label": "The Column 3 Units",
-            "xdstring-value": null,
-            "xdstring-language": "en-US"
-        }
-
+*kunteksto/output/rdf/Demo* directory. In the :ref:`advtutor` you will see how these semantics interact with the Reference Model semantic graph database.
 
 The downstream processing tools can then use this invalid status as needed; depending on the data analysis/usage situation.
 
 Additional Steps
 ----------------
 
-.. caution::
-    You can rerun this Demo with different options as many times as you wish.  However, this creates a new data model each time. 
-    You should delete the *Demo* directory under the *kunteksto/output/* directory before restarting. 
-
-
 In real-world situations, we often generate data on a continuing basis for this same model. To demonstrate this functionality, use the Demo2.csv file. From the command line issue this command: 
 
 .. code-block:: sh
 
-    kunteksto -i example_data/Demo2.csv -m generate -db output/Demo/Demo.db
+    flask gendata Demo -i ../example_data/Demo2.csv
 
-This command entry says to use the *Demo2.csv* file with the mode passed as *generate* and the database to reuse is the *Demo.db*. The information for the XML Schema is gathered from the information in the database, and the \*.xsd file is assumed to be in the directory with the database. A new validation log is generated *Demo2_validation_log.csv* and two files are shown as invalid. 
+This command entry says to use the *Demo2.csv* file with the **gendata** command to reuse is the *Demo* project model. A new validation log is generated and two files are shown as invalid. 
 
-It is important to realize that the CSV files must represent **EXACTLY** the same type of data to reuse the database and schema. If you issue this on the command line: 
+It is important to realize that the CSV files must represent **EXACTLY** the same type of data to reuse the project inforamtion and generated schema. If you issue this on the command line: 
 
 .. code-block:: sh
 
-    kunteksto -i example_data/Demo3.csv -m generate -db output/Demo/Demo.db
+    flask gendata Demo -i ../example_data/Demo3.csv
 
 You will see this error message:
 
