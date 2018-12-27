@@ -182,12 +182,12 @@ def gendata(project, infile):
     click.echo('Generate data from ' + infile + ' based on the model: ' + project)
     make_data(project, infile)
 
-@click.command('repoinit')
-def repoinit():
+@click.command('ldexamples')
+def ldexamples():
     """
     Generate example repository entries.
     """
-    click.echo('Creating example repositories:')
+    click.echo('Loading examples:')
     create_xmlstores()
     create_rdfstores()
     create_jsonstores()
@@ -196,8 +196,7 @@ def repoinit():
 app.cli.add_command(analyze)
 app.cli.add_command(genmodel)
 app.cli.add_command(gendata)
-app.cli.add_command(repoinit)
-
+app.cli.add_command(ldexamples)
 
 
 # Add default Datastore records when the tables are first created
