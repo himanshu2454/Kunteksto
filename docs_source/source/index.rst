@@ -4,7 +4,7 @@ Kunteksto
 
 **Turning data into information!**
 
-*Copyright 2017 - 2018 Data Insights, Inc. - All Rights Reserved.*
+*Copyright 2017 - 2019 Data Insights, Inc. - All Rights Reserved.*
 
 See :ref:`usage` 
 
