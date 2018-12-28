@@ -28,7 +28,7 @@ setup(
     python_requires='>=3.7',
     packages=['kunteksto'],
     package_dir={'kunteksto': 'kunteksto'},
-    package_data={'docs': ['docs/*'], 'kunteksto': ['flask.env', 'kunteksto.sh', 'kunteksto.bat']},
+    package_data={'docs': ['docs/*'], 'kunteksto': ['.flaskenv', 'kunteksto.sh', 'kunteksto.bat']},
     data_files=[('example_data', ['example_data/Demo.csv', 'example_data/Demo2.csv', 'example_data/Demo3.csv', 'example_data/Demo_info.pdf']),
                 ('s3model', ['s3model/s3model_3_1_0.xsl', 's3model/s3model_3_1_0.xsd', 's3model/s3model_3_1_0.rdf', 's3model/s3model.owl', 's3model/dm-description.xsl']),
                 ('', ['kunteksto.conf', 'README.md', 'LICENSE.txt']),

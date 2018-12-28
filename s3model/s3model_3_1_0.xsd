@@ -584,14 +584,14 @@
 
   <xs:complexType abstract="true" name="XdOrderedType">
     <xs:annotation>
-      <xs:documentation xml:lang="en-us">Abstract type defining the concept of ordered values, which includes ordinals as well as true quantities. The implementations require the functions ‘&lt;’, '&gt;' and is_strictly_comparable_to ('==').</xs:documentation>
+      <xs:documentation xml:lang="en-us">Abstract type defining the concept of ordered values, which includes ordinals as well as true quantities. The implementations require the functions '&lt;', '&gt;' and is_strictly_comparable_to ('==').</xs:documentation>
       <xs:appinfo>
         <rdf:Description rdf:about="https://www.s3model.com/ns/s3m/s3model_3_1_0.xsd#XdOrderedType">
           <rdfs:isDefinedBy rdf:resource="https://www.s3model.com/docs/3_1_0/s3model_3_1_0_xsd_Complex_Type_s3m_XdOrderedType.html#XdOrderedType"/>
           <rdfs:subClassOf rdf:resource="https://www.s3model.com/ns/s3m/s3model_3_1_0.xsd#XdAnyType"/>
          <rdfs:label xml:lang="en-us">XdOrderedType</rdfs:label>
           <rdf:type rdf:resource="https://www.s3model.com/ns/s3m/s3model/CMC"/>          
-          <rdfs:comment xml:lang="en-us">Abstract type defining the concept of ordered values, which includes ordinals as well as true quantities. The implementations require the functions ‘&lt;’, '&gt;' and is_strictly_comparable_to ('==').</rdfs:comment>
+          <rdfs:comment xml:lang="en-us">Abstract type defining the concept of ordered values, which includes ordinals as well as true quantities. The implementations require the functions '&lt;', '&gt;' and is_strictly_comparable_to ('==').</rdfs:comment>
         </rdf:Description>
       </xs:appinfo>
     </xs:annotation>
@@ -650,7 +650,7 @@
         * no implication that the distance between each value is constant, and
         * the total number of values is finite.
         
-        Note that the term ‘ordinal’ in mathematics means natural numbers only. In this case, any decimal is allowed since negative, and zero values are used by medical and other professionals for centering values around a neutral point. Also, decimal values are sometimes used such as 0.5 or .25
+        Note that the term 'ordinal’ in mathematics means natural numbers only. In this case, any decimal is allowed since negative, and zero values are used by medical and other professionals for centering values around a neutral point. Also, decimal values are sometimes used such as 0.5 or .25
         
         Examples of sets of ordinal values are;
         
@@ -677,7 +677,7 @@
             * no implication that the distance between each value is constant, and
             * the total number of values is finite.
             
-            Note that the term ‘ordinal’ in mathematics means natural numbers only. In this case, any decimal is allowed since negative, and zero values are used by medical and other professionals for centering values around a neutral point. Also, decimal values are sometimes used such as 0.5 or .25
+            Note that the term 'ordinal’ in mathematics means natural numbers only. In this case, any decimal is allowed since negative, and zero values are used by medical and other professionals for centering values around a neutral point. Also, decimal values are sometimes used such as 0.5 or .25
             
             Examples of sets of ordinal values are;
             
