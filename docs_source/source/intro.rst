@@ -32,18 +32,22 @@ Anaconda is the **preferred environment** for a tool like Kunteksto because it i
     Anaconda now offers to install the `VS Code editor <https://code.visualstudio.com/download>`_. Unless you already have a preferred text editor,
     this is a good choice.
 
+- Download the latest release from `GitHub <https://github.com/DataInsightsInc/Kunteksto/releases>`_.
 
 - Open a terminal window and create a conda environment. On Windows it is best to open an *Anaconda Prompt* terminal from the Anaconda menu: 
 
 .. code-block:: sh
 
-    conda create -p Kunteksto python=3 pycurl ujson
+    conda create -n Kunteksto pycurl ujson
 
-- Change to the directory
+- Unpack the downloaded release archive and change to the directory
 
 .. code-block:: sh
     
-    cd Kunteksto
+    cd Kunteksto-x.x.x
+
+Where x.x.x is the Kunteksto release number.
+
 
 .. _activate: Activate
 
@@ -70,35 +74,27 @@ Anaconda is the **preferred environment** for a tool like Kunteksto because it i
 
 trying will not damage anything but it may fail or just report that pycurl is the current version.
 
-- install Kunteksto
+- Install Kunteksto with this command:
 
 .. code-block:: sh
 
-    pip install kunteksto
+    python setup.py install
 
-These quick steps create a virtual environment in the subdirectory *Kunteksto*. Notice this directory has a capital **K**. 
+.. warning::
 
-Once the environment is created, conda displays how to activate the environment. When you have activated the environment you then install the *Kunteksto* application in the environment. After installation the will be a new subdirectory called **kunteksto** (small **k**). This is called the Kunteksto directory throughout this tutorial. 
+    Occassionaly there will be a network timeout when searching for packages to install. The error will show up as a package not being found. Just re-run the installation command to retry. You will know when it is complete when you see the message *Finished processing dependencies for kunteksto==x.x.x*
 
-Change to the Kunteksto directory:
+
+Change to the *Kunteksto working directory*:
 
 .. code-block:: sh
     
     cd kunteksto
 
+This is the directory used for all Kunteksto commands. 
+
 
 The next step is to do the :ref:`tutor`
-
-
-Update to a New Version
-=======================
-
-When you want to upgrade to a new version of Kunteksto you can use the line below in your terminal where you have activated the virtual environment. 
-
-.. code-block:: sh
-
-    pip install  kunteksto --upgrade --no-cache-dir
-
 
 
 What are all the files for?

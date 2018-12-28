@@ -63,7 +63,7 @@
             
             
               <div class="version">
-                2.0.0
+                2.1.0
               </div>
             
           
@@ -97,7 +97,6 @@
 <li class="toctree-l3"><a class="reference internal" href="#cross-platform-on-anaconda">Cross-Platform on Anaconda</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#update-to-a-new-version">Update to a New Version</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#what-are-all-the-files-for">What are all the files for?</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#files">Files</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#directories">Directories</a></li>
@@ -203,17 +202,19 @@ required to understand and use the power of Kunteksto.</p>
 this is a good choice.</p>
 </div>
 <ul class="simple">
+<li>Download the latest release from <a class="reference external" href="https://github.com/DataInsightsInc/Kunteksto/releases">GitHub</a>.</li>
 <li>Open a terminal window and create a conda environment. On Windows it is best to open an <em>Anaconda Prompt</em> terminal from the Anaconda menu:</li>
 </ul>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda create -p Kunteksto <span class="nv">python</span><span class="o">=</span><span class="m">3</span> pycurl ujson
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda create -n Kunteksto pycurl ujson
 </pre></div>
 </div>
 <ul class="simple">
-<li>Change to the directory</li>
+<li>Unpack the downloaded release archive and change to the directory</li>
 </ul>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> Kunteksto
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> Kunteksto-x.x.x
 </pre></div>
 </div>
+<p>Where x.x.x is the Kunteksto release number.</p>
 <ul class="simple">
 <li>Activate the environment according to the instructions shown by Anaconda in the terminal window.</li>
 </ul>
@@ -233,25 +234,21 @@ this is a good choice.</p>
 </div>
 <p>trying will not damage anything but it may fail or just report that pycurl is the current version.</p>
 <ul class="simple">
-<li>install Kunteksto</li>
+<li>Install Kunteksto with this command:</li>
 </ul>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pip install kunteksto
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>python setup.py install
 </pre></div>
 </div>
-<p>These quick steps create a virtual environment in the subdirectory <em>Kunteksto</em>. Notice this directory has a capital <strong>K</strong>.</p>
-<p>Once the environment is created, conda displays how to activate the environment. When you have activated the environment you then install the <em>Kunteksto</em> application in the environment. After installation the will be a new subdirectory called <strong>kunteksto</strong> (small <strong>k</strong>). This is called the Kunteksto directory throughout this tutorial.</p>
-<p>Change to the Kunteksto directory:</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Occassionaly there will be a network timeout when searching for packages to install. The error will show up as a package not being found. Just re-run the installation command to retry. You will know when it is complete when you see the message <em>Finished processing dependencies for kunteksto==x.x.x</em></p>
+</div>
+<p>Change to the <em>Kunteksto working directory</em>:</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> kunteksto
 </pre></div>
 </div>
+<p>This is the directory used for all Kunteksto commands.</p>
 <p>The next step is to do the <a class="reference internal" href="start.html#tutor"><span class="std std-ref">Tutorial/Demo</span></a></p>
-</div>
-</div>
-<div class="section" id="update-to-a-new-version">
-<h2>Update to a New Version<a class="headerlink" href="#update-to-a-new-version" title="Permalink to this headline">¶</a></h2>
-<p>When you want to upgrade to a new version of Kunteksto you can use the line below in your terminal where you have activated the virtual environment.</p>
-<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pip install  kunteksto --upgrade --no-cache-dir
-</pre></div>
 </div>
 </div>
 <div class="section" id="what-are-all-the-files-for">
@@ -336,7 +333,7 @@ this is a good choice.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, Data Insights, Inc.
-      Last updated on 2018-12-27 18:32.
+      Last updated on 2018-12-28 11:27.
 
     </p>
   </div> 
