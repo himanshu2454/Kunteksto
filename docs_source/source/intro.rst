@@ -54,25 +54,26 @@ Where x.x.x is the Kunteksto release number.
 
 - Activate the environment according to the instructions shown by Anaconda in the terminal window.
 
+Depending upon the options you selectede when installing Anaconda:
+
+**Cross Platform**
+
+.. code-block:: sh
+
+    conda activate Kunteksto
+
 **Windows**
 
 .. code-block:: sh
 
-    activate <path/to/directory> 
+    activate Kunteksto 
 
 **or Linux/MacOSX**
 
 .. code-block:: sh
 
-    source activate <path/to/directory> 
+    source activate Kunteksto 
 
-- Windows users **may** need to manually install the pycurl library using this command:
-
-.. code-block:: sh
-
-    conda install pycurl
-
-trying will not damage anything but it may fail or just report that pycurl is the current version.
 
 - Install Kunteksto with this command:
 
@@ -121,9 +122,6 @@ Directories
 
 - example_data
     This directory contains information and sample data files for the tutorials. There is also an example of the completed Demo database, model, and data in the archive Demo_with_semantics.zip. 
-
-- catalogs
-    This directory is where Kunteksto places XML catalog files used in the data validation process.
 
 - s3model
     Support files required for operation.
