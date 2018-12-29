@@ -9,6 +9,7 @@ try:
     from BaseXClient import BaseXClient
 except:
     print("Could not find the BaseXClient")
+    
 try:    
     from franz.openrdf.connect import ag_connect
 except:
