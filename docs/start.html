@@ -63,7 +63,7 @@
             
             
               <div class="version">
-                2.1.5
+                2.1.6
               </div>
             
           
@@ -451,7 +451,7 @@ Demo-NSeunBttQwjXF36UZDs5AM,valid,,
 <p>Notice that one file is flagged as invalid and the reason is given in the <em>error</em> column. The invalid record is due to a ‘NaN’ entry in a decimal column.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>In the XML eco-system, a catalog file is required to reference a local copy of a schema used for validation. A catalog file is dynamically generated for each project and is written to the <em>kunteksto/catalogs</em> directory. The environment variable <strong>XML_CATALOG_FILES</strong> is set by Kunteksto to be used by the <a class="reference external" href="http://lxml.de/">lxml</a> validator to find the generated <em>Data Model</em> schema.</p>
+<p>In the XML eco-system, a catalog file is required to reference a local copy of a schema used for validation. A catalog file is dynamically generated for each installation of Kunteksto and is written to the <em>kunteksto/catalogs</em> directory. The environment variable <strong>XML_CATALOG_FILES</strong> is set by Kunteksto to be used by the <a class="reference external" href="http://lxml.de/">lxml</a> validator to find the generated <em>Data Model</em> schema.</p>
 <p class="last">Read more about <a class="reference external" href="https://en.wikipedia.org/wiki/XML_catalog">XML catalogs here</a>.</p>
 </div>
 <p>In addition to the entry in the log file. Kunteksto also inserts an <em>ExceptionalValue</em> element in the XML file.
@@ -495,9 +495,9 @@ from the <a class="reference external" href="https://datainsights.tech/S3Model/r
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>flask gendata Demo -i ../example_data/Demo2.csv
 </pre></div>
 </div>
-<p>This command entry says to use the <em>Demo2.csv</em> file with the <strong>gendata</strong> command to reuse the <em>Demo</em> project model. A new validation log is generated and two files are shown as invalid.</p>
-<p>Remove the <em>output</em> directory.</p>
+<p>This command entry says to use the <em>Demo2.csv</em> file with the <strong>gendata</strong> command to reuse the <em>Demo</em> project model. A new validation log is generated and two files are shown as invalid. You should review this log an be sure you understand the implications of the processes covered so far.</p>
 <p>It is important to realize that the CSV files must represent <strong>EXACTLY</strong> the same type of data to reuse the project information and generated schema. If you issue this on the command line:</p>
+<p>Remove the <em>output</em> directory.</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>flask gendata Demo -i ../example_data/Demo3.csv
 </pre></div>
 </div>
@@ -580,7 +580,7 @@ These tutorials demonstrate the power of S3Model using persistent storage.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, Data Insights, Inc.
-      Last updated on 2018-12-29 09:50.
+      Last updated on 2018-12-29 17:26.
 
     </p>
   </div> 

@@ -10,7 +10,9 @@ __pycache__/
 # Kunteksto 
 *.db
 output/*
-catalogs/
+catalogs/*
+dmlib/*
+sqla.log
 *_validation_log.csv
 dev_notes/*
 ev_test.py

@@ -121,7 +121,7 @@ def xsd_metadata(rec):
     mds += '    <dc:relation>None</dc:relation>\n'
     mds += '    <dc:coverage>Global</dc:coverage>\n'
     mds += '    <dc:type>S3M Data Model</dc:type>\n'
-    mds += '    <dc:identifier>' + rec.dmid.replace('dm-', '') + '</dc:identifier>\n'
+    mds += '    <dc:identifier>dm-' + rec.dmid.strip() + '</dc:identifier>\n'
     mds += '    <dc:description>' + xml_escape(rec.description) + '</dc:description>\n'
     mds += '    <dc:publisher>Data Insights, Inc. via Kunteksto</dc:publisher>\n'
     mds += '    <dc:date>' + datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S") + \
@@ -1262,23 +1262,34 @@ def make_data(project, infile):
     # if filesystem persistence is defined insure the paths + project name exist
     if xmldb.dbtype == 'fs':
         path = Path(os.path.join(xmldb.host.strip(), rec.project.strip()))
-        path.mkdir(parents=True)
+        if not os.path.exists(path):
+            path.mkdir(parents=True)
 
     if rdfdb.dbtype == 'fs':
         path = Path(os.path.join(rdfdb.host.strip(), rec.project.strip()))
-        path.mkdir(parents=True)
+        if not os.path.exists(path):
+            path.mkdir(parents=True)
             
     if jsondb.dbtype == 'fs':
         path = Path(os.path.join(jsondb.host.strip(), rec.project.strip()))
-        path.mkdir(parents=True)
+        if not os.path.exists(path):
+            path.mkdir(parents=True)
             
+    xsd_str = rec.schema.replace('<?xml version="1.0" encoding="UTF-8"?>', '')
+    xsd_str = xsd_str.replace('<?xml-stylesheet type="text/xsl" href="dm-description.xsl"?>', '')
+
     try:
-        xsd_str = rec.schema.replace('<?xml version="1.0" encoding="UTF-8"?>','')
-        xsd_str = xsd_str.replace('<?xml-stylesheet type="text/xsl" href="dm-description.xsl"?>','')
-        schema = etree.parse(StringIO(xsd_str))        
+        schema = etree.parse(StringIO(xsd_str))
+    except etree.LxmlError as e:
+        print("\n\nUsing catalog: ", os.environ['XML_CATALOG_FILES'])
+        print("Cannot parse this string to a schema.\n" + str(e.args))
+        sys.exit(1)
+
+    try:
         modelSchema = etree.XMLSchema(schema)
-    except etree.XMLSchemaParseError as e:
-        print("\n\nCannot parse this schema. Please check the database for errors.\n" + str(e.args))
+    except etree.LxmlError as e:
+        print("\n\nUsing catalog: ", os.environ['XML_CATALOG_FILES'])
+        print("Cannot create this schema object.\n" + str(e.args))
         sys.exit(1)
 
     print('\n\nGeneration: ', "Generate data for project: " + rec.project + ' using ' + infile + '\n')
@@ -1302,9 +1313,10 @@ def make_data(project, infile):
             col = session.query(Component).filter_by(model_id=rec.id).filter_by(header=hdrs[i]).first()
             if col == None:
                 print("\n\nThere was an error matching the data input file to the selected model database.")
-                print('The Datafile contains a header label, ' + hdrs[i] + ' that does not match the Component headers. \n\n')
+                print('The Datafile contains a header label, ' + hdrs[i] + ' that does not match the Model headers.')
+                print("File Headers: ", hdrs, '\n\n')
                 exit(code=1)
-        
+
         # for data in reader:
         with click.progressbar(reader, label="Creating a total of " + str(csv_len) + " data files: ", length=csv_len) as bar:
             for data in bar:

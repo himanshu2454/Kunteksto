@@ -421,7 +421,7 @@ Notice that one file is flagged as invalid and the reason is given in the *error
 
 .. note::
 
-    In the XML eco-system, a catalog file is required to reference a local copy of a schema used for validation. A catalog file is dynamically generated for each project and is written to the *kunteksto/catalogs* directory. The environment variable **XML_CATALOG_FILES** is set by Kunteksto to be used by the `lxml <http://lxml.de/>`_ validator to find the generated *Data Model* schema. 
+    In the XML eco-system, a catalog file is required to reference a local copy of a schema used for validation. A catalog file is dynamically generated for each installation of Kunteksto and is written to the *kunteksto/catalogs* directory. The environment variable **XML_CATALOG_FILES** is set by Kunteksto to be used by the `lxml <http://lxml.de/>`_ validator to find the generated *Data Model* schema. 
 
     Read more about `XML catalogs here <https://en.wikipedia.org/wiki/XML_catalog>`_. 
 
@@ -492,11 +492,11 @@ In real-world situations, we often generate data on a continuing basis for this 
 
     flask gendata Demo -i ../example_data/Demo2.csv
 
-This command entry says to use the *Demo2.csv* file with the **gendata** command to reuse the *Demo* project model. A new validation log is generated and two files are shown as invalid.
-
-Remove the *output* directory.
+This command entry says to use the *Demo2.csv* file with the **gendata** command to reuse the *Demo* project model. A new validation log is generated and two files are shown as invalid. You should review this log an be sure you understand the implications of the processes covered so far.
 
 It is important to realize that the CSV files must represent **EXACTLY** the same type of data to reuse the project information and generated schema. If you issue this on the command line: 
+
+Remove the *output* directory.
 
 .. code-block:: sh
 
