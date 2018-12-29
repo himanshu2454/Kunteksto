@@ -1260,17 +1260,17 @@ def make_data(project, infile):
     rdfdb = rec.rdfstore
     
     # if filesystem persistence is defined insure the paths + project name exist
-    if xmldb.dbtype == 'fs':
+    if xmldb is not None and xmldb.dbtype == 'fs':
         path = Path(os.path.join(xmldb.host.strip(), rec.project.strip()))
         if not os.path.exists(path):
             path.mkdir(parents=True)
 
-    if rdfdb.dbtype == 'fs':
+    if rdfdb is not None and rdfdb.dbtype == 'fs':
         path = Path(os.path.join(rdfdb.host.strip(), rec.project.strip()))
         if not os.path.exists(path):
             path.mkdir(parents=True)
             
-    if jsondb.dbtype == 'fs':
+    if jsondb is not None and jsondb.dbtype == 'fs':
         path = Path(os.path.join(jsondb.host.strip(), rec.project.strip()))
         if not os.path.exists(path):
             path.mkdir(parents=True)
