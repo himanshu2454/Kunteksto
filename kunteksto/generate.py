@@ -1396,7 +1396,7 @@ def make_data(project, infile):
                         r = requests.put(url, auth=HTTPDigestAuth(user, pw), headers=headers, rec=xmlStr)                                
                         
                     elif xmldb.dbtype == 'fs': # Filesystem
-                        with open(os.path.join(xmldb.host.strip(), rec.project.strip(), file_id + '.xml'), encoding='utf-8', 'w') as xmlFile:
+                        with open(os.path.join(xmldb.host.strip(), rec.project.strip(), file_id + '.xml'), 'w', encoding='utf-8') as xmlFile:
                             xmlFile.write(xmlStr)
                     else:
                         print("\nNo XML persistence option for specified.\n")
