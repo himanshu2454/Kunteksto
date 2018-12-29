@@ -22,7 +22,7 @@ def get_catalog(outdir, prjname):
     if os.path.isfile('catalogs' + os.path.sep + prjname + '_catalog.xml'):
         os.environ['XML_CATALOG_FILES'] = 'catalogs' + os.path.sep + prjname + '_catalog.xml'
     else:
-        f = open('catalogs' + os.path.sep + prjname + '_catalog.xml', encoding='utf-8', 'w')
+        f = open('catalogs' + os.path.sep + prjname + '_catalog.xml', 'w', encoding='utf-8')
         f.write(cat_txt)
         f.close()
         os.environ['XML_CATALOG_FILES'] = 'catalogs' + os.path.sep + prjname + '_catalog.xml'

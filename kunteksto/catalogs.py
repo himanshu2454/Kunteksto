@@ -22,7 +22,7 @@ def make_catalog(config):
     if not os.path.exists(catdir):
         os.makedirs(catdir)
         
-    with open(catdir + '/Kunteksto_catalog.xml', encoding='utf-8', 'w') as f:
+    with open(catdir + '/Kunteksto_catalog.xml', 'w', encoding='utf-8') as f:
         f.write(xmlcat)
 
     return

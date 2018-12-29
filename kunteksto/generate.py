@@ -37,7 +37,7 @@ from .models import db, Session, Datamodel, Component, Validation
 RMVERSION = config['SYSTEM']['rmversion'].replace('.', '_')
 DELIM = config['KUNTEKSTO']['delim']
 
-with open('../s3model/s3model_' + RMVERSION + '.xsd', encoding='utf-8', 'r') as rmfile:
+with open('../s3model/s3model_' + RMVERSION + '.xsd', 'r', encoding='utf-8') as rmfile:
     rm_str = rmfile.read()
     rm_str = rm_str.replace('<?xml version="1.0" encoding="UTF-8"?>','')
     RM_SCHEMA = etree.XMLSchema(etree.XML(rm_str))
@@ -1010,7 +1010,6 @@ def make_model(project):
     dmID = rec.dmid
 
     print("\nGenerating Datamodel : dm-" + dmID + '.xsd\n')
-    #xsd = open(model, 'w')
 
     xsd_str = xsd_header(rec)
     xsd_str += xsd_metadata(rec)
@@ -1416,7 +1415,7 @@ def make_data(project, infile):
                         r = requests.put(url, auth=HTTPDigestAuth(user, pw), headers=headers, rec=rdfStr)                                
                             
                     elif rdfdb.dbtype == 'fs': 
-                        with open(os.path.join(rdfdb.host.strip(), rec.project.strip(), file_id + '.rdf'), encoding='utf-8', 'w') as rdfFile:
+                        with open(os.path.join(rdfdb.host.strip(), rec.project.strip(), file_id + '.rdf'), 'w', encoding='utf-8') as rdfFile:
                             rdfFile.write(rdfStr)
                     else:
                         print("\nNo RDF persistence option for specified.\n")
@@ -1435,7 +1434,7 @@ def make_data(project, infile):
                         r = requests.put(url, auth=HTTPDigestAuth(user, pw), headers=headers, rec=jsonStr)
                             
                     elif jsondb.dbtype == 'fs':
-                        with open(os.path.join(jsondb.host.strip(), rec.project.strip(), file_id + '.json'), 'w') as jsonFile:
+                        with open(os.path.join(jsondb.host.strip(), rec.project.strip(), file_id + '.json'), 'w', encoding='utf-8') as jsonFile:
                             jsonFile.write(jsonStr)
                     else:
                         print("\nNo JSON persistence option for specified.\n")
@@ -1457,10 +1456,10 @@ def export_model(project):
     dmlibpath = Path(os.path.join(os.getcwd(), os.pardir, 'dmlib', rec.project.strip()))
     dmlibpath.mkdir(parents=True)
 
-    with open(os.path.join(dmlibpath, 'dm-' + rec.dmid + '.xsd'), 'w') as xsd:
+    with open(os.path.join(dmlibpath, 'dm-' + rec.dmid + '.xsd'), 'w', encoding='utf') as xsd:
         xsd.write(rec.schema.strip())
 
-    with open(os.path.join(dmlibpath, 'dm-' + rec.dmid + '.rdf'), encoding='utf-8', 'w') as rdf:
+    with open(os.path.join(dmlibpath, 'dm-' + rec.dmid + '.rdf'), 'w', encoding='utf-8') as rdf:
         rdf.write(rec.rdf.strip())
 
     print(rec.project, " was exported to the dmlib subdirectory.\n\n")
