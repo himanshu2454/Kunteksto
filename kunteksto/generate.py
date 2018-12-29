@@ -37,7 +37,7 @@ from .models import db, Session, Datamodel, Component, Validation
 RMVERSION = config['SYSTEM']['rmversion'].replace('.', '_')
 DELIM = config['KUNTEKSTO']['delim']
 
-with open('../s3model/s3model_' + RMVERSION + '.xsd', 'r') as rmfile:
+with open('../s3model/s3model_' + RMVERSION + '.xsd', encoding='utf-8', 'r') as rmfile:
     rm_str = rmfile.read()
     rm_str = rm_str.replace('<?xml version="1.0" encoding="UTF-8"?>','')
     RM_SCHEMA = etree.XMLSchema(etree.XML(rm_str))
@@ -1287,12 +1287,12 @@ def make_data(project, infile):
     namespaces = {"https://www.s3model.com/ns/s3m/": "s3m", "http://www.w3.org/2001/XMLSchema-instance": "xsi"}
     
     # count the lines in the file
-    with open(infile) as f:
+    with open(infile, encoding='utf-8') as f:
         s = f.read()
     csv_len =  s.count('\n') - 1
     f.close()
     
-    with open(infile) as csvfile:
+    with open(infile, encoding='utf-8') as csvfile:
         reader = csv.DictReader(csvfile, delimiter=DELIM)
         
         # this test is for the 'generate' mode to insure the model matches the input CSV file. 
@@ -1397,7 +1397,7 @@ def make_data(project, infile):
                         r = requests.put(url, auth=HTTPDigestAuth(user, pw), headers=headers, rec=xmlStr)                                
                         
                     elif xmldb.dbtype == 'fs': # Filesystem
-                        with open(os.path.join(xmldb.host.strip(), rec.project.strip(), file_id + '.xml'), 'w') as xmlFile:
+                        with open(os.path.join(xmldb.host.strip(), rec.project.strip(), file_id + '.xml'), encoding='utf-8', 'w') as xmlFile:
                             xmlFile.write(xmlStr)
                     else:
                         print("\nNo XML persistence option for specified.\n")
@@ -1416,7 +1416,7 @@ def make_data(project, infile):
                         r = requests.put(url, auth=HTTPDigestAuth(user, pw), headers=headers, rec=rdfStr)                                
                             
                     elif rdfdb.dbtype == 'fs': 
-                        with open(os.path.join(rdfdb.host.strip(), rec.project.strip(), file_id + '.rdf'), 'w') as rdfFile:
+                        with open(os.path.join(rdfdb.host.strip(), rec.project.strip(), file_id + '.rdf'), encoding='utf-8', 'w') as rdfFile:
                             rdfFile.write(rdfStr)
                     else:
                         print("\nNo RDF persistence option for specified.\n")
@@ -1460,7 +1460,7 @@ def export_model(project):
     with open(os.path.join(dmlibpath, 'dm-' + rec.dmid + '.xsd'), 'w') as xsd:
         xsd.write(rec.schema.strip())
 
-    with open(os.path.join(dmlibpath, 'dm-' + rec.dmid + '.rdf'), 'w') as rdf:
+    with open(os.path.join(dmlibpath, 'dm-' + rec.dmid + '.rdf'), encoding='utf-8', 'w') as rdf:
         rdf.write(rec.rdf.strip())
 
     print(rec.project, " was exported to the dmlib subdirectory.\n\n")

@@ -59,7 +59,7 @@ The first step is to start the local web server.
 
 .. code-block:: sh
 
-    ./kunteksto.bat
+    kunteksto.bat
 
 **or Linux/MacOSX**
 
@@ -68,7 +68,7 @@ The first step is to start the local web server.
     ./kunteksto.sh
 
 
-You should se some messages similar to this:
+You should see messages similar to this:
 
 .. code-block:: sh
 

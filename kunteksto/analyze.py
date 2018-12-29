@@ -119,7 +119,7 @@ def process(project, csvInput, delim, level):
     # create the initial data for the Component table.
     model_pk = model.id
     print("\nCreating component data.\n")
-    with open(csvInput) as csvfile:
+    with open(csvInput, encoding='utf-8') as csvfile:
         reader = csv.DictReader(csvfile, delimiter=delim)
         for h in reader.fieldnames:
             mcID = str(cuid())  # model component ID
@@ -141,7 +141,7 @@ def process(project, csvInput, delim, level):
     if level.lower() == 'full':
         print("\nAnalyzing columns for min/max values and datatype.\n")
         # indepth analysis of columns for datatypes and ranges.
-        with open(csvInput) as csvfile:
+        with open(csvInput, encoding='utf-8') as csvfile:
             reader = csv.DictReader(csvfile, delimiter=delim)
             hdrs = reader.fieldnames
             dataDict = OrderedDict()
