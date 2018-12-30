@@ -23,7 +23,7 @@ Kunteksto can be used in a pipeline to take any existing CSV data sources and cr
     :height: 400px
     :alt: JSON Invalid
 
-The above diagram shows how data extracts can be converted to rich semantic data. You may or may not need an OpenRefine macro to clean the data. Once a model is defined in Kunteksto, these consistent CSV files are pipelined through to create one or more of the serializations of the data included all of the semantics defined by the domain expert.
+The above diagram shows how data extracts can be converted to rich semantic data. You may or may not need an OpenRefine macro to clean the data. Once a model is defined in Kunteksto, these consistent CSV files are pipelined through to create one or more of the serializations of the data including all of the semantics defined by the domain expert.
 
 
 .. _install:
