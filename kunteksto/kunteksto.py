@@ -189,7 +189,7 @@ def export(project):
     """
     Export a model XML Schema and RDF for the project.
     """
-    click.echo('Exporting model to: Kunteksto/dmlib/' + project)
+    click.echo('Exporting model to: Kunteksto/dmlib/')
     export_model(project)
 
 @click.command('ldexamples')

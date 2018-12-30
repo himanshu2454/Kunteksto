@@ -1442,7 +1442,7 @@ def export_model(project):
         print('\n\n', e)
         exit(1)
 
-    dmlibpath = Path(os.path.join(os.getcwd(), os.pardir, 'dmlib', rec.project.strip()))
+    dmlibpath = Path(os.path.join(os.getcwd(), os.pardir, 'dmlib'))
     dmlibpath.mkdir(parents=True)
 
     with open(os.path.join(dmlibpath, 'dm-' + rec.dmid + '.xsd'), 'w', encoding='utf') as xsd:

@@ -15,6 +15,17 @@ Target Audience
 ---------------
 The Kunteksto design philosophy is based on the ability for *domain experts* from any field, with very little programming ability to quickly annotate data extracts to improve the usability of the data. Data engineers and data scientists can also benefit from Kunteksto in the same ways as domain experts. 
 
+Kunteksto can be used in a pipeline to take any existing CSV data sources and create valid XML, JSON and or RDF triples that do not lose the context of the source batch/document and adds specific semantics as selected (one time) by the domain expert. 
+
+.. image:: _images/pipeline.png
+    :width: 600px
+    :align: center
+    :height: 400px
+    :alt: JSON Invalid
+
+The above diagram shows how data extracts can be converted to rich semantic data. You may or may not need an OpenRefine macro to clean the data. Once a model is defined in Kunteksto, these consistent CSV files are pipelined through to create one or more of the serializations of the data included all of the semantics defined by the domain expert.
+
+
 .. _install:
 
 Installation
