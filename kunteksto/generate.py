@@ -976,29 +976,6 @@ def xsd_rdf(rec, session):
     session.commit()
     exit(1)
     
-    
-    #if config['ALLEGROGRAPH']['status'].upper() == "ACTIVE":
-        ## Set environment variables for AllegroGraph
-        #os.environ['AGRAPH_HOST'] = config['ALLEGROGRAPH']['host']
-        #os.environ['AGRAPH_PORT'] = config['ALLEGROGRAPH']['port']
-        #os.environ['AGRAPH_USER'] = config['ALLEGROGRAPH']['user']
-        #os.environ['AGRAPH_PASSWORD'] = config['ALLEGROGRAPH']['password']            
-        #try:
-            #from franz.openrdf.connect import ag_connect
-            #connRDF = ag_connect(config['ALLEGROGRAPH']['repo'], host=os.environ.get('AGRAPH_HOST'), port=os.environ.get('AGRAPH_PORT'),  user=os.environ.get('AGRAPH_USER'), password=os.environ.get('AGRAPH_PASSWORD'))
-            #print('Current Kunteksto RDF Repository Size: ', connRDF.size(), '\n')
-            #print('AllegroGraph connections are okay.\n\n')
-        #except: 
-            #connRDF = None
-            #print("Unexpected error: ", sys.exc_info()[0])
-            #print('RDF Connection Error', 'Could not create connection to AllegroGraph.')
-
-        #if connRDF:
-            #try:
-                #connRDF.addData(rdfstr, rdf_format=RDFFormat.RDFXML, base_uri=None, context=None)
-            #except Exception as e:
-                #print('\n\nAllegroGraphDB Error: Could not load the Model RDF for ' + xsdfile + '\n' + str(e.args) + '\n')
-                #sys.exit(1)                    
 
 def make_model(project):
     """
@@ -1016,11 +993,11 @@ def make_model(project):
     xsd_str += xsd_dm(rec)
     xsd_str += xsd_data(rec, 0, session)
     xsd_str += '\n</xs:schema>\n'
-    
+
     # persist a copy so we can troubleshoot for erros when needed.
     rec.schema = xsd_str
     session.commit()
-    
+
     try:
         xmlschema_doc = etree.fromstring(xsd_str)
     except Exception as e:
