@@ -32,7 +32,11 @@ The future of deep learning https://blog.keras.io/the-future-of-deep-learning.ht
 - Run the Kunteksto dev server: $ ./kunteksto.sh
 - In a browser go to: http://127.0.0.1:7659/ 
 
-When making changes and testing locally you should;
-build the package: $ python3 setup.py sdist bdist_wheel
-Then perform a local install: $ pip install e .
+When making changes and testing locally you should; build the package: 
+
+$ python3 setup.py sdist bdist_wheel
+
+Then perform a local install: 
+
+$ pip install e .
 
