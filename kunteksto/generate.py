@@ -1233,8 +1233,14 @@ def make_data(project, infile):
     vlsession.flush()
     
     xmldb = rec.xmlstore
+    if xmldb == None:
+        print("WARNING: No repository defined for XML.")
     jsondb = rec.jsonstore
+    if jsondb == None:
+        print("WARNING: No repository defined for JSON.")
     rdfdb = rec.rdfstore
+    if rdfdb == None:
+        print("WARNING: No repository defined for RDF.")
     
     # if filesystem persistence is defined insure the paths + project name exist
     if xmldb is not None and xmldb.dbtype == 'fs':
