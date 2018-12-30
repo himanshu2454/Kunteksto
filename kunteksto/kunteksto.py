@@ -219,21 +219,21 @@ def create_xmlstores():
         db.session.add(ds)
         db.session.commit()
     except sqlite3.IntegrityError as e:
-        print(e)
-        
+        print("The XML Filesystem example is already loaded.")
+
     try:
         ds = XMLstore(dbtype='ml', name='Marklogic (XML example)', host='localhost.localdomain', port='10035', dbname='Kunteksto', hostip='192.168.25.120', forests=2, user='admin', pw='admin')
         db.session.add(ds)
         db.session.commit()
     except sqlite3.IntegrityError as e:
-        print(e)
+        print("The XML Marklogic example is already loaded.")
 
     try:
         ds = XMLstore(dbtype='bx', name='BaseX (XML example)', host='localhost', port='1984', dbname='Kunteksto', user='admin', pw='admin')
         db.session.add(ds)
         db.session.commit()
     except sqlite3.IntegrityError as e:
-        print(e)
+        print("The XML BaseX example is already loaded.")
 
 
 def create_rdfstores():
@@ -244,21 +244,21 @@ def create_rdfstores():
         db.session.add(ds)
         db.session.commit()
     except sqlite3.IntegrityError as e:
-        print(e)
-    
+        print("The RDF Filesystem example is already loaded.")
+
     try:
         ds = RDFstore(dbtype='ag', name='AllegroGraph (RDF example)', host='localhost', port='10035', dbname='Kunteksto', user='admin', pw='admin')
         db.session.add(ds)
         db.session.commit()
     except sqlite3.IntegrityError as e:
-        print(e)
-    
+        print("The RDF Allegrograph example is already loaded.")
+
     try:
         ds = RDFstore(dbtype='ml', name='Marklogic (RDF example)', host='localhost.localdomain', port='10035', dbname='Kunteksto', hostip='192.168.25.120', forests=2, user='admin', pw='admin')
         db.session.add(ds)
         db.session.commit()
     except sqlite3.IntegrityError as e:
-        print(e)
+        print("The RDF Marklogic example is already loaded.")
 
 
 def create_jsonstores():
@@ -269,14 +269,14 @@ def create_jsonstores():
         db.session.add(ds)
         db.session.commit()
     except sqlite3.IntegrityError as e:
-        print(e)
+        print("The JSON Filesystem example is already loaded.")
     
     try:
         ds = JSONstore(dbtype='ml', name='Marklogic (JSON example)', host='localhost.localdomain', port='10035', dbname='Kunteksto', hostip='192.168.25.120', forests=2, user='admin', pw='admin')
         db.session.add(ds)
         db.session.commit()
     except sqlite3.IntegrityError as e:
-        print(e)
+        print("The JSON Marklogic example is already loaded.")
 
 
 # Routing

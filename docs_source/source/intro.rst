@@ -63,9 +63,9 @@ Where x.x.x is the Kunteksto release number.
 .. _activate: Activate
 
 
-- Activate the environment according to the instructions shown by Anaconda in the terminal window.
+- Activate the environment according to the **instructions shown by Anaconda in the terminal window**.
 
-Depending upon the options you selectede when installing Anaconda:
+Depending upon the options you selected when installing Anaconda:
 
 **Cross Platform**
 

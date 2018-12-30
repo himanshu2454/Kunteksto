@@ -1443,13 +1443,20 @@ def export_model(project):
         exit(1)
 
     dmlibpath = Path(os.path.join(os.getcwd(), os.pardir, 'dmlib'))
-    dmlibpath.mkdir(parents=True)
+    if not os.path.exists(dmlibpath):
+        dmlibpath.mkdir(parents=True)
 
-    with open(os.path.join(dmlibpath, 'dm-' + rec.dmid + '.xsd'), 'w', encoding='utf') as xsd:
-        xsd.write(rec.schema.strip())
+    if not os.path.exists(os.path.join(dmlibpath, 'dm-' + rec.dmid + '.xsd')):
+        with open(os.path.join(dmlibpath, 'dm-' + rec.dmid + '.xsd'), 'w', encoding='utf') as xsd:
+            xsd.write(rec.schema.strip())
+    else:
+        print('dm-' + rec.dmid + '.xsd' + ' already exists.')
+        
+    if not os.path.exists(os.path.join(dmlibpath, 'dm-' + rec.dmid + '.rdf')):
+        with open(os.path.join(dmlibpath, 'dm-' + rec.dmid + '.rdf'), 'w', encoding='utf-8') as rdf:
+            rdf.write(rec.rdf.strip())
+    else:
+        print('dm-' + rec.dmid + '.rdf' + ' already exists.')
 
-    with open(os.path.join(dmlibpath, 'dm-' + rec.dmid + '.rdf'), 'w', encoding='utf-8') as rdf:
-        rdf.write(rec.rdf.strip())
-
-    print(rec.project, " was exported to the dmlib subdirectory.\n\n")
+    print("The " + rec.project, " models are located in the dmlib subdirectory.\n\n")
     return
