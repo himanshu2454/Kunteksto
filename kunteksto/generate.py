@@ -976,20 +976,20 @@ def make_model(project):
     Create an S3M data model schema based on the database information.
     """
     session = Session()
-    rec = session.query(Datamodel).filter_by(project=project).first()
+    dm = session.query(Datamodel).filter_by(project=project).first()
 
-    dmID = rec.dmid
+    dmID = dm.dmid
 
     print("\nGenerating Datamodel : dm-" + dmID + '.xsd\n')
 
-    xsd_str = xsd_header(rec)
-    xsd_str += xsd_metadata(rec)
-    xsd_str += xsd_dm(rec)
-    xsd_str += xsd_data(rec, 0, session)
+    xsd_str = xsd_header(dm)
+    xsd_str += xsd_metadata(dm)
+    xsd_str += xsd_dm(dm)
+    xsd_str += xsd_data(dm, 0, session)
     xsd_str += '\n</xs:schema>\n'
 
     # persist a copy so we can troubleshoot for erros when needed.
-    rec.schema = xsd_str
+    dm.schema = xsd_str
     session.commit()
 
     try:
@@ -1001,10 +1001,10 @@ def make_model(project):
     
     # Must add the encoding declation after checking the schema.
     xsd_str = '<?xml version="1.0" encoding="UTF-8"?>\n' + xsd_str
-    rec.schema = xsd_str
+    dm.schema = xsd_str
     session.commit()
     
-    xsd_rdf(rec, session)
+    xsd_rdf(dm, session)
 
     return
 
@@ -1217,26 +1217,25 @@ def make_data(project, infile):
     Create XML and JSON data files and an RDF graph based on the model.
     """
     session = Session()
-    rec = session.query(Datamodel).filter_by(project=project).first()
-    cols = session.query(Component).filter_by(model_id=rec.id).all()
+    dm = session.query(Datamodel).filter_by(project=project).first()
+    cols = session.query(Component).filter_by(model_id=dm.id).all()
     
     # begin a validation log
     vlsession = Session()
-    vlog = Validation(model_id=rec.id, log='id,status,error\n')
+    vlog = Validation(model_id=dm.id, log='id,status,error\n')
     vlsession.add(vlog)
     vlsession.flush()
     
-    xmldb = rec.xmlstore
-    jsondb = rec.jsonstore
-    rdfdb = rec.rdfstore
-
-    print('XML DB Type: ', xmldb.dbtype)
+    xmldb = dm.xmlstore
+    jsondb = dm.jsonstore
+    rdfdb = dm.rdfstore
 
     if xmldb is not None:
         if xmldb.dbtype == 'fs':
-            path = Path(os.path.join(xmldb.host.strip(), rec.project.strip()))
+            path = Path(os.path.join(xmldb.host.strip(), dm.project.strip()))
             if not os.path.exists(path):
                 path.mkdir(parents=True)
+            print("XML path: ", path)
         elif xmldb.dbtype == 'bx':
             try:
                 from BaseXClient import BaseXClient
@@ -1251,15 +1250,16 @@ def make_data(project, infile):
         else:
             print("The Repository Type " + xmldb.dbtype + " is invalid.")
             exit(1)
-        
+
     else:
         print("WARNING: No repository defined for XML.")
 
     if jsondb is not None:
         if jsondb.dbtype == 'fs':
-            path = Path(os.path.join(jsondb.host.strip(), rec.project.strip()))
+            path = Path(os.path.join(jsondb.host.strip(), dm.project.strip()))
             if not os.path.exists(path):
                 path.mkdir(parents=True)
+            print("JSON path: ", path)
         elif jsondb.dbtype == 'ml':
             pass
         else:
@@ -1271,9 +1271,10 @@ def make_data(project, infile):
 
     if rdfdb is not None:
         if rdfdb.dbtype == 'fs':
-            path = Path(os.path.join(rdfdb.host.strip(), rec.project.strip()))
+            path = Path(os.path.join(rdfdb.host.strip(), dm.project.strip()))
             if not os.path.exists(path):
                 path.mkdir(parents=True)
+            print("RDF path: ", path)
 
         elif rdfdb.dbtype == 'ag':
             try:
@@ -1305,14 +1306,14 @@ def make_data(project, infile):
         print("WARNING: No repository defined for RDF.")
         
             
-    xsd_str = rec.schema.replace('<?xml version="1.0" encoding="UTF-8"?>', '')
+    xsd_str = dm.schema.replace('<?xml version="1.0" encoding="UTF-8"?>', '')
     xsd_str = xsd_str.replace('<?xml-stylesheet type="text/xsl" href="dm-description.xsl"?>', '')
 
     try:
         schema = etree.parse(StringIO(xsd_str))
     except etree.LxmlError as e:
         print("\n\nUsing catalog: ", os.environ['XML_CATALOG_FILES'])
-        print("Cannot parse this string to a schema.\n" + str(e.args))
+        print("Cannot parse the XSD string to a schema.\n" + str(e.args))
         sys.exit(1)
 
     try:
@@ -1322,7 +1323,7 @@ def make_data(project, infile):
         print("Cannot create this schema object.\n" + str(e.args))
         sys.exit(1)
 
-    print('\n\nGeneration: ', "Generate data for project: " + rec.project + ' using ' + infile + '\n')
+    print('\n\nGeneration: ', "Generate data for project: " + dm.project + ' using ' + infile + '\n')
 
     namespaces = {"https://www.s3model.com/ns/s3m/": "s3m", "http://www.w3.org/2001/XMLSchema-instance": "xsi"}
     
@@ -1340,7 +1341,7 @@ def make_data(project, infile):
         hdrs = reader.fieldnames
         
         for i in range(0,len(hdrs)):
-            col = session.query(Component).filter_by(model_id=rec.id).filter_by(header=hdrs[i]).first()
+            col = session.query(Component).filter_by(model_id=dm.id).filter_by(header=hdrs[i]).first()
             if col == None:
                 print("\n\nThere was an error matching the data input file to the selected model database.")
                 print('The Datafile contains a header label, ' + hdrs[i] + ' that does not match the Model headers.')
@@ -1350,16 +1351,16 @@ def make_data(project, infile):
         # for data in reader:
         with click.progressbar(reader, label="Creating a total of " + str(csv_len) + " data files: ", length=csv_len) as bar:
             for data in bar:
-                file_id = rec.project.strip() + '-' + shortuuid.uuid()    
+                file_id = dm.project.strip() + '-' + shortuuid.uuid()    
                 xmlProlog = '<?xml version="1.0" encoding="UTF-8"?>\n'  # lxml doesn't want this in the file during validation, it has to be reinserted afterwards.     
                 xmlStr = ''
                 rdfStr = '<?xml version="1.0" encoding="UTF-8"?>\n<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"\nxmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"\nxmlns:s3m="https://www.s3model.com/ns/s3m/"\nxmlns:xs="http://www.w3.org/2001/XMLSchema">\n'
                 rdfStr += '<rdfs:Class rdf:about="' + file_id + '">\n'
-                rdfStr += '  <s3m:isInstanceOf rdf:resource="dm-' + rec.dmid.strip() + '"/>\n'
+                rdfStr += '  <s3m:isInstanceOf rdf:resource="dm-' + dm.dmid.strip() + '"/>\n'
                 rdfStr += '</rdfs:Class>\n'
     
                 # get the DM tag content.
-                xmlStr += xml_hdr(rec)          
+                xmlStr += xml_hdr(dm)          
     
                 # get the data element for each type with the data from the CSV.
                 for col in cols:
@@ -1381,8 +1382,8 @@ def make_data(project, infile):
                     else:
                         raise ValueError("Invalid datatype")
     
-                xmlStr += '    </s3m:ms-' + rec.dataid.strip() + '>\n'
-                xmlStr += '</s3m:dm-' + rec.dmid.strip() + '>\n'
+                xmlStr += '    </s3m:ms-' + dm.dataid.strip() + '>\n'
+                xmlStr += '</s3m:dm-' + dm.dmid.strip() + '>\n'
                                 
                 # validate the XML data file and enter the appropriate RDF statement as well as an entry in the validation log.
                 try:
@@ -1436,11 +1437,11 @@ def make_data(project, infile):
                     
                     elif xmldb.dbtype == 'ml': # Marklogic 
                         headers = {"Content-Type": "application/xml", 'user-agent': 'Kunteksto'}
-                        url = 'http://' + hostip + ':' + port + '/v1/documents?uri=/' + prj + '/xml/' + file_id 
-                        r = requests.put(url, auth=HTTPDigestAuth(user, pw), headers=headers, rec=xmlStr)                                
+                        url = 'http://' + xmldb.hostip + ':' + xmldb.asport + '/v1/documents?uri=/' + dm.project + '/xml/' + file_id
+                        r = requests.put(url, auth=HTTPDigestAuth(xmldb.user, xmldb.pw), headers=headers, rec=xmlStr)
                         
                     elif xmldb.dbtype == 'fs': # Filesystem
-                        with open(os.path.join(xmldb.host.strip(), rec.project.strip(), file_id + '.xml'), 'w', encoding='utf-8') as xmlFile:
+                        with open(os.path.join(xmldb.host.strip(), dm.project.strip(), file_id + '.xml'), 'w', encoding='utf-8') as xmlFile:
                             xmlFile.write(xmlStr)
                     else:
                         print("\nNo XML persistence option for specified.\n")
@@ -1456,11 +1457,11 @@ def make_data(project, infile):
                             
                     elif rdfdb.dbtype == 'ml': 
                         headers = {"Content-Type": "application/xml", 'user-agent': 'Kunteksto'}
-                        url = 'http://' + hostip + ':' + port + '/v1/documents?uri=/' + prj + '/rdf/' + file_id 
-                        r = requests.put(url, auth=HTTPDigestAuth(user, pw), headers=headers, rec=rdfStr)                                
+                        url = 'http://' + rdfdb.hostip + ':' + rdfdb.asport + '/v1/documents?uri=/' + dm.project + '/rdf/' + file_id
+                        r = requests.put(url, auth=HTTPDigestAuth(rdfdb.user, rdfdb.pw), headers=headers, rec=rdfStr)
                             
                     elif rdfdb.dbtype == 'fs': 
-                        with open(os.path.join(rdfdb.host.strip(), rec.project.strip(), file_id + '.rdf'), 'w', encoding='utf-8') as rdfFile:
+                        with open(os.path.join(rdfdb.host.strip(), dm.project.strip(), file_id + '.rdf'), 'w', encoding='utf-8') as rdfFile:
                             rdfFile.write(rdfStr)
                     else:
                         print("\nNo RDF persistence option for specified.\n")
@@ -1475,11 +1476,11 @@ def make_data(project, infile):
                                 
                     if jsondb.dbtype == 'ml':
                         headers = {"Content-Type": "application/json", 'user-agent': 'Kunteksto'}
-                        url = 'http://' + hostip + ':' + port + '/v1/documents?uri=/' + prj + '/json/' + file_id 
-                        r = requests.put(url, auth=HTTPDigestAuth(user, pw), headers=headers, rec=jsonStr)
+                        url = 'http://' + jsondb.hostip + ':' + jsondb.asport + '/v1/documents?uri=/' + dm.project + '/json/' + file_id
+                        r = requests.put(url, auth=HTTPDigestAuth(jsondb.user, jsondb.pw), headers=headers, rec=jsonStr)
                             
                     elif jsondb.dbtype == 'fs':
-                        with open(os.path.join(jsondb.host.strip(), rec.project.strip(), file_id + '.json'), 'w', encoding='utf-8') as jsonFile:
+                        with open(os.path.join(jsondb.host.strip(), dm.project.strip(), file_id + '.json'), 'w', encoding='utf-8') as jsonFile:
                             jsonFile.write(jsonStr)
                     else:
                         print("\nNo JSON persistence option for specified.\n")
