@@ -67,12 +67,6 @@ def xml_escape(text):
 def xml_unescape(text):
     return unescape(text, xml_unescape_table)    
 
-# RDF storage imports
-try:
-    from franz.openrdf.rio.rdfformat import RDFFormat
-except:
-    pass
-
 
 def xsd_header(rec):
     """
@@ -1233,30 +1227,71 @@ def make_data(project, infile):
     vlsession.flush()
     
     xmldb = rec.xmlstore
-    if xmldb == None:
-        print("WARNING: No repository defined for XML.")
     jsondb = rec.jsonstore
-    if jsondb == None:
-        print("WARNING: No repository defined for JSON.")
     rdfdb = rec.rdfstore
-    if rdfdb == None:
-        print("WARNING: No repository defined for RDF.")
-    
-    # if filesystem persistence is defined insure the paths + project name exist
-    if xmldb is not None and xmldb.dbtype == 'fs':
-        path = Path(os.path.join(xmldb.host.strip(), rec.project.strip()))
-        if not os.path.exists(path):
-            path.mkdir(parents=True)
 
-    if rdfdb is not None and rdfdb.dbtype == 'fs':
-        path = Path(os.path.join(rdfdb.host.strip(), rec.project.strip()))
-        if not os.path.exists(path):
-            path.mkdir(parents=True)
-            
-    if jsondb is not None and jsondb.dbtype == 'fs':
-        path = Path(os.path.join(jsondb.host.strip(), rec.project.strip()))
-        if not os.path.exists(path):
-            path.mkdir(parents=True)
+    print('XML DB Type: ', xmldb.dbtype)
+
+    if xmldb is not None:
+        if xmldb.dbtype == 'fs':
+            path = Path(os.path.join(xmldb.host.strip(), rec.project.strip()))
+            if not os.path.exists(path):
+                path.mkdir(parents=True)
+        elif xmldb.dbtype == 'bx':
+            try:
+                from BaseXClient import BaseXClient
+                XMLconn = BaseXClient.Session(xmldb.host, int(xmldb.port), xmldb.user, xmldb.pw)
+                XMLconn.execute('OPEN ' + xmldb.dbname)
+            except:
+                print("Could not find the BaseXClient")
+                exit(1)
+
+            print(XMLconn.info)
+    else:
+        print("WARNING: No repository defined for XML.")
+
+    if jsondb is not None:
+        if jsondb.dbtype == 'fs':
+            path = Path(os.path.join(jsondb.host.strip(), rec.project.strip()))
+            if not os.path.exists(path):
+                path.mkdir(parents=True)
+    else:
+        print("WARNING: No repository defined for JSON.")
+
+    if rdfdb is not None:
+        if rdfdb.dbtype == 'fs':
+            path = Path(os.path.join(rdfdb.host.strip(), rec.project.strip()))
+            if not os.path.exists(path):
+                path.mkdir(parents=True)
+
+        elif rdfdb.dbtype == 'ag':
+            try:
+                from franz.openrdf.connect import ag_connect
+                from franz.openrdf.rio.rdfformat import RDFFormat
+            except:
+                print("Couldn't load the Allegrograph client libraries.\n")
+                exit(1)
+                print('Checking AllegroGraph connections.\n')
+            # Set environment variables for AllegroGraph
+            os.environ['AGRAPH_HOST'] = rdfdb.host
+            os.environ['AGRAPH_PORT'] = rdfdb.port
+            os.environ['AGRAPH_USER'] = rdfdb.user
+            os.environ['AGRAPH_PASSWORD'] = rdfdb.pw
+
+            try:
+                RDFconn = ag_connect(rdfdb.dbname, host=os.environ.get('AGRAPH_HOST'), port=os.environ.get('AGRAPH_PORT'), user=os.environ.get('AGRAPH_USER'), password=os.environ.get('AGRAPH_PASSWORD'))
+                # RDFconn.add(rec.rdf, base=None, format=RDFFormat.RDFXML, contexts=None)
+            except:
+                print("Could not establish a connection to AllegroGraph. Check to see that the server is running and the RDF repository values are correct.\n\n")
+
+        elif rdfdb.dbtype == 'ml':
+            pass
+        else:
+            print("The DB Type " + rdfdb.dbtype + " is invalid.")
+            exit(1)
+    else:
+        print("WARNING: No repository defined for RDF.")
+        
             
     xsd_str = rec.schema.replace('<?xml version="1.0" encoding="UTF-8"?>', '')
     xsd_str = xsd_str.replace('<?xml-stylesheet type="text/xsl" href="dm-description.xsl"?>', '')
@@ -1352,7 +1387,7 @@ def make_data(project, infile):
                     for err in log:
                         if err.line not in used_lines:
                             used_lines.append(err.line)
-                            print('\nPlease check the validation log for invalid values.\n')
+                            print('\nPlease check the validation log for invalid values: ' + file_id)
                             xmlStr = injectEV(xmlStr, err.type, err.message, err.path)
                             rdfStr += '  <rdfs:Class rdf:about="' + file_id + err.path + '">\n'
                             rdfStr += '    <rdfs:comment>' + repr(err.message) + '</rdfs:comment>\n'
@@ -1378,10 +1413,12 @@ def make_data(project, infile):
 
                 # Persistence Choices               
                 if xmldb is not None:
-                    if xmldb.dbtype == 'bx': # BasexDB
+                    if xmldb.dbtype == 'bx':  # BasexDB
                         try:
-                            connXML.add(file_id + '.xml', xmlStr)
+                            print("Sending: " + file_id + ' to BaseXDB ' + xmldb.dbname)
+                            XMLconn.add(file_id + '.xml', xmlStr)
                         except Exception as e:
+                            print(e)
                             vlog.log = vlog.log + (file_id + ',BaseXDB Error,' + str(e.args) + '\n')
                             vlsession.flush()
                     
@@ -1396,10 +1433,11 @@ def make_data(project, infile):
                     else:
                         print("\nNo XML persistence option for specified.\n")
     
-                if rdfdb is not None:                     
-                    if rdfdb.dbtype == 'ag': 
+                if rdfdb is not None:   
+                    # https://franz.com/agraph/support/documentation/6.4.0/python/index.html
+                    if rdfdb.dbtype == 'ag':                        
                         try:
-                            connRDF.addData(rdfStr, rdf_format=RDFFormat.RDFXML, base_uri=None, context=None)
+                            RDFconn.addData(rdfStr, rdf_format=RDFFormat.RDFXML, base_uri=None, context=None)
                         except Exception as e:
                             vlog.log = vlog.log + (file_id + ',AllegroDB Error,' + str(e.args) + '\n')
                             vlsession.flush() 

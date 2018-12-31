@@ -31,6 +31,8 @@ from .models import XMLstore, JSONstore, RDFstore, Datamodel, Component, Validat
 from .analyze import process
 from .generate import make_data, make_model, export_model
 
+from .repo_setup import ag_init, bx_init, ml_init
+
 # Add Flask Admin setup and administrative views here
 admin = Admin(app, name='Kunteksto', template_mode='bootstrap3')
 
@@ -192,6 +194,31 @@ def export(project):
     click.echo('Exporting model to: Kunteksto/dmlib/')
     export_model(project)
 
+@click.command('aginit')
+@click.argument('repo')
+def aginit(repo):
+    """
+    """
+    click.echo('Initializing Allegrograph: ' + repo)
+    ag_init(repo)
+
+@click.command('bxinit')
+@click.argument('repo')
+def bxinit(repo):
+    """
+    """
+    click.echo('Initializing BaseX: ' + repo)
+    bx_init(repo)
+
+@click.command('mlinit')
+@click.argument('repo')
+def mlinit(repo):
+    """
+    """
+    click.echo('Initializing Marklogic: ' + repo)
+    ml_init(repo)
+
+
 @click.command('ldexamples')
 def ldexamples():
     """
@@ -207,6 +234,9 @@ app.cli.add_command(analyze)
 app.cli.add_command(genmodel)
 app.cli.add_command(gendata)
 app.cli.add_command(export)
+app.cli.add_command(aginit)
+app.cli.add_command(bxinit)
+app.cli.add_command(mlinit)
 app.cli.add_command(ldexamples)
 
 
@@ -222,7 +252,7 @@ def create_xmlstores():
         print("The XML Filesystem example is already loaded.")
 
     try:
-        ds = XMLstore(dbtype='ml', name='Marklogic (XML example)', host='localhost.localdomain', port='10035', dbname='Kunteksto', hostip='192.168.25.120', forests=2, user='admin', pw='admin')
+        ds = XMLstore(dbtype='ml', name='Marklogic (XML example)', host='localhost.localdomain', port='8002', dbname='Kunteksto', hostip='192.168.25.120', forests=2, user='admin', pw='admin', asport='10023')
         db.session.add(ds)
         db.session.commit()
     except sqlite3.IntegrityError as e:
@@ -254,7 +284,7 @@ def create_rdfstores():
         print("The RDF Allegrograph example is already loaded.")
 
     try:
-        ds = RDFstore(dbtype='ml', name='Marklogic (RDF example)', host='localhost.localdomain', port='10035', dbname='Kunteksto', hostip='192.168.25.120', forests=2, user='admin', pw='admin')
+        ds = RDFstore(dbtype='ml', name='Marklogic (RDF example)', host='localhost.localdomain', port='8002', dbname='Kunteksto', hostip='192.168.25.120', forests=2, user='admin', pw='admin', asport='10022')
         db.session.add(ds)
         db.session.commit()
     except sqlite3.IntegrityError as e:
@@ -272,7 +302,7 @@ def create_jsonstores():
         print("The JSON Filesystem example is already loaded.")
     
     try:
-        ds = JSONstore(dbtype='ml', name='Marklogic (JSON example)', host='localhost.localdomain', port='10035', dbname='Kunteksto', hostip='192.168.25.120', forests=2, user='admin', pw='admin')
+        ds = JSONstore(dbtype='ml', name='Marklogic (JSON example)', host='localhost.localdomain', port='8002', dbname='Kunteksto', hostip='192.168.25.120', forests=2, user='admin', pw='admin', asport='10021')
         db.session.add(ds)
         db.session.commit()
     except sqlite3.IntegrityError as e:

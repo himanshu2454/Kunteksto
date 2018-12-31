@@ -23,12 +23,13 @@ class XMLstore(db.Model):
     name = db.Column('Storage Name', db.String(250), unique=True, nullable=False)
     host = db.Column('Host Name', db.String(500), unique=False, nullable=False)
     port = db.Column('Port Number', db.String(10), unique=False, nullable=False)
-    hostip = db.Column('Host IP', db.String(45), unique=False, nullable=True)
-    forests = db.Column('Forests', db.Integer, unique=False, nullable=True)
     dbname = db.Column('Database Name', db.String(250), unique=False, nullable=False)
     user = db.Column('User Name', db.String(250), unique=False, nullable=True)
     pw = db.Column('User Password', db.String(250), unique=False, nullable=True)
-    models = db.relationship('Datamodel', backref='xmlstore', lazy=True)
+    hostip = db.Column('Host IP', db.String(45), unique=False, nullable=True)
+    forests = db.Column('Forests', db.Integer, unique=False, nullable=True)
+    asport = db.Column('App Server Port Number', db.String(10), unique=False, nullable=True)
+    models = db.relationship('Datamodel', backref='rdfstore', lazy=True)
     
     def __repr__(self):
         return self.name.strip()
@@ -44,12 +45,13 @@ class JSONstore(db.Model):
     name = db.Column('Storage Name', db.String(250), unique=True, nullable=False)
     host = db.Column('Host Name', db.String(500), unique=False, nullable=False)
     port = db.Column('Port Number', db.String(10), unique=False, nullable=False)
-    hostip = db.Column('Host IP', db.String(45), unique=False, nullable=True)
-    forests = db.Column('Forests', db.Integer, unique=False, nullable=True)
     dbname = db.Column('Database Name', db.String(250), unique=False, nullable=False)
     user = db.Column('User Name', db.String(250), unique=False, nullable=True)
     pw = db.Column('User Password', db.String(250), unique=False, nullable=True)
-    models = db.relationship('Datamodel', backref='jsonstore', lazy=True)
+    hostip = db.Column('Host IP', db.String(45), unique=False, nullable=True)
+    forests = db.Column('Forests', db.Integer, unique=False, nullable=True)
+    asport = db.Column('App Server Port Number', db.String(10), unique=False, nullable=True)
+    models = db.relationship('Datamodel', backref='rdfstore', lazy=True)
     
     def __repr__(self):
         return self.name.strip()
@@ -65,13 +67,14 @@ class RDFstore(db.Model):
     name = db.Column('Storage Name', db.String(250), unique=True, nullable=False)
     host = db.Column('Host Name', db.String(500), unique=False, nullable=False)
     port = db.Column('Port Number', db.String(10), unique=False, nullable=False)
-    hostip = db.Column('Host IP', db.String(45), unique=False, nullable=True)
-    forests = db.Column('Forests', db.Integer, unique=False, nullable=True)
     dbname = db.Column('Database Name', db.String(250), unique=False, nullable=False)
     user = db.Column('User Name', db.String(250), unique=False, nullable=True)
     pw = db.Column('User Password', db.String(250), unique=False, nullable=True)
+    hostip = db.Column('Host IP', db.String(45), unique=False, nullable=True)
+    forests = db.Column('Forests', db.Integer, unique=False, nullable=True)
+    asport = db.Column('App Server Port Number', db.String(10), unique=False, nullable=True)
     models = db.relationship('Datamodel', backref='rdfstore', lazy=True)
-    
+
     def __repr__(self):
         return self.name.strip()
 

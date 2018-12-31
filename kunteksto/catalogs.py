@@ -6,12 +6,10 @@ def make_catalog(config):
     """
     RMVERSION = config['SYSTEM']['rmversion'].replace('.', '_')
     parentdir = os.path.dirname(os.getcwd())
-    print(parentdir)
     catdir = os.path.join(parentdir, 'catalogs')
     dmlib = os.path.join(parentdir, 'dmlib')
     rmdir = os.path.join(parentdir, 's3model')
-    print(rmdir)
-    
+
     xmlcat = '<?xml version="1.0" encoding="UTF-8"?>\n'
     xmlcat += '<!DOCTYPE catalog PUBLIC "-//OASIS//DTD XML Catalogs V1.1//EN" "http://www.oasis-open.org/committees/entity/release/1.1/catalog.dtd">'
     xmlcat += '<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">\n'
