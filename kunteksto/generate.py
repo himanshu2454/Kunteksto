@@ -1438,7 +1438,7 @@ def make_data(project, infile):
                     elif xmldb.dbtype == 'ml': # Marklogic 
                         headers = {"Content-Type": "application/xml", 'user-agent': 'Kunteksto'}
                         url = 'http://' + xmldb.hostip + ':' + xmldb.asport + '/v1/documents?uri=/' + dm.project + '/xml/' + file_id
-                        r = requests.put(url, auth=HTTPDigestAuth(xmldb.user, xmldb.pw), headers=headers, rec=xmlStr)
+                        r = requests.put(url, auth=HTTPDigestAuth(xmldb.user, xmldb.pw), headers=headers, data=xmlStr)
                         
                     elif xmldb.dbtype == 'fs': # Filesystem
                         with open(os.path.join(xmldb.host.strip(), dm.project.strip(), file_id + '.xml'), 'w', encoding='utf-8') as xmlFile:
@@ -1458,7 +1458,7 @@ def make_data(project, infile):
                     elif rdfdb.dbtype == 'ml': 
                         headers = {"Content-Type": "application/xml", 'user-agent': 'Kunteksto'}
                         url = 'http://' + rdfdb.hostip + ':' + rdfdb.asport + '/v1/documents?uri=/' + dm.project + '/rdf/' + file_id
-                        r = requests.put(url, auth=HTTPDigestAuth(rdfdb.user, rdfdb.pw), headers=headers, rec=rdfStr)
+                        r = requests.put(url, auth=HTTPDigestAuth(rdfdb.user, rdfdb.pw), headers=headers, data=rdfStr)
                             
                     elif rdfdb.dbtype == 'fs': 
                         with open(os.path.join(rdfdb.host.strip(), dm.project.strip(), file_id + '.rdf'), 'w', encoding='utf-8') as rdfFile:
@@ -1477,7 +1477,7 @@ def make_data(project, infile):
                     if jsondb.dbtype == 'ml':
                         headers = {"Content-Type": "application/json", 'user-agent': 'Kunteksto'}
                         url = 'http://' + jsondb.hostip + ':' + jsondb.asport + '/v1/documents?uri=/' + dm.project + '/json/' + file_id
-                        r = requests.put(url, auth=HTTPDigestAuth(jsondb.user, jsondb.pw), headers=headers, rec=jsonStr)
+                        r = requests.put(url, auth=HTTPDigestAuth(jsondb.user, jsondb.pw), headers=headers, data=jsonStr)
                             
                     elif jsondb.dbtype == 'fs':
                         with open(os.path.join(jsondb.host.strip(), dm.project.strip(), file_id + '.json'), 'w', encoding='utf-8') as jsonFile:
