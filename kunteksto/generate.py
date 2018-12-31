@@ -1245,8 +1245,13 @@ def make_data(project, infile):
             except:
                 print("Could not find the BaseXClient")
                 exit(1)
-
             print(XMLconn.info)
+        elif xmldb.dbtype == 'ml':
+            pass
+        else:
+            print("The Repository Type " + xmldb.dbtype + " is invalid.")
+            exit(1)
+        
     else:
         print("WARNING: No repository defined for XML.")
 
@@ -1255,6 +1260,12 @@ def make_data(project, infile):
             path = Path(os.path.join(jsondb.host.strip(), rec.project.strip()))
             if not os.path.exists(path):
                 path.mkdir(parents=True)
+        elif jsondb.dbtype == 'ml':
+            pass
+        else:
+            print("The Repository Type " + jsondb.dbtype + " is invalid.")
+            exit(1)
+        
     else:
         print("WARNING: No repository defined for JSON.")
 
@@ -1286,8 +1297,9 @@ def make_data(project, infile):
 
         elif rdfdb.dbtype == 'ml':
             pass
+        
         else:
-            print("The DB Type " + rdfdb.dbtype + " is invalid.")
+            print("The Repository Type " + rdfdb.dbtype + " is invalid.")
             exit(1)
     else:
         print("WARNING: No repository defined for RDF.")
