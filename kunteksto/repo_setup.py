@@ -124,6 +124,7 @@ def ml_init(repo_name):
     dbname = dbinfo.dbname
     hostip = dbinfo.hostip
     port = dbinfo.port
+    asport = dbinfo.asport
     user = dbinfo.user
     pw = dbinfo.pw
 
@@ -172,10 +173,10 @@ def ml_init(repo_name):
     # Set up REST API
     payload = {
       "rest-api": {
-        "name": "kunteksto-app-server-" + port,
+        "name": "kunteksto-app-server-" + asport,
         "database": dbname,
         "modules-database": "kunteksto-modules",
-        "port": port,
+        "port": asport,
         "xdbc-enabled": "true",
         "forests-per-host": numforests,
         "error-format": "json"
@@ -184,10 +185,10 @@ def ml_init(repo_name):
 
     r = requests.post('http://' + hostip + ':8002/LATEST/rest-apis', auth=HTTPDigestAuth(user, pw), headers=headers, json=payload)
     if r.status_code != 201:
-        print("\nCannot create the REST API for " + dbname + " on http://" + hostip + ":" + port)
+        print("\nCannot create the REST API for " + dbname + " on http://" + hostip + ":" + asport)
         print("\nCheck your settings and your ML9 system or maybe it already exists.")
     else:
-        print("Created REST API for " + dbname + " at http://" + hostip + ":" + port)
+        print("Created REST API for " + dbname + " at http://" + hostip + ":" + asport)
 
     # Write the RM RDF and ontology to ML9
     with open(os.path.join('../s3model', 's3model.owl'), 'r') as owlfile:

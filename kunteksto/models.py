@@ -29,7 +29,7 @@ class XMLstore(db.Model):
     hostip = db.Column('Host IP', db.String(45), unique=False, nullable=True)
     forests = db.Column('Forests', db.Integer, unique=False, nullable=True)
     asport = db.Column('App Server Port Number', db.String(10), unique=False, nullable=True)
-    models = db.relationship('Datamodel', backref='rdfstore', lazy=True)
+    models = db.relationship('Datamodel', backref='xmlstore', lazy=True)
     
     def __repr__(self):
         return self.name.strip()
@@ -51,7 +51,7 @@ class JSONstore(db.Model):
     hostip = db.Column('Host IP', db.String(45), unique=False, nullable=True)
     forests = db.Column('Forests', db.Integer, unique=False, nullable=True)
     asport = db.Column('App Server Port Number', db.String(10), unique=False, nullable=True)
-    models = db.relationship('Datamodel', backref='rdfstore', lazy=True)
+    models = db.relationship('Datamodel', backref='jsonstore', lazy=True)
     
     def __repr__(self):
         return self.name.strip()
