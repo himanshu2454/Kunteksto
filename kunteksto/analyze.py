@@ -105,7 +105,7 @@ def process(project, csvInput, delim, level):
     dmID = str(cuid())   # data model
     dataID = str(cuid())   # data cluster
 
-    model = Datamodel(project=project, title='S3M Data Model for ' + project, description='', copyright='Copyright 2018, Data Insights, Inc.', 
+    model = Datamodel(project=project, title='S3M Data Model for ' + project, description='', copyright='Copyright 2019, Data Insights, Inc.',
                       author='Data Insights, Inc.', definition_url='http://www.some_url.com', dmid=dmID, dataid=dataID)
     try:
         session.add(model)

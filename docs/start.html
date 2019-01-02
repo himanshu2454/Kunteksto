@@ -238,7 +238,7 @@ Kunteksto version: <span class="m">2</span>.0.0 using S3Model RM: <span class="m
 <p>This will open the Home/Overview of the application.</p>
 <a class="reference internal image-reference" href="_images/kunteksto_home_page.png"><img alt="Kunteksto Home" class="align-center" src="_images/kunteksto_home_page.png" style="width: 800px; height: 600px;" /></a>
 <p>This page presents some basic information as well as operational instructions. For now you may continue with this tutorial.</p>
-<p>Open a second terminal window/tab and navigate to the kunteksto directory. Then activate the virtual environment as you did previously in the other terminal window.</p>
+<p><strong>Open a second terminal window/tab and navigate to the kunteksto directory. Then activate the virtual environment as you did previously in the other terminal window.</strong></p>
 <p>Before we begin using Kunteksto to improve our data, we are going to load some examples into the database.</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>flask ldexamples
 </pre></div>
@@ -291,7 +291,8 @@ Kunteksto version: <span class="m">2</span>.0.0 using S3Model RM: <span class="m
 <p>Edit these fields as desired. They describe the overall metadata for your data model. This metadata describes the where, when and why the data is useful to the model. Note that the fields marked with a red asterisk are required.</p>
 <p>Notice that some of this information can be obtained from the PDF. For other items, you have to use your knowledge of the dataset as a domain expert. In this <em>demo</em> we are going to say that we have a local ontology that describes the columns and that information is provided below in the <em>Adding Semantics</em> section below.
 The <em>Description</em> and <em>Definition URL</em> are also in the PDF. The tutorial is purposefully vague so that you will experience the tasks of finding appropriate information for the data.</p>
-<p>Before we began the analysis step, we loaded some examples with the <strong>ldexamples</strong> command. These examples are storage definitions. At this point, go ahead and select the <em>Filesystem</em> option for each of the XML, JSON and RDF storage locations.</p>
+<p>Before we began the analysis step, recall that earlier we loaded some examples with the <strong>ldexamples</strong> command. These examples are storage definitions. At this point, go ahead and select the <em>Filesystem</em> option for each of the XML, JSON and RDF storage locations.</p>
+<p><strong>Click the blue SAVE button</strong></p>
 <ul class="simple">
 <li>Now we will edit each of the model components. Click on the <em>Components</em> entry in the top menu.</li>
 </ul>
@@ -403,7 +404,18 @@ dul:isSettingFor https://www.datainsights.tech/thingies/PurpleKnob
 <p>Again, the information in the table in the PDF can help you determine additional meaning about the data if you are not a domain expert in this area of <em>Fake System</em> information. If you do not already have an ontology defining the meaning of these columns then you can search in places like <a class="reference external" href="http://www.bartoc.org/">BARTOC</a>,
 <a class="reference external" href="http://lov.okfn.org/dataset/lov">Linked Open Vocabularies</a> and <a class="reference external" href="https://www.bioontology.org/">Biontology</a>
 or even places that aren’t formal ontologies but contain reliable definitions and descriptions such as
-<a class="reference external" href="http://www.dictionary.com/">a dictionary</a> or an <a class="reference external" href="https://en.wikipedia.org/wiki/Main_Page">encyclopedia</a>. Once you have completed the data description step, <strong>saved your changes</strong> using the <em>Save</em> button on each Component record, then you may execute the model generation process.</p>
+<a class="reference external" href="http://www.dictionary.com/">a dictionary</a> or an <a class="reference external" href="https://en.wikipedia.org/wiki/Main_Page">encyclopedia</a>.</p>
+<p>Some examples of the completed components are shown below.</p>
+<p>Here you can see that each of them have new <em>labels</em> taken from the PDF.</p>
+<a class="reference internal image-reference" href="_images/Demo_Components_complete.png"><img alt="Completed components list" class="align-center" src="_images/Demo_Components_complete.png" style="width: 800px; height: 300px;" /></a>
+<p>Below you can see completed portions of Column_3.</p>
+<a class="reference internal image-reference" href="_images/Column_3_Complete01.png"><img alt="Completed Column_3" class="align-center" src="_images/Column_3_Complete01.png" style="width: 600px; height: 700px;" /></a>
+<a class="reference internal image-reference" href="_images/Column_3_Complete02.png"><img alt="Completed Column_3" class="align-center" src="_images/Column_3_Complete02.png" style="width: 600px; height: 700px;" /></a>
+<p>You can see that the decimal constraints have been applied.</p>
+<p>In the completed Column_6 below you can see the Options are the description as well as specified as the choices constraint.</p>
+<a class="reference internal image-reference" href="_images/Column_6_Complete01.png"><img alt="Completed Column_6" class="align-center" src="_images/Column_6_Complete01.png" style="width: 600px; height: 700px;" /></a>
+<a class="reference internal image-reference" href="_images/Column_6_Complete02.png"><img alt="Completed Column_6" class="align-center" src="_images/Column_6_Complete02.png" style="width: 600px; height: 700px;" /></a>
+<p>Once you have completed the data description step, <strong>saved your changes</strong> using the <em>Save</em> button on each Component record, then you may execute the model generation process.</p>
 <ul class="simple">
 <li>In your terminal window generate the model with this command:</li>
 </ul>
@@ -580,7 +592,7 @@ These tutorials demonstrate the power of S3Model using persistent storage.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, Data Insights, Inc.
-      Last updated on 2018-12-31 19:45.
+      Last updated on 2019-01-02 13:40.
 
     </p>
   </div> 

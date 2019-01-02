@@ -100,7 +100,7 @@ This will open the Home/Overview of the application.
 
 This page presents some basic information as well as operational instructions. For now you may continue with this tutorial. 
 
-Open a second terminal window/tab and navigate to the kunteksto directory. Then activate the virtual environment as you did previously in the other terminal window.
+**Open a second terminal window/tab and navigate to the kunteksto directory. Then activate the virtual environment as you did previously in the other terminal window.**
 
 Before we begin using Kunteksto to improve our data, we are going to load some examples into the database.
 
@@ -185,7 +185,9 @@ Edit these fields as desired. They describe the overall metadata for your data m
 Notice that some of this information can be obtained from the PDF. For other items, you have to use your knowledge of the dataset as a domain expert. In this *demo* we are going to say that we have a local ontology that describes the columns and that information is provided below in the *Adding Semantics* section below. 
 The *Description* and *Definition URL* are also in the PDF. The tutorial is purposefully vague so that you will experience the tasks of finding appropriate information for the data. 
 
-Before we began the analysis step, we loaded some examples with the **ldexamples** command. These examples are storage definitions. At this point, go ahead and select the *Filesystem* option for each of the XML, JSON and RDF storage locations.  
+Before we began the analysis step, recall that earlier we loaded some examples with the **ldexamples** command. These examples are storage definitions. At this point, go ahead and select the *Filesystem* option for each of the XML, JSON and RDF storage locations.  
+
+**Click the blue SAVE button**
 
 - Now we will edit each of the model components. Click on the *Components* entry in the top menu.  
 
@@ -325,7 +327,50 @@ The *object* portion can contain spaces. However, the first space character defi
 Again, the information in the table in the PDF can help you determine additional meaning about the data if you are not a domain expert in this area of *Fake System* information. If you do not already have an ontology defining the meaning of these columns then you can search in places like `BARTOC <http://www.bartoc.org/>`_, 
 `Linked Open Vocabularies <http://lov.okfn.org/dataset/lov>`_ and `Biontology <https://www.bioontology.org/>`_  
 or even places that aren't formal ontologies but contain reliable definitions and descriptions such as 
-`a dictionary <http://www.dictionary.com/>`_ or an `encyclopedia <https://en.wikipedia.org/wiki/Main_Page>`_. Once you have completed the data description step, **saved your changes** using the *Save* button on each Component record, then you may execute the model generation process. 
+`a dictionary <http://www.dictionary.com/>`_ or an `encyclopedia <https://en.wikipedia.org/wiki/Main_Page>`_. 
+
+Some examples of the completed components are shown below.
+
+Here you can see that each of them have new *labels* taken from the PDF.
+
+.. image:: _images/Demo_Components_complete.png
+    :width: 800px
+    :align: center
+    :height: 300px
+    :alt: Completed components list
+
+Below you can see completed portions of Column_3.
+
+.. image:: _images/Column_3_Complete01.png
+    :width: 600px
+    :align: center
+    :height: 700px
+    :alt: Completed Column_3
+
+.. image:: _images/Column_3_Complete02.png
+    :width: 600px
+    :align: center
+    :height: 700px
+    :alt: Completed Column_3
+
+You can see that the decimal constraints have been applied.
+
+In the completed Column_6 below you can see the Options are the description as well as specified as the choices constraint.
+
+.. image:: _images/Column_6_Complete01.png
+    :width: 600px
+    :align: center
+    :height: 700px
+    :alt: Completed Column_6
+
+.. image:: _images/Column_6_Complete02.png
+    :width: 600px
+    :align: center
+    :height: 700px
+    :alt: Completed Column_6
+
+
+Once you have completed the data description step, **saved your changes** using the *Save* button on each Component record, then you may execute the model generation process. 
 
 - In your terminal window generate the model with this command:
 

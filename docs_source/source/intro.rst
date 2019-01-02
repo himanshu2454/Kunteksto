@@ -94,7 +94,11 @@ Depending upon the options you selected when installing Anaconda:
 
 .. warning::
 
-    Occassionaly there will be a network timeout when searching for packages to install. The error will show up as a package not being found. Just re-run the installation command to retry. You will know when it is complete when you see the message *Finished processing dependencies for kunteksto==x.x.x*
+    Occassionaly there will be a network timeout when searching for packages to install. The error will show up as a package not being found. Just re-run the installation command to retry. 
+    
+    You will know when it is complete when you see the message *Finished processing dependencies for kunteksto==x.x.x*
+
+    In extreme timeout cases you may need to run the above installation command several times.
 
 
 Change to the *Kunteksto working directory*:
