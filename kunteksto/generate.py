@@ -218,20 +218,20 @@ def xdcount(data):
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="error"  type="xs:integer" default="0"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="accuracy" type="xs:integer" default="0"/>\n'
     if data.min_incl.strip().isdigit() or data.max_incl.strip().isdigit() or data.min_excl.strip().isdigit() or data.max_excl.strip().isdigit() or data.def_num.strip().isdigit():
-        if data.def_num.strip().isdigit():
+        if data.def_num is not None and data.def_num.strip().isdigit():
             xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdcount-value" type="xs:integer" default="' + str(int(data.def_num)) + '"/>\n'
         else:
             xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdcount-value">\n'
             xdstr += padding.rjust(indent + 10) + '<xs:simpleType>\n'
             xdstr += padding.rjust(indent + 10) + '<xs:restriction base="xs:integer">\n'
-            if ddata.min_inclstrip().isdigit():
+            if data.min_incl is not None and data.min_incl.strip().isdigit():
                 xdstr += padding.rjust(indent + 12) + '<xs:minInclusive value="' + str(int(data.min_incl)) + '"/>\n'
-            elif data.min_excl.strip().isdigit():
+            elif data.min_excl is not None and data.min_excl.strip().isdigit():
                 xdstr += padding.rjust(indent + 12) + '<xs:minExclusive value="' + str(int(data.min_excl)) + '"/>\n'
                 
-            if data.max_incl.strip().isdigit():
+            if data.max_incl is not None and data.max_incl.strip().isdigit():
                 xdstr += padding.rjust(indent + 12) + '<xs:maxInclusive value="' + str(int(data.max_incl)) + '"/>\n'
-            elif data.max_excl.strip().isdigit():
+            elif data.max_excl is not None and data.max_excl.strip().isdigit():
                 xdstr += padding.rjust(indent + 12) + '<xs:maxExclusive value="' + str(int(data.max_excl)) + '"/>\n'
                 
             xdstr += padding.rjust(indent + 10) + '</xs:restriction>\n'
@@ -609,7 +609,7 @@ def xdstring(data):
         xdstr += padding.rjust(indent + 10) + '<xs:simpleType>\n'
         xdstr += padding.rjust(indent + 10) + '<xs:restriction base="xs:string">\n'
         if data.choices:
-            enums = data.choices.split('|')
+            enums = data.choices.split()
             for e in enums:
                 xdstr += padding.rjust(indent + 12) + '<xs:enumeration value="' + xml_escape(e.strip()) + '"/>\n'
         else:
@@ -787,7 +787,11 @@ def units(mcID, data):
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="vte" type="xs:dateTime"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="tr" type="xs:dateTime"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="modified" type="xs:dateTime"/>\n'
-    xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdstring-value" type="xs:string" fixed="' + data.def_text.strip() + '"/>\n'
+    if data.def_text is None:
+        xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdstring-value" type="xs:string"/>\n'
+    else:
+        xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdstring-value" type="xs:string" fixed="' + data.def_text.strip() + '"/>\n'
+
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="xdstring-language" type="xs:language" default="en-US"/>\n'
     xdstr += padding.rjust(indent + 6) + '</xs:sequence>\n'
     xdstr += padding.rjust(indent + 4) + '</xs:restriction>\n'
