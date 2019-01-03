@@ -529,8 +529,6 @@ The downstream processing tools can then use this invalid status as needed; depe
 Additional Steps
 ----------------
 
-Remove the *output* directory.
-
 In real-world situations, we often generate data on a continuing basis for this same model. To demonstrate this functionality, use the Demo2.csv file. From the command line issue this command: 
 
 .. code-block:: sh
@@ -539,9 +537,10 @@ In real-world situations, we often generate data on a continuing basis for this 
 
 This command entry says to use the *Demo2.csv* file with the **gendata** command to reuse the *Demo* project model. A new validation log is generated and two files are shown as invalid. You should review this log an be sure you understand the implications of the processes covered so far.
 
+There will be 10 files in each of the output locations. Five from Demo.csv and five from Demo2.csv. 
+
 It is important to realize that the CSV files must represent **EXACTLY** the same type of data to reuse the project information and generated schema. If you issue this on the command line: 
 
-Remove the *output* directory.
 
 .. code-block:: sh
 

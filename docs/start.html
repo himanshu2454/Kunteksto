@@ -502,14 +502,13 @@ from the <a class="reference external" href="https://datainsights.tech/S3Model/r
 <p>The downstream processing tools can then use this invalid status as needed; depending on the data analysis/usage situation.</p>
 <div class="section" id="additional-steps">
 <h3>Additional Steps<a class="headerlink" href="#additional-steps" title="Permalink to this headline">¶</a></h3>
-<p>Remove the <em>output</em> directory.</p>
 <p>In real-world situations, we often generate data on a continuing basis for this same model. To demonstrate this functionality, use the Demo2.csv file. From the command line issue this command:</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>flask gendata Demo -i ../example_data/Demo2.csv
 </pre></div>
 </div>
 <p>This command entry says to use the <em>Demo2.csv</em> file with the <strong>gendata</strong> command to reuse the <em>Demo</em> project model. A new validation log is generated and two files are shown as invalid. You should review this log an be sure you understand the implications of the processes covered so far.</p>
+<p>There will be 10 files in each of the output locations. Five from Demo.csv and five from Demo2.csv.</p>
 <p>It is important to realize that the CSV files must represent <strong>EXACTLY</strong> the same type of data to reuse the project information and generated schema. If you issue this on the command line:</p>
-<p>Remove the <em>output</em> directory.</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>flask gendata Demo -i ../example_data/Demo3.csv
 </pre></div>
 </div>
@@ -592,7 +591,7 @@ These tutorials demonstrate the power of S3Model using persistent storage.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, Data Insights, Inc.
-      Last updated on 2019-01-02 17:10.
+      Last updated on 2019-01-03 13:52.
 
     </p>
   </div> 
