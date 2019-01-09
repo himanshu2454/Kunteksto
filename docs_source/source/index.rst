@@ -22,6 +22,7 @@ Contents:
    tutorials
    future
    develop
+   testing
    license
 
 Indices and tables
