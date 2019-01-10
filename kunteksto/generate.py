@@ -52,6 +52,18 @@ def is_valid_decimal(s):
         return False
     else:
         return True
+
+def is_valid_integer(s):
+    if s is None:
+        return False
+    try:
+        int(s)
+    except ValueError:
+        return False
+    except TypeError:
+        return False
+    else:
+        return True
     
 # add single and double quotes to xml.sax.saxutils.escape
 xml_escape_table = {
@@ -92,11 +104,13 @@ def xsd_header(rec):
     hstr += '  xmlns:s3m="https://www.s3model.com/ns/s3m/"\n'
     if rec.namespaces is not None:
         for ns in rec.namespaces.splitlines():
-            hstr += '  xmlns:' + ns + '\n'
+            ns = ns.split()
+            hstr += '  xmlns:' + ns[0] + '="' + ns[1].strip() + '"\n'
         
     hstr += '  targetNamespace="https://www.s3model.com/ns/s3m/"\n'
     hstr += '  xml:lang="en-US">\n\n'
     hstr += '  <xs:include schemaLocation="https://www.s3model.com/ns/s3m/s3model_' + RMVERSION + '.xsd"/>\n\n'
+    
     return(hstr)
 
 
@@ -217,21 +231,22 @@ def xdcount(data):
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="0" name="magnitude-status" type="s3m:MagnitudeStatus"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="error"  type="xs:integer" default="0"/>\n'
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="accuracy" type="xs:integer" default="0"/>\n'
-    if data.min_incl.strip().isdigit() or data.max_incl.strip().isdigit() or data.min_excl.strip().isdigit() or data.max_excl.strip().isdigit() or data.def_num.strip().isdigit():
-        if data.def_num is not None and data.def_num.strip().isdigit():
+    if is_valid_integer(data.min_incl) or is_valid_integer(data.max_incl) or is_valid_integer(data.min_excl) or is_valid_integer(data.max_excl) \
+       or is_valid_integer(data.def_num):
+        if is_valid_integer(data.def_num):
             xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdcount-value" type="xs:integer" default="' + str(int(data.def_num)) + '"/>\n'
         else:
             xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdcount-value">\n'
             xdstr += padding.rjust(indent + 10) + '<xs:simpleType>\n'
             xdstr += padding.rjust(indent + 10) + '<xs:restriction base="xs:integer">\n'
-            if data.min_incl is not None and data.min_incl.strip().isdigit():
+            if is_valid_integer(data.min_incl):
                 xdstr += padding.rjust(indent + 12) + '<xs:minInclusive value="' + str(int(data.min_incl)) + '"/>\n'
-            elif data.min_excl is not None and data.min_excl.strip().isdigit():
+            elif is_valid_integer(data.min_excl):
                 xdstr += padding.rjust(indent + 12) + '<xs:minExclusive value="' + str(int(data.min_excl)) + '"/>\n'
                 
-            if data.max_incl is not None and data.max_incl.strip().isdigit():
+            if is_valid_integer(data.max_incl):
                 xdstr += padding.rjust(indent + 12) + '<xs:maxInclusive value="' + str(int(data.max_incl)) + '"/>\n'
-            elif data.max_excl is not None and data.max_excl.strip().isdigit():
+            elif is_valid_integer(data.max_excl):
                 xdstr += padding.rjust(indent + 12) + '<xs:maxExclusive value="' + str(int(data.max_excl)) + '"/>\n'
                 
             xdstr += padding.rjust(indent + 10) + '</xs:restriction>\n'
@@ -470,11 +485,11 @@ def xdfloat(data):
     xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1" name="accuracy" type="xs:integer" default="0"/>\n'
     if is_valid_decimal(data.min_incl) or is_valid_decimal(data.max_incl) or is_valid_decimal(data.min_excl) or is_valid_decimal(data.max_excl) or is_valid_decimal(data.def_num):
         if is_valid_decimal(data.def_num):
-            xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdfloat-value" type="xs:float" default="' + data.def_num.strip() + '"/>\n'
+            xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdfloat-value" type="xs:double" default="' + data.def_num.strip() + '"/>\n'
         else:
             xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdfloat-value">\n'
             xdstr += padding.rjust(indent + 10) + '<xs:simpleType>\n'
-            xdstr += padding.rjust(indent + 10) + '<xs:restriction base="xs:float">\n'
+            xdstr += padding.rjust(indent + 10) + '<xs:restriction base="xs:double">\n'
             if is_valid_decimal(data.min_incl):
                 xdstr += padding.rjust(indent + 12) + '<xs:minInclusive value="' + data.min_incl.strip() + '"/>\n'
             elif is_valid_decimal(data.min_excl):
@@ -488,7 +503,7 @@ def xdfloat(data):
             xdstr += padding.rjust(indent + 10) + '</xs:simpleType>\n'
             xdstr += padding.rjust(indent + 8) + '</xs:element>\n'
     else:
-        xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdfloat-value" type="xs:float"/>\n'
+        xdstr += padding.rjust(indent + 8) + '<xs:element maxOccurs="1" minOccurs="1"  name="xdfloat-value" type="xs:double"/>\n'
         
     xdstr += padding.rjust(indent + 8) +     '<xs:element maxOccurs="1" minOccurs="0" name="xdfloat-units" type="s3m:mc-' + unitsID + '"/>\n'
     xdstr += padding.rjust(indent + 6) + '</xs:sequence>\n'
@@ -528,11 +543,11 @@ def xdstring_rdf(data):
     rdfStr += padding.rjust(indent + 10) +'<sh:minCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</sh:minCount>\n'
     if data.def_text:
         rdfStr += padding.rjust(indent + 10) + '<sh:defaultValue rdf:datatype="http://www.w3.org/2001/XMLSchema#string">' + data.def_text.strip() + '</sh:defaultValue>\n'
-    if is_valid_decimal(data.min_len):
-        rdfStr += padding.rjust(indent + 10) +'<sh:minLength rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">' + data.min_len.strip() + '</sh:minLength>\n'
+    if is_valid_integer(data.min_len):
+        rdfStr += padding.rjust(indent + 10) +'<sh:minLength rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">' + str(data.min_len) + '</sh:minLength>\n'
         
-    if is_valid_decimal(data.max_len):
-        rdfStr += padding.rjust(indent + 10) +'<sh:maxLength rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">' + data.max_len.strip() + '</sh:maxLength>\n'
+    if is_valid_integer(data.max_len):
+        rdfStr += padding.rjust(indent + 10) +'<sh:maxLength rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">' + str(data.max_len) + '</sh:maxLength>\n'
         
     if data.regex:
         rdfStr += padding.rjust(indent + 10) +'<sh:pattern rdf:datatype="http://www.w3.org/2001/XMLSchema#string">' + data.regex.strip() + '</sh:pattern>\n'
@@ -933,7 +948,8 @@ def xsd_rdf(rec, session):
 
     if rec.namespaces is not None:
         for ns in rec.namespaces.splitlines():
-            ns_dict[ns.split('=')[0]]=ns.split('=')[1]
+            ns = ns.split()
+            ns_dict[ns[0]]=ns[1]
 
     # parser = etree.XMLParser(ns_clean=True, recover=True)
     cls_def = etree.XPath("//xs:annotation/xs:appinfo/rdfs:Class", namespaces=ns_dict)
