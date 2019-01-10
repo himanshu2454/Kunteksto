@@ -33,7 +33,7 @@ from sqlalchemy.orm import sessionmaker
 
 from . import config
 from .models import db, Session, Datamodel, Component, Validation
-    
+
 RMVERSION = config['SYSTEM']['rmversion'].replace('.', '_')
 DELIM = config['KUNTEKSTO']['delim']
 
@@ -770,7 +770,7 @@ def xdtemporal(data):
 
 def units(mcID, data):
     """
-    Create xdString model as a Units component of a xdCount or xdQuantity.
+    Create xdString model as a Units component of a xdCount. xdFloat or xdQuantity.
     """
     
     indent = 2
@@ -818,7 +818,7 @@ def units(mcID, data):
 
 def xsd_data(rec, indent, session):
     """
-    Create a Cluster model for the data portion of an Entry.
+    Create a Cluster model for the data portion of the model.
     """
     
     indent += 2
@@ -844,10 +844,16 @@ def xsd_data(rec, indent, session):
 
     # now we need to loop through the db and create all of the model components while keeping track so we can add them here too.
     # the dictionary uses the mc-{cuid} as the key. The items are the complete mc code.
+    
+    # Integers and decimals get tested for a Units entry. 
+    # TODO: Build this into the WTForms validation process. 
     mcDict = OrderedDict()
     components = session.query(Component).filter_by(model_id=rec.id).all()
     
     for row in components:
+        if row.units is None and row.datatype.lower() in ('integer', 'decimal'):
+            print(row.label + " requires a Units value. You must correct this and regenerate the model.")
+
         if row.datatype.lower() == 'integer':
             mcDict[row.adid.strip()] = xdcount(row)
         elif row.datatype.lower() == 'decimal':
@@ -1008,7 +1014,7 @@ def make_model(project):
     xsd_str += xsd_data(dm, 0, session)
     xsd_str += '\n</xs:schema>\n'
 
-    # persist a copy so we can troubleshoot for erros when needed.
+    # persist a copy so we can troubleshoot for errors when needed.
     dm.schema = xsd_str
     session.commit()
 
@@ -1051,11 +1057,12 @@ def xml_count(col, data):
     xstr += '        <error>0</error>\n'
     xstr += '        <accuracy>0</accuracy>\n'
     xstr += '        <xdcount-value>' + data[col.header.strip()] + '</xdcount-value>\n'
-    xstr += '        <xdcount-units>\n'
-    xstr += '          <label>' + xml_escape(col.label.strip()) + ' Units</label>\n'
-    xstr += '          <xdstring-value>' + xml_escape(col.units.strip()) + '</xdstring-value>\n'
-    xstr += '          <xdstring-language>en-US</xdstring-language>\n'
-    xstr += '        </xdcount-units>\n'
+    if col.units is not None:             
+        xstr += '        <xdcount-units>\n'
+        xstr += '          <label>' + xml_escape(col.label.strip()) + ' Units</label>\n'
+        xstr += '          <xdstring-value>' + xml_escape(col.units.strip()) + '</xdstring-value>\n'
+        xstr += '          <xdstring-language>en-US</xdstring-language>\n'
+        xstr += '        </xdcount-units>\n'
     xstr += '      </s3m:ms-' + col.mcid.strip() + '>\n'
     xstr += '      </s3m:ms-' + col.adid.strip() + '>\n'
     return(xstr)
@@ -1077,11 +1084,12 @@ def xml_quantity(col, data):
     xstr += '        <error>0</error>\n'
     xstr += '        <accuracy>0</accuracy>\n'
     xstr += '        <xdquantity-value>' + data[col.header.strip()] + '</xdquantity-value>\n'
-    xstr += '        <xdquantity-units>\n'
-    xstr += '          <label>' + xml_escape(col.label.strip()) + ' Units</label>\n'
-    xstr += '          <xdstring-value>' + xml_escape(col.units.strip()) + '</xdstring-value>\n'
-    xstr += '          <xdstring-language>en-US</xdstring-language>\n'
-    xstr += '        </xdquantity-units>\n'
+    if col.units is not None:             
+        xstr += '        <xdquantity-units>\n'
+        xstr += '          <label>' + xml_escape(col.label.strip()) + ' Units</label>\n'
+        xstr += '          <xdstring-value>' + xml_escape(col.units.strip()) + '</xdstring-value>\n'
+        xstr += '          <xdstring-language>en-US</xdstring-language>\n'
+        xstr += '        </xdquantity-units>\n'
     xstr += '      </s3m:ms-' + col.mcid.strip() + '>\n'
     xstr += '      </s3m:ms-' + col.adid.strip() + '>\n'
     return(xstr)
@@ -1103,11 +1111,12 @@ def xml_float(col, data):
     xstr += '        <error>0</error>\n'
     xstr += '        <accuracy>0</accuracy>\n'
     xstr += '        <xdfloat-value>' + data[col.header.strip()] + '</xdfloat-value>\n'
-    xstr += '        <xdfloat-units>\n'
-    xstr += '          <label>' + xml_escape(col.label.strip()) + ' Units</label>\n'
-    xstr += '          <xdstring-value>' + xml_escape(col.units.strip()) + '</xdstring-value>\n'
-    xstr += '          <xdstring-language>en-US</xdstring-language>\n'
-    xstr += '        </xdfloat-units>\n'
+    if col.units is not None:             
+        xstr += '        <xdfloat-units>\n'
+        xstr += '          <label>' + xml_escape(col.label.strip()) + ' Units</label>\n'
+        xstr += '          <xdstring-value>' + xml_escape(col.units.strip()) + '</xdstring-value>\n'
+        xstr += '          <xdstring-language>en-US</xdstring-language>\n'
+        xstr += '        </xdfloat-units>\n'
     xstr += '      </s3m:ms-' + col.mcid.strip() + '>\n'
     xstr += '      </s3m:ms-' + col.adid.strip() + '>\n'
     return(xstr)
@@ -1129,7 +1138,9 @@ def xml_temporal(col, data):
     if col.datatype.lower() == 'time':
         xstr += '        <xdtemporal-time>' + data[col.header.strip()] + '</xdtemporal-time>\n'
     if col.datatype.lower() == 'datetime':
-        xstr += '        <xdtemporal-datetime>' + data[col.header.strip()] + '</xdtemporal-datetime>\n'
+        # Insert a 'T' in place of the space in ISO formated dateTime
+        dt = data[col.header.strip()].replace(' ', 'T')
+        xstr += '        <xdtemporal-datetime>' + dt + '</xdtemporal-datetime>\n'
     xstr += '      </s3m:ms-' + col.mcid.strip() + '>\n'
     xstr += '      </s3m:ms-' + col.adid.strip() + '>\n'
     return(xstr)
