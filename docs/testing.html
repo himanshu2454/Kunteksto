@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Testing &mdash; Kunteksto - Context for Your Data</title>
+  <title>Examples &amp; Testing &mdash; Kunteksto - Context for Your Data</title>
   
 
   
@@ -94,7 +94,7 @@
 <li class="toctree-l1"><a class="reference internal" href="tutorials.html">Advanced Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="future.html">The Future</a></li>
 <li class="toctree-l1"><a class="reference internal" href="develop.html">Developing Kunteksto</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Testing</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Examples &amp; Testing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="license.html">License &amp; Usage</a></li>
 </ul>
 
@@ -141,7 +141,7 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>Testing</li>
+      <li>Examples &amp; Testing</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -160,11 +160,27 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="testing">
-<h1>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="examples-testing">
+<h1>Examples &amp; Testing<a class="headerlink" href="#examples-testing" title="Permalink to this headline">¶</a></h1>
 <p>Kunteksto does not <em>currently</em> include Python code testing.</p>
 <p>However, there is a test CSV file (test_gen.csv) in the example_Data directory.</p>
-<p>This CSV file is the basis for the kunteksto_test.db. The database contains a  <strong>Demo</strong> model and completed set of components as well as a <strong>TestDB</strong> model and completed components. By generating, exporting and validating the models and instances using external tools such as Xerces or Saxon you can verify the validity of Kunteksto models and data instances.</p>
+<p>This CSV file can be used to test all of the available components as well as validation issues.</p>
+<p>All of your models and components are stored in a database <em>kunteksto.db</em> in the Kunteksto working directory.
+You can backup this file to be usre you do not loose any work. You can always delete the database, restart Kunteksto and it will generate a new blank database. You can copy a backup into the directory to recover a previous version.</p>
+<p>In the <em>example_dbs</em> directory there are two databases.</p>
+<ul class="simple">
+<li><dl class="first docutils">
+<dt>Demo_kunteksto.db</dt>
+<dd>This database contains a  <strong>Demo</strong> model and completed set of components based on the tutorial.</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>TestAndDemo_kunteksto.db</dt>
+<dd>This database contains the <strong>Demo**as well as a **TestDB</strong> model and completed components generated from from the test_gen.csv.</dd>
+</dl>
+</li>
+</ul>
+<p>By generating, exporting and validating the models and instances using external tools such as Xerces or Saxon you can verify the validity of Kunteksto models and data instances.</p>
 </div>
 
 
@@ -188,7 +204,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, Data Insights, Inc.
-      Last updated on 2019-01-06 07:52.
+      Last updated on 2019-01-10 18:43.
 
     </p>
   </div> 
