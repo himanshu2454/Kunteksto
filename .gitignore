@@ -8,7 +8,7 @@ __pycache__/
 
 
 # Kunteksto 
-*.db
+kunteksto.db
 output/*
 catalogs/*
 dmlib/*
