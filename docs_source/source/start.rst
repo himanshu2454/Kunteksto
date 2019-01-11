@@ -370,6 +370,7 @@ In the completed Column_6 below you can see the Options are the description as w
     :alt: Completed Column_6
 
 
+
 Once you have completed the data description step, **saved your changes** using the *Save* button on each Component record, then you may execute the model generation process. 
 
 - In your terminal window generate the model with this command:
